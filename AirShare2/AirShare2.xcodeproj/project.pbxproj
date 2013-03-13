@@ -29,6 +29,12 @@
 		55FCC5C216ED78E80000BCBD /* Player.m in Sources */ = {isa = PBXBuildFile; fileRef = 55FCC5C116ED78E80000BCBD /* Player.m */; };
 		55FCC5C516ED79C70000BCBD /* Packet.m in Sources */ = {isa = PBXBuildFile; fileRef = 55FCC5C416ED79C70000BCBD /* Packet.m */; };
 		55FCC5C816ED7A5E0000BCBD /* NSData+AirShareAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 55FCC5C716ED7A5E0000BCBD /* NSData+AirShareAdditions.m */; };
+		89A301E616F12BD5004E4406 /* CenturyGothicStd-Italic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 89A301E216F12BD5004E4406 /* CenturyGothicStd-Italic.otf */; };
+		89A301E716F12BD5004E4406 /* CenturyGothicStd-BoldItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 89A301E316F12BD5004E4406 /* CenturyGothicStd-BoldItalic.otf */; };
+		89A301E816F12BD5004E4406 /* CenturyGothicStd-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 89A301E416F12BD5004E4406 /* CenturyGothicStd-Bold.otf */; };
+		89A301E916F12BD5004E4406 /* CenturyGothicStd.otf in Resources */ = {isa = PBXBuildFile; fileRef = 89A301E516F12BD5004E4406 /* CenturyGothicStd.otf */; };
+		89B257DD16F1374E0018695A /* bgGreyImg.png in Resources */ = {isa = PBXBuildFile; fileRef = 89B257DC16F1374E0018695A /* bgGreyImg.png */; };
+		89B257DF16F140D30018695A /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 89B257DE16F140D30018695A /* QuartzCore.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -67,6 +73,12 @@
 		55FCC5C416ED79C70000BCBD /* Packet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Packet.m; sourceTree = "<group>"; };
 		55FCC5C616ED7A5E0000BCBD /* NSData+AirShareAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+AirShareAdditions.h"; sourceTree = "<group>"; };
 		55FCC5C716ED7A5E0000BCBD /* NSData+AirShareAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+AirShareAdditions.m"; sourceTree = "<group>"; };
+		89A301E216F12BD5004E4406 /* CenturyGothicStd-Italic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "CenturyGothicStd-Italic.otf"; path = "../../../../../Transmission/music/Font Collection/C/CenturyGothicStd-Italic.otf"; sourceTree = "<group>"; };
+		89A301E316F12BD5004E4406 /* CenturyGothicStd-BoldItalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "CenturyGothicStd-BoldItalic.otf"; path = "../../../../../Transmission/music/Font Collection/C/CenturyGothicStd-BoldItalic.otf"; sourceTree = "<group>"; };
+		89A301E416F12BD5004E4406 /* CenturyGothicStd-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "CenturyGothicStd-Bold.otf"; path = "../../../../../Transmission/music/Font Collection/C/CenturyGothicStd-Bold.otf"; sourceTree = "<group>"; };
+		89A301E516F12BD5004E4406 /* CenturyGothicStd.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = CenturyGothicStd.otf; path = "../../../../../Transmission/music/Font Collection/C/CenturyGothicStd.otf"; sourceTree = "<group>"; };
+		89B257DC16F1374E0018695A /* bgGreyImg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = bgGreyImg.png; path = ../../../../../Dropbox/ios/bgGreyImg.png; sourceTree = "<group>"; };
+		89B257DE16F140D30018695A /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -74,6 +86,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				89B257DF16F140D30018695A /* QuartzCore.framework in Frameworks */,
 				55FCC57516ED3D8C0000BCBD /* GameKit.framework in Frameworks */,
 				55FCC57316ED3D860000BCBD /* AVFoundation.framework in Frameworks */,
 				55FCC54D16ED3D4C0000BCBD /* UIKit.framework in Frameworks */,
@@ -88,6 +101,7 @@
 		55FCC54016ED3D4C0000BCBD = {
 			isa = PBXGroup;
 			children = (
+				89B257DE16F140D30018695A /* QuartzCore.framework */,
 				55FCC5C916ED7A620000BCBD /* AirShareAdditions */,
 				55FCC5BF16ED62680000BCBD /* DataModel */,
 				55FCC5B816ED3E6E0000BCBD /* Networking */,
@@ -133,6 +147,11 @@
 		55FCC55316ED3D4C0000BCBD /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				89B257DC16F1374E0018695A /* bgGreyImg.png */,
+				89A301E216F12BD5004E4406 /* CenturyGothicStd-Italic.otf */,
+				89A301E316F12BD5004E4406 /* CenturyGothicStd-BoldItalic.otf */,
+				89A301E416F12BD5004E4406 /* CenturyGothicStd-Bold.otf */,
+				89A301E516F12BD5004E4406 /* CenturyGothicStd.otf */,
 				55FCC55416ED3D4C0000BCBD /* AirShare2-Info.plist */,
 				55FCC55516ED3D4C0000BCBD /* InfoPlist.strings */,
 				55FCC55816ED3D4C0000BCBD /* main.m */,
@@ -247,6 +266,11 @@
 				55FCC56316ED3D4C0000BCBD /* Default-568h@2x.png in Resources */,
 				55FCC56616ED3D4C0000BCBD /* MainStoryboard_iPhone.storyboard in Resources */,
 				55FCC56916ED3D4C0000BCBD /* MainStoryboard_iPad.storyboard in Resources */,
+				89A301E616F12BD5004E4406 /* CenturyGothicStd-Italic.otf in Resources */,
+				89A301E716F12BD5004E4406 /* CenturyGothicStd-BoldItalic.otf in Resources */,
+				89A301E816F12BD5004E4406 /* CenturyGothicStd-Bold.otf in Resources */,
+				89A301E916F12BD5004E4406 /* CenturyGothicStd.otf in Resources */,
+				89B257DD16F1374E0018695A /* bgGreyImg.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -400,6 +424,7 @@
 				55FCC57116ED3D4C0000BCBD /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

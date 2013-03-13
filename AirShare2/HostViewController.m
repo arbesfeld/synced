@@ -29,10 +29,10 @@
 - (void)viewDidLoad
 {
 	[super viewDidLoad];
-    
     UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self.nameTextField action:@selector(resignFirstResponder)];
 	gestureRecognizer.cancelsTouchesInView = NO;
 	[self.view addGestureRecognizer:gestureRecognizer];
+    
 }
 
 - (void)viewDidUnload
@@ -123,7 +123,7 @@
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
 	[textField resignFirstResponder];
-	return NO;
+	return YES;
 }
 
 #pragma mark - MatchmakingServerDelegate

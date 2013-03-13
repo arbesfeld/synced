@@ -2,6 +2,7 @@
 #import "GameViewController.h"
 #import "Game.h"
 #import "MatchmakingClient.h"
+#import <QuartzCore/QuartzCore.h>
 @interface MainViewController ()
 
 @end
@@ -15,7 +16,7 @@
 - (void)viewDidLoad
 {
 	[super viewDidLoad];
-    
+    [self setupUI];    
     if (_matchmakingClient == nil)
 	{
         _quitReason = QuitReasonConnectionDropped;
@@ -203,7 +204,7 @@
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
 	[textField resignFirstResponder];
-	return NO;
+	return YES;
 }
 
 #pragma mark - MatchmakingClientDelegate
@@ -247,6 +248,20 @@
 {
 	_quitReason = QuitReasonNoNetwork;
 }
+
+-(void)setupUI
+{
+    self.view.backgroundColor = [[UIColor alloc] initWithPatternImage:[UIImage imageNamed:@"bgGreyImg.png"]];
+    [[UILabel appearance] setFont:[UIFont fontWithName:@"Century Gothic Std" size:17.0]];
+    [[UILabel appearance] setTextColor:[UIColor colorWithHue:0.0 saturation:0.0 brightness:.2 alpha:1.0]];
+    [[UIButton appearance] setFont:[UIFont fontWithName:@"Century Gothic Std" size:17.0]];
+    [[UIButton appearance] setTitleColor:[UIColor colorWithHue:0.0 saturation:0.0 brightness:0.2 alpha:1.0] forState:UIControlStateNormal];
+    [self.sessionsLabel setFont:[UIFont systemFontOfSize:24]];
+    [self.sessionsLabel setTextAlignment:NSTextAlignmentCenter];
+    self.tableView.layer.cornerRadius = 7;
+    self.tableView.layer.masksToBounds = YES;
+}
+
 
 #pragma mark - Delloc
 

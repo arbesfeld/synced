@@ -12,6 +12,8 @@
 @property (nonatomic, weak) IBOutlet UILabel *statusLabel;
 @property (nonatomic, weak) IBOutlet UITableView *tableView;
 @property (nonatomic, weak) IBOutlet UILabel *waitLabel;
+@property (strong, nonatomic) IBOutlet UILabel *sessionsLabel;
+
 
 - (IBAction)hostGameAction:(id)sender;
 - (IBAction)joinGameAction:(id)sender;
