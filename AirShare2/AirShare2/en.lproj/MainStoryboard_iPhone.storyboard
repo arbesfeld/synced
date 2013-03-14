@@ -76,19 +76,19 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="HUI-8S-HhU" firstAttribute="trailing" secondItem="edi-GE-42e" secondAttribute="trailing" type="default" id="0kf-Ac-jUg"/>
-                            <constraint firstItem="xeb-dW-sZd" firstAttribute="leading" secondItem="3" secondAttribute="leading" constant="20" symbolic="YES" type="default" id="1dd-jr-Joe"/>
+                            <constraint firstAttribute="trailing" secondItem="HUI-8S-HhU" secondAttribute="trailing" constant="26" id="A7z-2e-hG9"/>
                             <constraint firstItem="GU4-nS-SJA" firstAttribute="trailing" secondItem="edi-GE-42e" secondAttribute="trailing" type="default" id="FDj-K6-GP1"/>
-                            <constraint firstItem="NNb-eT-JNi" firstAttribute="leading" secondItem="3" secondAttribute="leading" constant="152" id="Hio-bu-ZPe"/>
                             <constraint firstItem="GU4-nS-SJA" firstAttribute="centerX" secondItem="3" secondAttribute="centerX" type="default" id="Ilm-gJ-Vxw"/>
-                            <constraint firstAttribute="bottom" secondItem="gao-GG-IxP" secondAttribute="bottom" constant="29" id="Mto-xZ-lT6"/>
+                            <constraint firstItem="gao-GG-IxP" firstAttribute="baseline" secondItem="NNb-eT-JNi" secondAttribute="baseline" type="default" id="JEq-md-CFc"/>
                             <constraint firstItem="GU4-nS-SJA" firstAttribute="leading" secondItem="edi-GE-42e" secondAttribute="leading" type="default" id="NOA-ij-fKF"/>
                             <constraint firstItem="NNb-eT-JNi" firstAttribute="top" secondItem="HUI-8S-HhU" secondAttribute="bottom" constant="8" symbolic="YES" type="default" id="Sc3-xH-lrQ"/>
                             <constraint firstItem="edi-GE-42e" firstAttribute="top" secondItem="3" secondAttribute="top" constant="96" id="WyA-rU-2wM"/>
                             <constraint firstItem="HUI-8S-HhU" firstAttribute="baseline" secondItem="xeb-dW-sZd" secondAttribute="baseline" type="default" id="bmX-sh-o5b"/>
+                            <constraint firstItem="xeb-dW-sZd" firstAttribute="leading" secondItem="3" secondAttribute="leading" constant="31" id="hUw-IW-qGh"/>
                             <constraint firstAttribute="bottom" secondItem="NNb-eT-JNi" secondAttribute="bottom" constant="25" id="i5q-e7-khm"/>
-                            <constraint firstItem="gao-GG-IxP" firstAttribute="leading" secondItem="3" secondAttribute="leading" constant="20" symbolic="YES" type="default" id="k1h-PH-0kn"/>
+                            <constraint firstItem="gao-GG-IxP" firstAttribute="leading" secondItem="xeb-dW-sZd" secondAttribute="leading" type="default" id="pSJ-WY-uyG"/>
                             <constraint firstItem="GU4-nS-SJA" firstAttribute="top" secondItem="3" secondAttribute="top" constant="18" id="qK6-w0-nBx"/>
+                            <constraint firstAttribute="trailing" secondItem="NNb-eT-JNi" secondAttribute="trailing" constant="20" symbolic="YES" type="default" id="zc9-9o-cP2"/>
                         </constraints>
                     </view>
                     <connections>
