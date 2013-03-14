@@ -1,9 +1,6 @@
 //
 //  HostViewController.m
-//  Snap
-//
-//  Created by Ray Wenderlich on 5/24/12.
-//  Copyright (c) 2012 Hollance. All rights reserved.
+//  AirShare
 //
 
 #import "HostViewController.h"
@@ -75,7 +72,6 @@
 		[self.delegate hostViewController:self startGameWithSession:_matchmakingServer.session playerName:name clients:_matchmakingServer.connectedClients];
 	}
 }
-
 
 - (IBAction)exitAction:(id)sender
 {

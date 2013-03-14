@@ -1,9 +1,6 @@
 //
 //  MatchmakingClient.m
-//  Snap
-//
-//  Created by Ray Wenderlich on 5/25/12.
-//  Copyright (c) 2012 Hollance. All rights reserved.
+//  AirShare
 //
 
 #import "MatchmakingClient.h"

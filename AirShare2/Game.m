@@ -1,4 +1,6 @@
 #import "Game.h"
+#import "Packet.h"
+#import "PacketSignInResponse.h"
 #import <GameKit/GameKit.h>
 
 typedef enum
@@ -61,17 +63,6 @@ GameState;
 	[self.delegate gameWaitingForServerReady:self];
 }
 
-- (void)quitGameWithReason:(QuitReason)reason
-{
-	_state = GameStateQuitting;
-    
-	[_session disconnectFromAllPeers];
-	_session.delegate = nil;
-	_session = nil;
-    
-	[self.delegate game:self didQuitWithReason:reason];
-}
-
 - (void)startServerGameWithSession:(GKSession *)session playerName:(NSString *)name clients:(NSArray *)clients
 {
 	self.isServer = YES;
@@ -100,6 +91,32 @@ GameState;
 		[_players setObject:player forKey:player.peerID];
         
 		index++;
+	}
+    Packet *packet = [Packet packetWithType:PacketTypeSignInRequest];
+	[self sendPacketToAllClients:packet];
+}
+
+#pragma mark - Networking
+
+- (void)sendPacketToAllClients:(Packet *)packet
+{
+	GKSendDataMode dataMode = GKSendDataReliable;
+	NSData *data = [packet data];
+	NSError *error;
+	if (![_session sendDataToAllPeers:data withDataMode:dataMode error:&error])
+	{
+		NSLog(@"Error sending data to clients: %@", error);
+	}
+}
+
+- (void)sendPacketToServer:(Packet *)packet
+{
+	GKSendDataMode dataMode = GKSendDataReliable;
+	NSData *data = [packet data];
+	NSError *error;
+	if (![_session sendData:data toPeers:[NSArray arrayWithObject:_serverPeerID] withDataMode:dataMode error:&error])
+	{
+		NSLog(@"Error sending data to server: %@", error);
 	}
 }
 
@@ -144,6 +161,74 @@ GameState;
 #ifdef DEBUG
 	NSLog(@"Game: receive data from peer: %@, data: %@, length: %d", peerID, data, [data length]);
 #endif
+    
+	Packet *packet = [Packet packetWithData:data];
+	if (packet == nil)
+	{
+		NSLog(@"Invalid packet: %@", data);
+		return;
+	}
+    
+	Player *player = [self playerWithPeerID:peerID];
+    
+	if (self.isServer)
+		[self serverReceivedPacket:packet fromPlayer:player];
+	else
+		[self clientReceivedPacket:packet];
 }
 
+- (void)clientReceivedPacket:(Packet *)packet
+{
+	switch (packet.packetType)
+	{
+		case PacketTypeSignInRequest:
+			if (_state == GameStateWaitingForSignIn)
+			{
+				_state = GameStateWaitingForReady;
+                
+				Packet *packet = [PacketSignInResponse packetWithPlayerName:_localPlayerName];
+				[self sendPacketToServer:packet];
+			}
+			break;
+            
+		default:
+			NSLog(@"Client received unexpected packet: %@", packet);
+			break;
+	}
+}
+
+- (void)serverReceivedPacket:(Packet *)packet fromPlayer:(Player *)player
+{
+	switch (packet.packetType)
+	{
+		case PacketTypeSignInResponse:
+			if (_state == GameStateWaitingForSignIn)
+			{
+				player.name = ((PacketSignInResponse *)packet).playerName;
+                
+				NSLog(@"server received sign in from client '%@'", player.name);
+			}
+			break;
+            
+		default:
+			NSLog(@"Server received unexpected packet: %@", packet);
+			break;
+	}
+}
+
+- (Player *)playerWithPeerID:(NSString *)peerID
+{
+	return [_players objectForKey:peerID];
+}
+
+- (void)quitGameWithReason:(QuitReason)reason
+{
+	_state = GameStateQuitting;
+    
+	[_session disconnectFromAllPeers];
+	_session.delegate = nil;
+	_session = nil;
+    
+	[self.delegate game:self didQuitWithReason:reason];
+}
 @end

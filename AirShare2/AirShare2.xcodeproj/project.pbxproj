@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		558E14AB16F182480076F6FC /* PacketSignInResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 558E14AA16F182480076F6FC /* PacketSignInResponse.m */; };
+		558E14B516F185600076F6FC /* bgGreyImg.png in Resources */ = {isa = PBXBuildFile; fileRef = 558E14B216F185600076F6FC /* bgGreyImg.png */; };
+		558E14B616F185600076F6FC /* CenturyGothicStd-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 558E14B316F185600076F6FC /* CenturyGothicStd-Bold.otf */; };
+		558E14B716F185600076F6FC /* CenturyGothicStd.otf in Resources */ = {isa = PBXBuildFile; fileRef = 558E14B416F185600076F6FC /* CenturyGothicStd.otf */; };
 		55FCC54D16ED3D4C0000BCBD /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55FCC54C16ED3D4C0000BCBD /* UIKit.framework */; };
 		55FCC54F16ED3D4C0000BCBD /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55FCC54E16ED3D4C0000BCBD /* Foundation.framework */; };
 		55FCC55116ED3D4C0000BCBD /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55FCC55016ED3D4C0000BCBD /* CoreGraphics.framework */; };
@@ -33,6 +37,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		558E14A916F182480076F6FC /* PacketSignInResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PacketSignInResponse.h; sourceTree = "<group>"; };
+		558E14AA16F182480076F6FC /* PacketSignInResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PacketSignInResponse.m; sourceTree = "<group>"; };
+		558E14B216F185600076F6FC /* bgGreyImg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bgGreyImg.png; sourceTree = "<group>"; };
+		558E14B316F185600076F6FC /* CenturyGothicStd-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "CenturyGothicStd-Bold.otf"; sourceTree = "<group>"; };
+		558E14B416F185600076F6FC /* CenturyGothicStd.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = CenturyGothicStd.otf; sourceTree = "<group>"; };
 		55FCC54916ED3D4C0000BCBD /* AirShare2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AirShare2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		55FCC54C16ED3D4C0000BCBD /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		55FCC54E16ED3D4C0000BCBD /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -69,9 +78,6 @@
 		55FCC5C616ED7A5E0000BCBD /* NSData+AirShareAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+AirShareAdditions.h"; sourceTree = "<group>"; };
 		55FCC5C716ED7A5E0000BCBD /* NSData+AirShareAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+AirShareAdditions.m"; sourceTree = "<group>"; };
 		89B257DE16F140D30018695A /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
-		89B257E016F168A10018695A /* bgGreyImg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bgGreyImg.png; sourceTree = "<group>"; };
-		89B257E116F168A10018695A /* CenturyGothicStd-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "CenturyGothicStd-Bold.otf"; sourceTree = "<group>"; };
-		89B257E216F168A10018695A /* CenturyGothicStd.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = CenturyGothicStd.otf; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -91,10 +97,26 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		558E14B816F185780076F6FC /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				558E14B316F185600076F6FC /* CenturyGothicStd-Bold.otf */,
+				558E14B416F185600076F6FC /* CenturyGothicStd.otf */,
+			);
+			name = Fonts;
+			sourceTree = "<group>";
+		};
+		558E14B916F185860076F6FC /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				558E14B216F185600076F6FC /* bgGreyImg.png */,
+			);
+			name = Images;
+			sourceTree = "<group>";
+		};
 		55FCC54016ED3D4C0000BCBD = {
 			isa = PBXGroup;
 			children = (
-				89B257DE16F140D30018695A /* QuartzCore.framework */,
 				55FCC5C916ED7A620000BCBD /* AirShareAdditions */,
 				55FCC5BF16ED62680000BCBD /* DataModel */,
 				55FCC5B816ED3E6E0000BCBD /* Networking */,
@@ -116,6 +138,7 @@
 		55FCC54B16ED3D4C0000BCBD /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				89B257DE16F140D30018695A /* QuartzCore.framework */,
 				55FCC57416ED3D8C0000BCBD /* GameKit.framework */,
 				55FCC57216ED3D860000BCBD /* AVFoundation.framework */,
 				55FCC54C16ED3D4C0000BCBD /* UIKit.framework */,
@@ -140,9 +163,8 @@
 		55FCC55316ED3D4C0000BCBD /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				89B257E016F168A10018695A /* bgGreyImg.png */,
-				89B257E116F168A10018695A /* CenturyGothicStd-Bold.otf */,
-				89B257E216F168A10018695A /* CenturyGothicStd.otf */,
+				558E14B916F185860076F6FC /* Images */,
+				558E14B816F185780076F6FC /* Fonts */,
 				55FCC55416ED3D4C0000BCBD /* AirShare2-Info.plist */,
 				55FCC55516ED3D4C0000BCBD /* InfoPlist.strings */,
 				55FCC55816ED3D4C0000BCBD /* main.m */,
@@ -172,6 +194,8 @@
 			children = (
 				55FCC5C316ED79C70000BCBD /* Packet.h */,
 				55FCC5C416ED79C70000BCBD /* Packet.m */,
+				558E14A916F182480076F6FC /* PacketSignInResponse.h */,
+				558E14AA16F182480076F6FC /* PacketSignInResponse.m */,
 				55FCC5B116ED3E0C0000BCBD /* MatchmakingServer.h */,
 				55FCC5B216ED3E0D0000BCBD /* MatchmakingServer.m */,
 				55FCC5B416ED3E360000BCBD /* MatchmakingClient.h */,
@@ -257,6 +281,9 @@
 				55FCC56316ED3D4C0000BCBD /* Default-568h@2x.png in Resources */,
 				55FCC56616ED3D4C0000BCBD /* MainStoryboard_iPhone.storyboard in Resources */,
 				55FCC56916ED3D4C0000BCBD /* MainStoryboard_iPad.storyboard in Resources */,
+				558E14B516F185600076F6FC /* bgGreyImg.png in Resources */,
+				558E14B616F185600076F6FC /* CenturyGothicStd-Bold.otf in Resources */,
+				558E14B716F185600076F6FC /* CenturyGothicStd.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -278,6 +305,7 @@
 				55FCC5C216ED78E80000BCBD /* Player.m in Sources */,
 				55FCC5C516ED79C70000BCBD /* Packet.m in Sources */,
 				55FCC5C816ED7A5E0000BCBD /* NSData+AirShareAdditions.m in Sources */,
+				558E14AB16F182480076F6FC /* PacketSignInResponse.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
