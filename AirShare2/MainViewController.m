@@ -3,35 +3,47 @@
 #import "Game.h"
 #import "MatchmakingClient.h"
 #import <QuartzCore/QuartzCore.h>
+
 @interface MainViewController ()
 
 @end
 
 @implementation MainViewController
+
 {
 	MatchmakingClient *_matchmakingClient;
-    QuitReason _quitReason;
+    QuitReason _quitReasonClient;
+    
+    MatchmakingServer *_matchmakingServer;
+    QuitReason _quitReasonServer;
+    
+    NSString *_serverName;
 }
 
 - (void)viewDidLoad
 {
 	[super viewDidLoad];
-    [self setupUI];    
-    if (_matchmakingClient == nil)
-	{
-        _quitReason = QuitReasonConnectionDropped;
-		_matchmakingClient = [[MatchmakingClient alloc] init];
-        _matchmakingClient.delegate = self;
-		[_matchmakingClient startSearchingForServersWithSessionID:SESSION_ID];
-        
-		self.nameTextField.placeholder = _matchmakingClient.session.displayName;
-		[self.tableView reloadData];
-	}
+    [self setupUI];
+    [self reload];
+}
+
+- (void)reload
+{
+    NSLog(@"Reload");
+    _matchmakingClient = nil;
+    _quitReasonClient = QuitReasonConnectionDropped;
+    _matchmakingClient = [[MatchmakingClient alloc] init];
+    _matchmakingClient.delegate = self;
+    [_matchmakingClient startSearchingForServersWithSessionID:SESSION_ID];
+    
+    self.nameTextField.placeholder = _matchmakingClient.session.displayName;
+    [self.tableView reloadData];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
 	[super viewWillAppear:animated];
+    [self reload];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -46,29 +58,46 @@
 
 - (IBAction)hostGameAction:(id)sender
 {
-//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil];
-//    HostViewController *controller = [storyboard instantiateViewControllerWithIdentifier:@"HostViewController"];
-//    controller.delegate = self;
-//    [self performSegueWithIdentifier:@"JoinViewSegue" sender:self];
-//    [self presentViewController:controller animated:NO completion:nil];
+    if(_serverName == nil) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"" message:@"Session Name?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:nil];
+        [alert setAlertViewStyle:UIAlertViewStylePlainTextInput];
+        [alert addButtonWithTitle:@"Ok"];
+        [alert show];
+    }
     
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil];
-    HostViewController *controller = [storyboard instantiateViewControllerWithIdentifier:@"HostViewController"];
-    controller.delegate = self;
-    [self presentViewController:controller animated:YES completion:nil];
-    //[self performSegueWithIdentifier:@"HostViewSegue" sender:self];
+    // set up server
+    
+    if (_matchmakingServer == nil && _serverName != nil)
+	{
+		_matchmakingServer = [[MatchmakingServer alloc] init];
+		_matchmakingServer.maxClients = 3;
+        _matchmakingServer.delegate = self;
+		[_matchmakingServer startAcceptingConnectionsForSessionID:SESSION_ID name:_serverName];
+        
+		//self.nameTextField.placeholder = _matchmakingServer.session.displayName;
+		//[self.tableView reloadData];
+	}
+    
+    // start server but wait until alertView is responded to
+    if (_matchmakingServer != nil && _serverName != nil)//&& [_matchmakingServer connectedClientCount] > 0)
+	{
+		if ([_serverName length] == 0)
+			_serverName = _matchmakingServer.session.displayName;
+        
+		//[_matchmakingServer stopAcceptingConnections];
+        
+		[self serverStartGameWithSession:_matchmakingServer.session playerName:_serverName clients:_matchmakingServer.connectedClients];
+        _serverName = nil;
+    }
 }
 
-#pragma mark - HostViewControllerDelegate
-
-- (void)hostViewControllerDidCancel:(HostViewController *)controller
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    [controller dismissViewControllerAnimated:YES completion:nil];
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil];
-    [self presentViewController:[storyboard instantiateViewControllerWithIdentifier:@"MainViewController"] animated:YES completion:nil];
+    _serverName = [alertView textFieldAtIndex:0].text;
+    [self hostGameAction:self];
 }
 
-- (void)hostViewController:(HostViewController *)controller didEndSessionWithReason:(QuitReason)reason
+- (void)serverDidEndSessionWithReason:(QuitReason)reason
 {
 	if (reason == QuitReasonNoNetwork)
 	{
@@ -76,30 +105,13 @@
 	}
 }
 
-- (void)hostViewController:(HostViewController *)controller startGameWithSession:(GKSession *)session playerName:(NSString *)name clients:(NSArray *)clients
+- (void)serverStartGameWithSession:(GKSession *)session playerName:(NSString *)name clients:(NSArray *)clients
 {
-	[self dismissViewControllerAnimated:NO completion:^
-     {
-         
-         [self startGameWithBlock:^(Game *game)
-          {
-              [game startServerGameWithSession:session playerName:name clients:clients];
-          }];
-     }];
-}
-
-- (void)didDisconnectWithReason:(QuitReason)reason
-{
-	if (reason == QuitReasonNoNetwork)
-	{
-		[self showNoNetworkAlert];
-	}
-	else if (reason == QuitReasonConnectionDropped)
-	{
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil];
-        [self presentViewController:[storyboard instantiateViewControllerWithIdentifier:@"MainViewController"] animated:YES completion:nil];
-        [self showDisconnectedAlert];
-	}
+    [self startGameWithBlock:^(Game *game)
+      {
+          [game startServerGameWithSession:session playerName:name clients:clients];
+      }];
+    
 }
 
 - (void)startGameWithSession:(GKSession *)session playerName:(NSString *)name server:(NSString *)peerID
@@ -111,7 +123,6 @@
 
 - (void)startGameWithBlock:(void (^)(Game *))block
 {
-    
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil];
 	GameViewController *gameViewController = [storyboard instantiateViewControllerWithIdentifier:@"GameViewController"];
     [self presentViewController:gameViewController animated:YES completion:nil];
@@ -121,6 +132,18 @@
     gameViewController.game = game;
     game.delegate = gameViewController;
     block(game);
+}
+
+- (void)serverDidDisconnectWithReason:(QuitReason)reason
+{
+	if (reason == QuitReasonNoNetwork)
+	{
+		[self showNoNetworkAlert];
+	}
+	else if (reason == QuitReasonConnectionDropped)
+	{
+        [self showDisconnectedAlert];
+	}
 }
 
 - (void)showNoNetworkAlert
@@ -206,6 +229,30 @@
 	[textField resignFirstResponder];
 	return YES;
 }
+#pragma mark - MatchmakingServerDelegate
+
+- (void)matchmakingServer:(MatchmakingServer *)server clientDidConnect:(NSString *)peerID
+{
+	[self.tableView reloadData];
+}
+
+- (void)matchmakingServer:(MatchmakingServer *)server clientDidDisconnect:(NSString *)peerID
+{
+	[self.tableView reloadData];
+}
+
+- (void)matchmakingServerSessionDidEnd:(MatchmakingServer *)server
+{
+	_matchmakingServer.delegate = nil;
+	_matchmakingServer = nil;
+	[self.tableView reloadData];
+	[self serverDidEndSessionWithReason:_quitReasonServer];
+}
+
+- (void)matchmakingServerNoNetwork:(MatchmakingServer *)session
+{
+	_quitReasonServer = QuitReasonNoNetwork;
+}
 
 #pragma mark - MatchmakingClientDelegate
 
@@ -234,7 +281,7 @@
 	_matchmakingClient.delegate = nil;
 	_matchmakingClient = nil;
 	[self.tableView reloadData];
-	[self didDisconnectWithReason:_quitReason];
+	[self serverDidDisconnectWithReason:_quitReasonClient];
     
     _matchmakingClient = [[MatchmakingClient alloc] init];
     _matchmakingClient.delegate = self;
@@ -246,7 +293,7 @@
 
 - (void)matchmakingClientNoNetwork:(MatchmakingClient *)client
 {
-	_quitReason = QuitReasonNoNetwork;
+	_quitReasonClient = QuitReasonNoNetwork;
 }
 
 -(void)setupUI

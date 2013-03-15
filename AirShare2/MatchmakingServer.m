@@ -33,14 +33,14 @@ ServerState;
 	return self;
 }
 
-- (void)startAcceptingConnectionsForSessionID:(NSString *)sessionID
+- (void)startAcceptingConnectionsForSessionID:(NSString *)sessionID name:(NSString *)name
 {
     if (_serverState == ServerStateIdle)
 	{
 		_serverState = ServerStateAcceptingConnections;
         _connectedClients = [NSMutableArray arrayWithCapacity:self.maxClients];
         
-        _session = [[GKSession alloc] initWithSessionID:sessionID displayName:nil sessionMode:GKSessionModeServer];
+        _session = [[GKSession alloc] initWithSessionID:sessionID displayName:name sessionMode:GKSessionModeServer];
         _session.delegate = self;
         _session.available = YES;
     }

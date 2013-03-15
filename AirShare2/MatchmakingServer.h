@@ -24,7 +24,7 @@
 @property (nonatomic, weak) id <MatchmakingServerDelegate> delegate;
 
 - (void)endSession;
-- (void)startAcceptingConnectionsForSessionID:(NSString *)sessionID;
+- (void)startAcceptingConnectionsForSessionID:(NSString *)sessionID name:(NSString *)name;
 - (NSUInteger)connectedClientCount;
 - (NSString *)peerIDForConnectedClientAtIndex:(NSUInteger)index;
 - (NSString *)displayNameForPeerID:(NSString *)peerID;

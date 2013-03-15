@@ -1,6 +1,6 @@
 #import "Game.h"
 #import "MatchmakingClient.h"
-
+#import "MatchmakingServer.h"
 @class GameViewController;
 
 @protocol GameViewControllerDelegate <NSObject>
@@ -9,7 +9,7 @@
 
 @end
 
-@interface GameViewController : UIViewController <UIAlertViewDelegate, GameDelegate, MatchmakingClientDelegate>
+@interface GameViewController : UIViewController <UIAlertViewDelegate, GameDelegate, MatchmakingClientDelegate, MatchmakingServerDelegate>
 
 @property (nonatomic, weak) IBOutlet UILabel *centerLabel;
 @property (weak, nonatomic) IBOutlet UIButton *exitButton;

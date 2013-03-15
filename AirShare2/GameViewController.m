@@ -33,6 +33,7 @@
 
 - (IBAction)exitAction:(id)sender
 {
+    [self.game endSession];
 	[self.game quitGameWithReason:QuitReasonUserQuit];
 }
 
@@ -51,4 +52,31 @@
 {
 	self.centerLabel.text = NSLocalizedString(@"Waiting for other players...", @"Status text: waiting for clients");
 }
+
+#pragma mark - MatchmakingServerDelegate
+
+- (void)matchmakingServer:(MatchmakingServer *)server clientDidConnect:(NSString *)peerID
+{
+	//[self.tableView reloadData];
+}
+
+- (void)matchmakingServer:(MatchmakingServer *)server clientDidDisconnect:(NSString *)peerID
+{
+	//[self.tableView reloadData];
+}
+
+- (void)matchmakingServerSessionDidEnd:(MatchmakingServer *)server
+{
+	//_matchmakingServer.delegate = nil;
+	//_matchmakingServer = nil;
+	//[self.tableView reloadData];
+	//[self serverDidEndSessionWithReason:_quitReasonServer];
+}
+
+- (void)matchmakingServerNoNetwork:(MatchmakingServer *)session
+{
+	//_quitReasonServer = QuitReasonNoNetwork;
+}
+
+
 @end
