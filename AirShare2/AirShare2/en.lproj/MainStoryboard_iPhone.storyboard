@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="3084" systemVersion="12C3012" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="2">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="3084" systemVersion="12C3103" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="2">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="2083"/>
     </dependencies>
@@ -104,111 +104,6 @@
             </objects>
             <point key="canvasLocation" x="47" y="88"/>
         </scene>
-        <!--Host View Controller-->
-        <scene sceneID="cx2-E9-bPQ">
-            <objects>
-                <viewController storyboardIdentifier="HostViewController" id="YtL-XR-t7c" customClass="HostViewController" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="ktz-TY-X9x">
-                        <rect key="frame" x="0.0" y="20" width="320" height="460"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <subviews>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="HeadingLabel" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4QI-EC-O6M">
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="238" id="RQ8-TX-oAn"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="NameLabel" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZX8-3j-RRn">
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="NameTextField" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Rzu-GP-PqQ">
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
-                                <connections>
-                                    <outlet property="delegate" destination="YtL-XR-t7c" id="Ot3-v4-9YT"/>
-                                </connections>
-                            </textField>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="StatusLabel" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zUz-gs-yRV">
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="YN3-i1-NTU">
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="229" id="8HF-3a-1bm"/>
-                                    <constraint firstAttribute="width" constant="233" id="py0-jP-Cyn"/>
-                                </constraints>
-                                <connections>
-                                    <outlet property="dataSource" destination="YtL-XR-t7c" id="RhS-hP-Mm3"/>
-                                    <outlet property="delegate" destination="YtL-XR-t7c" id="qCV-cL-hbl"/>
-                                </connections>
-                            </tableView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QEO-C4-goI">
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                <state key="normal" title="StartGame">
-                                    <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <state key="highlighted">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="startAction:" destination="YtL-XR-t7c" eventType="touchUpInside" id="bfr-jE-Wb0"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zyr-r9-oV0">
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                <state key="normal" title="Exit">
-                                    <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <state key="highlighted">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="exitAction:" destination="YtL-XR-t7c" eventType="touchUpInside" id="amc-nq-DrC"/>
-                                </connections>
-                            </button>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="YN3-i1-NTU" firstAttribute="leading" secondItem="Rzu-GP-PqQ" secondAttribute="leading" type="default" id="7nc-xd-Q3H"/>
-                            <constraint firstItem="ZX8-3j-RRn" firstAttribute="leading" secondItem="4QI-EC-O6M" secondAttribute="leading" type="default" id="AcD-SZ-Yqa"/>
-                            <constraint firstItem="Rzu-GP-PqQ" firstAttribute="trailing" secondItem="ZX8-3j-RRn" secondAttribute="trailing" type="default" id="DW4-T1-zH3"/>
-                            <constraint firstAttribute="bottom" secondItem="QEO-C4-goI" secondAttribute="bottom" constant="55" id="Glf-ek-n1Y"/>
-                            <constraint firstItem="Rzu-GP-PqQ" firstAttribute="top" secondItem="ktz-TY-X9x" secondAttribute="top" constant="81" id="Jn1-ja-Zb5"/>
-                            <constraint firstItem="4QI-EC-O6M" firstAttribute="top" secondItem="ktz-TY-X9x" secondAttribute="top" constant="13" id="Vrm-04-deW"/>
-                            <constraint firstItem="zUz-gs-yRV" firstAttribute="leading" secondItem="ktz-TY-X9x" secondAttribute="leading" constant="39" id="YYr-eI-KNs"/>
-                            <constraint firstItem="ZX8-3j-RRn" firstAttribute="trailing" secondItem="4QI-EC-O6M" secondAttribute="trailing" type="default" id="bxs-tQ-Q3B"/>
-                            <constraint firstItem="QEO-C4-goI" firstAttribute="leading" secondItem="ktz-TY-X9x" secondAttribute="leading" constant="51" id="eNy-Aw-oKR"/>
-                            <constraint firstAttribute="trailing" secondItem="Zyr-r9-oV0" secondAttribute="trailing" constant="66" id="ghR-Zg-TYM"/>
-                            <constraint firstItem="YN3-i1-NTU" firstAttribute="top" secondItem="Rzu-GP-PqQ" secondAttribute="bottom" constant="8" symbolic="YES" type="default" id="lNS-Y9-4o4"/>
-                            <constraint firstItem="Rzu-GP-PqQ" firstAttribute="centerX" secondItem="ktz-TY-X9x" secondAttribute="centerX" type="default" id="mgv-Y8-OeW"/>
-                            <constraint firstItem="ZX8-3j-RRn" firstAttribute="top" secondItem="4QI-EC-O6M" secondAttribute="bottom" constant="8" symbolic="YES" type="default" id="qFV-pD-cFX"/>
-                            <constraint firstItem="Zyr-r9-oV0" firstAttribute="baseline" secondItem="QEO-C4-goI" secondAttribute="baseline" type="default" id="vVG-zF-0Ai"/>
-                            <constraint firstItem="Rzu-GP-PqQ" firstAttribute="leading" secondItem="ZX8-3j-RRn" secondAttribute="leading" type="default" id="xrD-Vo-t2t"/>
-                            <constraint firstAttribute="bottom" secondItem="zUz-gs-yRV" secondAttribute="bottom" constant="16" id="zpp-ZM-B1J"/>
-                        </constraints>
-                    </view>
-                    <connections>
-                        <outlet property="exitButton" destination="Zyr-r9-oV0" id="8sb-Ij-TOg"/>
-                        <outlet property="headingLabel" destination="4QI-EC-O6M" id="2rs-DO-B1v"/>
-                        <outlet property="nameLabel" destination="ZX8-3j-RRn" id="Zt5-bJ-TsN"/>
-                        <outlet property="nameTextField" destination="Rzu-GP-PqQ" id="Eo1-Dt-Z0S"/>
-                        <outlet property="startButton" destination="QEO-C4-goI" id="KOc-21-rZj"/>
-                        <outlet property="statusLabel" destination="zUz-gs-yRV" id="agi-vd-rE0"/>
-                        <outlet property="tableView" destination="YN3-i1-NTU" id="3Jd-yo-KsO"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="I3O-8v-2pp" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="445" y="88"/>
-        </scene>
         <!--Game View Controller-->
         <scene sceneID="lmq-VU-Ccx">
             <objects>
@@ -232,71 +127,41 @@
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="exitAction:" destination="YtL-XR-t7c" eventType="touchUpInside" id="L8n-fj-Ntm"/>
                                     <action selector="exitAction:" destination="FQX-ru-M2g" eventType="touchUpInside" id="U05-gu-FMp"/>
-                                    <action selector="startAction:" destination="YtL-XR-t7c" eventType="touchUpInside" id="hU6-g3-5YN"/>
                                 </connections>
                             </button>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="1Sy-ST-eaC">
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="190" id="0zk-RU-iBa"/>
+                                    <constraint firstAttribute="height" constant="274" id="j3a-Da-paY"/>
+                                </constraints>
+                                <connections>
+                                    <outlet property="dataSource" destination="FQX-ru-M2g" id="dY4-Jp-zmX"/>
+                                </connections>
+                            </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="nPy-zn-dlt" firstAttribute="centerX" secondItem="BCy-oa-ZtW" secondAttribute="centerX" type="default" id="Dqe-s0-2kU"/>
-                            <constraint firstItem="nPy-zn-dlt" firstAttribute="top" secondItem="BCy-oa-ZtW" secondAttribute="top" constant="98" id="LL0-U5-GTO"/>
                             <constraint firstAttribute="bottom" secondItem="YuW-3R-SF1" secondAttribute="bottom" constant="20" symbolic="YES" type="default" id="MoQ-v8-J2U"/>
+                            <constraint firstItem="nPy-zn-dlt" firstAttribute="top" secondItem="BCy-oa-ZtW" secondAttribute="top" constant="20" symbolic="YES" type="default" id="Zrm-L1-7Li"/>
                             <constraint firstItem="YuW-3R-SF1" firstAttribute="leading" secondItem="BCy-oa-ZtW" secondAttribute="leading" constant="20" symbolic="YES" type="default" id="gLQ-Sx-MMx"/>
+                            <constraint firstItem="1Sy-ST-eaC" firstAttribute="leading" secondItem="BCy-oa-ZtW" secondAttribute="leading" constant="64" id="ns0-XG-lfp"/>
+                            <constraint firstItem="nPy-zn-dlt" firstAttribute="centerX" secondItem="BCy-oa-ZtW" secondAttribute="centerX" type="default" id="td7-T0-77a"/>
+                            <constraint firstItem="1Sy-ST-eaC" firstAttribute="top" secondItem="BCy-oa-ZtW" secondAttribute="top" constant="56" id="zCI-yn-rxb"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="centerLabel" destination="nPy-zn-dlt" id="mbS-NQ-sfR"/>
                         <outlet property="exitButton" destination="YuW-3R-SF1" id="PO5-ox-su0"/>
+                        <outlet property="tableView" destination="1Sy-ST-eaC" id="UbS-Aq-wND"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BCb-K1-RkR" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="799" y="88"/>
+            <point key="canvasLocation" x="457" y="88"/>
         </scene>
     </scenes>
-    <classes>
-        <class className="GameViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/GameViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="exitAction:"/>
-                <relationship kind="outlet" name="centerLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="exitButton" candidateClass="UIButton"/>
-            </relationships>
-        </class>
-        <class className="HostViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/HostViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="exitAction:"/>
-                <relationship kind="action" name="startAction:"/>
-                <relationship kind="outlet" name="exitButton" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="headingLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="nameLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="nameTextField" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="startButton" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="statusLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="tableView" candidateClass="UITableView"/>
-            </relationships>
-        </class>
-        <class className="MainViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/MainViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="hostGameAction:"/>
-                <relationship kind="action" name="joinGameAction:"/>
-                <relationship kind="outlet" name="hostGameButton" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="joinGameButton" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="nameTextField" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="sessionsLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="statusLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="tableView" candidateClass="UITableView"/>
-                <relationship kind="outlet" name="waitLabel" candidateClass="UILabel"/>
-            </relationships>
-        </class>
-        <class className="NSLayoutConstraint" superclassName="NSObject">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/NSLayoutConstraint.h"/>
-        </class>
-    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>

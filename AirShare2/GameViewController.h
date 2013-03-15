@@ -9,10 +9,12 @@
 
 @end
 
-@interface GameViewController : UIViewController <UIAlertViewDelegate, GameDelegate, MatchmakingClientDelegate, MatchmakingServerDelegate>
+@interface GameViewController : UIViewController <UIAlertViewDelegate, UITableViewDataSource, GameDelegate>
 
 @property (nonatomic, weak) IBOutlet UILabel *centerLabel;
 @property (weak, nonatomic) IBOutlet UIButton *exitButton;
+@property (nonatomic, weak) IBOutlet UITableView *tableView;
+
 @property (nonatomic, weak) id <GameViewControllerDelegate> delegate;
 @property (nonatomic, strong) Game *game;
 

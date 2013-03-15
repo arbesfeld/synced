@@ -18,19 +18,19 @@ ServerState;
 - (void)gameWaitingForServerReady:(Game *)game;
 - (void)gameWaitingForClientsReady:(Game *)game;
 
-- (void)matchmakingServer:(Game *)server clientDidConnect:(NSString *)peerID;
-- (void)matchmakingServer:(Game *)server clientDidDisconnect:(NSString *)peerID;
-- (void)matchmakingServerSessionDidEnd:(Game *)server;
-- (void)matchmakingServerNoNetwork:(Game *)server;
+- (void)gameServer:(Game *)server clientDidConnect:(NSString *)peerID;
+- (void)gameServer:(Game *)server clientDidDisconnect:(NSString *)peerID;
+- (void)gameServerSessionDidEnd:(Game *)server;
+- (void)gameServerNoNetwork:(Game *)server;
 
 @end
 
 @interface Game : NSObject <GKSessionDelegate>
 
-@property (nonatomic, strong, readonly) NSArray *connectedClients;
 @property (nonatomic, weak) id <GameDelegate> delegate;
 @property (nonatomic, assign) BOOL isServer;
 @property (nonatomic, assign) int maxClients;
+@property (nonatomic, strong) NSMutableDictionary *players;
 
 - (void)startClientGameWithSession:(GKSession *)session playerName:(NSString *)name server:(NSString *)peerID;
 - (void)quitGameWithReason:(QuitReason)reason;
@@ -38,8 +38,6 @@ ServerState;
 
 - (void)endSession;
 - (void)startAcceptingConnectionsForSessionID:(NSString *)sessionID;
-- (NSUInteger)connectedClientCount;
-- (NSString *)peerIDForConnectedClientAtIndex:(NSUInteger)index;
 - (NSString *)displayNameForPeerID:(NSString *)peerID;
 - (void)stopAcceptingConnections;
 

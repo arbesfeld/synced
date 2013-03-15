@@ -14,6 +14,33 @@
 
 @synthesize players = _players;
 
++ (id)packetWithData:(NSData *)data
+{
+	NSMutableDictionary *players = [NSMutableDictionary dictionaryWithCapacity:4];
+    
+	size_t offset = PACKET_HEADER_SIZE;
+	size_t count;
+    
+	int numberOfPlayers = [data rw_int8AtOffset:offset];
+	offset += 1;
+    
+	for (int t = 0; t < numberOfPlayers; ++t)
+	{
+		NSString *peerID = [data rw_stringAtOffset:offset bytesRead:&count];
+		offset += count;
+        
+		NSString *name = [data rw_stringAtOffset:offset bytesRead:&count];
+		offset += count;
+        
+		Player *player = [[Player alloc] init];
+		player.peerID = peerID;
+		player.name = name;
+		[players setObject:player forKey:player.peerID];
+	}
+    
+	return [[self class] packetWithPlayers:players];
+}
+
 + (id)packetWithPlayers:(NSMutableDictionary *)players
 {
 	return [[[self class] alloc] initWithPlayers:players];

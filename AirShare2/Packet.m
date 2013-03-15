@@ -1,6 +1,7 @@
 #import "Packet.h"
 #import "NSData+AirShareAdditions.h"
 #import "PacketSignInResponse.h"
+#import "PacketPlayerList.h"
 
 const size_t PACKET_HEADER_SIZE = 10;
 
@@ -42,6 +43,9 @@ const size_t PACKET_HEADER_SIZE = 10;
 			packet = [PacketSignInResponse packetWithData:data];
 			break;
             
+        case PacketTypePlayerList:
+			packet = [PacketPlayerList packetWithData:data];
+			break;
 		default:
 			NSLog(@"Error: Packet has invalid type");
 			return nil;

@@ -5,6 +5,8 @@ typedef enum
 	PacketTypeSignInRequest = 0x64,    // server to client
 	PacketTypeSignInResponse,          // client to server
     
+    PacketTypePlayerList,              // server to client
+    
 	PacketTypeServerReady,             // server to client
 	PacketTypeClientReady,             // client to server
     

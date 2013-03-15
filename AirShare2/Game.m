@@ -7,6 +7,7 @@
 typedef enum
 {
 	GameStateWaitingForSignIn,
+    GameStateWaitingForInfo,
 	GameStatePlaying,
 	GameStateQuitting,
 }
@@ -20,14 +21,13 @@ GameState;
 	NSString *_serverPeerID;
 	NSString *_localPlayerName;
     
-    NSMutableDictionary *_players;
-
-    NSMutableArray *_connectedClients;
+    
     ServerState _serverState;
 }
 
 @synthesize delegate = _delegate;
 @synthesize isServer = _isServer;
+@synthesize players = _players;
 
 - (void)dealloc
 {
@@ -52,7 +52,7 @@ GameState;
 	self.isServer = NO;
     
 	_session = session;
-	_session.available = YES;
+	_session.available = NO;
 	_session.delegate = self;
     
     self.maxClients = 4;
@@ -61,21 +61,18 @@ GameState;
     
 	_serverPeerID = peerID;
 	_localPlayerName = name;
+    NSLog(@"Name: %@", _localPlayerName);
+	_state = GameStateWaitingForInfo;
     
-    Player *player = [[Player alloc] init];
-	player.name = _localPlayerName;
-	player.peerID = _session.peerID;
+	[self.delegate gameWaitingForServerReady:self];
     
-	[_players setObject:player forKey:player.peerID];
-    
-	_state = GameStateWaitingForSignIn;
-    
-    Packet *packet = [Packet packetWithType:PacketTypeSignInRequest];
-	[self sendPacketToServer:packet];
+    Packet *packet = [PacketSignInResponse packetWithPlayerName:_localPlayerName];
+	[self sendPacketToAllClients:packet];
 }
 
 - (void)startServerGameWithSession:(GKSession *)session playerName:(NSString *)name clients:(NSArray *)clients
 {
+    NSLog(@"startServerGameWithSession:");
 	self.isServer = YES;
     
 	_session = session;
@@ -90,9 +87,12 @@ GameState;
     _serverState = ServerStateAcceptingConnections;
     
 	[self.delegate gameWaitingForClientsReady:self];
+    NSLog(@"Session displayname: %@", _session.displayName);
+    _localPlayerName = name;
     
-    Player *player = [[Player alloc] init];
-	player.name = name;
+    
+	Player *player = [[Player alloc] init];
+	player.name = _localPlayerName;
 	player.peerID = _session.peerID;
     
 	[_players setObject:player forKey:player.peerID];
@@ -132,11 +132,8 @@ GameState;
 		case PacketTypeSignInRequest:
 			if (_state == GameStateWaitingForSignIn)
 			{
-				_state = GameStatePlaying;
-                
-				//Packet *packet = [PacketSignInResponse packetWithPlayerName:_localPlayerName];
-                
-				//[self sendPacketToServer:packet];
+                // never happens
+				_state = GameStateWaitingForInfo;
 			}
 			break;
             
@@ -151,16 +148,16 @@ GameState;
 	switch (packet.packetType)
 	{
 		case PacketTypeSignInResponse:
-			if (_state == GameStateWaitingForSignIn)
 			{
 				player.name = ((PacketSignInResponse *)packet).playerName;
-                
                 _state = GameStatePlaying;
                 
+				NSLog(@"server received sign in from client '%@'", player.name);
+                
+                // received a sign in from player, now return with a PacketPlayerList
                 Packet *packet = [PacketPlayerList packetWithPlayers:_players];
                 [self sendPacketToAllClients:packet];
                 
-				NSLog(@"server received sign in from client '%@'", player.name);
 			}
 			break;
             
@@ -199,13 +196,16 @@ GameState;
 	}
 }
 
+
+// identical stuff to MatchmakingServer
 #pragma mark - GKSessionDelegate
 
 - (void)session:(GKSession *)session peer:(NSString *)peerID didChangeState:(GKPeerConnectionState)state
 {
     #ifdef DEBUG
-	NSLog(@"MatchmakingServer: peer %@ changed state %d", peerID, state);
+	NSLog(@"Game: peer %@ changed state %d", peerID, state);
     #endif
+    
     if(_isServer) {
         switch (state)
         {
@@ -219,10 +219,11 @@ GameState;
             case GKPeerStateConnected:
                 if (_serverState == ServerStateAcceptingConnections)
                 {
-                    if (![_connectedClients containsObject:peerID])
-                    {
-                        [_connectedClients addObject:peerID];
-                        [self.delegate matchmakingServer:self clientDidConnect:peerID];
+                    if([_players objectForKey:peerID] == nil) {
+                        Player *player = [[Player alloc] init];
+                        player.peerID = peerID;
+                        [_players setObject:player forKey:player.peerID];
+                        [self.delegate gameServer:self clientDidConnect:peerID];
                     }
                 }
                 break;
@@ -231,10 +232,10 @@ GameState;
             case GKPeerStateDisconnected:
                 if (_serverState != ServerStateIdle)
                 {
-                    if ([_connectedClients containsObject:peerID])
+                    if ([_players objectForKey:peerID] != nil)
                     {
-                        [_connectedClients removeObject:peerID];
-                        [self.delegate matchmakingServer:self clientDidDisconnect:peerID];
+                        [_players removeObjectForKey:peerID];
+                        [self.delegate gameServer:self clientDidDisconnect:peerID];
                     }
                 }
                 break;
@@ -249,16 +250,16 @@ GameState;
 - (void)session:(GKSession *)session didReceiveConnectionRequestFromPeer:(NSString *)peerID
 {
     #ifdef DEBUG
-	NSLog(@"MatchmakingServer: connection request from peer %@", peerID);
+	NSLog(@"Game: connection request from peer %@", peerID);
     #endif
     
-	if (_isServer && _serverState == ServerStateAcceptingConnections && [self connectedClientCount] < self.maxClients)
+	if (_isServer && _serverState == ServerStateAcceptingConnections && [_players count] < self.maxClients)
 	{
 		NSError *error;
 		if ([session acceptConnectionFromPeer:peerID error:&error])
-			NSLog(@"MatchmakingServer: Connection accepted from peer %@", peerID);
+			NSLog(@"Game: Connection accepted from peer %@", peerID);
 		else
-			NSLog(@"MatchmakingServer: Error accepting connection from peer %@, %@", peerID, error);
+			NSLog(@"Game: Error accepting connection from peer %@, %@", peerID, error);
 	}
 	else  // not accepting connections or too many clients
 	{
@@ -282,16 +283,6 @@ GameState;
     #endif
 }
 
-- (NSUInteger)connectedClientCount
-{
-	return [_connectedClients count];
-}
-
-- (NSString *)peerIDForConnectedClientAtIndex:(NSUInteger)index
-{
-	return [_connectedClients objectAtIndex:index];
-}
-
 - (NSString *)displayNameForPeerID:(NSString *)peerID
 {
 	return [_session displayNameForPeer:peerID];
@@ -306,9 +297,9 @@ GameState;
 	_session.delegate = nil;
 	_session = nil;
     
-	_connectedClients = nil;
+    _players = nil;
     
-	[self.delegate matchmakingServerSessionDidEnd:self];
+	[self.delegate gameServerSessionDidEnd:self];
 }
 
 - (void)stopAcceptingConnections

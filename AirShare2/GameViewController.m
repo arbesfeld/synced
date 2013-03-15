@@ -53,29 +53,48 @@
 	self.centerLabel.text = NSLocalizedString(@"Waiting for other players...", @"Status text: waiting for clients");
 }
 
-#pragma mark - MatchmakingServerDelegate
-
-- (void)matchmakingServer:(MatchmakingServer *)server clientDidConnect:(NSString *)peerID
+- (void)gameServer:(Game *)server clientDidConnect:(NSString *)peerID;
 {
-	//[self.tableView reloadData];
+    [self.tableView reloadData];
 }
 
-- (void)matchmakingServer:(MatchmakingServer *)server clientDidDisconnect:(NSString *)peerID
+- (void)gameServer:(Game *)server clientDidDisconnect:(NSString *)peerID;
 {
-	//[self.tableView reloadData];
+    [self.tableView reloadData];
 }
 
-- (void)matchmakingServerSessionDidEnd:(MatchmakingServer *)server
+- (void)gameServerSessionDidEnd:(Game *)server;
 {
-	//_matchmakingServer.delegate = nil;
-	//_matchmakingServer = nil;
-	//[self.tableView reloadData];
-	//[self serverDidEndSessionWithReason:_quitReasonServer];
+    
 }
 
-- (void)matchmakingServerNoNetwork:(MatchmakingServer *)session
+- (void)gameServerNoNetwork:(Game *)server;
 {
-	//_quitReasonServer = QuitReasonNoNetwork;
+    
+}
+
+#pragma mark - UITableViewDataSource
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+	if (_game != nil)
+		return [_game.players count];
+	else
+		return 0;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	static NSString *CellIdentifier = @"CellIdentifier";
+    
+	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+	if (cell == nil)
+		cell = [[UITableViewCell alloc] init];
+    
+	NSString *peerID = [[_game.players allKeys] objectAtIndex:indexPath.row];
+	cell.textLabel.text = [_game displayNameForPeerID:peerID];
+    
+	return cell;
 }
 
 

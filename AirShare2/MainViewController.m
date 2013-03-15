@@ -24,7 +24,6 @@
 {
 	[super viewDidLoad];
     [self setupUI];
-    [self reload];
 }
 
 - (void)reload
@@ -56,6 +55,17 @@
 	return UIInterfaceOrientationIsLandscape(interfaceOrientation);
 }
 
+
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    // cancel was clicked
+    if(buttonIndex == alertView.cancelButtonIndex)
+        return;
+    
+    _serverName = [alertView textFieldAtIndex:0].text;
+    [self hostGameAction:self];
+}
+
 - (IBAction)hostGameAction:(id)sender
 {
     if(_serverName == nil) {
@@ -67,7 +77,7 @@
     
     // set up server
     
-    if (_matchmakingServer == nil && _serverName != nil)
+    if (_matchmakingServer == nil && _serverName.length != 0)
 	{
 		_matchmakingServer = [[MatchmakingServer alloc] init];
 		_matchmakingServer.maxClients = 3;
@@ -79,22 +89,16 @@
 	}
     
     // start server but wait until alertView is responded to
-    if (_matchmakingServer != nil && _serverName != nil)//&& [_matchmakingServer connectedClientCount] > 0)
+    if (_matchmakingServer != nil &&  _serverName.length != 0)//&& [_matchmakingServer connectedClientCount] > 0)
 	{
 		if ([_serverName length] == 0)
 			_serverName = _matchmakingServer.session.displayName;
         
 		//[_matchmakingServer stopAcceptingConnections];
-        
+        _matchmakingClient = nil;
 		[self serverStartGameWithSession:_matchmakingServer.session playerName:_serverName clients:_matchmakingServer.connectedClients];
         _serverName = nil;
     }
-}
-
--(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    _serverName = [alertView textFieldAtIndex:0].text;
-    [self hostGameAction:self];
 }
 
 - (void)serverDidEndSessionWithReason:(QuitReason)reason
