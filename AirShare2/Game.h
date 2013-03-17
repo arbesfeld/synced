@@ -18,8 +18,10 @@ ServerState;
 - (void)gameWaitingForServerReady:(Game *)game;
 - (void)gameWaitingForClientsReady:(Game *)game;
 
-- (void)gameServer:(Game *)server clientDidConnect:(NSString *)peerID;
-- (void)gameServer:(Game *)server clientDidDisconnect:(NSString *)peerID;
+- (void)reloadTable;
+
+- (void)gameServer:(Game *)server clientDidConnect:(Player *)player;
+- (void)gameServer:(Game *)server clientDidDisconnect:(Player *)player;
 - (void)gameServerSessionDidEnd:(Game *)server;
 - (void)gameServerNoNetwork:(Game *)server;
 
@@ -37,7 +39,6 @@ ServerState;
 - (void)startServerGameWithSession:(GKSession *)session playerName:(NSString *)name clients:(NSArray *)clients;
 
 - (void)endSession;
-- (void)startAcceptingConnectionsForSessionID:(NSString *)sessionID;
 - (NSString *)displayNameForPeerID:(NSString *)peerID;
 - (void)stopAcceptingConnections;
 

@@ -2,6 +2,7 @@
 #import "NSData+AirShareAdditions.h"
 #import "PacketSignInResponse.h"
 #import "PacketPlayerList.h"
+#import "PacketOtherClientQuit.h"
 
 const size_t PACKET_HEADER_SIZE = 10;
 
@@ -36,6 +37,8 @@ const size_t PACKET_HEADER_SIZE = 10;
 	switch (packetType)
 	{
 		case PacketTypeSignInRequest:
+        case PacketTypeServerQuit:
+        case PacketTypeClientQuit:
 			packet = [Packet packetWithType:packetType];
 			break;
             
@@ -45,6 +48,10 @@ const size_t PACKET_HEADER_SIZE = 10;
             
         case PacketTypePlayerList:
 			packet = [PacketPlayerList packetWithData:data];
+			break;
+            
+        case PacketTypeOtherClientQuit:
+			packet = [PacketOtherClientQuit packetWithData:data];
 			break;
 		default:
 			NSLog(@"Error: Packet has invalid type");

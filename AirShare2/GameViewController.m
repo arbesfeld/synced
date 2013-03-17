@@ -6,7 +6,9 @@
 @end
 
 @implementation GameViewController
-
+{
+    UIAlertView *_alertView;
+}
 @synthesize delegate = _delegate;
 @synthesize game = _game;
 
@@ -23,7 +25,12 @@
 {
 	[super viewDidLoad];
 }
-
+- (void)viewWillDisappear:(BOOL)animated
+{
+	[super viewWillDisappear:animated];
+    
+	[_alertView dismissWithClickedButtonIndex:_alertView.cancelButtonIndex animated:NO];
+}
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
 	return UIInterfaceOrientationIsLandscape(interfaceOrientation);
@@ -33,10 +40,31 @@
 
 - (IBAction)exitAction:(id)sender
 {
-    [self.game endSession];
-	[self.game quitGameWithReason:QuitReasonUserQuit];
+	if (self.game.isServer)
+	{
+		_alertView = [[UIAlertView alloc]
+                      initWithTitle:NSLocalizedString(@"End Game?", @"Alert title (user is host)")
+                      message:NSLocalizedString(@"This will terminate the game for all other players.", @"Alert message (user is host)")
+                      delegate:self
+                      cancelButtonTitle:NSLocalizedString(@"No", @"Button: No")
+                      otherButtonTitles:NSLocalizedString(@"Yes", @"Button: Yes"),
+                      nil];
+        
+		[_alertView show];
+	}
+	else
+	{
+		_alertView = [[UIAlertView alloc]
+                      initWithTitle: NSLocalizedString(@"Leave Game?", @"Alert title (user is not host)")
+                      message:nil
+                      delegate:self
+                      cancelButtonTitle:NSLocalizedString(@"No", @"Button: No")
+                      otherButtonTitles:NSLocalizedString(@"Yes", @"Button: Yes"),
+                      nil];
+        
+		[_alertView show];
+	}
 }
-
 #pragma mark - GameDelegate
 
 - (void)game:(Game *)game didQuitWithReason:(QuitReason)reason
@@ -53,16 +81,20 @@
 	self.centerLabel.text = NSLocalizedString(@"Waiting for other players...", @"Status text: waiting for clients");
 }
 
-- (void)gameServer:(Game *)server clientDidConnect:(NSString *)peerID;
+- (void)gameServer:(Game *)server clientDidConnect:(Player *)player;
 {
     [self.tableView reloadData];
 }
 
-- (void)gameServer:(Game *)server clientDidDisconnect:(NSString *)peerID;
+- (void)gameServer:(Game *)server clientDidDisconnect:(Player *)player;
 {
     [self.tableView reloadData];
 }
 
+- (void)reloadTable
+{
+    [self.tableView reloadData];
+}
 - (void)gameServerSessionDidEnd:(Game *)server;
 {
     
@@ -97,5 +129,14 @@
 	return cell;
 }
 
+#pragma mark - UIAlertViewDelegate
+
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+	if (buttonIndex != alertView.cancelButtonIndex)
+	{
+		[self.game quitGameWithReason:QuitReasonUserQuit];
+	}
+}
 
 @end

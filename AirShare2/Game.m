@@ -2,6 +2,7 @@
 #import "Packet.h"
 #import "PacketSignInResponse.h"
 #import "PacketPlayerList.h"
+#import "PacketOtherClientQuit.h"
 #import <GameKit/GameKit.h>
 
 typedef enum
@@ -27,7 +28,6 @@ GameState;
 
 @synthesize delegate = _delegate;
 @synthesize isServer = _isServer;
-@synthesize players = _players;
 
 - (void)dealloc
 {
@@ -136,7 +136,26 @@ GameState;
 				_state = GameStateWaitingForInfo;
 			}
 			break;
+        
+        case PacketTypePlayerList:
+            self.players = ((PacketPlayerList *)packet).players;
             
+            NSLog(@"the players are: %@", self.players);
+            
+            [self.delegate reloadTable];
+            break;
+            
+        case PacketTypeServerQuit:
+			[self quitGameWithReason:QuitReasonServerQuit];
+			break;
+        
+        case PacketTypeOtherClientQuit:
+			if (_state != GameStateQuitting)
+			{
+				PacketOtherClientQuit *quitPacket = ((PacketOtherClientQuit *)packet);
+				[self clientDidDisconnect:quitPacket.peerID];
+			}
+			break;
 		default:
 			NSLog(@"Client received unexpected packet: %@", packet);
 			break;
@@ -157,10 +176,11 @@ GameState;
                 // received a sign in from player, now return with a PacketPlayerList
                 Packet *packet = [PacketPlayerList packetWithPlayers:_players];
                 [self sendPacketToAllClients:packet];
-                
 			}
 			break;
-            
+        case PacketTypeClientQuit:
+			[self clientDidDisconnect:player.peerID];
+			break;
 		default:
 			NSLog(@"Server received unexpected packet: %@", packet);
 			break;
@@ -206,44 +226,38 @@ GameState;
 	NSLog(@"Game: peer %@ changed state %d", peerID, state);
     #endif
     
-    if(_isServer) {
-        switch (state)
-        {
-            case GKPeerStateAvailable:
-                break;
-                
-            case GKPeerStateUnavailable:
-                break;
-                
-                // A new client has connected to the server.
-            case GKPeerStateConnected:
-                if (_serverState == ServerStateAcceptingConnections)
-                {
-                    if([_players objectForKey:peerID] == nil) {
-                        Player *player = [[Player alloc] init];
-                        player.peerID = peerID;
-                        [_players setObject:player forKey:player.peerID];
-                        [self.delegate gameServer:self clientDidConnect:peerID];
-                    }
-                }
-                break;
-                
-                // A client has disconnected from the server.
-            case GKPeerStateDisconnected:
-                if (_serverState != ServerStateIdle)
-                {
-                    if ([_players objectForKey:peerID] != nil)
-                    {
-                        [_players removeObjectForKey:peerID];
-                        [self.delegate gameServer:self clientDidDisconnect:peerID];
-                    }
-                }
-                break;
-                
-            case GKPeerStateConnecting:
-                break;
-        }
+    switch (state)
+    {
+        case GKPeerStateAvailable:
+            break;
+            
+        case GKPeerStateUnavailable:
+            break;
+            
+            // A new client has connected to the server.
+        case GKPeerStateConnected:
+            if (self.isServer)
+            {
+                [self clientDidConnect:peerID];
+            }
+            break;
+            
+            // A client has disconnected from the server.
+        case GKPeerStateDisconnected:
+            if (self.isServer)
+            {
+                [self clientDidDisconnect:peerID];
+            }
+            else if ([peerID isEqualToString:_serverPeerID])
+            {
+                [self quitGameWithReason:QuitReasonConnectionDropped];
+            }
+            break;
+            
+        case GKPeerStateConnecting:
+            break;
     }
+    
 }
 
 
@@ -278,14 +292,55 @@ GameState;
 
 - (void)session:(GKSession *)session didFailWithError:(NSError *)error
 {
-    #ifdef DEBUG
+#ifdef DEBUG
 	NSLog(@"Game: session failed %@", error);
-    #endif
+#endif
+    
+	if ([[error domain] isEqualToString:GKSessionErrorDomain])
+	{
+		if (_state != GameStateQuitting)
+		{
+			[self quitGameWithReason:QuitReasonConnectionDropped];
+		}
+	}
 }
 
 - (NSString *)displayNameForPeerID:(NSString *)peerID
 {
 	return [_session displayNameForPeer:peerID];
+}
+
+- (void)clientDidConnect:(NSString *)peerID
+{
+    if([_players objectForKey:peerID] == nil) {
+        Player *player = [[Player alloc] init];
+        player.peerID = peerID;
+        [_players setObject:player forKey:player.peerID];
+        [self.delegate gameServer:self clientDidConnect:player];
+    }
+}
+- (void)clientDidDisconnect:(NSString *)peerID
+{
+	if (_state != GameStateQuitting)
+	{
+		Player *player = [self playerWithPeerID:peerID];
+		if (player != nil)
+		{
+			[_players removeObjectForKey:peerID];
+            
+			if (_state != GameStateWaitingForSignIn)
+			{
+				// Tell the other clients that this one is now disconnected.
+				if (self.isServer)
+				{
+					PacketOtherClientQuit *packet = [PacketOtherClientQuit packetWithPeerID:peerID];
+					[self sendPacketToAllClients:packet];
+				}
+                
+				[self.delegate gameServer:self clientDidDisconnect:player];
+			}
+		}
+	}
 }
 
 - (void)endSession
@@ -317,6 +372,20 @@ GameState;
 - (void)quitGameWithReason:(QuitReason)reason
 {
 	_state = GameStateQuitting;
+    
+	if (reason == QuitReasonUserQuit)
+	{
+		if (self.isServer)
+		{
+			Packet *packet = [Packet packetWithType:PacketTypeServerQuit];
+			[self sendPacketToAllClients:packet];
+		}
+		else
+		{
+			Packet *packet = [Packet packetWithType:PacketTypeClientQuit];
+			[self sendPacketToServer:packet];
+		}
+	}
     
 	[_session disconnectFromAllPeers];
 	_session.delegate = nil;

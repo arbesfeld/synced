@@ -23,6 +23,8 @@
 - (void)viewDidLoad
 {
 	[super viewDidLoad];
+    
+    _quitReasonClient = QuitReasonConnectionDropped;
     [self setupUI];
 }
 
@@ -30,7 +32,6 @@
 {
     NSLog(@"Reload");
     _matchmakingClient = nil;
-    _quitReasonClient = QuitReasonConnectionDropped;
     _matchmakingClient = [[MatchmakingClient alloc] init];
     _matchmakingClient.delegate = self;
     [_matchmakingClient startSearchingForServersWithSessionID:SESSION_ID];
@@ -97,6 +98,7 @@
 		//[_matchmakingServer stopAcceptingConnections];
         _matchmakingClient = nil;
 		[self serverStartGameWithSession:_matchmakingServer.session playerName:_serverName clients:_matchmakingServer.connectedClients];
+        _matchmakingServer = nil;
         _serverName = nil;
     }
 }
