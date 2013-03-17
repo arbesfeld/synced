@@ -22,7 +22,7 @@ GameState;
 	NSString *_serverPeerID;
 	NSString *_localPlayerName;
     
-    
+    int _sendPacketNumber;
     ServerState _serverState;
 }
 
@@ -114,9 +114,17 @@ GameState;
 	}
     
 	Player *player = [self playerWithPeerID:peerID];
-	if (player != nil)
+    
+    if (player != nil)
 	{
-		player.receivedResponse = YES;  // this is the new bit
+		if (packet.packetNumber != -1 && packet.packetNumber <= player.lastPacketNumberReceived)
+		{
+			NSLog(@"Out-of-order packet!");
+			return;
+		}
+        
+		player.lastPacketNumberReceived = packet.packetNumber;
+		player.receivedResponse = YES;
 	}
     
 	if (self.isServer)
@@ -191,6 +199,9 @@ GameState;
 
 - (void)sendPacketToAllClients:(Packet *)packet
 {
+    if (packet.packetNumber != -1)
+		packet.packetNumber = _sendPacketNumber++;
+    
     [_players enumerateKeysAndObjectsUsingBlock:^(id key, Player *obj, BOOL *stop)
      {
          obj.receivedResponse = [_session.peerID isEqualToString:obj.peerID];
@@ -207,6 +218,9 @@ GameState;
 
 - (void)sendPacketToServer:(Packet *)packet
 {
+    if (packet.packetNumber != -1)
+		packet.packetNumber = _sendPacketNumber++;
+    
 	GKSendDataMode dataMode = GKSendDataReliable;
 	NSData *data = [packet data];
 	NSError *error;

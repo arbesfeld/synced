@@ -9,6 +9,7 @@ const size_t PACKET_HEADER_SIZE = 10;
 @implementation Packet
 
 @synthesize packetType = _packetType;
+@synthesize packetNumber = _packetNumber;
 
 + (id)packetWithType:(PacketType)packetType
 {
@@ -57,7 +58,7 @@ const size_t PACKET_HEADER_SIZE = 10;
 			NSLog(@"Error: Packet has invalid type");
 			return nil;
 	}
-    
+    packet.packetNumber = packetNumber;
 	return packet;
 }
 
@@ -65,6 +66,7 @@ const size_t PACKET_HEADER_SIZE = 10;
 {
 	if ((self = [super init]))
 	{
+		self.packetNumber = -1;
 		self.packetType = packetType;
 	}
 	return self;
@@ -74,8 +76,8 @@ const size_t PACKET_HEADER_SIZE = 10;
 {
 	NSMutableData *data = [[NSMutableData alloc] initWithCapacity:100];
     
-	[data rw_appendInt32:'AIRS'];   // 0x534E4150
-	[data rw_appendInt32:0];
+	[data rw_appendInt32:'AIRS'];
+	[data rw_appendInt32:self.packetNumber];
 	[data rw_appendInt16:self.packetType];
     
 	[self addPayloadToData:data];
@@ -84,7 +86,7 @@ const size_t PACKET_HEADER_SIZE = 10;
 
 - (NSString *)description
 {
-	return [NSString stringWithFormat:@"%@, type=%d", [super description], self.packetType];
+	return [NSString stringWithFormat:@"%@ number=%d, type=%d", [super description], self.packetNumber, self.packetType];
 }
 
 - (void)addPayloadToData:(NSMutableData *)data
