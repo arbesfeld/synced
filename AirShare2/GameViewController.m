@@ -164,9 +164,8 @@
         
         NSURL *songURL = [chosenItem valueForProperty: MPMediaItemPropertyAssetURL];
         NSLog(@"url = %@", songURL);
-        [_game playMusicWithURL:songURL];
+        [_game playMusicWithMediaItem:chosenItem];
     }
-    
 }
 
 - (void) mediaPickerDidCancel: (MPMediaPickerController *) mediaPicker

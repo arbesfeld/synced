@@ -16,6 +16,7 @@
 #include "AppDelegate.h"
 
 #include "SongPlayer.h"
+#include "Game.h"
 
 #define kNumberPlaybackBuffers	16
 
@@ -62,10 +63,19 @@ typedef enum
     AudioStreamBasicDescription nativeTrackASBD;
     
     NSURL *url;
+    
+    UInt32 packetBytesFilled;
+    UInt32 packetDescriptionsBytesFilled;
+    UInt32 packetNumber;
+    
+    Game *_game;
 }
 
 void CalculateBytesForTime (AudioStreamBasicDescription inDesc, Float64 inSeconds, UInt32 *outBufferSize, UInt32 *outNumPackets);
-
+void appendInt32(void * source, int value, int offset);
+void appendInt16(void * source, short value, int offset);
+unsigned numDigits(const unsigned n);
+void appendUTF8String(void * source, const char *cString, int offset);
 
 
 typedef struct MyPlayer {
@@ -79,8 +89,8 @@ typedef struct MyPlayer {
 	Boolean						isDone; // playback has completed
 } MyPlayer;
 
-+ (id)streamerWithURL:(NSURL *)songURL;
-- (id)initWithURL:(NSURL *)songURL;
++ (id)streamerWithGame:(Game *)game andMediaItem:(MPMediaItem *)song;
+- (id)initWithGame:(Game *)game andMediaItem:(MPMediaItem *)song;
 
 - (void)myCallback:(void *)userData
       inAudioQueue:(AudioQueueRef)inAQ

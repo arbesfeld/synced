@@ -19,6 +19,7 @@
 		5596E0D716F692CE00511D3E /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5596E0D616F692CE00511D3E /* AudioToolbox.framework */; };
 		5596E0D916F692D400511D3E /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5596E0D816F692D300511D3E /* MobileCoreServices.framework */; };
 		5596E0DB16F6930700511D3E /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5596E0DA16F6930600511D3E /* CoreMedia.framework */; };
+		5596E0DE16F696D300511D3E /* PacketAudioBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 5596E0DD16F696D300511D3E /* PacketAudioBuffer.m */; };
 		55FCC54D16ED3D4C0000BCBD /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55FCC54C16ED3D4C0000BCBD /* UIKit.framework */; };
 		55FCC54F16ED3D4C0000BCBD /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55FCC54E16ED3D4C0000BCBD /* Foundation.framework */; };
 		55FCC55116ED3D4C0000BCBD /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55FCC55016ED3D4C0000BCBD /* CoreGraphics.framework */; };
@@ -61,6 +62,8 @@
 		5596E0D616F692CE00511D3E /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		5596E0D816F692D300511D3E /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		5596E0DA16F6930600511D3E /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		5596E0DC16F696D300511D3E /* PacketAudioBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PacketAudioBuffer.h; sourceTree = "<group>"; };
+		5596E0DD16F696D300511D3E /* PacketAudioBuffer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PacketAudioBuffer.m; sourceTree = "<group>"; };
 		55FCC54916ED3D4C0000BCBD /* AirShare2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AirShare2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		55FCC54C16ED3D4C0000BCBD /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		55FCC54E16ED3D4C0000BCBD /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -223,6 +226,8 @@
 				550C291916F2BA3800247943 /* PacketPlayerList.m */,
 				5596E08A16F62FB600511D3E /* PacketOtherClientQuit.h */,
 				5596E08B16F62FB600511D3E /* PacketOtherClientQuit.m */,
+				5596E0DC16F696D300511D3E /* PacketAudioBuffer.h */,
+				5596E0DD16F696D300511D3E /* PacketAudioBuffer.m */,
 				55FCC5B116ED3E0C0000BCBD /* MatchmakingServer.h */,
 				55FCC5B216ED3E0D0000BCBD /* MatchmakingServer.m */,
 				55FCC5B416ED3E360000BCBD /* MatchmakingClient.h */,
@@ -340,6 +345,7 @@
 				5596E08C16F62FB600511D3E /* PacketOtherClientQuit.m in Sources */,
 				5596E0CF16F6912C00511D3E /* Streamer.m in Sources */,
 				5596E0D516F6929200511D3E /* SongPlayer.m in Sources */,
+				5596E0DE16F696D300511D3E /* PacketAudioBuffer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

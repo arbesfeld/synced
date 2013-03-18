@@ -8,11 +8,15 @@
 
 #import "Streamer.h"
 #import "SongPlayer.h"
+#import "Packet.h"
 
 @implementation Streamer
-
-+ (id)streamerWithURL:(NSURL *)songURL {
-    return [[[self class] alloc] initWithURL:songURL];
+{
+    NSString * assetOnAirID;
+}
++ (id)streamerWithGame:(Game *)game andMediaItem:(MPMediaItem *)song
+{
+    return [[[self class] alloc] initWithGame:game andMediaItem:song];
 }
 
 - (id)init {
@@ -59,10 +63,22 @@ cleanup:
     return self;
 }
 
-- (id)initWithURL:(NSURL *)songURL {
-    url = songURL;
-    self = [self init];
+- (id)initWithGame:(Game *)game andMediaItem:(MPMediaItem *)song
+{
+    if (self = [super init]) {
+        _game = game;
+        url = [song valueForProperty:MPMediaItemPropertyAssetURL];
+        assetOnAirID = [self generateID:song];
+        self = [self init];
+    }
     return self;
+}
+
+-(NSString *)generateID:(MPMediaItem *)song
+{
+    NSLog(@"inside generate ID");
+    NSString *itemID = [song valueForProperty:MPMediaItemPropertyArtist];
+    return itemID;
 }
 
 - (NSDictionary *)getPCMaSBD
@@ -210,6 +226,7 @@ cleanup:
 
 -(void)readVBRPackets
 {
+    NSLog(@"readVBRpackets:");
     // initialize a mutex and condition so that we can block on buffers in use.
     pthread_mutex_init(&queueBuffersMutex, NULL);
     pthread_cond_init(&queueBufferReadyCondition, NULL);
@@ -256,19 +273,22 @@ cleanup:
         
         AudioBuffer audioBuffer = audioBufferList.mBuffers[0];
         
+        char * packet = (char*)malloc(MAX_PACKET_SIZE);
+        char * packetDescriptions = (char*)malloc(MAX_PACKET_DESCRIPTIONS_SIZE);
         
         for (int i = 0; i < inNumberPackets; ++i)
         {
             
             SInt64 dataOffset = inPacketDescriptions[i].mStartOffset;
-			UInt32 packetSize   = inPacketDescriptions[i].mDataByteSize;
-            
-            size_t packetSpaceRemaining;
-            packetSpaceRemaining = bufferByteSize - bytesFilled;
+			UInt32 dataSize   = inPacketDescriptions[i].mDataByteSize;
+
+            // for receiving
+            size_t packetSpaceRemainingPlayer;
+            packetSpaceRemainingPlayer = bufferByteSize - bytesFilled;
             
             // if the space remaining in the buffer is not enough for the data contained in this packet
             // then just write it
-            if (packetSpaceRemaining < packetSize)
+            if (packetSpaceRemainingPlayer < dataSize)
             {
                 // NSLog(@"oops! packetSpaceRemaining (%zu) is smaller than datasize (%lu) SO WE WILL SHIP PACKET [%d]: (abs number %lu)",
                 //     packetSpaceRemaining, dataSize, i, packetNumber);
@@ -279,11 +299,41 @@ cleanup:
                 //                [self encapsulateAndShipPacket:packet packetDescriptions:packetDescriptions packetID:assetID];
             }
             
+            size_t packetSpaceRemaining = MAX_PACKET_SIZE - packetBytesFilled - packetDescriptionsBytesFilled;
+            size_t packetDescrSpaceRemaining = MAX_PACKET_DESCRIPTIONS_SIZE - packetDescriptionsBytesFilled;
+            
+            if ((packetSpaceRemaining < (dataSize + AUDIO_STREAM_PACK_DESC_SIZE)) ||
+                (packetDescrSpaceRemaining < AUDIO_STREAM_PACK_DESC_SIZE))
+            {
+                if (![self encapsulateAndShipPacket:packet packetDescriptions:packetDescriptions packetID:assetOnAirID])
+                    break;
+            }
+            
+            memcpy((char*)packet + packetBytesFilled,
+                   (const char*)(audioBuffer.mData + dataOffset), dataSize);
+            
+            memcpy((char*)packetDescriptions + packetDescriptionsBytesFilled,
+                   [self encapsulatePacketDescription:inPacketDescriptions[i]
+                                         mStartOffset:packetBytesFilled
+                    ],
+                   AUDIO_STREAM_PACK_DESC_SIZE);
+            
+            
+            packetBytesFilled += dataSize;
+            packetDescriptionsBytesFilled += AUDIO_STREAM_PACK_DESC_SIZE;
+            
+            // if this is the last packet, then ship it
+            if (i == (inNumberPackets - 1)) {
+                //NSLog(@"woooah! this is the last packet (%d).. so we will ship it!", i);
+                if (![self encapsulateAndShipPacket:packet packetDescriptions:packetDescriptions packetID:assetOnAirID])
+                    break;
+                
+            }
             
             // copy data to the audio queue buffer
             AudioQueueBufferRef fillBuf = audioQueueBuffers[fillBufferIndex];
             memcpy((char*)fillBuf->mAudioData + bytesFilled,
-                   (const char*)(audioBuffer.mData + dataOffset), packetSize);
+                   (const char*)(audioBuffer.mData + dataOffset), dataSize);
             
             
             
@@ -292,7 +342,7 @@ cleanup:
             packetDescs[packetsFilled].mStartOffset = bytesFilled;
             
             
-            bytesFilled += packetSize;
+            bytesFilled += dataSize;
             packetsFilled += 1;
             
             
@@ -305,6 +355,87 @@ cleanup:
             }
         }
     }
+    
+}
+- (char *)encapsulatePacketDescription:(AudioStreamPacketDescription)inPacketDescription
+                          mStartOffset:(SInt64)mStartOffset
+{
+    // take out 32bytes b/c for mStartOffset we are using a 32 bit integer, not 64
+    char * packetDescription = (char *)malloc(AUDIO_STREAM_PACK_DESC_SIZE);
+    
+    appendInt32(packetDescription, (UInt32)mStartOffset, 0);
+    appendInt32(packetDescription, inPacketDescription.mVariableFramesInPacket, 4);
+    appendInt32(packetDescription, inPacketDescription.mDataByteSize,8);
+    
+    return packetDescription;
+}
+
+- (BOOL)encapsulateAndShipPacket:(void *)source
+              packetDescriptions:(void *)packetDescriptions
+                        packetID:(NSString *)packetID
+{
+//    if (![self shouldContinueBroadcasting])
+//    {
+//        [sampleBroadcastTimer invalidate];
+//        return NO;
+//    }
+    // package Packet
+    char * headerPacket = (char *)malloc(MAX_PACKET_SIZE + AUDIO_BUFFER_PACKET_HEADER_SIZE + packetDescriptionsBytesFilled);
+    
+    appendInt32(headerPacket, 'AIRS', 0);
+    appendInt32(headerPacket,packetNumber, 4);
+    appendInt16(headerPacket,PacketTypeAudioBuffer, 8);
+    // we use this so that we can add int32s later
+    UInt16 filler = 0x00;
+    appendInt16(headerPacket,filler, 10);
+    appendInt32(headerPacket, packetBytesFilled, 12);
+    appendInt32(headerPacket, packetDescriptionsBytesFilled, 16);
+    appendUTF8String(headerPacket, [packetID UTF8String], 20);
+    
+    
+    int offset = AUDIO_BUFFER_PACKET_HEADER_SIZE;
+    memcpy((char *)(headerPacket + offset), (char *)source, packetBytesFilled);
+    
+    offset += packetBytesFilled;
+    
+    memcpy((char *)(headerPacket + offset), (char *)packetDescriptions, packetDescriptionsBytesFilled);
+    
+    NSData *completePacket = [NSData dataWithBytes:headerPacket length: AUDIO_BUFFER_PACKET_HEADER_SIZE + packetBytesFilled + packetDescriptionsBytesFilled];
+    
+    
+    //ship packet
+    /*   NSLog(@"HOST: this is the packet content after encapsulation of packet (abs number: %lu) %@",packetNumber, completePacket);
+     NSLog(@"\n\n\n");
+     NSLog(@":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::");*/
+    
+    
+//    double singleSentPacketToPacketLatency;
+//    if (packetNumber != 0) {
+//        singleSentPacketToPacketLatency = [Timer getTimeDifference:timeLastPacketSent
+//                                                             time2:[Timer getCurTime]];
+//        avgSentPacketToPacketLatency = (avgSentPacketToPacketLatency + singleSentPacketToPacketLatency)/packetNumber;
+//    }
+//    timeLastPacketSent = [Timer getCurTime];
+//    
+    
+    
+    NSLog(@"sending packet number %lu to all peers, SIZE : %d", packetNumber, [completePacket length]);
+    
+    NSError *error;
+    if (![_game.session sendDataToAllPeers:completePacket withDataMode:GKSendDataReliable error:&error]) {
+        NSLog(@"Error sending data to clients: %@", error);
+    }
+    
+    Packet *packet = [Packet packetWithData:completePacket];
+    
+    // reset packet
+    packetBytesFilled = 0;
+    packetDescriptionsBytesFilled = 0;
+    
+    packetNumber++;
+    free(headerPacket);
+    //  free(packet); free(packetDescriptions);
+    return YES;
     
 }
 
@@ -599,4 +730,32 @@ static void MyAQOutputCallback(void *inUserData, AudioQueueRef inAQ, AudioQueueB
     
 }
 
+void appendInt32(void * source, int value, int offset )
+{
+    // ensure that data is transmitted in network byte order
+    // which is big endian on 32 byte elements (ie long/int)
+    
+    
+    value = htonl(value);
+    memcpy((void *)(source + offset), &value, 4);
+}
+
+
+void appendInt16(void * source, short value, int offset)
+{
+    // ensure that data is transmitted in network byte order
+    // which is big endian on 16 byte elements (ie short)
+    value = htons(value);
+    memcpy((void *)(source + offset), &value, 2);
+}
+
+void appendUTF8String(void * source, const char *cString, int offset)
+{
+    memcpy((void *)(source + offset), cString, strlen(cString)+1);
+}
+
+unsigned numDigits(const unsigned n) {
+    if (n < 10) return 1;
+    return 1 + numDigits(n / 10);
+}
 @end

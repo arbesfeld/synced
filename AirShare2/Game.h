@@ -1,6 +1,7 @@
 #import <GameKit/GameKit.h>
 #import "MatchmakingServer.h"
 #import "Player.h"
+#import <MediaPlayer/MediaPlayer.h>
 
 typedef enum
 {
@@ -33,6 +34,7 @@ ServerState;
 @property (nonatomic, assign) BOOL isServer;
 @property (nonatomic, assign) int maxClients;
 @property (nonatomic, strong) NSMutableDictionary *players;
+@property (nonatomic, strong) GKSession *session;
 
 - (void)startClientGameWithSession:(GKSession *)session playerName:(NSString *)name server:(NSString *)peerID;
 - (void)quitGameWithReason:(QuitReason)reason;
@@ -42,5 +44,5 @@ ServerState;
 - (NSString *)displayNameForPeerID:(NSString *)peerID;
 - (void)stopAcceptingConnections;
 
-- (void)playMusicWithURL:(NSURL *)songURL;
+- (void)playMusicWithMediaItem:(MPMediaItem *)song;
 @end

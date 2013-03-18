@@ -20,7 +20,6 @@ GameState;
 {
 	GameState _state;
     
-	GKSession *_session;
 	NSString *_serverPeerID;
 	NSString *_localPlayerName;
     
@@ -30,7 +29,7 @@ GameState;
 
 @synthesize delegate = _delegate;
 @synthesize isServer = _isServer;
-
+@synthesize session = _session;
 - (void)dealloc
 {
     #ifdef DEBUG
@@ -232,11 +231,11 @@ GameState;
 	}
 }
 
-- (void)playMusicWithURL:(NSURL *)songURL
+- (void)playMusicWithMediaItem:(MPMediaItem *)song
 {
-    NSLog(@"Game: playMusicWithURL: %@", songURL);
+    NSLog(@"Game: playMusicWithURL: %@", [song valueForProperty:MPMediaItemPropertyAssetURL]);
     
-    Streamer *streamer = [Streamer streamerWithURL:songURL];
+    Streamer *streamer = [Streamer streamerWithGame:self andMediaItem:song];
 }
 // identical stuff to MatchmakingServer
 #pragma mark - GKSessionDelegate
