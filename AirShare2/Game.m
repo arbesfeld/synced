@@ -3,6 +3,8 @@
 #import "PacketSignInResponse.h"
 #import "PacketPlayerList.h"
 #import "PacketOtherClientQuit.h"
+#import "Streamer.h"
+
 #import <GameKit/GameKit.h>
 
 typedef enum
@@ -230,7 +232,12 @@ GameState;
 	}
 }
 
-
+- (void)playMusicWithURL:(NSURL *)songURL
+{
+    NSLog(@"Game: playMusicWithURL: %@", songURL);
+    
+    Streamer *streamer = [Streamer streamerWithURL:songURL];
+}
 // identical stuff to MatchmakingServer
 #pragma mark - GKSessionDelegate
 

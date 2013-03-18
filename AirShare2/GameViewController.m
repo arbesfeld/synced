@@ -25,12 +25,14 @@
 {
 	[super viewDidLoad];
 }
+
 - (void)viewWillDisappear:(BOOL)animated
 {
 	[super viewWillDisappear:animated];
     
 	[_alertView dismissWithClickedButtonIndex:_alertView.cancelButtonIndex animated:NO];
 }
+
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
 	return UIInterfaceOrientationIsLandscape(interfaceOrientation);
@@ -65,6 +67,7 @@
 		[_alertView show];
 	}
 }
+
 #pragma mark - GameDelegate
 
 - (void)game:(Game *)game didQuitWithReason:(QuitReason)reason
@@ -95,6 +98,7 @@
 {
     [self.tableView reloadData];
 }
+
 - (void)gameServerSessionDidEnd:(Game *)server;
 {
     
@@ -139,4 +143,35 @@
 	}
 }
 
+#pragma mark - playMusic____
+- (IBAction)playMusic:(id)sender {
+    MPMediaPickerController *mediaPicker = [[MPMediaPickerController alloc] initWithMediaTypes: MPMediaTypeAny];
+    mediaPicker.delegate = self;
+    mediaPicker.allowsPickingMultipleItems = NO;
+    mediaPicker.prompt = @"Select song to play";
+    
+    [self presentViewController:mediaPicker animated:YES completion:nil];
+}
+
+- (void) mediaPicker: (MPMediaPickerController *)mediaPicker didPickMediaItems: (MPMediaItemCollection *) mediaItemCollection
+{
+    [mediaPicker dismissViewControllerAnimated:YES completion:nil];
+    
+    NSLog(@"didPickMediaItems:");
+    if (mediaItemCollection) {
+        
+        MPMediaItem *chosenItem = mediaItemCollection.items[0];
+        
+        NSURL *songURL = [chosenItem valueForProperty: MPMediaItemPropertyAssetURL];
+        NSLog(@"url = %@", songURL);
+        [_game playMusicWithURL:songURL];
+    }
+    
+}
+
+- (void) mediaPickerDidCancel: (MPMediaPickerController *) mediaPicker
+{
+    NSLog(@"mediaPickerDidCancel");
+    [mediaPicker dismissViewControllerAnimated:YES completion:nil];
+}
 @end

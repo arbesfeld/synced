@@ -15,7 +15,7 @@
 #import <MediaPlayer/MediaPlayer.h>
 #include "AppDelegate.h"
 
-#include "Player.h"
+#include "SongPlayer.h"
 
 #define kNumberPlaybackBuffers	16
 
@@ -40,7 +40,7 @@ typedef enum
     size_t bytesFilled;				// how many bytes have been filled
     size_t packetsFilled;			// how many packets have been filled
     
-    Player *player;
+    SongPlayer *songPlayer;
     AudioQueueBufferRef	audioQueueBuffers[kNumberPlaybackBuffers];
     
     AudioStreamPacketDescription packetDescs[kAQMaxPacketDescs];	// packet descriptions for enqueuing audio
@@ -79,7 +79,7 @@ typedef struct MyPlayer {
 	Boolean						isDone; // playback has completed
 } MyPlayer;
 
-- (id)streamerWithURL:(NSURL *)songURL;
++ (id)streamerWithURL:(NSURL *)songURL;
 - (id)initWithURL:(NSURL *)songURL;
 
 - (void)myCallback:(void *)userData

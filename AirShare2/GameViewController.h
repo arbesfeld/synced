@@ -1,6 +1,9 @@
 #import "Game.h"
 #import "MatchmakingClient.h"
 #import "MatchmakingServer.h"
+
+#import <MediaPlayer/MediaPlayer.h>
+
 @class GameViewController;
 
 @protocol GameViewControllerDelegate <NSObject>
@@ -9,7 +12,7 @@
 
 @end
 
-@interface GameViewController : UIViewController <UIAlertViewDelegate, UITableViewDataSource, GameDelegate>
+@interface GameViewController : UIViewController <UIAlertViewDelegate, UITableViewDataSource, MPMediaPickerControllerDelegate, GameDelegate>
 
 @property (nonatomic, weak) IBOutlet UILabel *centerLabel;
 @property (weak, nonatomic) IBOutlet UIButton *exitButton;
@@ -19,5 +22,6 @@
 @property (nonatomic, strong) Game *game;
 
 - (IBAction)exitAction:(id)sender;
+- (IBAction)playMusic:(id)sender;
 
 @end

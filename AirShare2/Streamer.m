@@ -7,6 +7,7 @@
 //
 
 #import "Streamer.h"
+#import "SongPlayer.h"
 
 @implementation Streamer
 
@@ -15,7 +16,7 @@
 }
 
 - (id)init {
-    player = [[Player alloc] init];
+    songPlayer = [[SongPlayer alloc] init];
     
     [self setupReader];
     [self setupQueue];
@@ -38,7 +39,7 @@
     do
     {
         CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.25, false);
-    } while (!player.isDone /*|| gIsRunning*/);
+    } while (!songPlayer.isDone /*|| gIsRunning*/);
     
     // isDone represents the state of the Audio File enqueuing. This does not mean the
     // Audio Queue is actually done playing yet. Since we have 3 half-second buffers in-flight
@@ -46,14 +47,14 @@
     CFRunLoopRunInMode(kCFRunLoopDefaultMode, 2, false);
     
     // end playback
-    player.isDone = true;
+    songPlayer.isDone = true;
     CheckError(AudioQueueStop(queue, TRUE), "AudioQueueStop failed");
     
     
     
 cleanup:
     AudioQueueDispose(queue, TRUE);
-    AudioFileClose(player.playbackFile);
+    AudioFileClose(songPlayer.playbackFile);
     
     return self;
 }
@@ -159,7 +160,7 @@ cleanup:
     
     
     // adjust buffer size to represent about a half second (0.5) of audio based on this format
-    CalculateBytesForTime(asbd,  0.5, &bufferByteSize, &player->numPacketsToRead);
+    CalculateBytesForTime(asbd,  0.5, &bufferByteSize, &songPlayer->numPacketsToRead);
     bufferByteSize = 2048;
     NSLog(@"this is buffer byte size %lu", bufferByteSize);
     //   bufferByteSize = 800;
@@ -169,23 +170,23 @@ cleanup:
     // If we are dealing with a VBR file, we allocate memory to hold the packet descriptions
     bool isFormatVBR = (asbd.mBytesPerPacket == 0 || asbd.mFramesPerPacket == 0);
     if (isFormatVBR)
-        player.packetDescs = (AudioStreamPacketDescription*)malloc(sizeof(AudioStreamPacketDescription) * player.numPacketsToRead);
+        songPlayer.packetDescs = (AudioStreamPacketDescription*)malloc(sizeof(AudioStreamPacketDescription) * songPlayer.numPacketsToRead);
     else
-        player.packetDescs = NULL; // we don't provide packet descriptions for constant bit rate formats (like linear PCM)
+        songPlayer.packetDescs = NULL; // we don't provide packet descriptions for constant bit rate formats (like linear PCM)
     
     // get magic cookie from file and set on queue
-    MyCopyEncoderCookieToQueue(player.playbackFile, queue);
+    MyCopyEncoderCookieToQueue(songPlayer.playbackFile, queue);
     
     // allocate the buffers and prime the queue with some data before starting
-    player.isDone = false;
-    player.packetPosition = 0;
+    songPlayer.isDone = false;
+    songPlayer.packetPosition = 0;
     int i;
     for (i = 0; i < kNumberPlaybackBuffers; ++i)
     {
         CheckError(AudioQueueAllocateBuffer(queue, bufferByteSize, &audioQueueBuffers[i]), "AudioQueueAllocateBuffer failed");
         
         // EOF (the entire file's contents fit in the buffers)
-        if (player.isDone)
+        if (songPlayer.isDone)
             break;
     }
     

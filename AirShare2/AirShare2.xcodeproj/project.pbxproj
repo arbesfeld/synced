@@ -13,6 +13,12 @@
 		558E14B616F185600076F6FC /* CenturyGothicStd-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 558E14B316F185600076F6FC /* CenturyGothicStd-Bold.otf */; };
 		558E14B716F185600076F6FC /* CenturyGothicStd.otf in Resources */ = {isa = PBXBuildFile; fileRef = 558E14B416F185600076F6FC /* CenturyGothicStd.otf */; };
 		5596E08C16F62FB600511D3E /* PacketOtherClientQuit.m in Sources */ = {isa = PBXBuildFile; fileRef = 5596E08B16F62FB600511D3E /* PacketOtherClientQuit.m */; };
+		5596E0C916F6746900511D3E /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5596E0C816F6746900511D3E /* MediaPlayer.framework */; };
+		5596E0CF16F6912C00511D3E /* Streamer.m in Sources */ = {isa = PBXBuildFile; fileRef = 5596E0CE16F6912C00511D3E /* Streamer.m */; };
+		5596E0D516F6929200511D3E /* SongPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 5596E0D416F6929200511D3E /* SongPlayer.m */; };
+		5596E0D716F692CE00511D3E /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5596E0D616F692CE00511D3E /* AudioToolbox.framework */; };
+		5596E0D916F692D400511D3E /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5596E0D816F692D300511D3E /* MobileCoreServices.framework */; };
+		5596E0DB16F6930700511D3E /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5596E0DA16F6930600511D3E /* CoreMedia.framework */; };
 		55FCC54D16ED3D4C0000BCBD /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55FCC54C16ED3D4C0000BCBD /* UIKit.framework */; };
 		55FCC54F16ED3D4C0000BCBD /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55FCC54E16ED3D4C0000BCBD /* Foundation.framework */; };
 		55FCC55116ED3D4C0000BCBD /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55FCC55016ED3D4C0000BCBD /* CoreGraphics.framework */; };
@@ -47,6 +53,14 @@
 		558E14B416F185600076F6FC /* CenturyGothicStd.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = CenturyGothicStd.otf; sourceTree = "<group>"; };
 		5596E08A16F62FB600511D3E /* PacketOtherClientQuit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PacketOtherClientQuit.h; sourceTree = "<group>"; };
 		5596E08B16F62FB600511D3E /* PacketOtherClientQuit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PacketOtherClientQuit.m; sourceTree = "<group>"; };
+		5596E0C816F6746900511D3E /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
+		5596E0CD16F6912C00511D3E /* Streamer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Streamer.h; sourceTree = "<group>"; };
+		5596E0CE16F6912C00511D3E /* Streamer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Streamer.m; sourceTree = "<group>"; };
+		5596E0D316F6929200511D3E /* SongPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SongPlayer.h; sourceTree = "<group>"; };
+		5596E0D416F6929200511D3E /* SongPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SongPlayer.m; sourceTree = "<group>"; };
+		5596E0D616F692CE00511D3E /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		5596E0D816F692D300511D3E /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
+		5596E0DA16F6930600511D3E /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		55FCC54916ED3D4C0000BCBD /* AirShare2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AirShare2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		55FCC54C16ED3D4C0000BCBD /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		55FCC54E16ED3D4C0000BCBD /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -88,6 +102,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5596E0DB16F6930700511D3E /* CoreMedia.framework in Frameworks */,
+				5596E0D916F692D400511D3E /* MobileCoreServices.framework in Frameworks */,
+				5596E0D716F692CE00511D3E /* AudioToolbox.framework in Frameworks */,
+				5596E0C916F6746900511D3E /* MediaPlayer.framework in Frameworks */,
 				89B257DF16F140D30018695A /* QuartzCore.framework in Frameworks */,
 				55FCC57516ED3D8C0000BCBD /* GameKit.framework in Frameworks */,
 				55FCC57316ED3D860000BCBD /* AVFoundation.framework in Frameworks */,
@@ -141,6 +159,10 @@
 		55FCC54B16ED3D4C0000BCBD /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				5596E0DA16F6930600511D3E /* CoreMedia.framework */,
+				5596E0D816F692D300511D3E /* MobileCoreServices.framework */,
+				5596E0D616F692CE00511D3E /* AudioToolbox.framework */,
+				5596E0C816F6746900511D3E /* MediaPlayer.framework */,
 				89B257DE16F140D30018695A /* QuartzCore.framework */,
 				55FCC57416ED3D8C0000BCBD /* GameKit.framework */,
 				55FCC57216ED3D860000BCBD /* AVFoundation.framework */,
@@ -216,6 +238,10 @@
 				55FCC5C116ED78E80000BCBD /* Player.m */,
 				55FCC5BC16ED62640000BCBD /* Game.h */,
 				55FCC5BD16ED62640000BCBD /* Game.m */,
+				5596E0CD16F6912C00511D3E /* Streamer.h */,
+				5596E0CE16F6912C00511D3E /* Streamer.m */,
+				5596E0D316F6929200511D3E /* SongPlayer.h */,
+				5596E0D416F6929200511D3E /* SongPlayer.m */,
 			);
 			name = DataModel;
 			sourceTree = "<group>";
@@ -312,6 +338,8 @@
 				558E14AB16F182480076F6FC /* PacketSignInResponse.m in Sources */,
 				550C291A16F2BA3800247943 /* PacketPlayerList.m in Sources */,
 				5596E08C16F62FB600511D3E /* PacketOtherClientQuit.m in Sources */,
+				5596E0CF16F6912C00511D3E /* Streamer.m in Sources */,
+				5596E0D516F6929200511D3E /* SongPlayer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -42,4 +42,5 @@ ServerState;
 - (NSString *)displayNameForPeerID:(NSString *)peerID;
 - (void)stopAcceptingConnections;
 
+- (void)playMusicWithURL:(NSURL *)songURL;
 @end
