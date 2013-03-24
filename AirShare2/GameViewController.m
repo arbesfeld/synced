@@ -164,7 +164,7 @@
         
         NSURL *songURL = [chosenItem valueForProperty: MPMediaItemPropertyAssetURL];
         NSLog(@"url = %@", songURL);
-        [_game playMusicWithMediaItem:chosenItem];
+        [_game uploadMusicWithMediaItem:chosenItem];
     }
 }
 

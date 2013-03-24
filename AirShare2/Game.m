@@ -3,7 +3,6 @@
 #import "PacketSignInResponse.h"
 #import "PacketPlayerList.h"
 #import "PacketOtherClientQuit.h"
-#import "Streamer.h"
 
 #import <GameKit/GameKit.h>
 
@@ -68,7 +67,7 @@ GameState;
 	[self.delegate gameWaitingForServerReady:self];
     
     Packet *packet = [PacketSignInResponse packetWithPlayerName:_localPlayerName];
-	[self sendPacketToAllClients:packet];
+	[self sendPacketToServer:packet];
 }
 
 - (void)startServerGameWithSession:(GKSession *)session playerName:(NSString *)name clients:(NSArray *)clients
@@ -115,18 +114,6 @@ GameState;
 	}
     
 	Player *player = [self playerWithPeerID:peerID];
-    
-    if (player != nil)
-	{
-		if (packet.packetNumber != -1 && packet.packetNumber <= player.lastPacketNumberReceived)
-		{
-			NSLog(@"Out-of-order packet!");
-			return;
-		}
-        
-		player.lastPacketNumberReceived = packet.packetNumber;
-		player.receivedResponse = YES;
-	}
     
 	if (self.isServer)
 		[self serverReceivedPacket:packet fromPlayer:player];
@@ -231,11 +218,10 @@ GameState;
 	}
 }
 
-- (void)playMusicWithMediaItem:(MPMediaItem *)song
+- (void)uploadMusicWithMediaItem:(MPMediaItem *)song
 {
     NSLog(@"Game: playMusicWithURL: %@", [song valueForProperty:MPMediaItemPropertyAssetURL]);
     
-    Streamer *streamer = [Streamer streamerWithGame:self andMediaItem:song];
 }
 // identical stuff to MatchmakingServer
 #pragma mark - GKSessionDelegate

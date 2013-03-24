@@ -1,23 +1,205 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="2519" systemVersion="12A206j" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES" initialViewController="2">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="3084" systemVersion="12C3103" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES" initialViewController="2">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="1856"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="2083"/>
     </dependencies>
     <scenes>
-        <!--class Prefix:identifier View Controller-->
+        <!--Main View Controller-->
         <scene sceneID="4">
             <objects>
-                <viewController id="2" customClass="ViewController" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="5">
+                <viewController storyboardIdentifier="MainViewController" id="2" customClass="MainViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" restorationIdentifier="" id="5">
                         <rect key="frame" x="0.0" y="20" width="768" height="1004"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vRK-Xc-yKZ">
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="137" id="EWL-gh-jhj"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                <state key="normal" title="Host Game">
+                                    <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <state key="highlighted">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="hostGameAction:" destination="2" eventType="touchUpInside" id="AT1-47-2Jd"/>
+                                </connections>
+                            </button>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="8mm-gt-wR1">
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="97" id="tqN-ou-2XM"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Status Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="E5i-71-qHh">
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="105" id="BPl-5V-34j"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="9at-aE-qek">
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="364" id="Ojq-Zu-Am6"/>
+                                    <constraint firstAttribute="height" constant="410" id="nSc-RO-FLT"/>
+                                </constraints>
+                                <connections>
+                                    <outlet property="dataSource" destination="2" id="VcN-hN-0gI"/>
+                                    <outlet property="delegate" destination="2" id="8Zd-2o-WBm"/>
+                                </connections>
+                            </tableView>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Wait Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nGB-Hn-Ad8">
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="105" id="Bqh-uV-y0G"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Current Sessions" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lgb-kf-s4i">
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="247" id="4sv-j9-cHu"/>
+                                    <constraint firstAttribute="height" constant="48" id="4wi-VT-9SJ"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="Lgb-kf-s4i" firstAttribute="leading" secondItem="5" secondAttribute="leading" constant="19" id="AFU-Z8-xpN"/>
+                            <constraint firstItem="8mm-gt-wR1" firstAttribute="leading" secondItem="E5i-71-qHh" secondAttribute="leading" type="default" id="DSS-5u-gxo"/>
+                            <constraint firstItem="E5i-71-qHh" firstAttribute="leading" secondItem="5" secondAttribute="leading" constant="13" id="Mbe-ke-4cW"/>
+                            <constraint firstItem="8mm-gt-wR1" firstAttribute="baseline" secondItem="vRK-Xc-yKZ" secondAttribute="baseline" type="default" id="Oqh-h9-cfs"/>
+                            <constraint firstItem="vRK-Xc-yKZ" firstAttribute="top" secondItem="5" secondAttribute="top" constant="380" id="Ovk-VT-bcC"/>
+                            <constraint firstItem="9at-aE-qek" firstAttribute="top" secondItem="5" secondAttribute="top" constant="42" id="Pgd-Mo-tHL"/>
+                            <constraint firstItem="Lgb-kf-s4i" firstAttribute="top" secondItem="5" secondAttribute="top" constant="5" id="VpB-D3-8Qc"/>
+                            <constraint firstItem="vRK-Xc-yKZ" firstAttribute="leading" secondItem="5" secondAttribute="leading" constant="145" id="ZgE-v2-x5k"/>
+                            <constraint firstItem="nGB-Hn-Ad8" firstAttribute="baseline" secondItem="E5i-71-qHh" secondAttribute="baseline" type="default" id="aNB-d5-RBX"/>
+                            <constraint firstItem="nGB-Hn-Ad8" firstAttribute="leading" secondItem="5" secondAttribute="leading" constant="171" id="emy-yn-qpn"/>
+                            <constraint firstItem="9at-aE-qek" firstAttribute="leading" secondItem="5" secondAttribute="leading" constant="330" id="tB7-di-9hj"/>
+                            <constraint firstItem="E5i-71-qHh" firstAttribute="top" secondItem="5" secondAttribute="top" constant="350" id="vBC-fJ-ne1"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="hostGameButton" destination="vRK-Xc-yKZ" id="QcU-di-AYQ"/>
+                        <outlet property="nameTextField" destination="8mm-gt-wR1" id="iZG-tt-lpf"/>
+                        <outlet property="statusLabel" destination="E5i-71-qHh" id="nj0-RT-D58"/>
+                        <outlet property="tableView" destination="9at-aE-qek" id="CU9-HZ-LXk"/>
+                        <outlet property="waitLabel" destination="nGB-Hn-Ad8" id="L7S-Nt-6an"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="125" y="-226"/>
+        </scene>
+        <!--Game View Controller-->
+        <scene sceneID="M3v-7v-X6A">
+            <objects>
+                <viewController storyboardIdentifier="GameViewController" id="bqU-72-J25" customClass="GameViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="lSu-kL-WDb">
+                        <rect key="frame" x="0.0" y="20" width="768" height="1004"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Center Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JSY-2u-j8B">
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0hW-4Z-clq">
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                <state key="normal" title="Exit Button">
+                                    <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <state key="highlighted">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="exitAction:" destination="bqU-72-J25" eventType="touchUpInside" id="ic1-oi-bah"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qfY-7v-oGZ">
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                <state key="normal" title="Choose Music">
+                                    <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <state key="highlighted">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="playMusic:" destination="bqU-72-J25" eventType="touchUpInside" id="1Sb-O7-x0v"/>
+                                </connections>
+                            </button>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="Kw4-yc-U2V">
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="320" id="JsW-k9-S5r"/>
+                                    <constraint firstAttribute="height" constant="460" id="zae-Nf-LOS"/>
+                                </constraints>
+                                <connections>
+                                    <outlet property="dataSource" destination="bqU-72-J25" id="JNN-SY-HZl"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="JSY-2u-j8B" firstAttribute="top" secondItem="lSu-kL-WDb" secondAttribute="top" constant="42" id="3wW-HN-oDS"/>
+                            <constraint firstItem="0hW-4Z-clq" firstAttribute="leading" secondItem="lSu-kL-WDb" secondAttribute="leading" constant="296" id="6k0-WL-vHB"/>
+                            <constraint firstItem="0hW-4Z-clq" firstAttribute="top" secondItem="lSu-kL-WDb" secondAttribute="top" constant="102" id="8Nd-QT-3wX"/>
+                            <constraint firstItem="qfY-7v-oGZ" firstAttribute="leading" secondItem="lSu-kL-WDb" secondAttribute="leading" constant="291" id="9xx-Nr-ALa"/>
+                            <constraint firstItem="Kw4-yc-U2V" firstAttribute="top" secondItem="lSu-kL-WDb" secondAttribute="top" constant="297" id="LaF-8T-BKQ"/>
+                            <constraint firstItem="Kw4-yc-U2V" firstAttribute="leading" secondItem="lSu-kL-WDb" secondAttribute="leading" constant="305" id="nbh-SF-bzW"/>
+                            <constraint firstAttribute="trailing" secondItem="JSY-2u-j8B" secondAttribute="trailing" constant="293" id="tpG-HU-LKt"/>
+                            <constraint firstItem="qfY-7v-oGZ" firstAttribute="top" secondItem="0hW-4Z-clq" secondAttribute="bottom" constant="8" symbolic="YES" type="default" id="z7t-Ld-Kw7"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="centerLabel" destination="JSY-2u-j8B" id="5LT-JC-3Y3"/>
+                        <outlet property="exitButton" destination="0hW-4Z-clq" id="I3e-S4-CMk"/>
+                        <outlet property="tableView" destination="Kw4-yc-U2V" id="dcD-oX-FMn"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="2CI-1Y-OsS" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="989" y="-217"/>
         </scene>
     </scenes>
+    <classes>
+        <class className="GameViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/GameViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="exitAction:"/>
+                <relationship kind="action" name="playMusic:"/>
+                <relationship kind="outlet" name="centerLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="exitButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="tableView" candidateClass="UITableView"/>
+            </relationships>
+        </class>
+        <class className="MainViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/MainViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="hostGameAction:"/>
+                <relationship kind="outlet" name="hostGameButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="nameTextField" candidateClass="UITextField"/>
+                <relationship kind="outlet" name="sessionsLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="statusLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="tableView" candidateClass="UITableView"/>
+                <relationship kind="outlet" name="waitLabel" candidateClass="UILabel"/>
+            </relationships>
+        </class>
+        <class className="NSLayoutConstraint" superclassName="NSObject">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/NSLayoutConstraint.h"/>
+        </class>
+    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar" statusBarStyle="blackTranslucent"/>
         <simulatedOrientationMetrics key="orientation"/>

@@ -122,7 +122,7 @@
 
 - (void)startGameWithSession:(GKSession *)session playerName:(NSString *)name server:(NSString *)peerID
 {
-    NSLog(@"Start game with server: %@", peerID);
+    NSLog(@"Start game with server: %@ and name: %@", peerID, name);
     [self startGameWithBlock:^(Game *game) {
         [game startClientGameWithSession:session playerName:name server:peerID]; }];
 }

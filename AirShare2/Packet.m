@@ -3,20 +3,8 @@
 #import "PacketSignInResponse.h"
 #import "PacketPlayerList.h"
 #import "PacketOtherClientQuit.h"
-#import "packetAudioBuffer.h"
 
 const size_t PACKET_HEADER_SIZE = 10;
-const size_t AUDIO_BUFFER_PACKET_HEADER_SIZE = 36; //63
-
-const size_t AUDIO_BUFFER_NUMBER_OF_CHANNELS_OFFSET = 10;
-const size_t AUDIO_BUFFER_DATA_BYTE_SIZE_OFFSET = 12;
-
-
-// to keep in accordance with GKSession data limit (which is 1000, leave out some for header and meta data info)
-// see http://developer.apple.com/library/ios/#DOCUMENTATION/NetworkingInternet/Conceptual/GameKit_Guide/GameKitConcepts/GameKitConcepts.html
-const size_t MAX_PACKET_SIZE = 1500;
-const size_t MAX_PACKET_DESCRIPTIONS_SIZE = 300;
-const size_t AUDIO_STREAM_PACK_DESC_SIZE = 12;
 
 @implementation Packet
 

@@ -44,5 +44,5 @@ ServerState;
 - (NSString *)displayNameForPeerID:(NSString *)peerID;
 - (void)stopAcceptingConnections;
 
-- (void)playMusicWithMediaItem:(MPMediaItem *)song;
+- (void)uploadMusicWithMediaItem:(MPMediaItem *)song;
 @end
