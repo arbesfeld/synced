@@ -1,8 +1,11 @@
 #import <GameKit/GameKit.h>
+#import <MediaPlayer/MediaPlayer.h>
+
 #import "MatchmakingServer.h"
 #import "Player.h"
-#import <MediaPlayer/MediaPlayer.h>
 #import "MusicUpload.h"
+#import "MusicDownload.h"
+#import "Packet.h"
 
 typedef enum
 {
@@ -31,12 +34,14 @@ ServerState;
 
 @interface Game : NSObject <GKSessionDelegate> {
     MusicUpload *_uploader;
+    MusicDownload *_downloader;
 }
 
 @property (nonatomic, weak) id <GameDelegate> delegate;
 @property (nonatomic, assign) BOOL isServer;
 @property (nonatomic, assign) int maxClients;
 @property (nonatomic, strong) NSMutableDictionary *players;
+@property (nonatomic, strong) NSMutableArray *playlist;
 @property (nonatomic, strong) GKSession *session;
 
 - (void)startClientGameWithSession:(GKSession *)session playerName:(NSString *)name server:(NSString *)peerID;

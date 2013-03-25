@@ -3,6 +3,7 @@
 #import "PacketSignInResponse.h"
 #import "PacketPlayerList.h"
 #import "PacketOtherClientQuit.h"
+#import "PacketMusic.h"
 
 const size_t PACKET_HEADER_SIZE = 10;
 
@@ -54,6 +55,11 @@ const size_t PACKET_HEADER_SIZE = 10;
         case PacketTypeOtherClientQuit:
 			packet = [PacketOtherClientQuit packetWithData:data];
 			break;
+        
+        case PacketTypeMusic:
+            packet = [PacketMusic packetWithData:data];
+            break;
+            
 		default:
 			NSLog(@"Error: Packet has invalid type");
 			return nil;

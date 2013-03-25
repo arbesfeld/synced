@@ -1,6 +1,7 @@
 #import "Game.h"
 #import "MatchmakingClient.h"
 #import "MatchmakingServer.h"
+#import "PlaylistItem.h"
 
 #import <MediaPlayer/MediaPlayer.h>
 
@@ -16,7 +17,8 @@
 
 @property (nonatomic, weak) IBOutlet UILabel *centerLabel;
 @property (weak, nonatomic) IBOutlet UIButton *exitButton;
-@property (nonatomic, weak) IBOutlet UITableView *tableView;
+@property (nonatomic, weak) IBOutlet UITableView *userTable;
+@property (nonatomic, weak) IBOutlet UITableView *playlistTable;
 
 @property (nonatomic, weak) id <GameViewControllerDelegate> delegate;
 @property (nonatomic, strong) Game *game;

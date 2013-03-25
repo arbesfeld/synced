@@ -18,7 +18,6 @@
 {
 	if ((self = [super init]))
 	{
-		_lastPacketNumberReceived = -1;
 	}
 	return self;
 }

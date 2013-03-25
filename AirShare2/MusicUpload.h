@@ -10,9 +10,14 @@
 #import <AVFoundation/AVFoundation.h>
 #import <MediaPlayer/MediaPlayer.h>
 
+@class Game;
+
 @interface MusicUpload : NSObject {
+    Game *_game;
     NSString *_exportPath;
 }
+
+-(id)initWithGame:(Game *)game;
 
 -(void)convertAndUpload:(MPMediaItem *)mediaItem;
 

@@ -86,17 +86,20 @@
 
 - (void)gameServer:(Game *)server clientDidConnect:(Player *)player;
 {
-    [self.tableView reloadData];
+    [self.userTable reloadData];
+    [self.playlistTable reloadData];
 }
 
 - (void)gameServer:(Game *)server clientDidDisconnect:(Player *)player;
 {
-    [self.tableView reloadData];
+    [self.userTable reloadData];
+    [self.playlistTable reloadData];
 }
 
 - (void)reloadTable
 {
-    [self.tableView reloadData];
+    [self.userTable reloadData];
+    [self.playlistTable reloadData];
 }
 
 - (void)gameServerSessionDidEnd:(Game *)server;
@@ -113,26 +116,85 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-	if (_game != nil)
-		return [_game.players count];
-	else
-		return 0;
+    if(tableView == self.userTable) {
+        if (_game != nil)
+            return [_game.players count];
+        else
+            return 0;
+    }
+    // else, is the music list
+    else {
+        if (_game != nil)
+            return [_game.playlist count];
+        else
+            return 0;
+    }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	static NSString *CellIdentifier = @"CellIdentifier";
+    static NSString *CellIdentifier = @"CellIdentifier";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     
-	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-	if (cell == nil)
-		cell = [[UITableViewCell alloc] init];
-    
-	NSString *peerID = [[_game.players allKeys] objectAtIndex:indexPath.row];
-	cell.textLabel.text = [_game displayNameForPeerID:peerID];
-    
-	return cell;
+    if(tableView == self.userTable) {
+        if (cell == nil)
+            cell = [[UITableViewCell alloc] init];
+        
+        NSString *peerID = [[_game.players allKeys] objectAtIndex:indexPath.row];
+        cell.textLabel.text = [_game displayNameForPeerID:peerID];
+        
+        return cell;
+    }
+    // else, is the music list
+    else {
+        if (cell == nil) {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+            cell.textLabel.text = ((PlaylistItem *)[_game.playlist objectAtIndex:indexPath.row]).name;
+            cell.detailTextLabel.text = ((PlaylistItem *)[_game.playlist objectAtIndex:indexPath.row]).subtitle;
+            
+            UIButton *addButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+            addButton.frame = CGRectMake(285.0f, 5.0f, 30.0f, 30.0f);
+            [addButton setTitle:@"+" forState:UIControlStateNormal];
+            [cell addSubview:addButton];
+            
+            
+            UIButton *addButton2 = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+            addButton2.frame = CGRectMake(5.0f, 5.0f, 30.0f, 30.0f);
+            [addButton2 setTitle:@"-" forState:UIControlStateNormal];
+            [cell addSubview:addButton2];
+            
+            [addButton addTarget:self
+                          action:@selector(upvoteStuff:)
+                forControlEvents:UIControlEventTouchUpInside];
+            
+            [addButton2 addTarget:self
+                           action:@selector(downvoteStuff:)
+                 forControlEvents:UIControlEventTouchUpInside];
+            
+        }
+        return cell;
+    }
 }
 
+- (IBAction)upvoteStuff:(id)sender
+{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Message"
+                                                    message:@"UPVOTED"
+                                                   delegate:nil
+                                          cancelButtonTitle:@"OK"
+                                          otherButtonTitles:nil];
+    [alert show];
+}
+
+- (IBAction)downvoteStuff:(id)sender
+{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Message"
+                                                    message:@"DOWNVOTED"
+                                                   delegate:nil
+                                          cancelButtonTitle:@"OK" 
+                                          otherButtonTitles:nil];
+    [alert show];
+}
 #pragma mark - UIAlertViewDelegate
 
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
@@ -157,7 +219,6 @@
 {
     [mediaPicker dismissViewControllerAnimated:YES completion:nil];
     
-    NSLog(@"didPickMediaItems:");
     if (mediaItemCollection) {
         
         MPMediaItem *chosenItem = mediaItemCollection.items[0];
@@ -170,7 +231,6 @@
 
 - (void) mediaPickerDidCancel: (MPMediaPickerController *) mediaPicker
 {
-    NSLog(@"mediaPickerDidCancel");
     [mediaPicker dismissViewControllerAnimated:YES completion:nil];
 }
 @end

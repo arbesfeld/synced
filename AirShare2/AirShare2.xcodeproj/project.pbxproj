@@ -25,6 +25,10 @@
 		559096C516FFB3DE004149A0 /* AFURLConnectionOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 559096BA16FFB3DE004149A0 /* AFURLConnectionOperation.m */; };
 		559096C616FFB3DE004149A0 /* AFXMLRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 559096BC16FFB3DE004149A0 /* AFXMLRequestOperation.m */; };
 		559096C716FFB3DE004149A0 /* UIImageView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 559096BE16FFB3DE004149A0 /* UIImageView+AFNetworking.m */; };
+		559096CA16FFE28A004149A0 /* MusicDownload.m in Sources */ = {isa = PBXBuildFile; fileRef = 559096C916FFE28A004149A0 /* MusicDownload.m */; };
+		559096CD16FFE70C004149A0 /* PacketMusic.m in Sources */ = {isa = PBXBuildFile; fileRef = 559096CC16FFE70C004149A0 /* PacketMusic.m */; };
+		559096D01700038F004149A0 /* PlaylistItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 559096CF1700038F004149A0 /* PlaylistItem.m */; };
+		559096D3170006AB004149A0 /* MusicItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 559096D2170006AB004149A0 /* MusicItem.m */; };
 		5596E08C16F62FB600511D3E /* PacketOtherClientQuit.m in Sources */ = {isa = PBXBuildFile; fileRef = 5596E08B16F62FB600511D3E /* PacketOtherClientQuit.m */; };
 		5596E0C916F6746900511D3E /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5596E0C816F6746900511D3E /* MediaPlayer.framework */; };
 		5596E0D716F692CE00511D3E /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5596E0D616F692CE00511D3E /* AudioToolbox.framework */; };
@@ -84,6 +88,14 @@
 		559096BC16FFB3DE004149A0 /* AFXMLRequestOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFXMLRequestOperation.m; sourceTree = "<group>"; };
 		559096BD16FFB3DE004149A0 /* UIImageView+AFNetworking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+AFNetworking.h"; sourceTree = "<group>"; };
 		559096BE16FFB3DE004149A0 /* UIImageView+AFNetworking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+AFNetworking.m"; sourceTree = "<group>"; };
+		559096C816FFE28A004149A0 /* MusicDownload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MusicDownload.h; path = AirShare2/MusicDownload.h; sourceTree = "<group>"; };
+		559096C916FFE28A004149A0 /* MusicDownload.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MusicDownload.m; path = AirShare2/MusicDownload.m; sourceTree = "<group>"; };
+		559096CB16FFE70C004149A0 /* PacketMusic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PacketMusic.h; sourceTree = "<group>"; };
+		559096CC16FFE70C004149A0 /* PacketMusic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PacketMusic.m; sourceTree = "<group>"; };
+		559096CE1700038F004149A0 /* PlaylistItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlaylistItem.h; sourceTree = "<group>"; };
+		559096CF1700038F004149A0 /* PlaylistItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlaylistItem.m; sourceTree = "<group>"; };
+		559096D1170006AB004149A0 /* MusicItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MusicItem.h; sourceTree = "<group>"; };
+		559096D2170006AB004149A0 /* MusicItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MusicItem.m; sourceTree = "<group>"; };
 		5596E08A16F62FB600511D3E /* PacketOtherClientQuit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PacketOtherClientQuit.h; sourceTree = "<group>"; };
 		5596E08B16F62FB600511D3E /* PacketOtherClientQuit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PacketOtherClientQuit.m; sourceTree = "<group>"; };
 		5596E0C816F6746900511D3E /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
@@ -283,8 +295,12 @@
 				550C291916F2BA3800247943 /* PacketPlayerList.m */,
 				5596E08A16F62FB600511D3E /* PacketOtherClientQuit.h */,
 				5596E08B16F62FB600511D3E /* PacketOtherClientQuit.m */,
+				559096CB16FFE70C004149A0 /* PacketMusic.h */,
+				559096CC16FFE70C004149A0 /* PacketMusic.m */,
 				5590968916FF5ED4004149A0 /* MusicUpload.h */,
 				5590968A16FF5ED4004149A0 /* MusicUpload.m */,
+				559096C816FFE28A004149A0 /* MusicDownload.h */,
+				559096C916FFE28A004149A0 /* MusicDownload.m */,
 				55FCC5B116ED3E0C0000BCBD /* MatchmakingServer.h */,
 				55FCC5B216ED3E0D0000BCBD /* MatchmakingServer.m */,
 				55FCC5B416ED3E360000BCBD /* MatchmakingClient.h */,
@@ -296,6 +312,10 @@
 		55FCC5BF16ED62680000BCBD /* DataModel */ = {
 			isa = PBXGroup;
 			children = (
+				559096CE1700038F004149A0 /* PlaylistItem.h */,
+				559096CF1700038F004149A0 /* PlaylistItem.m */,
+				559096D1170006AB004149A0 /* MusicItem.h */,
+				559096D2170006AB004149A0 /* MusicItem.m */,
 				55FCC5C016ED78E80000BCBD /* Player.h */,
 				55FCC5C116ED78E80000BCBD /* Player.m */,
 				55FCC5BC16ED62640000BCBD /* Game.h */,
@@ -406,6 +426,10 @@
 				559096C516FFB3DE004149A0 /* AFURLConnectionOperation.m in Sources */,
 				559096C616FFB3DE004149A0 /* AFXMLRequestOperation.m in Sources */,
 				559096C716FFB3DE004149A0 /* UIImageView+AFNetworking.m in Sources */,
+				559096CA16FFE28A004149A0 /* MusicDownload.m in Sources */,
+				559096CD16FFE70C004149A0 /* PacketMusic.m in Sources */,
+				559096D01700038F004149A0 /* PlaylistItem.m in Sources */,
+				559096D3170006AB004149A0 /* MusicItem.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

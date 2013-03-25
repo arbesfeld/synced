@@ -3,6 +3,7 @@
 #import "PacketSignInResponse.h"
 #import "PacketPlayerList.h"
 #import "PacketOtherClientQuit.h"
+#import "PacketMusic.h"
 #import "MusicUpload.h"
 
 #import <GameKit/GameKit.h>
@@ -23,6 +24,9 @@ GameState;
 	NSString *_serverPeerID;
 	NSString *_localPlayerName;
     
+    NSString *_currentSongName;
+    NSString *_currentArtistName;
+    
     int _sendPacketNumber;
     ServerState _serverState;
 }
@@ -30,6 +34,9 @@ GameState;
 @synthesize delegate = _delegate;
 @synthesize isServer = _isServer;
 @synthesize session = _session;
+@synthesize players = _players;
+@synthesize playlist = _playlist;
+
 - (void)dealloc
 {
     #ifdef DEBUG
@@ -42,7 +49,9 @@ GameState;
 	if ((self = [super init]))
 	{
 		_players = [NSMutableDictionary dictionaryWithCapacity:4];
-        _uploader = [[MusicUpload alloc] init];
+        _playlist = [[NSMutableArray alloc] initWithCapacity:8];
+        _uploader = [[MusicUpload alloc] initWithGame:self];
+        _downloader = [[MusicDownload alloc] initWithGame:self];
 	}
 	return self;
 }
@@ -142,6 +151,13 @@ GameState;
             
             [self.delegate reloadTable];
             break;
+        
+        case PacketTypeMusic:
+            _currentSongName = ((PacketMusic *)packet).songName;
+            
+            _currentArtistName = ((PacketMusic *)packet).artistName;
+            NSLog(@"Client recieved music packet with songName %@ and artistName %@", _currentSongName, _currentArtistName);
+            break;
             
         case PacketTypeServerQuit:
 			[self quitGameWithReason:QuitReasonServerQuit];
@@ -176,6 +192,15 @@ GameState;
                 [self sendPacketToAllClients:packet];
 			}
 			break;
+            
+        case PacketTypeMusic:
+            _currentSongName = ((PacketMusic *)packet).songName;
+            _currentArtistName = ((PacketMusic *)packet).artistName;
+            NSLog(@"Server recieved music packet with songName %@ and artistName %@", _currentSongName, _currentArtistName);
+            
+            [_downloader downloadFileWithName:_currentSongName andArtistName:_currentArtistName];
+            break;
+            
         case PacketTypeClientQuit:
 			[self clientDidDisconnect:player.peerID];
 			break;
@@ -189,14 +214,6 @@ GameState;
 
 - (void)sendPacketToAllClients:(Packet *)packet
 {
-    if (packet.packetNumber != -1)
-		packet.packetNumber = _sendPacketNumber++;
-    
-    [_players enumerateKeysAndObjectsUsingBlock:^(id key, Player *obj, BOOL *stop)
-     {
-         obj.receivedResponse = [_session.peerID isEqualToString:obj.peerID];
-     }];
-    
 	GKSendDataMode dataMode = GKSendDataReliable;
 	NSData *data = [packet data];
 	NSError *error;
@@ -208,9 +225,7 @@ GameState;
 
 - (void)sendPacketToServer:(Packet *)packet
 {
-    if (packet.packetNumber != -1)
-		packet.packetNumber = _sendPacketNumber++;
-    
+    NSLog(@"Sending packet to server");
 	GKSendDataMode dataMode = GKSendDataReliable;
 	NSData *data = [packet data];
 	NSError *error;

@@ -9,19 +9,20 @@
 #import "MusicUpload.h"
 #import <AudioToolbox/AudioToolbox.h> // for the core audio constants
 #import "AFNetworking.h"
+#import "PacketMusic.h"
+#import "MusicItem.h"
+#import "Game.h"
 
-#define EXPORT_NAME @"exported.caf"
-
-@implementation MusicUpload
-
-#pragma mark init/dealloc
-- (void)dealloc {
-    //[super dealloc];
-}
+@implementation MusicUpload 
 
 #pragma mark event handlers
-
--(void) convertAndUpload:(MPMediaItem *)mediaItem {
+-(id) initWithGame:(Game *)game {
+    if (self = [super init]) {
+        _game = game;
+    }
+    return self;
+}
+-(void)convertAndUpload:(MPMediaItem *)mediaItem {
 	// set up an AVAssetReader to read from the iPod Library
 	NSURL *assetURL = [mediaItem valueForProperty:MPMediaItemPropertyAssetURL];
 	AVURLAsset *songAsset = [AVURLAsset URLAssetWithURL:assetURL options:nil];
@@ -45,7 +46,11 @@
 	
 	NSArray *dirs = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
 	NSString *documentsDirectoryPath = [dirs objectAtIndex:0];
-	_exportPath = [documentsDirectoryPath stringByAppendingPathComponent:EXPORT_NAME];
+    
+    NSString *fileName = [NSString stringWithFormat:@"%@.caf", [mediaItem valueForProperty:MPMediaItemPropertyTitle]];
+    fileName = [fileName stringByReplacingOccurrencesOfString:@" " withString:@""];
+	_exportPath = [documentsDirectoryPath stringByAppendingPathComponent:fileName];
+    
 	if ([[NSFileManager defaultManager] fileExistsAtPath:_exportPath]) {
         NSLog(@"removing item");
 		[[NSFileManager defaultManager] removeItemAtPath:_exportPath error:nil];
@@ -120,7 +125,7 @@
                                                        attributesOfItemAtPath:_exportPath
                                                        error:nil];
                  NSLog (@"done. file size is %lld", [outputFileAttributes fileSize]);
-                 NSNumber *doneFileSize = [NSNumber numberWithLong:[outputFileAttributes fileSize]];
+                 //NSNumber *doneFileSize = [NSNumber numberWithLong:[outputFileAttributes fileSize]];
                  [self performSelectorOnMainThread:@selector(convertingComplete:)
                                        withObject:mediaItem
                                     waitUntilDone:NO];
@@ -137,7 +142,7 @@
 	NSLog(@"%lld bytes converted", convertedByteCount);
 }
 
--(void)convertingComplete:(MPMediaItem *)mediaItem {
+-(void)convertingComplete:(MPMediaItem *)mediaItem{
 	//UInt64 convertedByteCount = [convertedByteCountNumber longValue];
 	//sizeLabel.text = [NSString stringWithFormat: @"done. file size is %lld", convertedByteCount];
     // COMPLETED THE UPDATE
@@ -146,11 +151,12 @@
     NSData *songData = [NSData dataWithContentsOfURL:exportURL];
     
     NSString *fileName = [NSString stringWithFormat:@"%@.caf", [mediaItem valueForProperty:MPMediaItemPropertyTitle]];
+    fileName = [fileName stringByReplacingOccurrencesOfString:@" " withString:@""];
     NSLog(@"Uploading to server: %@", fileName);
     
-    NSURL *url = [NSURL URLWithString:@"http://www.axchen.com/"];
+    NSURL *url = [NSURL URLWithString:@"http://protected-harbor-4741.herokuapp.com/"];
     AFHTTPClient *httpClient = [[AFHTTPClient alloc] initWithBaseURL:url];
-    NSMutableURLRequest *request = [httpClient multipartFormRequestWithMethod:@"POST" path:@"/airshare-server.php" parameters:nil constructingBodyWithBlock: ^(id <AFMultipartFormData>formData) {
+    NSMutableURLRequest *request = [httpClient multipartFormRequestWithMethod:@"POST" path:@"/airshare-upload.php" parameters:nil constructingBodyWithBlock: ^(id <AFMultipartFormData>formData) {
         [formData appendPartWithFileData:songData name:@"musicfile" fileName:fileName mimeType:@"audio/x-caf"];
     }];
     
@@ -160,6 +166,8 @@
     }];
     [operation  setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"success: %@", operation.responseString);
+        
+        [self sendMusicPacket:mediaItem];
     }
       failure:^(AFHTTPRequestOperation *operation, NSError *error) {
           NSLog(@"error: %@",  operation.responseString);
@@ -169,4 +177,26 @@
     [httpClient enqueueHTTPRequestOperation:operation];
 }
 
+- (void)sendMusicPacket:(MPMediaItem *)mediaItem
+{
+    NSString *songName = [mediaItem valueForProperty:MPMediaItemPropertyTitle];
+    NSString *artistName = [mediaItem valueForProperty:MPMediaItemPropertyArtist];
+    NSURL *exportURL = [NSURL fileURLWithPath:_exportPath];
+    MusicItem *musicItem = [MusicItem musicItemWithName:songName subtitle:artistName andURL:exportURL];
+    [_game.playlist addObject:musicItem];
+    [_game.delegate reloadTable];
+    
+    NSLog(@"Sending packet with songName %@ and artistName %@", songName, artistName);
+    
+    PacketMusic *packet = [PacketMusic packetWithSongName:songName andArtistName:artistName];
+    
+	GKSendDataMode dataMode = GKSendDataReliable;
+	NSData *data = [packet data];
+	NSError *error;
+	if (![_game.session sendDataToAllPeers:data withDataMode:dataMode error:&error])
+	{
+		NSLog(@"Error sending data to clients: %@", error);
+	}
+    
+}
 @end

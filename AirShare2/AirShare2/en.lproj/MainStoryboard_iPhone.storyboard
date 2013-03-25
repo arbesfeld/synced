@@ -153,23 +153,36 @@
                                     <action selector="playMusic:" destination="FQX-ru-M2g" eventType="touchUpInside" id="Rck-B9-MZ7"/>
                                 </connections>
                             </button>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="ge9-R5-1vQ">
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="265" id="7ZT-iE-8X4"/>
+                                    <constraint firstAttribute="width" constant="262" id="dEK-ay-k9S"/>
+                                </constraints>
+                                <connections>
+                                    <outlet property="dataSource" destination="FQX-ru-M2g" id="gBR-V0-bi1"/>
+                                </connections>
+                            </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="bottom" secondItem="1Sy-ST-eaC" secondAttribute="bottom" constant="13" id="HDl-sC-wnC"/>
                             <constraint firstAttribute="bottom" secondItem="YuW-3R-SF1" secondAttribute="bottom" constant="20" symbolic="YES" type="default" id="MoQ-v8-J2U"/>
                             <constraint firstItem="IVa-kZ-LtJ" firstAttribute="leading" secondItem="BCy-oa-ZtW" secondAttribute="leading" constant="8" id="OOf-hz-ZpY"/>
+                            <constraint firstItem="ge9-R5-1vQ" firstAttribute="top" secondItem="BCy-oa-ZtW" secondAttribute="top" constant="43" id="QgI-SD-G94"/>
+                            <constraint firstItem="ge9-R5-1vQ" firstAttribute="centerX" secondItem="nPy-zn-dlt" secondAttribute="centerX" type="default" id="Xd9-jM-g6I"/>
                             <constraint firstItem="YuW-3R-SF1" firstAttribute="top" secondItem="IVa-kZ-LtJ" secondAttribute="bottom" constant="8" symbolic="YES" type="default" id="f6A-pI-m35"/>
                             <constraint firstItem="YuW-3R-SF1" firstAttribute="leading" secondItem="BCy-oa-ZtW" secondAttribute="leading" constant="20" symbolic="YES" type="default" id="gLQ-Sx-MMx"/>
                             <constraint firstItem="1Sy-ST-eaC" firstAttribute="leading" secondItem="BCy-oa-ZtW" secondAttribute="leading" constant="121" id="oAM-Pb-nHm"/>
-                            <constraint firstItem="nPy-zn-dlt" firstAttribute="centerX" secondItem="BCy-oa-ZtW" secondAttribute="centerX" type="default" id="qKM-9Q-6Jc"/>
                             <constraint firstItem="nPy-zn-dlt" firstAttribute="top" secondItem="BCy-oa-ZtW" secondAttribute="top" constant="8" id="v8R-tm-sE5"/>
+                            <constraint firstItem="ge9-R5-1vQ" firstAttribute="centerX" secondItem="BCy-oa-ZtW" secondAttribute="centerX" type="default" id="yWn-61-t6w"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="centerLabel" destination="nPy-zn-dlt" id="mbS-NQ-sfR"/>
                         <outlet property="exitButton" destination="YuW-3R-SF1" id="PO5-ox-su0"/>
-                        <outlet property="tableView" destination="1Sy-ST-eaC" id="UbS-Aq-wND"/>
+                        <outlet property="playlistTable" destination="ge9-R5-1vQ" id="yzh-kt-lei"/>
+                        <outlet property="userTable" destination="1Sy-ST-eaC" id="SWy-XQ-Qwx"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BCb-K1-RkR" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -181,11 +194,14 @@
         <class className="GameViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/GameViewController.h"/>
             <relationships>
+                <relationship kind="action" name="downvoteStuff:"/>
                 <relationship kind="action" name="exitAction:"/>
                 <relationship kind="action" name="playMusic:"/>
+                <relationship kind="action" name="upvoteStuff:"/>
                 <relationship kind="outlet" name="centerLabel" candidateClass="UILabel"/>
                 <relationship kind="outlet" name="exitButton" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="tableView" candidateClass="UITableView"/>
+                <relationship kind="outlet" name="playlistTable" candidateClass="UITableView"/>
+                <relationship kind="outlet" name="userTable" candidateClass="UITableView"/>
             </relationships>
         </class>
         <class className="MainViewController" superclassName="UIViewController">
