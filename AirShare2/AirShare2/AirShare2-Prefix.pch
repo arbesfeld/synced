@@ -13,6 +13,8 @@
     #import <Foundation/Foundation.h>
 #endif
 
+#import <SystemConfiguration/SystemConfiguration.h>
+#import <MobileCoreServices/MobileCoreServices.h>
 // The name of the GameKit session.
 #define SESSION_ID @"AirShare"
 

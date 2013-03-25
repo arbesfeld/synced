@@ -3,6 +3,7 @@
 #import "PacketSignInResponse.h"
 #import "PacketPlayerList.h"
 #import "PacketOtherClientQuit.h"
+#import "MusicUpload.h"
 
 #import <GameKit/GameKit.h>
 
@@ -41,6 +42,7 @@ GameState;
 	if ((self = [super init]))
 	{
 		_players = [NSMutableDictionary dictionaryWithCapacity:4];
+        _uploader = [[MusicUpload alloc] init];
 	}
 	return self;
 }
@@ -221,7 +223,7 @@ GameState;
 - (void)uploadMusicWithMediaItem:(MPMediaItem *)song
 {
     NSLog(@"Game: playMusicWithURL: %@", [song valueForProperty:MPMediaItemPropertyAssetURL]);
-    
+    [_uploader convertAndUpload:song];
 }
 // identical stuff to MatchmakingServer
 #pragma mark - GKSessionDelegate

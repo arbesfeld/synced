@@ -2,6 +2,7 @@
 #import "MatchmakingServer.h"
 #import "Player.h"
 #import <MediaPlayer/MediaPlayer.h>
+#import "MusicUpload.h"
 
 typedef enum
 {
@@ -28,7 +29,9 @@ ServerState;
 
 @end
 
-@interface Game : NSObject <GKSessionDelegate>
+@interface Game : NSObject <GKSessionDelegate> {
+    MusicUpload *_uploader;
+}
 
 @property (nonatomic, weak) id <GameDelegate> delegate;
 @property (nonatomic, assign) BOOL isServer;
