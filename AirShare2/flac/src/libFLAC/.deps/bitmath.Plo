@@ -1,0 +1,33 @@
+bitmath.lo bitmath.o: bitmath.c ../../config.h include/private/bitmath.h \
+  ../../include/FLAC/ordinals.h /usr/include/inttypes.h \
+  /usr/include/sys/cdefs.h /usr/include/sys/_symbol_aliasing.h \
+  /usr/include/sys/_posix_availability.h /usr/include/_types.h \
+  /usr/include/sys/_types.h /usr/include/machine/_types.h \
+  /usr/include/i386/_types.h /usr/include/stdint.h \
+  ../../include/FLAC/assert.h
+
+../../config.h:
+
+include/private/bitmath.h:
+
+../../include/FLAC/ordinals.h:
+
+/usr/include/inttypes.h:
+
+/usr/include/sys/cdefs.h:
+
+/usr/include/sys/_symbol_aliasing.h:
+
+/usr/include/sys/_posix_availability.h:
+
+/usr/include/_types.h:
+
+/usr/include/sys/_types.h:
+
+/usr/include/machine/_types.h:
+
+/usr/include/i386/_types.h:
+
+/usr/include/stdint.h:
+
+../../include/FLAC/assert.h:

@@ -29,6 +29,7 @@
 		559096CD16FFE70C004149A0 /* PacketMusic.m in Sources */ = {isa = PBXBuildFile; fileRef = 559096CC16FFE70C004149A0 /* PacketMusic.m */; };
 		559096D01700038F004149A0 /* PlaylistItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 559096CF1700038F004149A0 /* PlaylistItem.m */; };
 		559096D3170006AB004149A0 /* MusicItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 559096D2170006AB004149A0 /* MusicItem.m */; };
+		5592FEFD1700D65B0038ED40 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5592FEFC1700D65B0038ED40 /* CoreAudio.framework */; };
 		5596E08C16F62FB600511D3E /* PacketOtherClientQuit.m in Sources */ = {isa = PBXBuildFile; fileRef = 5596E08B16F62FB600511D3E /* PacketOtherClientQuit.m */; };
 		5596E0C916F6746900511D3E /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5596E0C816F6746900511D3E /* MediaPlayer.framework */; };
 		5596E0D716F692CE00511D3E /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5596E0D616F692CE00511D3E /* AudioToolbox.framework */; };
@@ -96,12 +97,23 @@
 		559096CF1700038F004149A0 /* PlaylistItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlaylistItem.m; sourceTree = "<group>"; };
 		559096D1170006AB004149A0 /* MusicItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MusicItem.h; sourceTree = "<group>"; };
 		559096D2170006AB004149A0 /* MusicItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MusicItem.m; sourceTree = "<group>"; };
+		5592FEFC1700D65B0038ED40 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
 		5596E08A16F62FB600511D3E /* PacketOtherClientQuit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PacketOtherClientQuit.h; sourceTree = "<group>"; };
 		5596E08B16F62FB600511D3E /* PacketOtherClientQuit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PacketOtherClientQuit.m; sourceTree = "<group>"; };
 		5596E0C816F6746900511D3E /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		5596E0D616F692CE00511D3E /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		5596E0D816F692D300511D3E /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		5596E0DA16F6930600511D3E /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		55B940DD1700F918005C689E /* FLACiOS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FLACiOS.framework; path = ../../../Desktop/FLACiOS.framework; sourceTree = "<group>"; };
+		55B940E11700F9B1005C689E /* all.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = all.h; path = "Debug-iphonesimulator/\"FLACiOSHeaders\" /all.h"; sourceTree = "<group>"; };
+		55B940E21700F9B1005C689E /* assert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = assert.h; path = "Debug-iphonesimulator/\"FLACiOSHeaders\" /assert.h"; sourceTree = "<group>"; };
+		55B940E31700F9B1005C689E /* callback.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = callback.h; path = "Debug-iphonesimulator/\"FLACiOSHeaders\" /callback.h"; sourceTree = "<group>"; };
+		55B940E41700F9B1005C689E /* export.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = export.h; path = "Debug-iphonesimulator/\"FLACiOSHeaders\" /export.h"; sourceTree = "<group>"; };
+		55B940E51700F9B1005C689E /* format.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = format.h; path = "Debug-iphonesimulator/\"FLACiOSHeaders\" /format.h"; sourceTree = "<group>"; };
+		55B940E61700F9B1005C689E /* metadata.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = metadata.h; path = "Debug-iphonesimulator/\"FLACiOSHeaders\" /metadata.h"; sourceTree = "<group>"; };
+		55B940E71700F9B1005C689E /* ordinals.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ordinals.h; path = "Debug-iphonesimulator/\"FLACiOSHeaders\" /ordinals.h"; sourceTree = "<group>"; };
+		55B940E81700F9B1005C689E /* stream_decoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = stream_decoder.h; path = "Debug-iphonesimulator/\"FLACiOSHeaders\" /stream_decoder.h"; sourceTree = "<group>"; };
+		55B940E91700F9B1005C689E /* stream_encoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = stream_encoder.h; path = "Debug-iphonesimulator/\"FLACiOSHeaders\" /stream_encoder.h"; sourceTree = "<group>"; };
 		55FCC54916ED3D4C0000BCBD /* AirShare2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AirShare2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		55FCC54C16ED3D4C0000BCBD /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		55FCC54E16ED3D4C0000BCBD /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -143,6 +155,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5592FEFD1700D65B0038ED40 /* CoreAudio.framework in Frameworks */,
 				5590969016FF6553004149A0 /* SystemConfiguration.framework in Frameworks */,
 				5590968E16FF64A5004149A0 /* MobileCoreServices.framework in Frameworks */,
 				5590968D16FF63C5004149A0 /* CFNetwork.framework in Frameworks */,
@@ -204,9 +217,26 @@
 			name = AFNetworking;
 			sourceTree = "<group>";
 		};
+		55F1D19B1701036D0064A6FF /* FLAC */ = {
+			isa = PBXGroup;
+			children = (
+				55B940E11700F9B1005C689E /* all.h */,
+				55B940E21700F9B1005C689E /* assert.h */,
+				55B940E31700F9B1005C689E /* callback.h */,
+				55B940E41700F9B1005C689E /* export.h */,
+				55B940E51700F9B1005C689E /* format.h */,
+				55B940E61700F9B1005C689E /* metadata.h */,
+				55B940E71700F9B1005C689E /* ordinals.h */,
+				55B940E81700F9B1005C689E /* stream_decoder.h */,
+				55B940E91700F9B1005C689E /* stream_encoder.h */,
+			);
+			name = FLAC;
+			sourceTree = "<group>";
+		};
 		55FCC54016ED3D4C0000BCBD = {
 			isa = PBXGroup;
 			children = (
+				55F1D19B1701036D0064A6FF /* FLAC */,
 				5590968816FF5E9B004149A0 /* AFNetworking */,
 				55FCC5C916ED7A620000BCBD /* AirShareAdditions */,
 				55FCC5BF16ED62680000BCBD /* DataModel */,
@@ -229,6 +259,8 @@
 		55FCC54B16ED3D4C0000BCBD /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				55B940DD1700F918005C689E /* FLACiOS.framework */,
+				5592FEFC1700D65B0038ED40 /* CoreAudio.framework */,
 				5590968F16FF6553004149A0 /* SystemConfiguration.framework */,
 				5590968C16FF63C5004149A0 /* CFNetwork.framework */,
 				5596E0DA16F6930600511D3E /* CoreMedia.framework */,
@@ -524,10 +556,20 @@
 		55FCC57016ED3D4C0000BCBD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/../../../Desktop\"",
+					"\"$(SRCROOT)/Debug-iphonesimulator\"",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AirShare2/AirShare2-Prefix.pch";
 				INFOPLIST_FILE = "AirShare2/AirShare2-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/FLAC\"",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				USER_HEADER_SEARCH_PATHS = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -535,10 +577,20 @@
 		55FCC57116ED3D4C0000BCBD /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/../../../Desktop\"",
+					"\"$(SRCROOT)/Debug-iphonesimulator\"",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AirShare2/AirShare2-Prefix.pch";
 				INFOPLIST_FILE = "AirShare2/AirShare2-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/FLAC\"",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				USER_HEADER_SEARCH_PATHS = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

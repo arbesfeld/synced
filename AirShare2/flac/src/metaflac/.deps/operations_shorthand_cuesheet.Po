@@ -1,0 +1,155 @@
+operations_shorthand_cuesheet.o operations_shorthand_cuesheet.o:  \
+ operations_shorthand_cuesheet.c ../../config.h /usr/include/errno.h \
+  /usr/include/sys/errno.h /usr/include/sys/cdefs.h \
+  /usr/include/sys/_symbol_aliasing.h \
+  /usr/include/sys/_posix_availability.h /usr/include/stdio.h \
+  /usr/include/Availability.h /usr/include/AvailabilityInternal.h \
+  /usr/include/_types.h /usr/include/sys/_types.h \
+  /usr/include/machine/_types.h /usr/include/i386/_types.h \
+  /usr/include/secure/_stdio.h /usr/include/secure/_common.h \
+  /usr/include/string.h /usr/include/strings.h \
+  /usr/include/secure/_string.h options.h ../../include/FLAC/format.h \
+  ../../include/FLAC/export.h ../../include/FLAC/ordinals.h \
+  /usr/include/inttypes.h /usr/include/stdint.h \
+  ../../include/share/getopt.h utils.h ../../include/FLAC/metadata.h \
+  /usr/include/sys/types.h /usr/include/sys/appleapiopts.h \
+  /usr/include/machine/types.h /usr/include/i386/types.h \
+  /usr/include/i386/_types.h /usr/include/machine/endian.h \
+  /usr/include/i386/endian.h /usr/include/sys/_endian.h \
+  /usr/include/libkern/_OSByteOrder.h \
+  /usr/include/libkern/i386/_OSByteOrder.h /usr/include/sys/_structs.h \
+  ../../include/FLAC/callback.h /usr/include/stdlib.h \
+  /usr/include/sys/wait.h /usr/include/sys/signal.h \
+  /usr/include/machine/signal.h /usr/include/i386/signal.h \
+  /usr/include/i386/_structs.h /usr/include/machine/_structs.h \
+  /usr/include/mach/i386/_structs.h /usr/include/sys/resource.h \
+  /usr/include/alloca.h ../../include/FLAC/format.h \
+  ../../include/FLAC/assert.h ../../include/share/grabbag.h \
+  ../../include/share/grabbag/cuesheet.h ../../include/FLAC/metadata.h \
+  ../../include/share/grabbag/file.h ../../include/FLAC/ordinals.h \
+  ../../include/share/grabbag/picture.h \
+  ../../include/share/grabbag/replaygain.h \
+  ../../include/share/grabbag/seektable.h ../../include/FLAC/format.h \
+  operations_shorthand.h
+
+../../config.h:
+
+/usr/include/errno.h:
+
+/usr/include/sys/errno.h:
+
+/usr/include/sys/cdefs.h:
+
+/usr/include/sys/_symbol_aliasing.h:
+
+/usr/include/sys/_posix_availability.h:
+
+/usr/include/stdio.h:
+
+/usr/include/Availability.h:
+
+/usr/include/AvailabilityInternal.h:
+
+/usr/include/_types.h:
+
+/usr/include/sys/_types.h:
+
+/usr/include/machine/_types.h:
+
+/usr/include/i386/_types.h:
+
+/usr/include/secure/_stdio.h:
+
+/usr/include/secure/_common.h:
+
+/usr/include/string.h:
+
+/usr/include/strings.h:
+
+/usr/include/secure/_string.h:
+
+options.h:
+
+../../include/FLAC/format.h:
+
+../../include/FLAC/export.h:
+
+../../include/FLAC/ordinals.h:
+
+/usr/include/inttypes.h:
+
+/usr/include/stdint.h:
+
+../../include/share/getopt.h:
+
+utils.h:
+
+../../include/FLAC/metadata.h:
+
+/usr/include/sys/types.h:
+
+/usr/include/sys/appleapiopts.h:
+
+/usr/include/machine/types.h:
+
+/usr/include/i386/types.h:
+
+/usr/include/i386/_types.h:
+
+/usr/include/machine/endian.h:
+
+/usr/include/i386/endian.h:
+
+/usr/include/sys/_endian.h:
+
+/usr/include/libkern/_OSByteOrder.h:
+
+/usr/include/libkern/i386/_OSByteOrder.h:
+
+/usr/include/sys/_structs.h:
+
+../../include/FLAC/callback.h:
+
+/usr/include/stdlib.h:
+
+/usr/include/sys/wait.h:
+
+/usr/include/sys/signal.h:
+
+/usr/include/machine/signal.h:
+
+/usr/include/i386/signal.h:
+
+/usr/include/i386/_structs.h:
+
+/usr/include/machine/_structs.h:
+
+/usr/include/mach/i386/_structs.h:
+
+/usr/include/sys/resource.h:
+
+/usr/include/alloca.h:
+
+../../include/FLAC/format.h:
+
+../../include/FLAC/assert.h:
+
+../../include/share/grabbag.h:
+
+../../include/share/grabbag/cuesheet.h:
+
+../../include/FLAC/metadata.h:
+
+../../include/share/grabbag/file.h:
+
+../../include/FLAC/ordinals.h:
+
+../../include/share/grabbag/picture.h:
+
+../../include/share/grabbag/replaygain.h:
+
+../../include/share/grabbag/seektable.h:
+
+../../include/FLAC/format.h:
+
+operations_shorthand.h:

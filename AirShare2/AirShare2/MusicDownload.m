@@ -31,12 +31,12 @@
         [prams appendFormat:@"%@=%@&",keys,[dict objectForKey:keys]];
     }
     NSString *removeLastChar = [prams substringWithRange:NSMakeRange(0, [prams length]-1)];
-    NSString *urlString = [NSString stringWithFormat:@"http://protected-harbor-4741.herokuapp.com/airshare-download.php?%@.caf",removeLastChar];
+    NSString *urlString = [NSString stringWithFormat:@"http://protected-harbor-4741.herokuapp.com/airshare-download.php?%@.flac",removeLastChar];
     
     NSLog(@"requestString %@",urlString);
     
     // the name of the locally saved file
-    NSString *saveName = [NSString stringWithFormat:@"%@.caf", fileNameNoSpaces];
+    NSString *saveName = [NSString stringWithFormat:@"%@.flac", fileNameNoSpaces];
     saveName = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:saveName];
     
     NSLog(@"saveName: %@", saveName);
