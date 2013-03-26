@@ -146,7 +146,6 @@
 	//sizeLabel.text = [NSString stringWithFormat: @"done. file size is %lld", convertedByteCount];
     // COMPLETED THE UPDATE
     NSURL *exportURL = [NSURL fileURLWithPath:_exportPath];
-    NSLog(@"URL: %@", _exportPath);
     NSData *songData = [NSData dataWithContentsOfURL:exportURL];
     
     NSString *fileName = [NSString stringWithFormat:@"%@.m4a", [mediaItem valueForProperty:MPMediaItemPropertyTitle]];
@@ -165,7 +164,6 @@
     }];
     [operation  setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"success: %@", operation.responseString);
-        
         [self sendMusicPacket:mediaItem];
     }
       failure:^(AFHTTPRequestOperation *operation, NSError *error) {

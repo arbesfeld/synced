@@ -33,13 +33,13 @@
     NSString *removeLastChar = [prams substringWithRange:NSMakeRange(0, [prams length]-1)];
     NSString *urlString = [NSString stringWithFormat:@"http://protected-harbor-4741.herokuapp.com/airshare-download.php?%@.m4a",removeLastChar];
     
-    NSLog(@"requestString %@",urlString);
+    NSLog(@"GET Request = %@",urlString);
     
     // the name of the locally saved file
     NSString *saveName = [NSString stringWithFormat:@"%@.m4a", fileNameNoSpaces];
     saveName = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:saveName];
     
-    NSLog(@"saveName: %@", saveName);
+    NSLog(@"Local File Name = %@", saveName);
 
     // asynchronous download
     AFHTTPClient *httpClient = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:@"http://protected-harbor-4741.herokuapp.com/"]];
@@ -62,15 +62,7 @@
         NSLog(@"Added music item with description: %@", [musicItem description]);
         [_game.playlist addObject:musicItem];
         [_game.delegate reloadTable];
-        NSError *error;
-        _audioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:[[NSURL alloc] initWithString:saveName] error:&error];
-        _audioPlayer.delegate = self;
-        if (_audioPlayer == nil) {
-            NSLog(@"AudioPlayer did not load properly: %@", [error description]);
-        } else {
-            [_audioPlayer prepareToPlay];
-            [_audioPlayer play];
-        }
+        [_game serverPrepareToPlayMusicItem:musicItem];
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error: %@", error);

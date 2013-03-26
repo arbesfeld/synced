@@ -8,7 +8,6 @@
 
 #import "PacketMusic.h"
 #import "NSData+AirShareAdditions.h"
-#import "Packet.h"
 
 @implementation PacketMusic
 

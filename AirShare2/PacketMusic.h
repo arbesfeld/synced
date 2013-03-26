@@ -7,7 +7,6 @@
 //
 
 #import "Packet.h"
-#import <MediaPlayer/MediaPlayer.h>
 
 @interface PacketMusic : Packet
 

@@ -7,14 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <AVFoundation/AVFoundation.h>
 
 @class Game;
 
-@interface MusicDownload : NSObject <AVAudioPlayerDelegate>
+@interface MusicDownload : NSObject
 {
     Game *_game;
-    AVAudioPlayer *_audioPlayer;
 }
 
 -(id)initWithGame:(Game *)game;

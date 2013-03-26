@@ -1,7 +1,9 @@
 #import <GameKit/GameKit.h>
 #import <MediaPlayer/MediaPlayer.h>
+#import <AVFoundation/AVFoundation.h>
 
 #import "MatchmakingServer.h"
+#import "MusicItem.h"
 #import "Player.h"
 #import "MusicUpload.h"
 #import "MusicDownload.h"
@@ -32,9 +34,11 @@ ServerState;
 
 @end
 
-@interface Game : NSObject <GKSessionDelegate> {
+@interface Game : NSObject <GKSessionDelegate, AVAudioPlayerDelegate> {
     MusicUpload *_uploader;
     MusicDownload *_downloader;
+    
+    AVAudioPlayer *_audioPlayer;
 }
 
 @property (nonatomic, weak) id <GameDelegate> delegate;
@@ -53,4 +57,6 @@ ServerState;
 - (void)stopAcceptingConnections;
 
 - (void)uploadMusicWithMediaItem:(MPMediaItem *)song;
+
+- (void)serverPrepareToPlayMusicItem:(MusicItem *)musicItem;
 @end

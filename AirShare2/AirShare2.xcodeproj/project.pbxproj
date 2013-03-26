@@ -34,7 +34,7 @@
 		5596E0C916F6746900511D3E /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5596E0C816F6746900511D3E /* MediaPlayer.framework */; };
 		5596E0D716F692CE00511D3E /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5596E0D616F692CE00511D3E /* AudioToolbox.framework */; };
 		5596E0DB16F6930700511D3E /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5596E0DA16F6930600511D3E /* CoreMedia.framework */; };
-		55A31C0117013A0C00A1FFC8 /* FLACiOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55A31C0017013A0C00A1FFC8 /* FLACiOS.framework */; };
+		55A31C0417017B6F00A1FFC8 /* PacketPlayMusicNow.m in Sources */ = {isa = PBXBuildFile; fileRef = 55A31C0317017B6F00A1FFC8 /* PacketPlayMusicNow.m */; };
 		55FCC54D16ED3D4C0000BCBD /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55FCC54C16ED3D4C0000BCBD /* UIKit.framework */; };
 		55FCC54F16ED3D4C0000BCBD /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55FCC54E16ED3D4C0000BCBD /* Foundation.framework */; };
 		55FCC55116ED3D4C0000BCBD /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55FCC55016ED3D4C0000BCBD /* CoreGraphics.framework */; };
@@ -105,16 +105,8 @@
 		5596E0D616F692CE00511D3E /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		5596E0D816F692D300511D3E /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		5596E0DA16F6930600511D3E /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
-		55A31C0017013A0C00A1FFC8 /* FLACiOS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FLACiOS.framework; path = "Debug-iphonesimulator/FLACiOS.framework"; sourceTree = "<group>"; };
-		55B940E11700F9B1005C689E /* all.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = all.h; path = "Debug-iphonesimulator/\"FLACiOSHeaders\" /all.h"; sourceTree = "<group>"; };
-		55B940E21700F9B1005C689E /* assert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = assert.h; path = "Debug-iphonesimulator/\"FLACiOSHeaders\" /assert.h"; sourceTree = "<group>"; };
-		55B940E31700F9B1005C689E /* callback.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = callback.h; path = "Debug-iphonesimulator/\"FLACiOSHeaders\" /callback.h"; sourceTree = "<group>"; };
-		55B940E41700F9B1005C689E /* export.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = export.h; path = "Debug-iphonesimulator/\"FLACiOSHeaders\" /export.h"; sourceTree = "<group>"; };
-		55B940E51700F9B1005C689E /* format.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = format.h; path = "Debug-iphonesimulator/\"FLACiOSHeaders\" /format.h"; sourceTree = "<group>"; };
-		55B940E61700F9B1005C689E /* metadata.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = metadata.h; path = "Debug-iphonesimulator/\"FLACiOSHeaders\" /metadata.h"; sourceTree = "<group>"; };
-		55B940E71700F9B1005C689E /* ordinals.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ordinals.h; path = "Debug-iphonesimulator/\"FLACiOSHeaders\" /ordinals.h"; sourceTree = "<group>"; };
-		55B940E81700F9B1005C689E /* stream_decoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = stream_decoder.h; path = "Debug-iphonesimulator/\"FLACiOSHeaders\" /stream_decoder.h"; sourceTree = "<group>"; };
-		55B940E91700F9B1005C689E /* stream_encoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = stream_encoder.h; path = "Debug-iphonesimulator/\"FLACiOSHeaders\" /stream_encoder.h"; sourceTree = "<group>"; };
+		55A31C0217017B6F00A1FFC8 /* PacketPlayMusicNow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PacketPlayMusicNow.h; sourceTree = "<group>"; };
+		55A31C0317017B6F00A1FFC8 /* PacketPlayMusicNow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PacketPlayMusicNow.m; sourceTree = "<group>"; };
 		55FCC54916ED3D4C0000BCBD /* AirShare2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AirShare2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		55FCC54C16ED3D4C0000BCBD /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		55FCC54E16ED3D4C0000BCBD /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -156,7 +148,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				55A31C0117013A0C00A1FFC8 /* FLACiOS.framework in Frameworks */,
 				5592FEFD1700D65B0038ED40 /* CoreAudio.framework in Frameworks */,
 				5590969016FF6553004149A0 /* SystemConfiguration.framework in Frameworks */,
 				5590968E16FF64A5004149A0 /* MobileCoreServices.framework in Frameworks */,
@@ -219,26 +210,9 @@
 			name = AFNetworking;
 			sourceTree = "<group>";
 		};
-		55F1D19B1701036D0064A6FF /* FLAC */ = {
-			isa = PBXGroup;
-			children = (
-				55B940E11700F9B1005C689E /* all.h */,
-				55B940E21700F9B1005C689E /* assert.h */,
-				55B940E31700F9B1005C689E /* callback.h */,
-				55B940E41700F9B1005C689E /* export.h */,
-				55B940E51700F9B1005C689E /* format.h */,
-				55B940E61700F9B1005C689E /* metadata.h */,
-				55B940E71700F9B1005C689E /* ordinals.h */,
-				55B940E81700F9B1005C689E /* stream_decoder.h */,
-				55B940E91700F9B1005C689E /* stream_encoder.h */,
-			);
-			name = FLAC;
-			sourceTree = "<group>";
-		};
 		55FCC54016ED3D4C0000BCBD = {
 			isa = PBXGroup;
 			children = (
-				55F1D19B1701036D0064A6FF /* FLAC */,
 				5590968816FF5E9B004149A0 /* AFNetworking */,
 				55FCC5C916ED7A620000BCBD /* AirShareAdditions */,
 				55FCC5BF16ED62680000BCBD /* DataModel */,
@@ -261,7 +235,6 @@
 		55FCC54B16ED3D4C0000BCBD /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				55A31C0017013A0C00A1FFC8 /* FLACiOS.framework */,
 				5592FEFC1700D65B0038ED40 /* CoreAudio.framework */,
 				5590968F16FF6553004149A0 /* SystemConfiguration.framework */,
 				5590968C16FF63C5004149A0 /* CFNetwork.framework */,
@@ -331,6 +304,8 @@
 				5596E08B16F62FB600511D3E /* PacketOtherClientQuit.m */,
 				559096CB16FFE70C004149A0 /* PacketMusic.h */,
 				559096CC16FFE70C004149A0 /* PacketMusic.m */,
+				55A31C0217017B6F00A1FFC8 /* PacketPlayMusicNow.h */,
+				55A31C0317017B6F00A1FFC8 /* PacketPlayMusicNow.m */,
 				5590968916FF5ED4004149A0 /* MusicUpload.h */,
 				5590968A16FF5ED4004149A0 /* MusicUpload.m */,
 				559096C816FFE28A004149A0 /* MusicDownload.h */,
@@ -464,6 +439,7 @@
 				559096CD16FFE70C004149A0 /* PacketMusic.m in Sources */,
 				559096D01700038F004149A0 /* PlaylistItem.m in Sources */,
 				559096D3170006AB004149A0 /* MusicItem.m in Sources */,
+				55A31C0417017B6F00A1FFC8 /* PacketPlayMusicNow.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
