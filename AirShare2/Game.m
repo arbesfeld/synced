@@ -6,11 +6,12 @@
 #import "PacketMusic.h"
 #import "PacketPlayMusicNow.h"
 
+#import "AFNetworking.h"
 #import "MusicUpload.h"
 
 #import <GameKit/GameKit.h>
 
-const int DELAY_TIME = 8; // wait 8 seconds until songs play
+const double DELAY_TIME = 2.000; // wait 8 seconds until songs play
 typedef enum
 {
 	GameStateWaitingForSignIn,
@@ -26,6 +27,8 @@ GameState;
     
 	NSString *_serverPeerID;
 	NSString *_localPlayerName;
+    
+    NSDateFormatter *_dateFormatter;
     
     NSString *_currentSongName;
     NSString *_currentArtistName;
@@ -55,6 +58,9 @@ GameState;
         _playlist = [[NSMutableArray alloc] initWithCapacity:8];
         _uploader = [[MusicUpload alloc] initWithGame:self];
         _downloader = [[MusicDownload alloc] initWithGame:self];
+        
+        _dateFormatter = [[NSDateFormatter alloc] init];
+        [_dateFormatter setDateFormat:DATE_FORMAT];
 	}
 	return self;
 }
@@ -175,11 +181,36 @@ GameState;
             NSString *songName = ((PacketPlayMusicNow *)packet).songName;
             NSDate *playDate = ((PacketPlayMusicNow *)packet).time;
             
-            double delay = [playDate timeIntervalSinceNow] * 1000.0;
-            NSLog(@"first delay: %f", delay);
-            delay /= 1000.0;
-            NSLog(@"Client received PacketTypePlayMusicNow for songName = %@ with delay = %f", songName, delay);
-            [self performSelector:@selector(playMusicItemWithName:) withObject:songName afterDelay:delay];
+            NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+            [dateFormatter setDateFormat:DATE_FORMAT];
+            NSString *playDateString = [dateFormatter stringFromDate:playDate];
+            
+            NSLog(@"Client received packet PlayTypeMusicNow, songName = %@, playString = %@", songName, playDateString);
+            
+            AFHTTPClient *httpClient = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:@"http://protected-harbor-4741.herokuapp.com/"]];
+            NSString *urlString = @"http://protected-harbor-4741.herokuapp.com/airshare-time.php";
+            NSMutableURLRequest *request = [httpClient requestWithMethod:@"GET"
+                                                                    path:urlString
+                                                              parameters:nil];
+            AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+            [httpClient registerHTTPOperationClass:[AFHTTPRequestOperation class]];
+            
+            [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+                NSLog(@"Success, data length: %d", [responseObject length]);
+                
+                NSDate *currentDate = [_dateFormatter dateFromString:[[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding]];
+    
+                // have to multiply by 1000 then devide to get double precision
+                double delay = [self secondBetweenDate:currentDate andDate:playDate] * 1000.0;
+                delay /= 1000.0;
+                NSLog(@"Client to play music item, song = %@, delay: %f", songName, delay);
+                [self performSelector:@selector(playMusicItemWithName:) withObject:songName afterDelay:delay];
+                
+            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                NSLog(@"Error: %@", error);
+            }];
+            [operation start];
+            
             break;
         }
             
@@ -275,15 +306,29 @@ GameState;
     if(!self.isServer)
         return;
     
-    NSDate *playDate = [[NSDate date] dateByAddingTimeInterval:DELAY_TIME];
-    PacketPlayMusicNow *packet = [PacketPlayMusicNow packetWithSongName:musicItem.name andTime:playDate];
-    [self sendPacketToAllClients:packet];
+    AFHTTPClient *httpClient = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:@"http://protected-harbor-4741.herokuapp.com/"]];
+    NSString *urlString = @"http://protected-harbor-4741.herokuapp.com/airshare-time.php";
+    NSMutableURLRequest *request = [httpClient requestWithMethod:@"GET"
+                                                            path:urlString
+                                                      parameters:nil];
+    AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+    [httpClient registerHTTPOperationClass:[AFHTTPRequestOperation class]];
     
-    double delay = [playDate timeIntervalSinceNow] * 1000.0;
-    NSLog(@"first delay: %f", delay);
-    delay /= 1000.0;
-    [self performSelector:@selector(playMusicItemWithName:) withObject:musicItem.name afterDelay:delay];
-    NSLog(@"Server preparing to play music item with name = %@ and delay = %f", musicItem.name, delay);
+    [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"Success, data length: %d", [responseObject length]);
+        
+        NSDate *currentDate = [_dateFormatter dateFromString:[[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding]];
+        NSDate *playDate = [currentDate dateByAddingTimeInterval:DELAY_TIME];
+        
+        PacketPlayMusicNow *packet = [PacketPlayMusicNow packetWithSongName:musicItem.name andTime:playDate];
+        [self sendPacketToAllClients:packet];
+        
+        [self performSelector:@selector(playMusicItemWithName:) withObject:musicItem.name afterDelay:DELAY_TIME];
+        NSLog(@"Server preparing to play music item with name = %@ and delay = %f", musicItem.name, DELAY_TIME);
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"Error: %@", error);
+    }];
+    [operation start]; 
 }
 
 #pragma mark - Networking
@@ -437,6 +482,57 @@ GameState;
 	}
 }
 
+
+- (Player *)playerWithPeerID:(NSString *)peerID
+{
+	return [_players objectForKey:peerID];
+}
+
+- (PlaylistItem *)playlistItemWithName:(NSString *)name
+{
+    for(int i = 0; i < _playlist.count; i++) {
+        if([((PlaylistItem *)_playlist[i]).name isEqualToString:name]) {
+            return _playlist[i];
+        }
+    }
+    NSLog(@"Playlist item %@ not found!", name);
+    return nil;
+}
+
+- (NSTimeInterval) secondBetweenDate:(NSDate *)firstDate andDate:(NSDate *)secondDate
+{
+    NSTimeInterval firstDiff = [firstDate timeIntervalSinceNow];
+    NSTimeInterval secondDiff = [secondDate timeIntervalSinceNow];
+    NSTimeInterval dateDiff = secondDiff - firstDiff;
+    return dateDiff;
+}
+
+- (NSDate *)getTimeFromServer
+{
+    NSURL *url = [NSURL URLWithString:@"http://protected-harbor-4741.herokuapp.com/airshare-time.php"];
+    
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+    
+    NSError *error;
+    NSData *receivedData = [NSURLConnection sendSynchronousRequest:request
+                                                 returningResponse:nil
+                                                             error:&error];
+    
+    NSString *dateString = [[NSString alloc] initWithData:receivedData
+                                                 encoding:NSUTF8StringEncoding];
+    NSLog(@"Time from server = %@", dateString);
+    if(error) {
+      NSLog(@"Error: %@", error);
+        return [NSDate date];
+    } else {
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:DATE_FORMAT];
+        NSDate *time = [dateFormatter dateFromString:dateString];
+        
+        return time;
+    }
+}
+
 - (void)endSession
 {
 	_serverState = ServerStateIdle;
@@ -457,22 +553,6 @@ GameState;
 	_session.available = NO;
 }
 
-
-- (Player *)playerWithPeerID:(NSString *)peerID
-{
-	return [_players objectForKey:peerID];
-}
-
-- (PlaylistItem *)playlistItemWithName:(NSString *)name
-{
-    for(int i = 0; i < _playlist.count; i++) {
-        if([((PlaylistItem *)_playlist[i]).name isEqualToString:name]) {
-            return _playlist[i];
-        }
-    }
-    NSLog(@"Playlist item %@ not found!", name);
-    return nil;
-}
 - (void)quitGameWithReason:(QuitReason)reason
 {
 	_state = GameStateQuitting;

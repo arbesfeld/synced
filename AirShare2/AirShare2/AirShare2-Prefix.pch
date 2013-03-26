@@ -17,7 +17,7 @@
 #import <MobileCoreServices/MobileCoreServices.h>
 // The name of the GameKit session.
 #define SESSION_ID @"AirShare"
-
+#define DATE_FORMAT @"yyyy-MM-dd-HH:mm:ss.SSS"
 typedef enum
 {
 	QuitReasonNoNetwork,          // no Wi-Fi or Bluetooth

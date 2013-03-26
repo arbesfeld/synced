@@ -29,6 +29,6 @@
 
 - (NSString *)description
 {
-	return [NSString stringWithFormat:@"%@ name = %@, subtitle = %@, url = %@", [super description], self.name, self.subtitle, [self.songURL absoluteString]];
+	return [NSString stringWithFormat:@"%@, url = %@", [super description],[self.songURL absoluteString]];
 }
 @end

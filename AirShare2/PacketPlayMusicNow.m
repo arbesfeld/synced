@@ -22,9 +22,9 @@
     NSString *dateString = [data rw_stringAtOffset:offset bytesRead:&count];
     offset += count;
     
+    // convert dateString to NSDate
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss.SSS"];;
-    
+    [dateFormatter setDateFormat:DATE_FORMAT];
     NSDate *time = [[NSDate alloc] init];
     time = [dateFormatter dateFromString:dateString];
     
@@ -50,8 +50,9 @@
 {
     [data rw_appendString:self.songName];
     
+    // convert NSDate to dateString
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss.SSS"];
+    [dateFormatter setDateFormat:DATE_FORMAT];
     NSString *dateString = [dateFormatter stringFromDate:self.time];
     [data rw_appendString:dateString];
 }
