@@ -41,7 +41,7 @@ FLAC__StreamEncoderWriteStatus FLAC_writeCallback(const FLAC__StreamEncoder *enc
     return self;
 }
 -(void)convertAndUpload:(MPMediaItem *)mediaItem {
-    NSLog(@"convering and uploading");
+    NSLog(@"Converting and uploading...");
     // Get raw PCM data from the track
     NSURL *assetURL = [mediaItem valueForProperty:MPMediaItemPropertyAssetURL];
     NSMutableData *data = [[NSMutableData alloc] init];
@@ -153,11 +153,6 @@ FLAC__StreamEncoderWriteStatus FLAC_writeCallback(const FLAC__StreamEncoder *enc
     
 }
 
--(void)updateSizeLabel:(NSNumber*)convertedByteCountNumber {
-	UInt64 convertedByteCount = [convertedByteCountNumber longValue];
-	NSLog(@"%lld bytes converted", convertedByteCount);
-}
-
 -(void)convertingComplete:(MPMediaItem *)mediaItem{
 	//UInt64 convertedByteCount = [convertedByteCountNumber longValue];
 	//sizeLabel.text = [NSString stringWithFormat: @"done. file size is %lld", convertedByteCount];
@@ -166,14 +161,14 @@ FLAC__StreamEncoderWriteStatus FLAC_writeCallback(const FLAC__StreamEncoder *enc
     NSLog(@"URL: %@", _exportPath);
     NSData *songData = [NSData dataWithContentsOfURL:exportURL];
     
-    NSString *fileName = [NSString stringWithFormat:@"%@.caf", [mediaItem valueForProperty:MPMediaItemPropertyTitle]];
+    NSString *fileName = [NSString stringWithFormat:@"%@.flac", [mediaItem valueForProperty:MPMediaItemPropertyTitle]];
     fileName = [fileName stringByReplacingOccurrencesOfString:@" " withString:@""];
     NSLog(@"Uploading to server: %@", fileName);
     
     NSURL *url = [NSURL URLWithString:@"http://protected-harbor-4741.herokuapp.com/"];
     AFHTTPClient *httpClient = [[AFHTTPClient alloc] initWithBaseURL:url];
     NSMutableURLRequest *request = [httpClient multipartFormRequestWithMethod:@"POST" path:@"/airshare-upload.php" parameters:nil constructingBodyWithBlock: ^(id <AFMultipartFormData>formData) {
-        [formData appendPartWithFileData:songData name:@"musicfile" fileName:fileName mimeType:@"audio/x-caf"];
+        [formData appendPartWithFileData:songData name:@"musicfile" fileName:fileName mimeType:@"audio/x-flac"];
     }];
     
     AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
