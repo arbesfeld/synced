@@ -31,12 +31,12 @@
         [prams appendFormat:@"%@=%@&",keys,[dict objectForKey:keys]];
     }
     NSString *removeLastChar = [prams substringWithRange:NSMakeRange(0, [prams length]-1)];
-    NSString *urlString = [NSString stringWithFormat:@"http://protected-harbor-4741.herokuapp.com/airshare-download.php?%@.flac",removeLastChar];
+    NSString *urlString = [NSString stringWithFormat:@"http://protected-harbor-4741.herokuapp.com/airshare-download.php?%@.m4a",removeLastChar];
     
     NSLog(@"requestString %@",urlString);
     
     // the name of the locally saved file
-    NSString *saveName = [NSString stringWithFormat:@"%@.flac", fileNameNoSpaces];
+    NSString *saveName = [NSString stringWithFormat:@"%@.m4a", fileNameNoSpaces];
     saveName = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:saveName];
     
     NSLog(@"saveName: %@", saveName);
@@ -53,7 +53,7 @@
         
         // write the song to disk
         [responseObject writeToFile:saveName atomically:NO];
-        NSMutableData *songData = [[NSMutableData alloc] initWithContentsOfFile:saveName];
+        //NSMutableData *songData = [[NSMutableData alloc] initWithContentsOfFile:saveName];
         
         // add the musicItem to the table
         MusicItem *musicItem = [MusicItem musicItemWithName:fileName
@@ -63,7 +63,7 @@
         [_game.playlist addObject:musicItem];
         [_game.delegate reloadTable];
         NSError *error;
-        _audioPlayer = [[AVAudioPlayer alloc] initWithData:songData error:&error];
+        _audioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:[[NSURL alloc] initWithString:saveName] error:&error];
         _audioPlayer.delegate = self;
         if (_audioPlayer == nil) {
             NSLog(@"AudioPlayer did not load properly: %@", [error description]);

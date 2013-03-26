@@ -12,9 +12,10 @@
 
 @class Game;
 
-@interface MusicUpload : NSObject {
+@interface MusicUpload : NSObject <AVAudioPlayerDelegate> {
     Game *_game;
     NSString *_exportPath;
+    AVAudioPlayer *_audioPlayer;
 }
 
 -(id)initWithGame:(Game *)game;

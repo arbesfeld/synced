@@ -7,31 +7,13 @@
 //
 
 #import "MusicUpload.h"
-
-#import <AVFoundation/AVFoundation.h>
 #import <AudioToolbox/AudioToolbox.h> // for the core audio constants
-#import "all.h"
-#import <CoreMedia/CoreMedia.h>
-
 #import "AFNetworking.h"
 #import "PacketMusic.h"
 #import "MusicItem.h"
 #import "Game.h"
 
-@class AVURLAsset, AVAssetReader, AVAssetReaderTrackOutput;
-
-//typedef void *CMSampleBufferRef;
-//typedef void *CMBlockBufferRef;
-
-@implementation MusicUpload 
-
-// FLAC encoder output callback
-FLAC__StreamEncoderWriteStatus FLAC_writeCallback(const FLAC__StreamEncoder *encoder, const FLAC__byte *buffer, size_t bytes, unsigned samples, unsigned current_frame, void *ctx)
-{
-	NSMutableData *flacData = (__bridge NSMutableData *)(ctx);
-	[flacData appendBytes:buffer length:bytes];
-	return FLAC__STREAM_ENCODER_WRITE_STATUS_OK;
-}
+@implementation MusicUpload
 
 #pragma mark event handlers
 -(id) initWithGame:(Game *)game {
@@ -41,116 +23,122 @@ FLAC__StreamEncoderWriteStatus FLAC_writeCallback(const FLAC__StreamEncoder *enc
     return self;
 }
 -(void)convertAndUpload:(MPMediaItem *)mediaItem {
-    NSLog(@"Converting and uploading...");
-    // Get raw PCM data from the track
-    NSURL *assetURL = [mediaItem valueForProperty:MPMediaItemPropertyAssetURL];
-    NSMutableData *data = [[NSMutableData alloc] init];
+	// set up an AVAssetReader to read from the iPod Library
+	NSURL *assetURL = [mediaItem valueForProperty:MPMediaItemPropertyAssetURL];
+	AVURLAsset *songAsset = [AVURLAsset URLAssetWithURL:assetURL options:nil];
     
-    const uint32_t sampleRate = 16000;
-    const uint16_t bitDepth = 16;
-    const uint16_t channels = 2;
+	NSError *assetError = nil;
+	AVAssetReader *assetReader = [AVAssetReader assetReaderWithAsset:songAsset
+															   error:&assetError];
+	if (assetError) {
+		NSLog (@"error: %@", assetError);
+		return;
+	}
     
-    NSDictionary *opts = [NSDictionary dictionary];
-    AVURLAsset *asset = [[AVURLAsset alloc] initWithURL:assetURL options:opts];
-    AVAssetReader *reader = [[AVAssetReader alloc] initWithAsset:asset error:NULL];
-    NSDictionary *settings = [NSDictionary dictionaryWithObjectsAndKeys:
-                              [NSNumber numberWithInt:kAudioFormatLinearPCM], AVFormatIDKey,
-                              [NSNumber numberWithFloat:(float)sampleRate], AVSampleRateKey,
-                              [NSNumber numberWithInt:bitDepth], AVLinearPCMBitDepthKey,
-                              [NSNumber numberWithBool:NO], AVLinearPCMIsNonInterleaved,
-                              [NSNumber numberWithBool:NO], AVLinearPCMIsFloatKey,
-                              [NSNumber numberWithBool:NO], AVLinearPCMIsBigEndianKey, nil];
-    
-    AVAssetReaderTrackOutput *output = [[AVAssetReaderTrackOutput alloc] initWithTrack:[[asset tracks] objectAtIndex:0] outputSettings:settings];
-    [reader addOutput:output];
-    [reader startReading];
-    
-    // read the samples from the asset and append them subsequently
-    while ([reader status] != AVAssetReaderStatusCompleted) {
-        CMSampleBufferRef buffer = [output copyNextSampleBuffer];
-        if (buffer == NULL) continue;
-        
-        CMBlockBufferRef blockBuffer = CMSampleBufferGetDataBuffer(buffer);
-        size_t size = CMBlockBufferGetDataLength(blockBuffer);
-        uint8_t *outBytes = malloc(size);
-        CMBlockBufferCopyDataBytes(blockBuffer, 0, size, outBytes);
-        CMSampleBufferInvalidate(buffer);
-        CFRelease(buffer);
-        [data appendBytes:outBytes length:size];
-        free(outBytes);
-    }
-    
-    // Encode the PCM data to FLAC
-    uint32_t totalSamples = [data length] / (channels * bitDepth / 8);
-    NSMutableData *flacData = [[NSMutableData alloc] init];
-    
-    // Create a FLAC encoder
-    FLAC__StreamEncoder *encoder = FLAC__stream_encoder_new();
-    if (encoder == NULL)
-    {
-        // handle error
-    }
-    
-    // Set up the encoder
-    FLAC__stream_encoder_set_verify(encoder, true);
-    FLAC__stream_encoder_set_compression_level(encoder, 8);
-    FLAC__stream_encoder_set_channels(encoder, channels);
-    FLAC__stream_encoder_set_bits_per_sample(encoder, bitDepth);
-    FLAC__stream_encoder_set_sample_rate(encoder, sampleRate);
-    FLAC__stream_encoder_set_total_samples_estimate(encoder, totalSamples);
-    
-    // Initialize the encoder
-    FLAC__stream_encoder_init_stream(encoder, FLAC_writeCallback, NULL, NULL, NULL, (__bridge void *)(flacData));
-    
-    // Start encoding
-    size_t left = totalSamples;
-    const size_t buffsize = 1 << 16;
-    FLAC__byte *buffer;
-    static FLAC__int32 pcm[1 << 17];
-    size_t need;
-    size_t i;
-    while (left > 0) {
-        need = left > buffsize ? buffsize : left;
-        
-        buffer = (FLAC__byte *)[data bytes] + (totalSamples - left) * channels * bitDepth / 8;
-        for (i = 0; i < need * channels; i++) {
-            if (bitDepth == 16) {
-                // 16 bps, signed little endian
-                pcm[i] = *(int16_t *)(buffer + i * 2);
-            } else {
-                // 8 bps, unsigned
-                pcm[i] = *(uint8_t *)(buffer + i);
-            }
-        }
-        
-        FLAC__bool succ = FLAC__stream_encoder_process_interleaved(encoder, pcm, need);
-        if (succ == 0) {
-            FLAC__stream_encoder_delete(encoder);
-            // handle error
-            return;
-        }
-        
-        left -= need;
-    }
-    
-    // Clean up
-    FLAC__stream_encoder_finish(encoder);
-    FLAC__stream_encoder_delete(encoder);
-    
-    NSString *fileName = [NSString stringWithFormat:@"%@.flac", [mediaItem valueForProperty:MPMediaItemPropertyTitle]];
-    fileName = [fileName stringByReplacingOccurrencesOfString:@" " withString:@""];
-    NSLog(@"Filename = %@", fileName);
+	AVAssetReaderOutput *assetReaderOutput = [AVAssetReaderAudioMixOutput
+											  assetReaderAudioMixOutputWithAudioTracks:songAsset.tracks
+                                              audioSettings: nil];
+	if (! [assetReader canAddOutput: assetReaderOutput]) {
+		NSLog (@"can't add reader output... die!");
+		return;
+	}
+	[assetReader addOutput: assetReaderOutput];
     
 	NSArray *dirs = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
 	NSString *documentsDirectoryPath = [dirs objectAtIndex:0];
+    
+    NSString *fileName = [NSString stringWithFormat:@"%@.m4a", [mediaItem valueForProperty:MPMediaItemPropertyTitle]];
+    fileName = [fileName stringByReplacingOccurrencesOfString:@" " withString:@""];
 	_exportPath = [documentsDirectoryPath stringByAppendingPathComponent:fileName];
+    NSLog(@"Export path = %@", _exportPath);
+    
 	if ([[NSFileManager defaultManager] fileExistsAtPath:_exportPath]) {
         NSLog(@"removing item");
 		[[NSFileManager defaultManager] removeItemAtPath:_exportPath error:nil];
 	}
-	[flacData writeToFile:_exportPath atomically:NO];
-    [self convertingComplete:mediaItem];
+	NSURL *exportURL = [NSURL fileURLWithPath:_exportPath];
+	AVAssetWriter *assetWriter = [AVAssetWriter assetWriterWithURL:exportURL
+														  fileType:AVFileTypeAppleM4A
+															 error:&assetError];
+	if (assetError) {
+		NSLog (@"error: %@", assetError);
+		return;
+	}
+	AudioChannelLayout channelLayout;
+	memset(&channelLayout, 0, sizeof(AudioChannelLayout));
+	channelLayout.mChannelLayoutTag = kAudioChannelLayoutTag_Stereo;
+    NSDictionary *outputSettings = [NSDictionary dictionaryWithObjectsAndKeys:
+                                    [NSNumber numberWithInt: kAudioFormatMPEG4AAC], AVFormatIDKey,
+                                    [NSNumber numberWithFloat:44100.0], AVSampleRateKey,
+                                    [NSNumber numberWithInt:2], AVNumberOfChannelsKey,
+                                    [NSNumber numberWithInt:128000], AVEncoderBitRateKey,
+                                    [NSData dataWithBytes:&channelLayout    length:sizeof(AudioChannelLayout)], AVChannelLayoutKey,
+                                    
+                                    nil];
+	AVAssetWriterInput *assetWriterInput = [AVAssetWriterInput assetWriterInputWithMediaType:AVMediaTypeAudio
+																			  outputSettings:outputSettings];
+	if ([assetWriter canAddInput:assetWriterInput]) {
+		[assetWriter addInput:assetWriterInput];
+	} else {
+		NSLog (@"can't add asset writer input... die!");
+		return;
+	}
     
+	assetWriterInput.expectsMediaDataInRealTime = NO;
+    
+	[assetWriter startWriting];
+	[assetReader startReading];
+    
+	AVAssetTrack *soundTrack = [songAsset.tracks objectAtIndex:0];
+	CMTime startTime = CMTimeMake (0, soundTrack.naturalTimeScale);
+	[assetWriter startSessionAtSourceTime: startTime];
+    
+	__block UInt64 convertedByteCount = 0;
+    
+	dispatch_queue_t mediaInputQueue = dispatch_queue_create("mediaInputQueue", NULL);
+	[assetWriterInput requestMediaDataWhenReadyOnQueue:mediaInputQueue
+											usingBlock: ^
+	 {
+         //NSLog (@"top of block");
+		 while (assetWriterInput.readyForMoreMediaData) {
+             CMSampleBufferRef nextBuffer = [assetReaderOutput copyNextSampleBuffer];
+             if (nextBuffer) {
+                 // append buffer
+                 [assetWriterInput appendSampleBuffer: nextBuffer];
+                 //				NSLog (@"appended a buffer (%d bytes)",
+                 //					   CMSampleBufferGetTotalSampleSize (nextBuffer));
+                 convertedByteCount += CMSampleBufferGetTotalSampleSize (nextBuffer);
+                 // oops, no
+                 // sizeLabel.text = [NSString stringWithFormat: @"%ld bytes converted", convertedByteCount];
+                 
+                 NSNumber *convertedByteCountNumber = [NSNumber numberWithLong:convertedByteCount];
+                 [self performSelectorOnMainThread:@selector(updateSizeLabel:)
+                                        withObject:convertedByteCountNumber
+                                     waitUntilDone:NO];
+             } else {
+                 // done!
+                 [assetWriterInput markAsFinished];
+                 [assetWriter finishWriting];
+                 [assetReader cancelReading];
+                 NSDictionary *outputFileAttributes = [[NSFileManager defaultManager]
+                                                       attributesOfItemAtPath:_exportPath
+                                                       error:nil];
+                 NSLog (@"done. file size is %lld", [outputFileAttributes fileSize]);
+                 
+                 [self performSelectorOnMainThread:@selector(convertingComplete:)
+                                        withObject:mediaItem
+                                     waitUntilDone:NO];
+                 break;
+             }
+         }
+         
+	 }];
+	NSLog (@"bottom of convertTapped:");
+}
+
+-(void)updateSizeLabel:(NSNumber*)convertedByteCountNumber {
+	UInt64 convertedByteCount = [convertedByteCountNumber longValue];
+	NSLog(@"%lld bytes converted", convertedByteCount);
 }
 
 -(void)convertingComplete:(MPMediaItem *)mediaItem{
@@ -161,14 +149,14 @@ FLAC__StreamEncoderWriteStatus FLAC_writeCallback(const FLAC__StreamEncoder *enc
     NSLog(@"URL: %@", _exportPath);
     NSData *songData = [NSData dataWithContentsOfURL:exportURL];
     
-    NSString *fileName = [NSString stringWithFormat:@"%@.flac", [mediaItem valueForProperty:MPMediaItemPropertyTitle]];
+    NSString *fileName = [NSString stringWithFormat:@"%@.m4a", [mediaItem valueForProperty:MPMediaItemPropertyTitle]];
     fileName = [fileName stringByReplacingOccurrencesOfString:@" " withString:@""];
     NSLog(@"Uploading to server: %@", fileName);
     
     NSURL *url = [NSURL URLWithString:@"http://protected-harbor-4741.herokuapp.com/"];
     AFHTTPClient *httpClient = [[AFHTTPClient alloc] initWithBaseURL:url];
     NSMutableURLRequest *request = [httpClient multipartFormRequestWithMethod:@"POST" path:@"/airshare-upload.php" parameters:nil constructingBodyWithBlock: ^(id <AFMultipartFormData>formData) {
-        [formData appendPartWithFileData:songData name:@"musicfile" fileName:fileName mimeType:@"audio/x-flac"];
+        [formData appendPartWithFileData:songData name:@"musicfile" fileName:fileName mimeType:@"audio/x-m4a"];
     }];
     
     AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];

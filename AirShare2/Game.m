@@ -154,9 +154,10 @@ GameState;
         
         case PacketTypeMusic:
             _currentSongName = ((PacketMusic *)packet).songName;
-            
             _currentArtistName = ((PacketMusic *)packet).artistName;
             NSLog(@"Client recieved music packet with songName %@ and artistName %@", _currentSongName, _currentArtistName);
+            
+            [_downloader downloadFileWithName:_currentSongName andArtistName:_currentArtistName];
             break;
             
         case PacketTypeServerQuit:
