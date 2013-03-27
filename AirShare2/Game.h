@@ -49,14 +49,14 @@ ServerState;
 @property (nonatomic, strong) GKSession *session;
 
 - (void)startClientGameWithSession:(GKSession *)session playerName:(NSString *)name server:(NSString *)peerID;
-- (void)quitGameWithReason:(QuitReason)reason;
 - (void)startServerGameWithSession:(GKSession *)session playerName:(NSString *)name clients:(NSArray *)clients;
 
+- (void)quitGameWithReason:(QuitReason)reason;
 - (void)endSession;
-- (NSString *)displayNameForPeerID:(NSString *)peerID;
 - (void)stopAcceptingConnections;
 
-- (void)uploadMusicWithMediaItem:(MPMediaItem *)song;
+- (NSString *)displayNameForPeerID:(NSString *)peerID;
 
-- (void)serverPrepareToPlayMusicItem:(MusicItem *)musicItem;
+- (void)uploadMusicWithMediaItem:(MPMediaItem *)song;
+- (void)hasDownloadedMusic:(MusicItem *)musicItem;
 @end

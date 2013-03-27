@@ -150,10 +150,12 @@
         if (cell == nil) {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
             cell.textLabel.text = ((PlaylistItem *)[_game.playlist objectAtIndex:indexPath.row]).name;
+            cell.textLabel.textAlignment = NSTextAlignmentCenter;
             cell.detailTextLabel.text = ((PlaylistItem *)[_game.playlist objectAtIndex:indexPath.row]).subtitle;
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
             
             UIButton *addButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-            addButton.frame = CGRectMake(285.0f, 5.0f, 30.0f, 30.0f);
+            addButton.frame = CGRectMake(270.0f, 5.0f, 30.0f, 30.0f);
             [addButton setTitle:@"+" forState:UIControlStateNormal];
             [cell addSubview:addButton];
             

@@ -23,8 +23,10 @@
 // saveName is the name in the Documents folder where .caf is saved
 
 -(void)downloadFileWithName:(NSString *)fileName andArtistName:(NSString *)artistName {
-    NSString *fileNameNoSpaces = [fileName stringByReplacingOccurrencesOfString:@" " withString:@""];
-    // make the GET request
+    NSString *fileNameNoSpaces = [[fileName componentsSeparatedByCharactersInSet:
+                                                         [[NSCharacterSet alphanumericCharacterSet] invertedSet]]
+                                                        componentsJoinedByString:@""];
+    // make the GET request URL
     NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:fileNameNoSpaces, @"id", nil];
     NSMutableString *prams = [[NSMutableString alloc] init];
     for (id keys in dict) {
@@ -48,6 +50,9 @@
                                                       parameters:nil];
     AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
     [httpClient registerHTTPOperationClass:[AFHTTPRequestOperation class]];
+    [operation setDownloadProgressBlock:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
+        NSLog(@"Downloaded %lld of %lld bytes", totalBytesWritten, totalBytesExpectedToWrite);
+    }];
     [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"Success, data length: %d", [responseObject length]);
         
@@ -62,7 +67,8 @@
         NSLog(@"Added music item with description: %@", [musicItem description]);
         [_game.playlist addObject:musicItem];
         [_game.delegate reloadTable];
-        [_game serverPrepareToPlayMusicItem:musicItem];
+        
+        [_game hasDownloadedMusic:musicItem];
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error: %@", error);

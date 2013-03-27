@@ -1,39 +1,27 @@
+#import <GameKit/GameKit.h>
+
 #import "Game.h"
+#import "AFNetworking.h"
+#import "MusicUpload.h"
+
 #import "Packet.h"
 #import "PacketSignInResponse.h"
 #import "PacketPlayerList.h"
 #import "PacketOtherClientQuit.h"
 #import "PacketMusic.h"
+#import "PacketMusicResponse.h"
 #import "PacketPlayMusicNow.h"
 
-#import "AFNetworking.h"
-#import "MusicUpload.h"
+const double DELAY_TIME = 2.000; // wait DELAY_TIME seconds until songs play
 
-#import <GameKit/GameKit.h>
-
-const double DELAY_TIME = 2.000; // wait 8 seconds until songs play
-typedef enum
-{
-	GameStateWaitingForSignIn,
-    GameStateWaitingForInfo,
-	GameStatePlaying,
-	GameStateQuitting,
-}
-GameState;
 
 @implementation Game
 {
-	GameState _state;
-    
 	NSString *_serverPeerID;
 	NSString *_localPlayerName;
     
     NSDateFormatter *_dateFormatter;
     
-    NSString *_currentSongName;
-    NSString *_currentArtistName;
-    
-    int _sendPacketNumber;
     ServerState _serverState;
 }
 
@@ -82,7 +70,6 @@ GameState;
 	_serverPeerID = peerID;
 	_localPlayerName = name;
     NSLog(@"Name: %@", _localPlayerName);
-	_state = GameStateWaitingForInfo;
     
 	[self.delegate gameWaitingForServerReady:self];
     
@@ -103,7 +90,6 @@ GameState;
     
 	[_session setDataReceiveHandler:self withContext:nil];
     
-	_state = GameStateWaitingForSignIn;
     _serverState = ServerStateAcceptingConnections;
     
 	[self.delegate gameWaitingForClientsReady:self];
@@ -134,10 +120,6 @@ GameState;
 	}
     
 	Player *player = [self playerWithPeerID:peerID];
-	if (player != nil)
-	{
-		player.receivedResponse = YES; 
-	}
     
 	if (self.isServer)
 		[self serverReceivedPacket:packet fromPlayer:player];
@@ -149,14 +131,6 @@ GameState;
 {
 	switch (packet.packetType)
 	{
-		case PacketTypeSignInRequest:
-			if (_state == GameStateWaitingForSignIn)
-			{
-                // never happens
-				_state = GameStateWaitingForInfo;
-			}
-			break;
-        
         case PacketTypePlayerList:
             self.players = ((PacketPlayerList *)packet).players;
             
@@ -203,6 +177,7 @@ GameState;
                 // have to multiply by 1000 then devide to get double precision
                 double delay = [self secondBetweenDate:currentDate andDate:playDate] * 1000.0;
                 delay /= 1000.0;
+                
                 NSLog(@"Client to play music item, song = %@, delay: %f", songName, delay);
                 [self performSelector:@selector(playMusicItemWithName:) withObject:songName afterDelay:delay];
                 
@@ -219,13 +194,13 @@ GameState;
 			break;
         
         case PacketTypeOtherClientQuit:
-			if (_state != GameStateQuitting)
-			{
-				PacketOtherClientQuit *quitPacket = ((PacketOtherClientQuit *)packet);
-				[self clientDidDisconnect:quitPacket.peerID];
-			}
+        {
+            PacketOtherClientQuit *quitPacket = ((PacketOtherClientQuit *)packet);
+            [self clientDidDisconnect:quitPacket.peerID];
+			
 			break;
-		default:
+		}
+        default:
 			NSLog(@"Client received unexpected packet: %@", packet);
 			break;
 	}
@@ -238,7 +213,6 @@ GameState;
 		case PacketTypeSignInResponse:
         {
             player.name = ((PacketSignInResponse *)packet).playerName;
-            _state = GameStatePlaying;
             
             NSLog(@"Server received sign in from client '%@'", player.name);
             
@@ -252,12 +226,24 @@ GameState;
         {
             NSString *songName  = ((PacketMusic *)packet).songName;
             NSString *artistName  = ((PacketMusic *)packet).artistName;
-            NSLog(@"Server recieved music packet with songName %@ and artistName %@", songName, artistName);
+            NSLog(@"Server recieved music packet with song = %@ and artist = %@", songName, artistName);
             
             [_downloader downloadFileWithName:songName andArtistName:artistName];
             break;
         }
+        case PacketTypeMusicResponse:
+        {
+            NSString *songName  = ((PacketMusicResponse *)packet).songName;
+            NSLog(@"Server recieved music response packet from player = %@ and song = %@", player.name, songName);
             
+            [player.hasMusicList setObject:@YES forKey:songName];
+            
+            MusicItem *musicItem = (MusicItem *)[self playlistItemWithName:songName];
+            if([self allPlayersHaveMusic:musicItem]) {
+                [self serverStartPlayingMusic:musicItem];
+            }
+            break;
+        }
         case PacketTypeClientQuit:
 			[self clientDidDisconnect:player.peerID];
 			break;
@@ -267,18 +253,6 @@ GameState;
 			break;
 	}
 }
-
-- (BOOL)receivedResponsesFromAllPlayers
-{
-	for (NSString *peerID in _players)
-	{
-		Player *player = [self playerWithPeerID:peerID];
-		if (!player.receivedResponse)
-			return NO;
-	}
-	return YES;
-}
-
 - (void)uploadMusicWithMediaItem:(MPMediaItem *)song
 {
     NSLog(@"Game: playMusicWithURL: %@", [song valueForProperty:MPMediaItemPropertyAssetURL]);
@@ -301,11 +275,37 @@ GameState;
     }
 }
 
-- (void)serverPrepareToPlayMusicItem:(MusicItem *)musicItem
+- (void)hasDownloadedMusic:(MusicItem *)musicItem
 {
-    if(!self.isServer)
-        return;
-    
+    if(!self.isServer) {
+        // alert the server that you have musicItem
+        PacketMusicResponse *packet = [PacketMusicResponse packetWithSongName:musicItem.name];
+        [self sendPacketToServer:packet];
+    }
+    else {
+        // mark that you have item
+        [((Player *)[_players objectForKey:_session.peerID]).hasMusicList setObject:@YES forKey:musicItem.name];
+        
+        // see if you should start playing
+        if([self allPlayersHaveMusic:musicItem]) {
+            [self serverStartPlayingMusic:musicItem];
+        }
+    }
+}
+
+- (BOOL)allPlayersHaveMusic:(MusicItem *)musicItem
+{
+    for (NSString *peerID in _players)
+	{
+		Player *player = [self playerWithPeerID:peerID];
+		if (![player.hasMusicList objectForKey:musicItem.name]) {
+            NSLog(@"Player %@ does not have music %@", player.name, musicItem.name);
+			return NO;
+        }
+	}
+    return YES;
+}
+- (void)serverStartPlayingMusic:(MusicItem *)musicItem {
     AFHTTPClient *httpClient = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:@"http://protected-harbor-4741.herokuapp.com/"]];
     NSString *urlString = @"http://protected-harbor-4741.herokuapp.com/airshare-time.php";
     NSMutableURLRequest *request = [httpClient requestWithMethod:@"GET"
@@ -328,7 +328,7 @@ GameState;
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error: %@", error);
     }];
-    [operation start]; 
+    [operation start];
 }
 
 #pragma mark - Networking
@@ -356,7 +356,6 @@ GameState;
 	}
 }
 
-// identical stuff to MatchmakingServer
 #pragma mark - GKSessionDelegate
 
 - (void)session:(GKSession *)session peer:(NSString *)peerID didChangeState:(GKPeerConnectionState)state
@@ -437,10 +436,7 @@ GameState;
     
 	if ([[error domain] isEqualToString:GKSessionErrorDomain])
 	{
-		if (_state != GameStateQuitting)
-		{
-			[self quitGameWithReason:QuitReasonConnectionDropped];
-		}
+        [self quitGameWithReason:QuitReasonConnectionDropped];
 	}
 }
 
@@ -458,28 +454,22 @@ GameState;
         [self.delegate gameServer:self clientDidConnect:player];
     }
 }
+
 - (void)clientDidDisconnect:(NSString *)peerID
 {
-	if (_state != GameStateQuitting)
-	{
-		Player *player = [self playerWithPeerID:peerID];
-		if (player != nil)
-		{
-			[_players removeObjectForKey:peerID];
-            
-			if (_state != GameStateWaitingForSignIn)
-			{
-				// Tell the other clients that this one is now disconnected.
-				if (self.isServer)
-				{
-					PacketOtherClientQuit *packet = [PacketOtherClientQuit packetWithPeerID:peerID];
-					[self sendPacketToAllClients:packet];
-				}
-                
-				[self.delegate gameServer:self clientDidDisconnect:player];
-			}
-		}
-	}
+    Player *player = [self playerWithPeerID:peerID];
+    if (player != nil)
+    {
+        [_players removeObjectForKey:peerID];
+        
+        // Tell the other clients that this one is now disconnected.
+        if (self.isServer)
+        {
+            PacketOtherClientQuit *packet = [PacketOtherClientQuit packetWithPeerID:peerID];
+            [self sendPacketToAllClients:packet];
+        }
+        [self.delegate gameServer:self clientDidDisconnect:player];
+    }
 }
 
 
@@ -498,6 +488,8 @@ GameState;
     NSLog(@"Playlist item %@ not found!", name);
     return nil;
 }
+
+# pragma mark - Time Functions
 
 - (NSTimeInterval) secondBetweenDate:(NSDate *)firstDate andDate:(NSDate *)secondDate
 {
@@ -533,6 +525,8 @@ GameState;
     }
 }
 
+# pragma mark - End Session Handling
+
 - (void)endSession
 {
 	_serverState = ServerStateIdle;
@@ -555,8 +549,6 @@ GameState;
 
 - (void)quitGameWithReason:(QuitReason)reason
 {
-	_state = GameStateQuitting;
-    
 	if (reason == QuitReasonUserQuit)
 	{
 		if (self.isServer)

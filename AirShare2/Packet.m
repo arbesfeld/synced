@@ -5,6 +5,8 @@
 #import "PacketOtherClientQuit.h"
 #import "PacketMusic.h"
 #import "PacketPlayMusicNow.h"
+#import "PacketMusicResponse.h"
+
 const size_t PACKET_HEADER_SIZE = 10;
 
 @implementation Packet
@@ -60,7 +62,11 @@ const size_t PACKET_HEADER_SIZE = 10;
         case PacketTypeMusic:
             packet = [PacketMusic packetWithData:data];
             break;
-        
+            
+        case PacketTypeMusicResponse:
+            packet = [PacketMusicResponse packetWithData:data];
+            break;
+            
         case PacketTypePlayMusicNow:
             packet = [PacketPlayMusicNow packetWithData:data];
             break;

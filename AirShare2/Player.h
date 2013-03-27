@@ -3,7 +3,6 @@
 
 @property (nonatomic, copy) NSString *name;
 @property (nonatomic, copy) NSString *peerID;
-@property (nonatomic, assign) BOOL receivedResponse;
-@property (nonatomic, assign) int lastPacketNumberReceived;
+@property (nonatomic, strong) NSMutableDictionary *hasMusicList;
 
 @end

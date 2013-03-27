@@ -5,8 +5,7 @@
 
 @synthesize name = _name;
 @synthesize peerID = _peerID;
-@synthesize receivedResponse = _receivedResponse;
-@synthesize lastPacketNumberReceived = _lastPacketNumberReceived;
+@synthesize hasMusicList = _hasMusicList;
 
 - (void)dealloc
 {
@@ -18,6 +17,7 @@
 {
 	if ((self = [super init]))
 	{
+        _hasMusicList = [[NSMutableDictionary alloc] initWithCapacity:10];
 	}
 	return self;
 }

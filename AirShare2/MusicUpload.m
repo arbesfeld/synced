@@ -47,8 +47,11 @@
 	NSArray *dirs = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
 	NSString *documentsDirectoryPath = [dirs objectAtIndex:0];
     
-    NSString *fileName = [NSString stringWithFormat:@"%@.m4a", [mediaItem valueForProperty:MPMediaItemPropertyTitle]];
-    fileName = [fileName stringByReplacingOccurrencesOfString:@" " withString:@""];
+    NSString *songName = [[[mediaItem valueForProperty:MPMediaItemPropertyTitle] componentsSeparatedByCharactersInSet:
+                                   [[NSCharacterSet alphanumericCharacterSet] invertedSet]]
+                                  componentsJoinedByString:@""];
+    NSString *fileName = [NSString stringWithFormat:@"%@.m4a", songName];
+    
 	_exportPath = [documentsDirectoryPath stringByAppendingPathComponent:fileName];
     NSLog(@"Export path = %@", _exportPath);
     
@@ -148,8 +151,11 @@
     NSURL *exportURL = [NSURL fileURLWithPath:_exportPath];
     NSData *songData = [NSData dataWithContentsOfURL:exportURL];
     
-    NSString *fileName = [NSString stringWithFormat:@"%@.m4a", [mediaItem valueForProperty:MPMediaItemPropertyTitle]];
-    fileName = [fileName stringByReplacingOccurrencesOfString:@" " withString:@""];
+    NSString *songName = [[[mediaItem valueForProperty:MPMediaItemPropertyTitle] componentsSeparatedByCharactersInSet:
+                           [[NSCharacterSet alphanumericCharacterSet] invertedSet]]
+                          componentsJoinedByString:@""];
+    NSString *fileName = [NSString stringWithFormat:@"%@.m4a", songName];
+    
     NSLog(@"Uploading to server: %@", fileName);
     
     NSURL *url = [NSURL URLWithString:@"http://protected-harbor-4741.herokuapp.com/"];
@@ -182,6 +188,7 @@
     MusicItem *musicItem = [MusicItem musicItemWithName:songName subtitle:artistName andURL:exportURL];
     [_game.playlist addObject:musicItem];
     [_game.delegate reloadTable];
+    [_game hasDownloadedMusic:musicItem];
     
     NSLog(@"Sending packet with songName %@ and artistName %@", songName, artistName);
     

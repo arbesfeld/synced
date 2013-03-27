@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		550C291A16F2BA3800247943 /* PacketPlayerList.m in Sources */ = {isa = PBXBuildFile; fileRef = 550C291916F2BA3800247943 /* PacketPlayerList.m */; };
+		552CDD1F17026493003CA4EB /* PacketMusicResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 552CDD1E17026493003CA4EB /* PacketMusicResponse.m */; };
 		558E14AB16F182480076F6FC /* PacketSignInResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 558E14AA16F182480076F6FC /* PacketSignInResponse.m */; };
 		558E14B516F185600076F6FC /* bgGreyImg.png in Resources */ = {isa = PBXBuildFile; fileRef = 558E14B216F185600076F6FC /* bgGreyImg.png */; };
 		558E14B616F185600076F6FC /* CenturyGothicStd-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 558E14B316F185600076F6FC /* CenturyGothicStd-Bold.otf */; };
@@ -62,6 +63,8 @@
 /* Begin PBXFileReference section */
 		550C291816F2BA3800247943 /* PacketPlayerList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PacketPlayerList.h; sourceTree = "<group>"; };
 		550C291916F2BA3800247943 /* PacketPlayerList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PacketPlayerList.m; sourceTree = "<group>"; };
+		552CDD1D17026493003CA4EB /* PacketMusicResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PacketMusicResponse.h; sourceTree = "<group>"; };
+		552CDD1E17026493003CA4EB /* PacketMusicResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PacketMusicResponse.m; sourceTree = "<group>"; };
 		558E14A916F182480076F6FC /* PacketSignInResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PacketSignInResponse.h; sourceTree = "<group>"; };
 		558E14AA16F182480076F6FC /* PacketSignInResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PacketSignInResponse.m; sourceTree = "<group>"; };
 		558E14B216F185600076F6FC /* bgGreyImg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bgGreyImg.png; sourceTree = "<group>"; };
@@ -304,6 +307,8 @@
 				5596E08B16F62FB600511D3E /* PacketOtherClientQuit.m */,
 				559096CB16FFE70C004149A0 /* PacketMusic.h */,
 				559096CC16FFE70C004149A0 /* PacketMusic.m */,
+				552CDD1D17026493003CA4EB /* PacketMusicResponse.h */,
+				552CDD1E17026493003CA4EB /* PacketMusicResponse.m */,
 				55A31C0217017B6F00A1FFC8 /* PacketPlayMusicNow.h */,
 				55A31C0317017B6F00A1FFC8 /* PacketPlayMusicNow.m */,
 				5590968916FF5ED4004149A0 /* MusicUpload.h */,
@@ -440,6 +445,7 @@
 				559096D01700038F004149A0 /* PlaylistItem.m in Sources */,
 				559096D3170006AB004149A0 /* MusicItem.m in Sources */,
 				55A31C0417017B6F00A1FFC8 /* PacketPlayMusicNow.m in Sources */,
+				552CDD1F17026493003CA4EB /* PacketMusicResponse.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
