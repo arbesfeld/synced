@@ -13,8 +13,9 @@
 
 @end
 
-@interface GameViewController : UIViewController <UIAlertViewDelegate, UITableViewDataSource, MPMediaPickerControllerDelegate, GameDelegate>
-
+@interface GameViewController : UIViewController <UITableViewDataSource, MPMediaPickerControllerDelegate, GameDelegate> {
+    PlaylistItem *_currentPlaylistItem;
+}
 @property (nonatomic, weak) IBOutlet UILabel *songLabel;
 @property (weak, nonatomic) IBOutlet UILabel *artistLabel;
 @property (weak, nonatomic) IBOutlet UIButton *exitButton;

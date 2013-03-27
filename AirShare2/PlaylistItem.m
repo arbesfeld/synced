@@ -46,19 +46,24 @@
     return _downvoteCount;
 }
 - (int)getScore {
-    return 100 * (_upvoteCount - _downvoteCount) + abs(_upvoteCount + _downvoteCount);
+    return 100 * (_upvoteCount - _downvoteCount) + abs(_upvoteCount) + abs(_downvoteCount);
 }
 
-- (void)upvote {
-    _upvoteCount++;
+- (void)upvote:(int)amount {
+    _upvoteCount += amount;
 }
-- (void)downvote {
-    _downvoteCount++;
+- (void)downvote:(int)amount {
+    _downvoteCount += amount;
 }
 
 - (BOOL)isEqual:(id)object {
     return self.ID == ((PlaylistItem *)object).ID;
 }
+
+- (NSComparisonResult)compare:(PlaylistItem *)other {
+    return [self getScore] - [other getScore];
+}
+
 - (NSString *)description
 {
 	return [NSString stringWithFormat:@"%@ name = %@, subtitle = %@, ID = %@", [super description], self.name, self.subtitle, self.ID];

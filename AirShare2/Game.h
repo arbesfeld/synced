@@ -33,6 +33,7 @@ ServerState;
 - (void)gameServerSessionDidEnd:(Game *)server;
 - (void)gameServerNoNetwork:(Game *)server;
 
+- (PlaylistItem *)getCurrentPlaylistItem;
 @end
 
 @interface Game : NSObject <GKSessionDelegate, AVAudioPlayerDelegate> {
@@ -40,6 +41,8 @@ ServerState;
     MusicDownload *_downloader;
     
     AVAudioPlayer *_audioPlayer;
+    
+    BOOL _audioPlaying;
 }
 
 @property (nonatomic, weak) id <GameDelegate> delegate;
@@ -61,4 +64,5 @@ ServerState;
 - (void)addItemToPlaylist:(PlaylistItem *)playlistItem;
 - (void)uploadMusicWithMediaItem:(MPMediaItem *)song;
 - (void)hasDownloadedMusic:(MusicItem *)musicItem;
+- (void)sendVotePacketForItem:(PlaylistItem *)selectedItem andAmount:(int)amount upvote:(BOOL)upvote;
 @end

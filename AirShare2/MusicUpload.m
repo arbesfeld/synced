@@ -147,10 +147,10 @@
                          // now tell others that you have uploaded
                          completionBlock();
                      }
-                                                      failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                                                          NSLog(@"error: %@",  operation.responseString);
-                                                          
-                                                      }];
+                      failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                          NSLog(@"error: %@",  operation.responseString);
+                          
+                      }];
                      [httpClient enqueueHTTPRequestOperation:operation];
                  }];
                  

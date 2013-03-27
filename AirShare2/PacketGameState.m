@@ -79,20 +79,35 @@
                 break;
         }
 	}
-	return [[self class] packetWithPlayers:players andPlaylist:playlist];
+    NSString *currentName = [data rw_stringAtOffset:offset bytesRead:&count];
+    offset += count;
+    
+    NSString *currentSubtitle = [data rw_stringAtOffset:offset bytesRead:&count];
+    offset += count;
+    
+    NSString *currentID = [data rw_stringAtOffset:offset bytesRead:&count];
+    offset += count;
+    
+    int currentPlaylistItemType = [data rw_int8AtOffset:offset];
+    offset += 1;
+    
+    PlaylistItem *currentPlaylistItem = [[PlaylistItem alloc] initPlaylistItemWithName:currentName andSubtitle:currentSubtitle andID:currentID andPlaylistItemType:currentPlaylistItemType];
+    
+	return [[self class] packetWithPlayers:players andPlaylist:playlist andCurrentItem:currentPlaylistItem];
 }
 
-+ (id)packetWithPlayers:(NSMutableDictionary *)players andPlaylist:(NSMutableArray *)playlist
++ (id)packetWithPlayers:(NSMutableDictionary *)players andPlaylist:(NSMutableArray *)playlist andCurrentItem:(PlaylistItem *)currentPlaylistItem
 {
-	return [[[self class] alloc] initWithPlayers:players andPlaylist:playlist];
+	return [[[self class] alloc] initWithPlayers:players andPlaylist:playlist andCurrentItem:currentPlaylistItem];
 }
 
-- (id)initWithPlayers:(NSMutableDictionary *)players andPlaylist:(NSMutableArray *)playlist
+- (id)initWithPlayers:(NSMutableDictionary *)players andPlaylist:(NSMutableArray *)playlist andCurrentItem:(PlaylistItem *)currentPlaylistItem
 {
 	if ((self = [super initWithType:PacketTypeGameState]))
 	{
 		self.players = players;
         self.playlist = playlist;
+        self.currentPlaylistItem = currentPlaylistItem;
 	}
 	return self;
 }
@@ -115,11 +130,13 @@
          [data rw_appendString:playlistItem.ID];
          [data rw_appendInt8: [playlistItem getUpvoteCount]];
          [data rw_appendInt8: [playlistItem getDownvoteCount]];
-        
-         if(playlistItem.playlistItemType == PlaylistItemTypeSong) {
-             [data rw_appendInt8:PlaylistItemTypeSong];
-         }
+         [data rw_appendInt8:  playlistItem.playlistItemType];
      }
+    
+    [data rw_appendString:self.currentPlaylistItem.name];
+    [data rw_appendString:self.currentPlaylistItem.subtitle];
+    [data rw_appendString:self.currentPlaylistItem.ID];
+    [data rw_appendInt8:  self.currentPlaylistItem.playlistItemType];
 }
 
 @end

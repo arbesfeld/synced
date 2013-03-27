@@ -25,6 +25,8 @@
 - (void)viewDidLoad
 {
 	[super viewDidLoad];
+    
+    _currentPlaylistItem = [[PlaylistItem alloc] initPlaylistItemWithName:@"No Songs Playing" andSubtitle:@"" andID:@"" andPlaylistItemType:PlaylistItemTypeNone];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -97,12 +99,14 @@
 
 - (void)reloadTable
 {
+    _game.playlist = [NSMutableArray arrayWithArray:[_game.playlist sortedArrayUsingSelector:@selector(compare:)]];
     [self.userTable reloadData];
     [self.playlistTable reloadData];
 }
 
 - (void)game:(Game *)game setCurrentItem:(PlaylistItem *)playlistItem
 {
+    _currentPlaylistItem = playlistItem;
     self.songLabel.text = playlistItem.name;
     self.artistLabel.text = playlistItem.subtitle;
 }
@@ -117,6 +121,9 @@
     
 }
 
+- (PlaylistItem *)getCurrentPlaylistItem {
+    return _currentPlaylistItem;
+}
 #pragma mark - UITableViewDataSource
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -152,54 +159,92 @@
     else {
         if (cell == nil) {
             cell = [[UITableViewCell alloc] init];
+            PlaylistItem *selectedItem = ((PlaylistItem *)[_game.playlist objectAtIndex:indexPath.row]);
+            
+            cell.textLabel.text = selectedItem.name;
+            cell.textLabel.textAlignment = NSTextAlignmentCenter;
+            cell.detailTextLabel.text = selectedItem.subtitle;
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            
+            UIButton *upvoteButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+            upvoteButton.frame = CGRectMake(270.0f, 5.0f, 30.0f, 30.0f);
+            [upvoteButton setTitle:@"+" forState:UIControlStateNormal];
+            [upvoteButton setTag:indexPath.row * 2];
+            [upvoteButton setEnabled:YES];
+            [cell addSubview:upvoteButton];
+            
+            UILabel *upvoteLabel = [[UILabel alloc] init];
+            upvoteLabel.frame = CGRectMake(235.0f, 5.0f, 30.0f, 30.0f);
+            upvoteLabel.text = [NSString stringWithFormat:@"%d", [selectedItem getUpvoteCount]];
+            [cell addSubview:upvoteLabel];
+            
+            UIButton *downvoteButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+            downvoteButton.frame = CGRectMake(5.0f, 5.0f, 30.0f, 30.0f);
+            [downvoteButton setTitle:@"-" forState:UIControlStateNormal];
+            [downvoteButton setTag:indexPath.row * 2 + 1];
+            [downvoteButton setEnabled:YES];
+            [cell addSubview:downvoteButton];
+            
+            UILabel *downvoteLabel = [[UILabel alloc] init];
+            downvoteLabel.frame = CGRectMake(50.0f, 5.0f, 30.0f, 30.0f);
+            downvoteLabel.text = [NSString stringWithFormat:@"%d", [selectedItem getDownvoteCount]];
+            [cell addSubview:downvoteLabel];
+            
+            [upvoteButton addTarget:self
+                          action:@selector(upvoteButtonPressed:)
+                forControlEvents:UIControlEventTouchUpInside];
+            
+            [downvoteButton addTarget:self
+                           action:@selector(downvoteButtonPressed:)
+                 forControlEvents:UIControlEventTouchUpInside];
         }
-        cell.textLabel.text = ((PlaylistItem *)[_game.playlist objectAtIndex:indexPath.row]).name;
-        cell.textLabel.textAlignment = NSTextAlignmentCenter;
-        cell.detailTextLabel.text = ((PlaylistItem *)[_game.playlist objectAtIndex:indexPath.row]).subtitle;
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        
-        UIButton *upvoteButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        upvoteButton.frame = CGRectMake(270.0f, 5.0f, 30.0f, 30.0f);
-        [upvoteButton setTitle:@"+" forState:UIControlStateNormal];
-        [upvoteButton setTag:indexPath.row];
-        [cell addSubview:upvoteButton];
-        
-        
-        UIButton *downvoteButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        downvoteButton.frame = CGRectMake(5.0f, 5.0f, 30.0f, 30.0f);
-        [downvoteButton setTitle:@"-" forState:UIControlStateNormal];
-        [downvoteButton setTag:indexPath.row];
-        [cell addSubview:downvoteButton];
-        
-        [upvoteButton addTarget:self
-                      action:@selector(upvoteStuff:)
-            forControlEvents:UIControlEventTouchUpInside];
-        
-        [downvoteButton addTarget:self
-                       action:@selector(downvoteStuff:)
-             forControlEvents:UIControlEventTouchUpInside];
     }
     return cell;
 }
 
-- (IBAction)upvoteStuff:(id)sender
+- (IBAction)upvoteButtonPressed:(id)sender
 {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Message"
-                                                    message:@"UPVOTED"
-                                                   delegate:nil
-                                          cancelButtonTitle:@"OK"
-                                          otherButtonTitles:nil];
-    [alert show];
+    UIButton *upvoteButton = ((UIButton *)sender);
+    NSLog(@"tag: %d", upvoteButton.tag);
+    PlaylistItem *selectedItem = ((PlaylistItem *)[_game.playlist objectAtIndex:upvoteButton.tag / 2]);
+    [selectedItem upvote:1];
+    [upvoteButton setEnabled:NO];
+    
+    // find other button and enable it
+    // because of how we intialized tags, the tag is one more than the upvote tag
+    UITableViewCell *cell = (UITableViewCell *)[upvoteButton superview];
+    UIButton *downvoteButton = (UIButton *)[cell viewWithTag:upvoteButton.tag / 2 + 1];
+    if(![downvoteButton isEnabled]) {
+        // user no longer wants it to be downvoted
+        [selectedItem downvote:-1];
+        [_game sendVotePacketForItem:selectedItem andAmount:-1 upvote:NO];
+        [downvoteButton setEnabled:YES];
+    }
+    
+    [_game sendVotePacketForItem:selectedItem andAmount:1 upvote:YES];
+    [self reloadTable];
 }
 
-- (IBAction)downvoteStuff:(id)sender
+- (IBAction)downvoteButtonPressed:(id)sender
 {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Message"
-                                                    message:@"DOWNVOTED"
-                                                   delegate:nil
-                                          cancelButtonTitle:@"OK" 
-                                          otherButtonTitles:nil];
-    [alert show];
+    UIButton *downvoteButton = ((UIButton *)sender);
+    PlaylistItem *selectedItem = ((PlaylistItem *)[_game.playlist objectAtIndex:downvoteButton.tag / 2]);
+    [selectedItem downvote:1];
+    [downvoteButton setEnabled:NO];
+    
+    // find other button and enable it
+    // because of how we intialized tags, the tag is one less than the downvote tag
+    UITableViewCell *cell = (UITableViewCell *)[downvoteButton superview];
+    UIButton *upvoteButton = (UIButton *)[cell viewWithTag:downvoteButton.tag / 2 - 1];
+    if(![upvoteButton isEnabled]) {
+        // user no longer wants it to be upvoted
+        [selectedItem upvote:-1];
+        [_game sendVotePacketForItem:selectedItem andAmount:-1 upvote:YES];
+        [upvoteButton setEnabled:YES];
+    }
+    
+    [_game sendVotePacketForItem:selectedItem andAmount:1 upvote:NO];
+    [self reloadTable];
 }
 #pragma mark - UIAlertViewDelegate
 

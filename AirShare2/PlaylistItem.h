@@ -11,6 +11,7 @@ typedef enum
 	PlaylistItemTypeSong,
     PlaylistItemTypeGame,
     PlaylistItemTypeMovie,
+    PlaylistItemTypeNone,
 }
 PlaylistItemType;
 
@@ -32,7 +33,8 @@ PlaylistItemType;
 - (int)getUpvoteCount;
 - (int)getDownvoteCount;
 - (int)getScore;
+- (NSComparisonResult)compare:(PlaylistItem *)other;
 
-- (void)upvote;
-- (void)downvote;
+- (void)upvote:(int)amount;
+- (void)downvote:(int)amount;
 @end

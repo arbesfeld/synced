@@ -6,6 +6,7 @@
 #import "PacketMusic.h"
 #import "PacketPlayMusicNow.h"
 #import "PacketMusicResponse.h"
+#import "PacketVote.h"
 
 const size_t PACKET_HEADER_SIZE = 10;
 
@@ -65,9 +66,13 @@ const size_t PACKET_HEADER_SIZE = 10;
         case PacketTypeMusicResponse:
             packet = [PacketMusicResponse packetWithData:data];
             break;
-            
+
         case PacketTypePlayMusicNow:
             packet = [PacketPlayMusicNow packetWithData:data];
+            break;
+            
+        case PacketTypeVote:
+            packet = [PacketVote packetWithData:data];
             break;
             
 		default:
