@@ -12,16 +12,24 @@
 
 @synthesize songURL = _songURL;
 
-+(id)musicItemWithName:(NSString *)name subtitle:(NSString *)subtitle andURL:(NSURL *)songURL;
++ (id)musicItemWithName:(NSString *)name andSubtitle:(NSString *)subtitle andID:(NSString *)ID;
 {
-	return [[[self class] alloc] initMusicItemWithName:name subtitle:subtitle andURL:songURL];
+	return [[[self class] alloc] initMusicItemWithName:name andSubtitle:subtitle andID:ID];
 }
 
-- (id)initMusicItemWithName:(NSString *)name subtitle:(NSString *)subtitle andURL:(NSURL *)songURL
+- (id)initMusicItemWithName:(NSString *)name andSubtitle:(NSString *)subtitle andID:(NSString *)ID;
 {
-	if ((self = [super initPlaylistItemWithName:name subtitle:subtitle playlistItemType:PlaylistItemTypeSong]))
+	if ((self = [super initPlaylistItemWithName:name andSubtitle:subtitle andID:ID andPlaylistItemType:PlaylistItemTypeSong]))
 	{
-		self.songURL = songURL;
+        NSArray *dirs = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString *documentsDirectoryPath = [dirs objectAtIndex:0];
+        
+        NSString *songName = [[name componentsSeparatedByCharactersInSet:
+                               [[NSCharacterSet alphanumericCharacterSet] invertedSet]]
+                              componentsJoinedByString:@""];
+        NSString *fileName = [NSString stringWithFormat:@"%@.m4a", songName];
+        NSString *songPath = [documentsDirectoryPath stringByAppendingPathComponent:fileName];
+		self.songURL = [[NSURL alloc] initWithString:songPath];
 	}
 	return self;
 }

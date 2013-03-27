@@ -15,14 +15,7 @@
 
 @implementation MusicUpload
 
-#pragma mark event handlers
--(id) initWithGame:(Game *)game {
-    if (self = [super init]) {
-        _game = game;
-    }
-    return self;
-}
--(void)convertAndUpload:(MPMediaItem *)mediaItem {
+-(void)convertAndUpload:(MPMediaItem *)mediaItem completion:(void (^)(void))completionBlock{
 	// set up an AVAssetReader to read from the iPod Library
 	NSURL *assetURL = [mediaItem valueForProperty:MPMediaItemPropertyAssetURL];
 	AVURLAsset *songAsset = [AVURLAsset URLAssetWithURL:assetURL options:nil];
@@ -52,14 +45,12 @@
                                   componentsJoinedByString:@""];
     NSString *fileName = [NSString stringWithFormat:@"%@.m4a", songName];
     
-	_exportPath = [documentsDirectoryPath stringByAppendingPathComponent:fileName];
-    NSLog(@"Export path = %@", _exportPath);
+	NSString *exportPath = [documentsDirectoryPath stringByAppendingPathComponent:fileName];
     
-	if ([[NSFileManager defaultManager] fileExistsAtPath:_exportPath]) {
-        NSLog(@"removing item");
-		[[NSFileManager defaultManager] removeItemAtPath:_exportPath error:nil];
+	if ([[NSFileManager defaultManager] fileExistsAtPath:exportPath]) {
+		[[NSFileManager defaultManager] removeItemAtPath:exportPath error:nil];
 	}
-	NSURL *exportURL = [NSURL fileURLWithPath:_exportPath];
+	NSURL *exportURL = [NSURL fileURLWithPath:exportPath];
 	AVAssetWriter *assetWriter = [AVAssetWriter assetWriterWithURL:exportURL
 														  fileType:AVFileTypeAppleM4A
 															 error:&assetError];
@@ -121,87 +112,56 @@
              } else {
                  // done!
                  [assetWriterInput markAsFinished];
-                 [assetWriter finishWriting];
-                 [assetReader cancelReading];
-                 NSDictionary *outputFileAttributes = [[NSFileManager defaultManager]
-                                                       attributesOfItemAtPath:_exportPath
-                                                       error:nil];
-                 NSLog (@"done. file size is %lld", [outputFileAttributes fileSize]);
+                 [assetWriter finishWritingWithCompletionHandler:^{
+                     [assetReader cancelReading];
+                     
+                     NSDictionary *outputFileAttributes = [[NSFileManager defaultManager]
+                                                           attributesOfItemAtPath:exportPath
+                                                           error:nil];
+                     NSLog (@"done. file size is %lld", [outputFileAttributes fileSize]);
+                     
+                     // now upload to server
+                     NSURL *exportURL = [NSURL fileURLWithPath:exportPath];
+                     NSData *songData = [NSData dataWithContentsOfURL:exportURL];
+                     
+                     NSString *songName = [[[mediaItem valueForProperty:MPMediaItemPropertyTitle] componentsSeparatedByCharactersInSet:
+                                            [[NSCharacterSet alphanumericCharacterSet] invertedSet]]
+                                           componentsJoinedByString:@""];
+                     NSString *fileName = [NSString stringWithFormat:@"%@.m4a", songName];
+                     
+                     NSLog(@"Uploading to server: %@", fileName);
+                     
+                     NSURL *url = [NSURL URLWithString:BASE_URL];
+                     AFHTTPClient *httpClient = [[AFHTTPClient alloc] initWithBaseURL:url];
+                     NSMutableURLRequest *request = [httpClient multipartFormRequestWithMethod:@"POST" path:@"/airshare-upload.php" parameters:nil constructingBodyWithBlock: ^(id <AFMultipartFormData>formData) {
+                         [formData appendPartWithFileData:songData name:@"musicfile" fileName:fileName mimeType:@"audio/x-m4a"];
+                     }];
+                     
+                     AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+                     [operation setUploadProgressBlock:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
+                         NSLog(@"Sent %lld of %lld bytes", totalBytesWritten, totalBytesExpectedToWrite);
+                     }];
+                     [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+                         NSLog(@"success: %@", operation.responseString);
+                         
+                         // now tell others that you have uploaded
+                         completionBlock();
+                     }
+                                                      failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                                                          NSLog(@"error: %@",  operation.responseString);
+                                                          
+                                                      }];
+                     [httpClient enqueueHTTPRequestOperation:operation];
+                 }];
                  
-                 [self performSelectorOnMainThread:@selector(convertingComplete:)
-                                        withObject:mediaItem
-                                     waitUntilDone:NO];
                  break;
              }
          }
-         
 	 }];
-	NSLog (@"bottom of convertTapped:");
 }
 
 -(void)updateSizeLabel:(NSNumber*)convertedByteCountNumber {
 	UInt64 convertedByteCount = [convertedByteCountNumber longValue];
 	NSLog(@"%lld bytes converted", convertedByteCount);
-}
-
--(void)convertingComplete:(MPMediaItem *)mediaItem{
-	//UInt64 convertedByteCount = [convertedByteCountNumber longValue];
-	//sizeLabel.text = [NSString stringWithFormat: @"done. file size is %lld", convertedByteCount];
-    // COMPLETED THE UPDATE
-    NSURL *exportURL = [NSURL fileURLWithPath:_exportPath];
-    NSData *songData = [NSData dataWithContentsOfURL:exportURL];
-    
-    NSString *songName = [[[mediaItem valueForProperty:MPMediaItemPropertyTitle] componentsSeparatedByCharactersInSet:
-                           [[NSCharacterSet alphanumericCharacterSet] invertedSet]]
-                          componentsJoinedByString:@""];
-    NSString *fileName = [NSString stringWithFormat:@"%@.m4a", songName];
-    
-    NSLog(@"Uploading to server: %@", fileName);
-    
-    NSURL *url = [NSURL URLWithString:@"http://protected-harbor-4741.herokuapp.com/"];
-    AFHTTPClient *httpClient = [[AFHTTPClient alloc] initWithBaseURL:url];
-    NSMutableURLRequest *request = [httpClient multipartFormRequestWithMethod:@"POST" path:@"/airshare-upload.php" parameters:nil constructingBodyWithBlock: ^(id <AFMultipartFormData>formData) {
-        [formData appendPartWithFileData:songData name:@"musicfile" fileName:fileName mimeType:@"audio/x-m4a"];
-    }];
-    
-    AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
-    [operation setUploadProgressBlock:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
-        NSLog(@"Sent %lld of %lld bytes", totalBytesWritten, totalBytesExpectedToWrite);
-    }];
-    [operation  setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"success: %@", operation.responseString);
-        [self sendMusicPacket:mediaItem];
-    }
-      failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-          NSLog(@"error: %@",  operation.responseString);
-          
-      }
-     ];
-    [httpClient enqueueHTTPRequestOperation:operation];
-}
-
-- (void)sendMusicPacket:(MPMediaItem *)mediaItem
-{
-    NSString *songName = [mediaItem valueForProperty:MPMediaItemPropertyTitle];
-    NSString *artistName = [mediaItem valueForProperty:MPMediaItemPropertyArtist];
-    NSURL *exportURL = [NSURL fileURLWithPath:_exportPath];
-    MusicItem *musicItem = [MusicItem musicItemWithName:songName subtitle:artistName andURL:exportURL];
-    
-    [_game.playlist addObject:musicItem];
-    [_game.delegate reloadTable];
-    [_game hasDownloadedMusic:musicItem];
-    
-    NSLog(@"Sending packet with songName %@ and artistName %@", songName, artistName);
-    
-    PacketMusic *packet = [PacketMusic packetWithSongName:songName andArtistName:artistName];
-    
-	GKSendDataMode dataMode = GKSendDataReliable;
-	NSData *data = [packet data];
-	NSError *error;
-	if (![_game.session sendDataToAllPeers:data withDataMode:dataMode error:&error])
-	{
-		NSLog(@"Error sending data to clients: %@", error);
-	}
-    
 }
 @end

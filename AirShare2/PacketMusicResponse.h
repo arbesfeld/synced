@@ -12,8 +12,8 @@
 
 @interface PacketMusicResponse : Packet
 
-@property (nonatomic, strong) NSString *songName;
+@property (nonatomic, strong) NSString *ID;
 
-+ (id)packetWithSongName:(NSString *)songName;
++ (id)packetWithSongID:(NSString *)ID;
 
 @end

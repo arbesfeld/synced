@@ -13,14 +13,8 @@
 
 @implementation MusicDownload
 
--(id)initWithGame:(Game *)game {
-    if (self = [super init]) {
-        _game = game;
-    }
-    return self;
-}
 
--(void)downloadFileWithName:(NSString *)fileName andArtistName:(NSString *)artistName {
+-(void)downloadFileWithName:(NSString *)fileName completion:(void (^)(void))completionBlock{
     NSString *fileNameNoSpaces = [[fileName componentsSeparatedByCharactersInSet:
                                                          [[NSCharacterSet alphanumericCharacterSet] invertedSet]]
                                                         componentsJoinedByString:@""];
@@ -31,7 +25,7 @@
         [prams appendFormat:@"%@=%@&",keys,[dict objectForKey:keys]];
     }
     NSString *removeLastChar = [prams substringWithRange:NSMakeRange(0, [prams length]-1)];
-    NSString *urlString = [NSString stringWithFormat:@"http://protected-harbor-4741.herokuapp.com/airshare-download.php?%@.m4a",removeLastChar];
+    NSString *urlString = [NSString stringWithFormat:@"%@airshare-download.php?%@.m4a", BASE_URL, removeLastChar];
     
     NSLog(@"GET Request = %@",urlString);
     
@@ -42,31 +36,22 @@
     NSLog(@"Local File Name = %@", saveName);
 
     // asynchronous download
-    AFHTTPClient *httpClient = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:@"http://protected-harbor-4741.herokuapp.com/"]];
+    AFHTTPClient *httpClient = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:BASE_URL]];
     NSMutableURLRequest *request = [httpClient requestWithMethod:@"GET"
                                                             path:urlString
                                                       parameters:nil];
+    
     AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
     [httpClient registerHTTPOperationClass:[AFHTTPRequestOperation class]];
-    [operation setDownloadProgressBlock:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
-        NSLog(@"Downloaded %lld of %lld bytes", totalBytesWritten, totalBytesExpectedToWrite);
+    [operation setDownloadProgressBlock:^(NSUInteger bytesDownloaded, long long totalBytesDownloaded, long long totalBytesExpectedToDownload) {
+        NSLog(@"Downloaded %lld bytes", totalBytesDownloaded);
     }];
     [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"Success, data length: %d", [responseObject length]);
         
         // write the song to disk
         [responseObject writeToFile:saveName atomically:NO];
-        //NSMutableData *songData = [[NSMutableData alloc] initWithContentsOfFile:saveName];
-        
-        // add the musicItem to the table
-        MusicItem *musicItem = [MusicItem musicItemWithName:fileName
-                                                   subtitle:artistName
-                                                     andURL:[[NSURL alloc] initWithString:saveName] ];
-        NSLog(@"Added music item with description: %@", [musicItem description]);
-        [_game.playlist addObject:musicItem];
-        [_game.delegate reloadTable];
-        
-        [_game hasDownloadedMusic:musicItem];
+        completionBlock();
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error: %@", error);

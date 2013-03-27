@@ -16,28 +16,28 @@
 	size_t offset = PACKET_HEADER_SIZE;
 	size_t count;
     
-    NSString *songName = [data rw_stringAtOffset:offset bytesRead:&count];
+    NSString *ID = [data rw_stringAtOffset:offset bytesRead:&count];
     offset += count;
     
-	return [[self class] packetWithSongName:songName];
+	return [[self class] packetWithSongID:ID];
 }
 
-+ (id)packetWithSongName:(NSString *)songName
++ (id)packetWithSongID:(NSString *)ID
 {
-	return [[[self class] alloc] initWithSongName:songName];
+	return [[[self class] alloc] initWithSongID:ID];
 }
 
-- (id)initWithSongName:(NSString *)songName{
+- (id)initWithSongID:(NSString *)ID{
 	if ((self = [super initWithType:PacketTypeMusicResponse]))
 	{
-		self.songName = songName;
+		self.ID = ID;
 	}
 	return self;
 }
 
 - (void)addPayloadToData:(NSMutableData *)data
 {
-    [data rw_appendString:self.songName];
+    [data rw_appendString:self.ID];
 }
 
 @end

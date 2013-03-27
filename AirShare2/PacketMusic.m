@@ -22,20 +22,24 @@
     NSString *artistName = [data rw_stringAtOffset:offset bytesRead:&count];
     offset += count;
     
-	return [[self class] packetWithSongName:songName andArtistName:artistName];
+    NSString *ID = [data rw_stringAtOffset:offset bytesRead:&count];
+    offset += count;
+    
+	return [[self class] packetWithSongName:songName andArtistName:artistName andID:ID];
 }
 
-+ (id)packetWithSongName:(NSString *)songName andArtistName:(NSString *)artistName
++ (id)packetWithSongName:(NSString *)songName andArtistName:(NSString *)artistName andID:(NSString *)ID
 {
-	return [[[self class] alloc] initWithSongName:songName andArtistName:artistName];
+	return [[[self class] alloc] initWithSongName:songName andArtistName:artistName andID:(NSString *)ID];
 }
 
-- (id)initWithSongName:(NSString *)songName andArtistName:(NSString *)artistName
+- (id)initWithSongName:(NSString *)songName andArtistName:(NSString *)artistName andID:(NSString *)ID
 {
 	if ((self = [super initWithType:PacketTypeMusic]))
 	{
 		self.songName = songName;
         self.artistName = artistName;
+        self.ID = ID;
 	}
 	return self;
 }
@@ -44,6 +48,7 @@
 {
     [data rw_appendString:self.songName];
     [data rw_appendString:self.artistName];
+    [data rw_appendString:self.ID];
 }
 
 @end

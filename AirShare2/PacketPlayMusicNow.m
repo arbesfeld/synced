@@ -16,7 +16,7 @@
 	size_t offset = PACKET_HEADER_SIZE;
 	size_t count;
     
-    NSString *songName = [data rw_stringAtOffset:offset bytesRead:&count];
+    NSString *ID = [data rw_stringAtOffset:offset bytesRead:&count];
     offset += count;
     
     NSString *dateString = [data rw_stringAtOffset:offset bytesRead:&count];
@@ -28,19 +28,19 @@
     NSDate *time = [[NSDate alloc] init];
     time = [dateFormatter dateFromString:dateString];
     
-	return [[self class] packetWithSongName:songName andTime:time];
+	return [[self class] packetWithID:ID andTime:time];
 }
 
-+ (id)packetWithSongName:(NSString *)songName andTime:(NSDate *)time
++ (id)packetWithID:(NSString *)ID andTime:(NSDate *)time
 {
-	return [[[self class] alloc] initWithSongName:songName andTime:time];
+	return [[[self class] alloc] initWithID:ID andTime:time];
 }
 
-- (id)initWithSongName:(NSString *)songName andTime:(NSDate *)time
+- (id)initWithID:(NSString *)ID andTime:(NSDate *)time
 {
 	if ((self = [super initWithType:PacketTypePlayMusicNow]))
 	{
-		self.songName = songName;
+		self.ID = ID;
         self.time = time;
 	}
 	return self;
@@ -48,7 +48,7 @@
 
 - (void)addPayloadToData:(NSMutableData *)data
 {
-    [data rw_appendString:self.songName];
+    [data rw_appendString:self.ID];
     
     // convert NSDate to dateString
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];

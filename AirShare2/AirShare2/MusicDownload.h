@@ -8,15 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
-@class Game;
 
 @interface MusicDownload : NSObject
-{
-    Game *_game;
-}
 
--(id)initWithGame:(Game *)game;
-
--(void)downloadFileWithName:(NSString *)fileName andArtistName:(NSString *)artistName;
+-(void)downloadFileWithName:(NSString *)fileName completion:(void (^)(void))completionBlock;
 
 @end

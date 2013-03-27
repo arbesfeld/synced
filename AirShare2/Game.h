@@ -58,6 +58,7 @@ ServerState;
 
 - (NSString *)displayNameForPeerID:(NSString *)peerID;
 
+- (void)addItemToPlaylist:(PlaylistItem *)playlistItem;
 - (void)uploadMusicWithMediaItem:(MPMediaItem *)song;
 - (void)hasDownloadedMusic:(MusicItem *)musicItem;
 @end

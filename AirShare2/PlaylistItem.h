@@ -23,14 +23,16 @@ PlaylistItemType;
 }
 @property (nonatomic, strong) NSString *name;
 @property (nonatomic, strong) NSString *subtitle;
+@property (nonatomic, strong) NSString *ID;
 @property (nonatomic, assign) PlaylistItemType playlistItemType;
 
--(id)initPlaylistItemWithName:(NSString *)name subtitle:(NSString *)subtitle playlistItemType:(PlaylistItemType)playListItemType;
+- (id)initPlaylistItemWithName:(NSString *)name andSubtitle:(NSString *)subtitle andID:(NSString *)ID andPlaylistItemType:(PlaylistItemType)playListItemType;
 
--(int)getUpvoteCount;
--(int)getDownvoteCount;
--(int)getScore;
+- (void)setUpvoteCount:(int)upvoteCount andDownvoteCount:(int)downvoteCount;
+- (int)getUpvoteCount;
+- (int)getDownvoteCount;
+- (int)getScore;
 
--(void)upvote;
--(void)downvote;
+- (void)upvote;
+- (void)downvote;
 @end

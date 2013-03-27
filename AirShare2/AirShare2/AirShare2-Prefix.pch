@@ -18,6 +18,7 @@
 // The name of the GameKit session.
 #define SESSION_ID @"AirShare"
 #define DATE_FORMAT @"yyyy-MM-dd-HH:mm:ss.SSS"
+#define BASE_URL @"http://protected-harbor-4741.herokuapp.com/"
 typedef enum
 {
 	QuitReasonNoNetwork,          // no Wi-Fi or Bluetooth

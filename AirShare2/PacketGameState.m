@@ -52,18 +52,24 @@
 		NSString *subtitle = [data rw_stringAtOffset:offset bytesRead:&count];
 		offset += count;
         
+		NSString *ID = [data rw_stringAtOffset:offset bytesRead:&count];
+		offset += count;
+        
+        int upvoteCount = [data rw_int8AtOffset:offset];
+        offset += 1;
+        
+        int downvoteCount = [data rw_int8AtOffset:offset];
+        offset += 1;
+        
         int playlistItemType = [data rw_int8AtOffset:offset];
         offset += 1;
     
         switch(playlistItemType) {
             // music item
-            case 0:
+            case PlaylistItemTypeSong:
             {
-                NSString *songString = [data rw_stringAtOffset:offset bytesRead:&count];
-                offset += count;
-                
-                NSURL *songURL = [[NSURL alloc] initWithString:songString];
-                MusicItem *musicItem = [MusicItem musicItemWithName:name subtitle:subtitle andURL:songURL];
+                MusicItem *musicItem = [MusicItem musicItemWithName:name andSubtitle:subtitle andID:ID];
+                [musicItem setUpvoteCount:upvoteCount andDownvoteCount:downvoteCount];
                 [playlist addObject:musicItem];
                 
                 break;
@@ -106,11 +112,12 @@
 	for(PlaylistItem *playlistItem in self.playlist) {
          [data rw_appendString:playlistItem.name];
          [data rw_appendString:playlistItem.subtitle];
+         [data rw_appendString:playlistItem.ID];
+         [data rw_appendInt8: [playlistItem getUpvoteCount]];
+         [data rw_appendInt8: [playlistItem getDownvoteCount]];
+        
          if(playlistItem.playlistItemType == PlaylistItemTypeSong) {
-             NSString *songString = [((MusicItem *)playlistItem).songURL absoluteString];
-             
-             [data rw_appendInt8:0]; // 0 for PlaylistItemTypeMusic
-             [data rw_appendString:songString];
+             [data rw_appendInt8:PlaylistItemTypeSong];
          }
      }
 }

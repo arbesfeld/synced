@@ -158,22 +158,24 @@
         cell.detailTextLabel.text = ((PlaylistItem *)[_game.playlist objectAtIndex:indexPath.row]).subtitle;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
-        UIButton *addButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        addButton.frame = CGRectMake(270.0f, 5.0f, 30.0f, 30.0f);
-        [addButton setTitle:@"+" forState:UIControlStateNormal];
-        [cell addSubview:addButton];
+        UIButton *upvoteButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        upvoteButton.frame = CGRectMake(270.0f, 5.0f, 30.0f, 30.0f);
+        [upvoteButton setTitle:@"+" forState:UIControlStateNormal];
+        [upvoteButton setTag:indexPath.row];
+        [cell addSubview:upvoteButton];
         
         
-        UIButton *addButton2 = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        addButton2.frame = CGRectMake(5.0f, 5.0f, 30.0f, 30.0f);
-        [addButton2 setTitle:@"-" forState:UIControlStateNormal];
-        [cell addSubview:addButton2];
+        UIButton *downvoteButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        downvoteButton.frame = CGRectMake(5.0f, 5.0f, 30.0f, 30.0f);
+        [downvoteButton setTitle:@"-" forState:UIControlStateNormal];
+        [downvoteButton setTag:indexPath.row];
+        [cell addSubview:downvoteButton];
         
-        [addButton addTarget:self
+        [upvoteButton addTarget:self
                       action:@selector(upvoteStuff:)
             forControlEvents:UIControlEventTouchUpInside];
         
-        [addButton2 addTarget:self
+        [downvoteButton addTarget:self
                        action:@selector(downvoteStuff:)
              forControlEvents:UIControlEventTouchUpInside];
     }

@@ -12,7 +12,8 @@
 
 @property (nonatomic, strong) NSString *songName;
 @property (nonatomic, strong) NSString *artistName;
+@property (nonatomic, strong) NSString *ID;
 
-+ (id)packetWithSongName:(NSString *)songName andArtistName:(NSString *)artistName;
++ (id)packetWithSongName:(NSString *)songName andArtistName:(NSString *)artistName andID:(NSString *)ID;
 
 @end
