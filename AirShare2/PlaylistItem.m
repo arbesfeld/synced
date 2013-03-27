@@ -21,7 +21,7 @@
 #endif
 }
 
--(id)initPlaylistItemWithName:(NSString *)name subtitle:(NSString *)subtitle playlistItemType:(PlaylistItemType)playListItemType
+- (id)initPlaylistItemWithName:(NSString *)name subtitle:(NSString *)subtitle playlistItemType:(PlaylistItemType)playListItemType
 {
     if(self = [super init]) {
         self.name = name;
@@ -33,23 +33,27 @@
     return self;
 }
 
--(int)getUpvoteCount {
+- (int)getUpvoteCount {
     return _upvoteCount;
 }
--(int)getDownvoteCount {
+- (int)getDownvoteCount {
     return _downvoteCount;
 }
--(int)getScore {
+- (int)getScore {
     return 100 * (_upvoteCount - _downvoteCount) + abs(_upvoteCount + _downvoteCount);
 }
 
--(void)upvote {
+- (void)upvote {
     _upvoteCount++;
 }
--(void)downvote {
+- (void)downvote {
     _downvoteCount++;
 }
 
+- (BOOL)isEqual:(id)object {
+    return ([self.name isEqualToString:((PlaylistItem *)object).name] &&
+            [self.subtitle isEqualToString:((PlaylistItem *)object).subtitle]);
+}
 - (NSString *)description
 {
 	return [NSString stringWithFormat:@"%@ name = %@, subtitle = %@", [super description], self.name, self.subtitle];

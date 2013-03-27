@@ -26,6 +26,7 @@ ServerState;
 - (void)gameWaitingForClientsReady:(Game *)game;
 
 - (void)reloadTable;
+- (void)game:(Game *)game setCurrentItem:(PlaylistItem *)playlistItem;
 
 - (void)gameServer:(Game *)server clientDidConnect:(Player *)player;
 - (void)gameServer:(Game *)server clientDidDisconnect:(Player *)player;

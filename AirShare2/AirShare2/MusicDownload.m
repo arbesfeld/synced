@@ -19,8 +19,6 @@
     }
     return self;
 }
-// fileName is the name of the .caf file to be requested,
-// saveName is the name in the Documents folder where .caf is saved
 
 -(void)downloadFileWithName:(NSString *)fileName andArtistName:(NSString *)artistName {
     NSString *fileNameNoSpaces = [[fileName componentsSeparatedByCharactersInSet:

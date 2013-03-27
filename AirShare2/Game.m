@@ -6,7 +6,7 @@
 
 #import "Packet.h"
 #import "PacketSignInResponse.h"
-#import "PacketPlayerList.h"
+#import "PacketGameState.h"
 #import "PacketOtherClientQuit.h"
 #import "PacketMusic.h"
 #import "PacketMusicResponse.h"
@@ -43,9 +43,10 @@ const double DELAY_TIME = 2.000; // wait DELAY_TIME seconds until songs play
 	if ((self = [super init]))
 	{
 		_players = [NSMutableDictionary dictionaryWithCapacity:4];
-        _playlist = [[NSMutableArray alloc] initWithCapacity:8];
+        _playlist = [[NSMutableArray alloc] initWithCapacity:10];
         _uploader = [[MusicUpload alloc] initWithGame:self];
         _downloader = [[MusicDownload alloc] initWithGame:self];
+        _audioPlayer =  nil;
         
         _dateFormatter = [[NSDateFormatter alloc] init];
         [_dateFormatter setDateFormat:DATE_FORMAT];
@@ -131,14 +132,17 @@ const double DELAY_TIME = 2.000; // wait DELAY_TIME seconds until songs play
 {
 	switch (packet.packetType)
 	{
-        case PacketTypePlayerList:
-            self.players = ((PacketPlayerList *)packet).players;
+        case PacketTypeGameState:
+        {
+            self.players = ((PacketGameState *)packet).players;
+            self.playlist = ((PacketGameState *)packet).playlist;
             
             NSLog(@"the players are: %@", self.players);
             
             [self.delegate reloadTable];
             break;
-        
+        }
+            
         case PacketTypeMusic:
         {
             NSString *songName  = ((PacketMusic *)packet).songName;
@@ -217,7 +221,7 @@ const double DELAY_TIME = 2.000; // wait DELAY_TIME seconds until songs play
             NSLog(@"Server received sign in from client '%@'", player.name);
             
             // received a sign in from player, now return with a PacketPlayerList
-            Packet *packet = [PacketPlayerList packetWithPlayers:_players];
+            Packet *packet = [PacketGameState packetWithPlayers:_players andPlaylist:_playlist];
             [self sendPacketToAllClients:packet];
 			break;
         }
@@ -239,7 +243,7 @@ const double DELAY_TIME = 2.000; // wait DELAY_TIME seconds until songs play
             [player.hasMusicList setObject:@YES forKey:songName];
             
             MusicItem *musicItem = (MusicItem *)[self playlistItemWithName:songName];
-            if([self allPlayersHaveMusic:musicItem]) {
+            if( (_audioPlayer == nil || ![_audioPlayer isPlaying]) && [self allPlayersHaveMusic:musicItem]) {
                 [self serverStartPlayingMusic:musicItem];
             }
             break;
@@ -259,19 +263,14 @@ const double DELAY_TIME = 2.000; // wait DELAY_TIME seconds until songs play
     [_uploader convertAndUpload:song];
 }
 
-- (void)playMusicItemWithName:(NSString *)name
+- (void)playItem:(PlaylistItem *)playlistItem
 {
-    MusicItem *musicItem = (MusicItem *)[self playlistItemWithName:name];
-    NSLog(@"Playing music item, song = %@, artist = %@", musicItem.name, musicItem.subtitle);
+    if(!self.isServer)
+        return;
     
-    NSError *error;
-    _audioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:musicItem.songURL error:&error];
-    _audioPlayer.delegate = self;
-    if (_audioPlayer == nil) {
-        NSLog(@"AudioPlayer did not load properly: %@", [error description]);
-    } else {
-        [_audioPlayer prepareToPlay];
-        [_audioPlayer play];
+    if(playlistItem.playlistItemType == PlaylistItemTypeSong) {
+        NSLog(@"Starting");
+        [self serverStartPlayingMusic:(MusicItem *)playlistItem];
     }
 }
 
@@ -305,7 +304,11 @@ const double DELAY_TIME = 2.000; // wait DELAY_TIME seconds until songs play
 	}
     return YES;
 }
+
 - (void)serverStartPlayingMusic:(MusicItem *)musicItem {
+    if(!self.isServer)
+        return;
+    
     AFHTTPClient *httpClient = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:@"http://protected-harbor-4741.herokuapp.com/"]];
     NSString *urlString = @"http://protected-harbor-4741.herokuapp.com/airshare-time.php";
     NSMutableURLRequest *request = [httpClient requestWithMethod:@"GET"
@@ -331,6 +334,51 @@ const double DELAY_TIME = 2.000; // wait DELAY_TIME seconds until songs play
     [operation start];
 }
 
+- (void)playMusicItemWithName:(NSString *)name
+{
+    MusicItem *musicItem = (MusicItem *)[self playlistItemWithName:name];
+    // if a current song is waiting, wait for it to end (then delegate picks it up)
+    if(_audioPlayer != nil && [_audioPlayer isPlaying])
+        return;
+    
+    NSLog(@"Playing music item, song = %@, artist = %@", musicItem.name, musicItem.subtitle);
+    NSError *error;
+    _audioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:musicItem.songURL error:&error];
+    _audioPlayer.delegate = self;
+    if (_audioPlayer == nil) {
+        NSLog(@"AudioPlayer did not load properly: %@", [error description]);
+    } else {
+        [_audioPlayer prepareToPlay];
+        [_audioPlayer play];
+    }
+    
+    // now remove the item from the list and make it the "current song"
+    [self.delegate game:self setCurrentItem:musicItem];
+    for(PlaylistItem *playlistItem in _playlist) {
+        if([playlistItem isEqual:musicItem]) {
+            [_playlist removeObject:playlistItem];
+            break;
+        }
+    }
+    // in case the song is played a second time, act like the user doesn't have the song
+    [_players enumerateKeysAndObjectsUsingBlock:^(id key, Player *obj, BOOL *stop)
+     {
+         [obj.hasMusicList removeObjectForKey:name];
+     }];
+    
+    [self.delegate reloadTable];
+}
+
+#pragma mark - AVAudioPlayerDelegate
+- (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag
+{
+    NSLog(@"AudioPlayer finished playing");
+    if(self.isServer && _playlist.count != 0) {
+        // try to play the next item on the list
+        NSLog(@"Play: %@", [[_playlist objectAtIndex:0] description]);
+        [self playItem:[_playlist objectAtIndex:0]];
+    }
+}
 #pragma mark - Networking
 
 - (void)sendPacketToAllClients:(Packet *)packet

@@ -8,9 +8,9 @@
 
 typedef enum
 {
-	PlaylistItemSong,
-    PlaylistItemGame,
-    PlaylistItemMovie,
+	PlaylistItemTypeSong,
+    PlaylistItemTypeGame,
+    PlaylistItemTypeMovie,
 }
 PlaylistItemType;
 

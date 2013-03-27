@@ -5,7 +5,7 @@
 //  Created by mata on 3/26/13.
 //  Copyright (c) 2013 Matthew Arbesfeld. All rights reserved.
 //
-
+//  Server to client -> play music at specific time
 #import "PacketPlayMusicNow.h"
 #import "NSData+AirShareAdditions.h"
 

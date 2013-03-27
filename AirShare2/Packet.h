@@ -6,7 +6,7 @@ typedef enum
 	PacketTypeSignInRequest = 0x64,    // server to client
 	PacketTypeSignInResponse,          // client to server
     
-    PacketTypePlayerList,              // server to client
+    PacketTypeGameState,               // server to client
     
 	PacketTypeServerReady,             // server to client
 	PacketTypeClientReady,             // client to server
@@ -15,10 +15,9 @@ typedef enum
 	PacketTypeServerQuit,              // server to client
 	PacketTypeClientQuit,              // client to server
     
-    PacketTypeMusic,
-    PacketTypeMusicResponse,
-    PacketTypePlayMusicNow,
-    PacketTypeMusicReady,
+    PacketTypeMusic,                   // server to client and client to server
+    PacketTypeMusicResponse,           // client to server
+    PacketTypePlayMusicNow,            // server to client
 }
 PacketType;
 

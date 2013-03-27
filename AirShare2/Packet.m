@@ -1,7 +1,7 @@
 #import "Packet.h"
 #import "NSData+AirShareAdditions.h"
 #import "PacketSignInResponse.h"
-#import "PacketPlayerList.h"
+#import "PacketGameState.h"
 #import "PacketOtherClientQuit.h"
 #import "PacketMusic.h"
 #import "PacketPlayMusicNow.h"
@@ -43,7 +43,6 @@ const size_t PACKET_HEADER_SIZE = 10;
 		case PacketTypeSignInRequest:
         case PacketTypeServerQuit:
         case PacketTypeClientQuit:
-        case PacketTypeMusicReady:
 			packet = [Packet packetWithType:packetType];
 			break;
             
@@ -51,8 +50,8 @@ const size_t PACKET_HEADER_SIZE = 10;
 			packet = [PacketSignInResponse packetWithData:data];
 			break;
             
-        case PacketTypePlayerList:
-			packet = [PacketPlayerList packetWithData:data];
+        case PacketTypeGameState:
+			packet = [PacketGameState packetWithData:data];
 			break;
             
         case PacketTypeOtherClientQuit:
@@ -91,7 +90,7 @@ const size_t PACKET_HEADER_SIZE = 10;
 
 - (NSData *)data
 {
-	NSMutableData *data = [[NSMutableData alloc] initWithCapacity:100];
+	NSMutableData *data = [[NSMutableData alloc] initWithCapacity:300];
     
 	[data rw_appendInt32:'AIRS'];
 	[data rw_appendInt32:self.packetNumber];

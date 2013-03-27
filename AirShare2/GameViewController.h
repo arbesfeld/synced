@@ -15,7 +15,8 @@
 
 @interface GameViewController : UIViewController <UIAlertViewDelegate, UITableViewDataSource, MPMediaPickerControllerDelegate, GameDelegate>
 
-@property (nonatomic, weak) IBOutlet UILabel *centerLabel;
+@property (nonatomic, weak) IBOutlet UILabel *songLabel;
+@property (weak, nonatomic) IBOutlet UILabel *artistLabel;
 @property (weak, nonatomic) IBOutlet UIButton *exitButton;
 @property (nonatomic, weak) IBOutlet UITableView *userTable;
 @property (nonatomic, weak) IBOutlet UITableView *playlistTable;

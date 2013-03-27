@@ -22,7 +22,7 @@
 {
 	size_t count;
 	NSString *playerName = [data rw_stringAtOffset:PACKET_HEADER_SIZE bytesRead:&count];
-    NSLog(@"creating packet with playername: %@", playerName);
+    
 	return [[self class] packetWithPlayerName:playerName];
 }
 

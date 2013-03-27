@@ -19,7 +19,7 @@
 
 - (id)initMusicItemWithName:(NSString *)name subtitle:(NSString *)subtitle andURL:(NSURL *)songURL
 {
-	if ((self = [super initPlaylistItemWithName:name subtitle:subtitle playlistItemType:PlaylistItemGame]))
+	if ((self = [super initPlaylistItemWithName:name subtitle:subtitle playlistItemType:PlaylistItemTypeSong]))
 	{
 		self.songURL = songURL;
 	}

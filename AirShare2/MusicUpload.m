@@ -186,6 +186,7 @@
     NSString *artistName = [mediaItem valueForProperty:MPMediaItemPropertyArtist];
     NSURL *exportURL = [NSURL fileURLWithPath:_exportPath];
     MusicItem *musicItem = [MusicItem musicItemWithName:songName subtitle:artistName andURL:exportURL];
+    
     [_game.playlist addObject:musicItem];
     [_game.delegate reloadTable];
     [_game hasDownloadedMusic:musicItem];
