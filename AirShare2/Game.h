@@ -22,8 +22,6 @@ ServerState;
 @protocol GameDelegate <NSObject>
 
 - (void)game:(Game *)game didQuitWithReason:(QuitReason)reason;
-- (void)gameWaitingForServerReady:(Game *)game;
-- (void)gameWaitingForClientsReady:(Game *)game;
 
 - (void)reloadTable;
 - (void)game:(Game *)game setCurrentItem:(PlaylistItem *)playlistItem;
@@ -41,7 +39,7 @@ ServerState;
     MusicUpload *_uploader;
     MusicDownload *_downloader;
     
-    NSTimer *_audioPlayerTimer;
+    NSTimer *_audioPlayerTimer, *_waitTimer;
     AVAudioPlayer *_audioPlayer;
     
     BOOL _audioPlaying;

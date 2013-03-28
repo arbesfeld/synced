@@ -79,13 +79,6 @@
 	[self.delegate gameViewController:self didQuitWithReason:reason];
 }
 
-- (void)gameWaitingForServerReady:(Game *)game
-{
-}
-- (void)gameWaitingForClientsReady:(Game *)game
-{
-}
-
 - (void)gameServer:(Game *)server clientDidConnect:(Player *)player;
 {
     [self.userTable reloadData];
@@ -270,7 +263,7 @@
         [playlistItem downvote:value];
         [self addValue:[NSNumber numberWithInt:-value] forID:playlistItem.ID];
     }
-    [_game sendVotePacketForItem:playlistItem andAmount:value upvote:upvote];
+    [self.game sendVotePacketForItem:playlistItem andAmount:value upvote:upvote];
 }
 
 - (void)addValue:(NSNumber *)value forID:(NSString *)ID {

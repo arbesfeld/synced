@@ -39,17 +39,17 @@
     AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
     [httpClient registerHTTPOperationClass:[AFHTTPRequestOperation class]];
     [operation setDownloadProgressBlock:^(NSUInteger bytesDownloaded, long long totalBytesDownloaded, long long totalBytesExpectedToDownload) {
-        NSLog(@"Downloaded %lld bytes", totalBytesDownloaded);
+        //NSLog(@"Downloaded %lld bytes", totalBytesDownloaded);
     }];
     [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"Success, data length: %d", [responseObject length]);
+        NSLog(@"Download Success, data length: %d", [responseObject length]);
         
         // write the song to disk
         [responseObject writeToFile:saveName atomically:NO];
         completionBlock();
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"Error: %@", error);
+        NSLog(@"Download Error: %@", error);
     }];
     [operation start];
 }

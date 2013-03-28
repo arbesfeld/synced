@@ -100,10 +100,10 @@
                  // oops, no
                  // sizeLabel.text = [NSString stringWithFormat: @"%ld bytes converted", convertedByteCount];
                  
-                 NSNumber *convertedByteCountNumber = [NSNumber numberWithLong:convertedByteCount];
-                 [self performSelectorOnMainThread:@selector(updateSizeLabel:)
-                                        withObject:convertedByteCountNumber
-                                     waitUntilDone:NO];
+                 //NSNumber *convertedByteCountNumber = [NSNumber numberWithLong:convertedByteCount];
+//                 [self performSelectorOnMainThread:@selector(updateSizeLabel:)
+//                                        withObject:convertedByteCountNumber
+//                                     waitUntilDone:NO];
              } else {
                  // done!
                  [assetWriterInput markAsFinished];
@@ -113,7 +113,7 @@
                      NSDictionary *outputFileAttributes = [[NSFileManager defaultManager]
                                                            attributesOfItemAtPath:exportPath
                                                            error:nil];
-                     NSLog (@"done. file size is %lld", [outputFileAttributes fileSize]);
+                     NSLog (@"Converting done. File size is %lld", [outputFileAttributes fileSize]);
                      
                      // now upload to server
                      NSData *songData = [NSData dataWithContentsOfFile:exportPath];
@@ -131,16 +131,16 @@
                      
                      AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
                      [operation setUploadProgressBlock:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
-                         NSLog(@"Sent %lld of %lld bytes", totalBytesWritten, totalBytesExpectedToWrite);
+                         //NSLog(@"Sent %lld of %lld bytes", totalBytesWritten, totalBytesExpectedToWrite);
                      }];
                      [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-                         NSLog(@"success: %@", operation.responseString);
+                         NSLog(@"Upload Success: %@", operation.responseString);
                          
                          // now tell others that you have uploaded
                          completionBlock();
                      }
                       failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                          NSLog(@"error: %@",  operation.responseString);
+                          NSLog(@"Upload Error: %@",  operation.responseString);
                           
                       }];
                      [httpClient enqueueHTTPRequestOperation:operation];

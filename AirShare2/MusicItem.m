@@ -23,11 +23,7 @@
 	{
         NSArray *dirs = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
         NSString *documentsDirectoryPath = [dirs objectAtIndex:0];
-        
-        NSString *songName = [[name componentsSeparatedByCharactersInSet:
-                               [[NSCharacterSet alphanumericCharacterSet] invertedSet]]
-                              componentsJoinedByString:@""];
-        NSString *fileName = [NSString stringWithFormat:@"%@.m4a", songName];
+        NSString *fileName = [NSString stringWithFormat:@"%@.m4a", ID];
         NSString *songPath = [documentsDirectoryPath stringByAppendingPathComponent:fileName];
 		self.songURL = [[NSURL alloc] initWithString:songPath];
 	}
