@@ -15,7 +15,7 @@
 
 @implementation MusicUpload
 
--(void)convertAndUpload:(MPMediaItem *)mediaItem completion:(void (^)(void))completionBlock{
+-(void)convertAndUpload:(MPMediaItem *)mediaItem withID:(NSString *)ID completion:(void (^)(void))completionBlock{
 	// set up an AVAssetReader to read from the iPod Library
 	NSURL *assetURL = [mediaItem valueForProperty:MPMediaItemPropertyAssetURL];
 	AVURLAsset *songAsset = [AVURLAsset URLAssetWithURL:assetURL options:nil];
@@ -27,7 +27,6 @@
 		NSLog (@"error: %@", assetError);
 		return;
 	}
-    
 	AVAssetReaderOutput *assetReaderOutput = [AVAssetReaderAudioMixOutput
 											  assetReaderAudioMixOutputWithAudioTracks:songAsset.tracks
                                               audioSettings: nil];
@@ -37,14 +36,10 @@
 	}
 	[assetReader addOutput: assetReaderOutput];
     
+    // export path is where it is saved locally
 	NSArray *dirs = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
 	NSString *documentsDirectoryPath = [dirs objectAtIndex:0];
-    
-    NSString *songName = [[[mediaItem valueForProperty:MPMediaItemPropertyTitle] componentsSeparatedByCharactersInSet:
-                                   [[NSCharacterSet alphanumericCharacterSet] invertedSet]]
-                                  componentsJoinedByString:@""];
-    NSString *fileName = [NSString stringWithFormat:@"%@.m4a", songName];
-    
+    NSString *fileName = [NSString stringWithFormat:@"%@.m4a", ID];
 	NSString *exportPath = [documentsDirectoryPath stringByAppendingPathComponent:fileName];
     
 	if ([[NSFileManager defaultManager] fileExistsAtPath:exportPath]) {
@@ -121,13 +116,8 @@
                      NSLog (@"done. file size is %lld", [outputFileAttributes fileSize]);
                      
                      // now upload to server
-                     NSURL *exportURL = [NSURL fileURLWithPath:exportPath];
-                     NSData *songData = [NSData dataWithContentsOfURL:exportURL];
-                     
-                     NSString *songName = [[[mediaItem valueForProperty:MPMediaItemPropertyTitle] componentsSeparatedByCharactersInSet:
-                                            [[NSCharacterSet alphanumericCharacterSet] invertedSet]]
-                                           componentsJoinedByString:@""];
-                     NSString *fileName = [NSString stringWithFormat:@"%@.m4a", songName];
+                     NSData *songData = [NSData dataWithContentsOfFile:exportPath];
+                     NSString *fileName = [NSString stringWithFormat:@"%@.m4a", ID];
                      
                      NSLog(@"Uploading to server: %@", fileName);
                      
@@ -135,6 +125,8 @@
                      AFHTTPClient *httpClient = [[AFHTTPClient alloc] initWithBaseURL:url];
                      NSMutableURLRequest *request = [httpClient multipartFormRequestWithMethod:@"POST" path:@"/airshare-upload.php" parameters:nil constructingBodyWithBlock: ^(id <AFMultipartFormData>formData) {
                          [formData appendPartWithFileData:songData name:@"musicfile" fileName:fileName mimeType:@"audio/x-m4a"];
+                         [formData appendPartWithFormData:[ID dataUsingEncoding:NSUTF8StringEncoding]
+                                                     name:@"id"];
                      }];
                      
                      AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];

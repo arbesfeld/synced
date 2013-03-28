@@ -11,6 +11,6 @@
 
 @interface MusicDownload : NSObject
 
--(void)downloadFileWithName:(NSString *)fileName completion:(void (^)(void))completionBlock;
+-(void)downloadFileWithID:(NSString *)ID completion:(void (^)(void))completionBlock;
 
 @end

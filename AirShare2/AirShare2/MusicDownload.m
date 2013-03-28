@@ -14,12 +14,9 @@
 @implementation MusicDownload
 
 
--(void)downloadFileWithName:(NSString *)fileName completion:(void (^)(void))completionBlock{
-    NSString *fileNameNoSpaces = [[fileName componentsSeparatedByCharactersInSet:
-                                                         [[NSCharacterSet alphanumericCharacterSet] invertedSet]]
-                                                        componentsJoinedByString:@""];
+-(void)downloadFileWithID:(NSString *)ID completion:(void (^)(void))completionBlock{
     // make the GET request URL
-    NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:fileNameNoSpaces, @"id", nil];
+    NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:ID, @"id", nil];
     NSMutableString *prams = [[NSMutableString alloc] init];
     for (id keys in dict) {
         [prams appendFormat:@"%@=%@&",keys,[dict objectForKey:keys]];
@@ -30,10 +27,8 @@
     NSLog(@"GET Request = %@",urlString);
     
     // the name of the locally saved file
-    NSString *saveName = [NSString stringWithFormat:@"%@.m4a", fileNameNoSpaces];
+    NSString *saveName = [NSString stringWithFormat:@"%@.m4a", ID];
     saveName = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:saveName];
-    
-    NSLog(@"Local File Name = %@", saveName);
 
     // asynchronous download
     AFHTTPClient *httpClient = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:BASE_URL]];

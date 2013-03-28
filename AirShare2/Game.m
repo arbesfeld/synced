@@ -140,6 +140,7 @@ const double DELAY_TIME = 2.000; // wait DELAY_TIME seconds until songs play
             [self.playlist removeAllObjects];
             self.players = ((PacketGameState *)packet).players;
             self.playlist = ((PacketGameState *)packet).playlist;
+            
             PlaylistItem *currentItem = ((PacketGameState *)packet).currentPlaylistItem;
             [self.delegate game:self setCurrentItem:currentItem];
             [self.delegate reloadTable];
@@ -154,7 +155,7 @@ const double DELAY_TIME = 2.000; // wait DELAY_TIME seconds until songs play
             NSString *ID  = ((PacketMusic *)packet).ID;
             NSLog(@"Client recieved music packet with songName %@ and artistName %@", songName, artistName);
              
-            [_downloader downloadFileWithName:songName completion:^ {
+            [_downloader downloadFileWithID:ID completion:^ {
                 MusicItem *musicItem = [MusicItem musicItemWithName:songName andSubtitle:artistName andID:ID];
                 NSLog(@"Added music item with description: %@", [musicItem description]);
 
@@ -164,26 +165,28 @@ const double DELAY_TIME = 2.000; // wait DELAY_TIME seconds until songs play
         }
         case PacketTypePlayMusicNow:
         {
-            NSString *songName = ((PacketPlayMusicNow *)packet).songName;
+            // instruction to play music
+            NSString *ID = ((PacketPlayMusicNow *)packet).ID;
             NSDate *playDate = ((PacketPlayMusicNow *)packet).time;
             
             NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
             [dateFormatter setDateFormat:DATE_FORMAT];
             NSString *playDateString = [dateFormatter stringFromDate:playDate];
             
-            NSLog(@"Client received packet PlayTypeMusicNow, song name = %@, playString = %@", songName, playDateString);
+            NSLog(@"Client received packet PlayTypeMusicNow, ID = %@, playString = %@", ID, playDateString);
             
+            // get the time to calculate delay
             AFHTTPClient *httpClient = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:BASE_URL]];
             NSString *urlString = [NSString stringWithFormat:@"%@airshare-time.php", BASE_URL];
             NSMutableURLRequest *request = [httpClient requestWithMethod:@"GET"
                                                                     path:urlString
                                                               parameters:nil];
-        
             
             __block NSDate *downloadStart = nil;
             
             AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
             [httpClient registerHTTPOperationClass:[AFHTTPRequestOperation class]];
+            
             [operation setDownloadProgressBlock:^(NSUInteger bytesDownloaded, long long totalBytesDownloaded, long long totalBytesExpectedToDownload) {
                 // initliaze downloadStart when we first get data
                 if(downloadStart == nil)
@@ -191,6 +194,7 @@ const double DELAY_TIME = 2.000; // wait DELAY_TIME seconds until songs play
                 
                 NSLog(@"Downloaded %lld bytes", totalBytesDownloaded);
             }];
+            
             [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
                 NSLog(@"Success, data length: %d", [responseObject length]);
                 
@@ -201,13 +205,12 @@ const double DELAY_TIME = 2.000; // wait DELAY_TIME seconds until songs play
 //                NSTimeInterval downloadTime = [downloadFinish timeIntervalSinceDate:downloadStart];
 //                NSLog(@"download time: %f", downloadTime);
 //                [currentDate dateByAddingTimeInterval:downloadTime];
-//                
-                // have to multiply by 1000 then devide to get double precision
+              
                 double delay = [playDate timeIntervalSinceDate:currentDate] * 100000.0;
                 delay /= 100000.0;
                 
-                NSLog(@"Client to play music item, song name = %@, delay: %f", songName, delay);
-                [self performSelector:@selector(playMusicItemWithSongName:) withObject:songName afterDelay:delay];
+                NSLog(@"Client to play music item, id = %@, delay: %f", ID, delay);
+                [self performSelector:@selector(playMusicItemWithSongID:) withObject:ID afterDelay:delay];
                 
             } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                 NSLog(@"Error: %@", error);
@@ -257,7 +260,7 @@ const double DELAY_TIME = 2.000; // wait DELAY_TIME seconds until songs play
             
             [player.hasMusicList setObject:@YES forKey:ID];
             
-            [_downloader downloadFileWithName:songName completion:^{
+            [_downloader downloadFileWithID:ID completion:^{
                 MusicItem *musicItem = [MusicItem musicItemWithName:songName andSubtitle:artistName andID:ID];
                 NSLog(@"Added music item with description: %@", [musicItem description]);
                 
@@ -310,18 +313,18 @@ const double DELAY_TIME = 2.000; // wait DELAY_TIME seconds until songs play
 - (void)uploadMusicWithMediaItem:(MPMediaItem *)song
 {
     NSLog(@"Game: playMusicWithName: %@", [song valueForProperty:MPMediaItemPropertyTitle]);
-    
-    [_uploader convertAndUpload:song completion:^ {
+    NSString *ID = [self genRandStringLength:6];
+    [_uploader convertAndUpload:song withID:ID completion:^ {
         NSString *songName = [song valueForProperty:MPMediaItemPropertyTitle];
         NSString *artistName = [song valueForProperty:MPMediaItemPropertyArtist];
-        NSString *ID = [self genRandStringLength:6];
         MusicItem *musicItem = [MusicItem musicItemWithName:songName andSubtitle:artistName andID:ID];
         
         NSLog(@"Sending packet with songName %@ and artistName %@ and ID = %@", songName, artistName, ID);
+        
         [self hasDownloadedMusic:musicItem];
         PacketMusic *packet = [PacketMusic packetWithSongName:songName andArtistName:artistName andID:ID];
-        [self sendPacketToAllClients:packet]; }
-    ];
+        [self sendPacketToAllClients:packet];
+    }];
 }
 
 - (void)addItemToPlaylist:(PlaylistItem *)playlistItem {
@@ -389,13 +392,16 @@ const double DELAY_TIME = 2.000; // wait DELAY_TIME seconds until songs play
                                                       parameters:nil];
     
     __block NSDate *downloadStart = nil;
+    
     AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
     [httpClient registerHTTPOperationClass:[AFHTTPRequestOperation class]];
+    
     [operation setDownloadProgressBlock:^(NSUInteger bytesDownloaded, long long totalBytesDownloaded, long long totalBytesExpectedToDownload) {
         // initliaze downloadStart when we first get data
         if(downloadStart == nil)
             downloadStart = [NSDate date];
     }];
+    
     [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject)
     {
         NSDate *currentDate = [_dateFormatter dateFromString:[[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding]];
@@ -406,9 +412,9 @@ const double DELAY_TIME = 2.000; // wait DELAY_TIME seconds until songs play
 //        NSLog(@"download time: %f", downloadTime);
 //        [currentDate dateByAddingTimeInterval:downloadTime];
         NSDate *playDate = [currentDate dateByAddingTimeInterval:DELAY_TIME];
-        [self performSelector:@selector(playMusicItemWithSongName:) withObject:musicItem.name afterDelay:DELAY_TIME];
+        [self performSelector:@selector(playMusicItemWithSongID:) withObject:musicItem.ID afterDelay:DELAY_TIME];
         
-        PacketPlayMusicNow *packet = [PacketPlayMusicNow packetWithSongName:musicItem.name andTime:playDate];
+        PacketPlayMusicNow *packet = [PacketPlayMusicNow packetWithSongID:musicItem.ID andTime:playDate];
         [self sendPacketToAllClients:packet];
         
         // now remove the item from the list and make it the "current song"
@@ -436,19 +442,17 @@ const double DELAY_TIME = 2.000; // wait DELAY_TIME seconds until songs play
     [operation start];
 }
 
-- (void)playMusicItemWithSongName:(NSString *)songName 
+- (void)playMusicItemWithSongID:(NSString *)ID
 {
     NSArray *dirs = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectoryPath = [dirs objectAtIndex:0];
-    songName = [[songName componentsSeparatedByCharactersInSet:
-                           [[NSCharacterSet alphanumericCharacterSet] invertedSet]]
-                          componentsJoinedByString:@""];
-    NSString *fileName = [NSString stringWithFormat:@"%@.m4a", songName];
+    NSString *fileName = [NSString stringWithFormat:@"%@.m4a", ID];
     NSString *songPath = [documentsDirectoryPath stringByAppendingPathComponent:fileName];
     NSURL *songURL = [[NSURL alloc] initWithString:songPath];
     
-    NSLog(@"Playing music item, song = %@", songName);
+    NSLog(@"Playing music item, ID = %@", ID);
     NSError *error;
+    
     _audioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:songURL error:&error];
     _audioPlayer.delegate = self;
     if (_audioPlayer == nil) {

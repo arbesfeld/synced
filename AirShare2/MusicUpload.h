@@ -12,6 +12,6 @@
 
 @interface MusicUpload : NSObject
 
--(void)convertAndUpload:(MPMediaItem *)mediaItem completion:(void (^)(void))completionBlock;
+-(void)convertAndUpload:(MPMediaItem *)mediaItem withID:(NSString *)ID completion:(void (^)(void))completionBlock;
 
 @end
