@@ -3,22 +3,17 @@ const size_t PACKET_HEADER_SIZE;
 //all the different types of messages we can send
 typedef enum
 {
-	PacketTypeSignInRequest = 0x64,    // server to client
-	PacketTypeSignInResponse,          // client to server
-    
-    PacketTypeGameState,               // server to client
-    
-	PacketTypeServerReady,             // server to client
-	PacketTypeClientReady,             // client to server
+	PacketTypeSignIn = 0x64,           // server to client
     
 	PacketTypeOtherClientQuit,         // server to client
 	PacketTypeServerQuit,              // server to client
 	PacketTypeClientQuit,              // client to server
     
+    PacketTypeGameState,               // server to client
     PacketTypeMusic,                   // server to client and client to server
     PacketTypeMusicResponse,           // client to server
     PacketTypePlayMusicNow,            // server to client
-    PacketTypeVote,
+    PacketTypeVote,                    // client to server
 }
 PacketType;
 

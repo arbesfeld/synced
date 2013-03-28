@@ -7,10 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
-
+#import "MusicItem.h"
 
 @interface MusicDownload : NSObject
 
--(void)downloadFileWithID:(NSString *)ID completion:(void (^)(void))completionBlock;
+- (void)downloadFileWithMusicItem:(MusicItem *)musicItem completion:(void (^)(void))completionBlock;
 
 @end

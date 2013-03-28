@@ -8,15 +8,12 @@
 
 #import "MusicDownload.h"
 #import "AFNetworking.h"
-#import "MusicItem.h"
-#import "Game.h"
 
 @implementation MusicDownload
 
-
--(void)downloadFileWithID:(NSString *)ID completion:(void (^)(void))completionBlock{
+-(void)downloadFileWithMusicItem:(MusicItem *)musicItem completion:(void (^)(void))completionBlock{
     // make the GET request URL
-    NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:ID, @"id", nil];
+    NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:musicItem.ID, @"id", nil];
     NSMutableString *prams = [[NSMutableString alloc] init];
     for (id keys in dict) {
         [prams appendFormat:@"%@=%@&",keys,[dict objectForKey:keys]];
@@ -27,7 +24,7 @@
     NSLog(@"GET Request = %@",urlString);
     
     // the name of the locally saved file
-    NSString *saveName = [NSString stringWithFormat:@"%@.m4a", ID];
+    NSString *saveName = [NSString stringWithFormat:@"%@.m4a", musicItem.ID];
     saveName = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:saveName];
 
     // asynchronous download
@@ -39,11 +36,12 @@
     AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
     [httpClient registerHTTPOperationClass:[AFHTTPRequestOperation class]];
     [operation setDownloadProgressBlock:^(NSUInteger bytesDownloaded, long long totalBytesDownloaded, long long totalBytesExpectedToDownload) {
-        //NSLog(@"Downloaded %lld bytes", totalBytesDownloaded);
+        musicItem.loadProgress = (double)totalBytesDownloaded / musicItem.fileSize;
+        NSLog(@"Downloaded %lld bytes of %d bytes", totalBytesDownloaded, musicItem.fileSize);
     }];
     [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"Download Success, data length: %d", [responseObject length]);
-        
+        musicItem.loadProgress = 1.0;
         // write the song to disk
         [responseObject writeToFile:saveName atomically:NO];
         completionBlock();

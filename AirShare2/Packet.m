@@ -1,6 +1,6 @@
 #import "Packet.h"
 #import "NSData+AirShareAdditions.h"
-#import "PacketSignInResponse.h"
+#import "PacketSignIn.h"
 #import "PacketGameState.h"
 #import "PacketOtherClientQuit.h"
 #import "PacketMusic.h"
@@ -41,14 +41,13 @@ const size_t PACKET_HEADER_SIZE = 10;
     
 	switch (packetType)
 	{
-		case PacketTypeSignInRequest:
         case PacketTypeServerQuit:
         case PacketTypeClientQuit:
 			packet = [Packet packetWithType:packetType];
 			break;
             
-		case PacketTypeSignInResponse:
-			packet = [PacketSignInResponse packetWithData:data];
+		case PacketTypeSignIn:
+			packet = [PacketSignIn packetWithData:data];
 			break;
             
         case PacketTypeGameState:

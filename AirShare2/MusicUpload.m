@@ -15,9 +15,8 @@
 
 @implementation MusicUpload
 
--(void)convertAndUpload:(MPMediaItem *)mediaItem withID:(NSString *)ID completion:(void (^)(void))completionBlock{
+- (void)convertAndUpload:(MusicItem *)musicItem withAssetURL:(NSURL *)assetURL completion:(void (^)(int fileSize))completionBlock{
 	// set up an AVAssetReader to read from the iPod Library
-	NSURL *assetURL = [mediaItem valueForProperty:MPMediaItemPropertyAssetURL];
 	AVURLAsset *songAsset = [AVURLAsset URLAssetWithURL:assetURL options:nil];
     
 	NSError *assetError = nil;
@@ -39,7 +38,7 @@
     // export path is where it is saved locally
 	NSArray *dirs = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
 	NSString *documentsDirectoryPath = [dirs objectAtIndex:0];
-    NSString *fileName = [NSString stringWithFormat:@"%@.m4a", ID];
+    NSString *fileName = [NSString stringWithFormat:@"%@.m4a", musicItem.ID];
 	NSString *exportPath = [documentsDirectoryPath stringByAppendingPathComponent:fileName];
     
 	if ([[NSFileManager defaultManager] fileExistsAtPath:exportPath]) {
@@ -117,7 +116,7 @@
                      
                      // now upload to server
                      NSData *songData = [NSData dataWithContentsOfFile:exportPath];
-                     NSString *fileName = [NSString stringWithFormat:@"%@.m4a", ID];
+                     NSString *fileName = [NSString stringWithFormat:@"%@.m4a", musicItem.ID];
                      
                      NSLog(@"Uploading to server: %@", fileName);
                      
@@ -125,19 +124,21 @@
                      AFHTTPClient *httpClient = [[AFHTTPClient alloc] initWithBaseURL:url];
                      NSMutableURLRequest *request = [httpClient multipartFormRequestWithMethod:@"POST" path:@"/airshare-upload.php" parameters:nil constructingBodyWithBlock: ^(id <AFMultipartFormData>formData) {
                          [formData appendPartWithFileData:songData name:@"musicfile" fileName:fileName mimeType:@"audio/x-m4a"];
-                         [formData appendPartWithFormData:[ID dataUsingEncoding:NSUTF8StringEncoding]
+                         [formData appendPartWithFormData:[musicItem.ID dataUsingEncoding:NSUTF8StringEncoding]
                                                      name:@"id"];
                      }];
-                     
+                     __block int fileSize = 0;
                      AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
                      [operation setUploadProgressBlock:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
                          //NSLog(@"Sent %lld of %lld bytes", totalBytesWritten, totalBytesExpectedToWrite);
+                         musicItem.loadProgress = (double)totalBytesWritten / totalBytesExpectedToWrite;
+                         fileSize = totalBytesExpectedToWrite;
                      }];
                      [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
                          NSLog(@"Upload Success: %@", operation.responseString);
-                         
+                         musicItem.loadProgress = 1.0;
                          // now tell others that you have uploaded
-                         completionBlock();
+                         completionBlock(fileSize);
                      }
                       failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                           NSLog(@"Upload Error: %@",  operation.responseString);

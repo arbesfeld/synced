@@ -136,6 +136,14 @@
                                     <constraint firstAttribute="width" constant="156" id="LgN-OO-OrN"/>
                                     <constraint firstAttribute="height" constant="122" id="PSY-QC-jHr"/>
                                 </constraints>
+                                <tableView key="tableFooterView" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="NoT-bK-LoE">
+                                    <rect key="frame" x="0.0" y="0.0" width="156" height="122"/>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <connections>
+                                        <outlet property="dataSource" destination="FQX-ru-M2g" id="mRy-dY-31W"/>
+                                        <outlet property="delegate" destination="FQX-ru-M2g" id="nSE-Dr-3RD"/>
+                                    </connections>
+                                </tableView>
                                 <connections>
                                     <outlet property="dataSource" destination="FQX-ru-M2g" id="dY4-Jp-zmX"/>
                                 </connections>
@@ -153,7 +161,7 @@
                                     <action selector="playMusic:" destination="FQX-ru-M2g" eventType="touchUpInside" id="Rck-B9-MZ7"/>
                                 </connections>
                             </button>
-                            <tableView clipsSubviews="YES" contentMode="center" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="ge9-R5-1vQ">
+                            <tableView clipsSubviews="YES" contentMode="center" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="66" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="ge9-R5-1vQ">
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="265" id="7ZT-iE-8X4"/>
@@ -161,6 +169,7 @@
                                 </constraints>
                                 <connections>
                                     <outlet property="dataSource" destination="FQX-ru-M2g" id="gBR-V0-bi1"/>
+                                    <outlet property="delegate" destination="FQX-ru-M2g" id="7az-Qd-NeP"/>
                                 </connections>
                             </tableView>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="ArtistLabel" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rlj-36-yiK">
@@ -179,15 +188,15 @@
                             <constraint firstItem="IVa-kZ-LtJ" firstAttribute="leading" secondItem="BCy-oa-ZtW" secondAttribute="leading" constant="15" id="9iu-j8-OIA"/>
                             <constraint firstItem="ge9-R5-1vQ" firstAttribute="trailing" secondItem="1Sy-ST-eaC" secondAttribute="trailing" type="default" id="Ahi-72-yGB"/>
                             <constraint firstAttribute="bottom" secondItem="YuW-3R-SF1" secondAttribute="bottom" constant="20" symbolic="YES" type="default" id="MoQ-v8-J2U"/>
-                            <constraint firstAttribute="bottom" secondItem="1Sy-ST-eaC" secondAttribute="bottom" constant="7" id="OCi-BB-hBk"/>
                             <constraint firstItem="WD3-Wu-ZGd" firstAttribute="top" secondItem="BCy-oa-ZtW" secondAttribute="top" constant="40" id="UjW-Sy-LZV"/>
                             <constraint firstItem="rlj-36-yiK" firstAttribute="centerX" secondItem="1Sy-ST-eaC" secondAttribute="centerX" type="default" id="WVa-Pi-cpG"/>
                             <constraint firstItem="YuW-3R-SF1" firstAttribute="top" secondItem="IVa-kZ-LtJ" secondAttribute="bottom" constant="8" symbolic="YES" type="default" id="XHB-om-jxJ"/>
-                            <constraint firstItem="ge9-R5-1vQ" firstAttribute="top" secondItem="BCy-oa-ZtW" secondAttribute="top" constant="61" id="b9i-Ow-lPq"/>
                             <constraint firstItem="ge9-R5-1vQ" firstAttribute="leading" secondItem="BCy-oa-ZtW" secondAttribute="leading" constant="8" id="bta-TD-rMR"/>
+                            <constraint firstItem="ge9-R5-1vQ" firstAttribute="top" secondItem="BCy-oa-ZtW" secondAttribute="top" constant="58" id="gAH-Jj-pOI"/>
                             <constraint firstItem="YuW-3R-SF1" firstAttribute="leading" secondItem="BCy-oa-ZtW" secondAttribute="leading" constant="20" symbolic="YES" type="default" id="gLQ-Sx-MMx"/>
                             <constraint firstItem="nPy-zn-dlt" firstAttribute="top" secondItem="BCy-oa-ZtW" secondAttribute="top" constant="9" id="hot-lA-jQf"/>
                             <constraint firstItem="rlj-36-yiK" firstAttribute="baseline" secondItem="nPy-zn-dlt" secondAttribute="baseline" type="default" id="j0n-Va-YVe"/>
+                            <constraint firstItem="1Sy-ST-eaC" firstAttribute="top" secondItem="ge9-R5-1vQ" secondAttribute="bottom" constant="8" symbolic="YES" type="default" id="mzb-hy-O4d"/>
                             <constraint firstItem="nPy-zn-dlt" firstAttribute="leading" secondItem="BCy-oa-ZtW" secondAttribute="leading" constant="34" id="pcM-sU-tWA"/>
                             <constraint firstItem="WD3-Wu-ZGd" firstAttribute="centerX" secondItem="BCy-oa-ZtW" secondAttribute="centerX" type="default" id="rl5-Pz-8e3"/>
                         </constraints>
@@ -206,6 +215,38 @@
             <point key="canvasLocation" x="457" y="88"/>
         </scene>
     </scenes>
+    <classes>
+        <class className="GameViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/GameViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="downvoteButtonPressed:"/>
+                <relationship kind="action" name="exitAction:"/>
+                <relationship kind="action" name="playMusic:"/>
+                <relationship kind="action" name="upvoteButtonPressed:"/>
+                <relationship kind="outlet" name="artistLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="exitButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="playbackProgressBar" candidateClass="UIProgressView"/>
+                <relationship kind="outlet" name="playlistTable" candidateClass="UITableView"/>
+                <relationship kind="outlet" name="songLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="userTable" candidateClass="UITableView"/>
+            </relationships>
+        </class>
+        <class className="MainViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/MainViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="hostGameAction:"/>
+                <relationship kind="outlet" name="hostGameButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="nameTextField" candidateClass="UITextField"/>
+                <relationship kind="outlet" name="sessionsLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="statusLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="tableView" candidateClass="UITableView"/>
+                <relationship kind="outlet" name="waitLabel" candidateClass="UILabel"/>
+            </relationships>
+        </class>
+        <class className="NSLayoutConstraint" superclassName="NSObject">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/NSLayoutConstraint.h"/>
+        </class>
+    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>

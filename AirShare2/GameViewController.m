@@ -1,4 +1,7 @@
 #import "GameViewController.h"
+#import "PlaylistItemCell.h"
+
+const double epsilon = 1e-2;
 
 @interface GameViewController ()
 
@@ -98,6 +101,16 @@
     [self.playlistTable reloadData];
 }
 
+- (void)reloadItem:(PlaylistItem *)playlistItem {
+    [self.playlistTable beginUpdates];
+    for(int i = 0; i < self.game.playlist.count; i++) {
+        if([((PlaylistItem *)self.game.playlist[i]).ID isEqualToString:playlistItem.ID]) {
+            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:i inSection:0];
+            [self.playlistTable reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+        }
+    }
+    [self.playlistTable endUpdates];
+}
 - (void)game:(Game *)game setCurrentItem:(PlaylistItem *)playlistItem
 {
     _currentPlaylistItem = playlistItem;
@@ -140,12 +153,10 @@
             return 0;
     }
 }
-
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"CellIdentifier";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    
     
     if(tableView == self.userTable) {
         if (cell == nil)
@@ -157,7 +168,7 @@
     // else, is the music list
     else {
         if (cell == nil) {
-            cell = [[UITableViewCell alloc] init];
+            cell = [[PlaylistItemCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
         }
         
         PlaylistItem *selectedItem = ((PlaylistItem *)[_game.playlist objectAtIndex:indexPath.row]);
@@ -175,6 +186,7 @@
         cell.textLabel.text = selectedItem.name;
         cell.textLabel.textAlignment = NSTextAlignmentCenter;
         cell.detailTextLabel.text = selectedItem.subtitle;
+        cell.detailTextLabel.textAlignment = NSTextAlignmentCenter;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
         UIButton *upvoteButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
@@ -185,7 +197,7 @@
         [cell.contentView addSubview:upvoteButton];
         
         UILabel *upvoteLabel = [[UILabel alloc] init];
-        upvoteLabel.frame = CGRectMake(235.0f, 5.0f, 30.0f, 30.0f);
+        upvoteLabel.frame = CGRectMake(280.0f, 35.0f, 15.0f, 30.0f);
         upvoteLabel.text = [NSString stringWithFormat:@"%d", [selectedItem getUpvoteCount]];
         [cell.contentView addSubview:upvoteLabel];
         
@@ -197,9 +209,16 @@
         [cell.contentView addSubview:downvoteButton];
         
         UILabel *downvoteLabel = [[UILabel alloc] init];
-        downvoteLabel.frame = CGRectMake(50.0f, 5.0f, 30.0f, 30.0f);
+        downvoteLabel.frame = CGRectMake(15.0f, 35.0f, 15.0f, 30.0f);
         downvoteLabel.text = [NSString stringWithFormat:@"%d", [selectedItem getDownvoteCount]];
         [cell.contentView addSubview:downvoteLabel];
+        
+        UIProgressView *loadProgress = [[UIProgressView alloc] init];
+        loadProgress.frame = CGRectMake(55.0f, 50.0f, 200.0f, 15.0f);
+        loadProgress.progress = selectedItem.loadProgress;
+        if(loadProgress.progress <= 1.0 - epsilon) {
+            [cell.contentView addSubview:loadProgress];
+        }
         
         [upvoteButton addTarget:self
                       action:@selector(upvoteButtonPressed:)
@@ -213,6 +232,10 @@
     }
     return cell;
 }
+
+
+#pragma mark - UITableViewDelegate
+
 
 - (IBAction)upvoteButtonPressed:(id)sender
 {

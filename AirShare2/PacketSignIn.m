@@ -6,10 +6,10 @@
 //  Copyright (c) 2013 Matthew Arbesfeld. All rights reserved.
 //
 
-#import "PacketSignInResponse.h"
+#import "PacketSignIn.h"
 #import "NSData+AirShareAdditions.h"
 
-@implementation PacketSignInResponse
+@implementation PacketSignIn
 
 @synthesize playerName = _playerName;
 
@@ -28,7 +28,7 @@
 
 - (id)initWithPlayerName:(NSString *)playerName
 {
-	if ((self = [super initWithType:PacketTypeSignInResponse]))
+	if ((self = [super initWithType:PacketTypeSignIn]))
 	{
 		self.playerName = playerName;
 	}

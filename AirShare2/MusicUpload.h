@@ -9,9 +9,10 @@
 #import <UIKit/UIKit.h>
 #import <AVFoundation/AVFoundation.h>
 #import <MediaPlayer/MediaPlayer.h>
+#import "MusicItem.h"
 
 @interface MusicUpload : NSObject
 
--(void)convertAndUpload:(MPMediaItem *)mediaItem withID:(NSString *)ID completion:(void (^)(void))completionBlock;
+- (void)convertAndUpload:(MusicItem *)musicItem withAssetURL:(NSURL *)assetURL completion:(void (^)(int fileSize))completionBlock;
 
 @end

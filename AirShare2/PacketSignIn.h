@@ -8,7 +8,7 @@
 
 #import "Packet.h"
 
-@interface PacketSignInResponse : Packet
+@interface PacketSignIn : Packet
 
 @property (nonatomic, copy) NSString *playerName;
 

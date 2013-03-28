@@ -12,6 +12,7 @@ typedef enum
     PlaylistItemTypeGame,
     PlaylistItemTypeMovie,
     PlaylistItemTypeNone,
+    PlaylistItemLoading, // show uploading animation
 }
 PlaylistItemType;
 
@@ -26,6 +27,7 @@ PlaylistItemType;
 @property (nonatomic, strong) NSString *subtitle;
 @property (nonatomic, strong) NSString *ID;
 @property (nonatomic, assign) PlaylistItemType playlistItemType;
+@property (nonatomic, assign) double loadProgress;
 
 - (id)initPlaylistItemWithName:(NSString *)name andSubtitle:(NSString *)subtitle andID:(NSString *)ID andPlaylistItemType:(PlaylistItemType)playListItemType;
 

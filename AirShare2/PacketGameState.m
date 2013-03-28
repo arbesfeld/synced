@@ -63,12 +63,16 @@
         
         int playlistItemType = [data rw_int8AtOffset:offset];
         offset += 1;
-    
+        
+        
         switch(playlistItemType) {
             // music item
             case PlaylistItemTypeSong:
             {
-                MusicItem *musicItem = [MusicItem musicItemWithName:name andSubtitle:subtitle andID:ID];
+                int fileSize = [data rw_int32AtOffset:offset];
+                offset += 4;
+                
+                MusicItem *musicItem = [MusicItem musicItemWithName:name andSubtitle:subtitle andID:ID andFileSize:fileSize];
                 [musicItem setUpvoteCount:upvoteCount andDownvoteCount:downvoteCount];
                 [playlist addObject:musicItem];
                 
@@ -125,12 +129,22 @@
     [data rw_appendInt8:[self.playlist count]];
     
 	for(PlaylistItem *playlistItem in self.playlist) {
-         [data rw_appendString:playlistItem.name];
-         [data rw_appendString:playlistItem.subtitle];
-         [data rw_appendString:playlistItem.ID];
-         [data rw_appendInt8: [playlistItem getUpvoteCount]];
-         [data rw_appendInt8: [playlistItem getDownvoteCount]];
-         [data rw_appendInt8:  playlistItem.playlistItemType];
+        [data rw_appendString:playlistItem.name];
+        [data rw_appendString:playlistItem.subtitle];
+        [data rw_appendString:playlistItem.ID];
+        [data rw_appendInt8: [playlistItem getUpvoteCount]];
+        [data rw_appendInt8: [playlistItem getDownvoteCount]];
+        [data rw_appendInt8:  playlistItem.playlistItemType];
+        switch(playlistItem.playlistItemType) {
+            case PlaylistItemTypeSong:
+            {
+                [data rw_appendInt32:((MusicItem *)playlistItem).fileSize];
+                break;
+            }
+            default:
+                NSLog(@"Do not recognize playlistItemType!");
+                break;
+        }
      }
     
     [data rw_appendString:self.currentPlaylistItem.name];

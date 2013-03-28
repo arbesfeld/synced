@@ -13,6 +13,7 @@
 @synthesize name = _name;
 @synthesize subtitle = _subtitle;
 @synthesize playlistItemType = _playlistItemType;
+@synthesize loadProgress = _loadProgress;
 
 - (void)dealloc
 {
@@ -30,6 +31,7 @@
         self.playlistItemType = playListItemType;
         _upvoteCount = 0;
         _downvoteCount = 0;
+        _loadProgress = 0.0;
     }
     return self;
 }
@@ -66,7 +68,7 @@
 
 - (NSString *)description
 {
-	return [NSString stringWithFormat:@"%@ name = %@, subtitle = %@, ID = %@", [super description], self.name, self.subtitle, self.ID];
+	return [NSString stringWithFormat:@"%@ name = %@, subtitle = %@, ID = %@, progress = %f", [super description], self.name, self.subtitle, self.ID, self.loadProgress];
 }
 
 @end

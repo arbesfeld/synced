@@ -8,6 +8,7 @@
 
 #import "PacketMusic.h"
 #import "NSData+AirShareAdditions.h"
+#import "MusicItem.h"
 
 @implementation PacketMusic
 
@@ -25,30 +26,33 @@
     NSString *ID = [data rw_stringAtOffset:offset bytesRead:&count];
     offset += count;
     
-	return [[self class] packetWithSongName:songName andArtistName:artistName andID:ID];
+    int fileSize = [data rw_int32AtOffset:offset];
+    offset += 4;
+    
+    MusicItem *musicItem = [MusicItem musicItemWithName:songName andSubtitle:artistName andID:ID andFileSize:fileSize];
+	return [[self class] packetWithMusicItem:musicItem];
 }
-
-+ (id)packetWithSongName:(NSString *)songName andArtistName:(NSString *)artistName andID:(NSString *)ID
+ 
++ (id)packetWithMusicItem:(MusicItem *)musicItem
 {
-	return [[[self class] alloc] initWithSongName:songName andArtistName:artistName andID:(NSString *)ID];
+	return [[[self class] alloc] initWithMusicItem:musicItem];
 }
 
-- (id)initWithSongName:(NSString *)songName andArtistName:(NSString *)artistName andID:(NSString *)ID
+- (id)initWithMusicItem:(MusicItem *)musicItem
 {
 	if ((self = [super initWithType:PacketTypeMusic]))
 	{
-		self.songName = songName;
-        self.artistName = artistName;
-        self.ID = ID;
+		self.musicItem = musicItem;
 	}
 	return self;
 }
 
 - (void)addPayloadToData:(NSMutableData *)data
 {
-    [data rw_appendString:self.songName];
-    [data rw_appendString:self.artistName];
-    [data rw_appendString:self.ID];
+    [data rw_appendString:self.musicItem.name];
+    [data rw_appendString:self.musicItem.subtitle];
+    [data rw_appendString:self.musicItem.ID];
+    [data rw_appendInt32:self.musicItem.fileSize];
 }
 
 @end

@@ -24,6 +24,8 @@ ServerState;
 - (void)game:(Game *)game didQuitWithReason:(QuitReason)reason;
 
 - (void)reloadTable;
+- (void)reloadItem:(PlaylistItem *)playlistItem;
+
 - (void)game:(Game *)game setCurrentItem:(PlaylistItem *)playlistItem;
 
 - (void)gameServer:(Game *)server clientDidConnect:(Player *)player;
@@ -41,7 +43,7 @@ ServerState;
     
     NSTimer *_audioPlayerTimer, *_waitTimer;
     AVAudioPlayer *_audioPlayer;
-    
+    NSMutableURLRequest *_serverTimeRequest;
     BOOL _audioPlaying;
 }
 
