@@ -36,7 +36,7 @@
 }
 
 - (id)initWithSongID:(NSString *)ID andAmount:(int)amount upvote:(BOOL)upvote{
-	if ((self = [super initWithType:PacketTypeMusicResponse]))
+	if ((self = [super initWithType:PacketTypeVote]))
 	{
 		self.ID = ID;
         _amount = amount;

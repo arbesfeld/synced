@@ -13,14 +13,16 @@
 
 @end
 
-@interface GameViewController : UIViewController <UITableViewDataSource, MPMediaPickerControllerDelegate, GameDelegate> {
+@interface GameViewController : UIViewController <UIAlertViewDelegate, UITableViewDataSource, MPMediaPickerControllerDelegate, GameDelegate> {
     PlaylistItem *_currentPlaylistItem;
+    NSMutableDictionary *_voteAmount; // key is songID, value is vote amount
 }
 @property (nonatomic, weak) IBOutlet UILabel *songLabel;
 @property (weak, nonatomic) IBOutlet UILabel *artistLabel;
 @property (weak, nonatomic) IBOutlet UIButton *exitButton;
 @property (nonatomic, weak) IBOutlet UITableView *userTable;
 @property (nonatomic, weak) IBOutlet UITableView *playlistTable;
+@property (weak, nonatomic) IBOutlet UIProgressView *playbackProgressBar;
 
 @property (nonatomic, weak) id <GameViewControllerDelegate> delegate;
 @property (nonatomic, strong) Game *game;

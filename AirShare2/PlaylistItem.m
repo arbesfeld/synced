@@ -46,7 +46,7 @@
     return _downvoteCount;
 }
 - (int)getScore {
-    return 100 * (_upvoteCount - _downvoteCount) + abs(_upvoteCount) + abs(_downvoteCount);
+    return 1000 * (_upvoteCount - _downvoteCount) + abs(_upvoteCount) + abs(_downvoteCount);
 }
 
 - (void)upvote:(int)amount {
@@ -61,7 +61,7 @@
 }
 
 - (NSComparisonResult)compare:(PlaylistItem *)other {
-    return [self getScore] - [other getScore];
+    return  [other getScore] - [self getScore];
 }
 
 - (NSString *)description

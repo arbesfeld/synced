@@ -168,26 +168,34 @@
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <progressView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WD3-Wu-ZGd">
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="258" id="lp7-l0-qNo"/>
+                                </constraints>
+                            </progressView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="IVa-kZ-LtJ" firstAttribute="leading" secondItem="BCy-oa-ZtW" secondAttribute="leading" constant="15" id="9iu-j8-OIA"/>
                             <constraint firstItem="ge9-R5-1vQ" firstAttribute="trailing" secondItem="1Sy-ST-eaC" secondAttribute="trailing" type="default" id="Ahi-72-yGB"/>
-                            <constraint firstItem="nPy-zn-dlt" firstAttribute="top" secondItem="BCy-oa-ZtW" secondAttribute="top" constant="14" id="HDd-Vi-Kjh"/>
-                            <constraint firstItem="rlj-36-yiK" firstAttribute="baseline" secondItem="nPy-zn-dlt" secondAttribute="baseline" type="default" id="Jtv-S4-rYU"/>
                             <constraint firstAttribute="bottom" secondItem="YuW-3R-SF1" secondAttribute="bottom" constant="20" symbolic="YES" type="default" id="MoQ-v8-J2U"/>
-                            <constraint firstItem="IVa-kZ-LtJ" firstAttribute="leading" secondItem="BCy-oa-ZtW" secondAttribute="leading" constant="15" id="NkM-19-aga"/>
+                            <constraint firstAttribute="bottom" secondItem="1Sy-ST-eaC" secondAttribute="bottom" constant="7" id="OCi-BB-hBk"/>
+                            <constraint firstItem="WD3-Wu-ZGd" firstAttribute="top" secondItem="BCy-oa-ZtW" secondAttribute="top" constant="40" id="UjW-Sy-LZV"/>
                             <constraint firstItem="rlj-36-yiK" firstAttribute="centerX" secondItem="1Sy-ST-eaC" secondAttribute="centerX" type="default" id="WVa-Pi-cpG"/>
                             <constraint firstItem="YuW-3R-SF1" firstAttribute="top" secondItem="IVa-kZ-LtJ" secondAttribute="bottom" constant="8" symbolic="YES" type="default" id="XHB-om-jxJ"/>
-                            <constraint firstItem="ge9-R5-1vQ" firstAttribute="top" secondItem="BCy-oa-ZtW" secondAttribute="top" constant="55" id="aNm-wj-9Dv"/>
+                            <constraint firstItem="ge9-R5-1vQ" firstAttribute="top" secondItem="BCy-oa-ZtW" secondAttribute="top" constant="61" id="b9i-Ow-lPq"/>
+                            <constraint firstItem="ge9-R5-1vQ" firstAttribute="leading" secondItem="BCy-oa-ZtW" secondAttribute="leading" constant="8" id="bta-TD-rMR"/>
                             <constraint firstItem="YuW-3R-SF1" firstAttribute="leading" secondItem="BCy-oa-ZtW" secondAttribute="leading" constant="20" symbolic="YES" type="default" id="gLQ-Sx-MMx"/>
-                            <constraint firstItem="ge9-R5-1vQ" firstAttribute="leading" secondItem="BCy-oa-ZtW" secondAttribute="leading" constant="8" id="kN1-XR-yeF"/>
-                            <constraint firstAttribute="bottom" secondItem="1Sy-ST-eaC" secondAttribute="bottom" constant="13" id="le0-98-NXO"/>
+                            <constraint firstItem="nPy-zn-dlt" firstAttribute="top" secondItem="BCy-oa-ZtW" secondAttribute="top" constant="9" id="hot-lA-jQf"/>
+                            <constraint firstItem="rlj-36-yiK" firstAttribute="baseline" secondItem="nPy-zn-dlt" secondAttribute="baseline" type="default" id="j0n-Va-YVe"/>
                             <constraint firstItem="nPy-zn-dlt" firstAttribute="leading" secondItem="BCy-oa-ZtW" secondAttribute="leading" constant="34" id="pcM-sU-tWA"/>
+                            <constraint firstItem="WD3-Wu-ZGd" firstAttribute="centerX" secondItem="BCy-oa-ZtW" secondAttribute="centerX" type="default" id="rl5-Pz-8e3"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="artistLabel" destination="rlj-36-yiK" id="VVn-Mn-THY"/>
                         <outlet property="exitButton" destination="YuW-3R-SF1" id="PO5-ox-su0"/>
+                        <outlet property="playbackProgressBar" destination="WD3-Wu-ZGd" id="Jcq-8g-IJ2"/>
                         <outlet property="playlistTable" destination="ge9-R5-1vQ" id="yzh-kt-lei"/>
                         <outlet property="songLabel" destination="nPy-zn-dlt" id="bJG-gd-6t0"/>
                         <outlet property="userTable" destination="1Sy-ST-eaC" id="SWy-XQ-Qwx"/>
@@ -198,37 +206,6 @@
             <point key="canvasLocation" x="457" y="88"/>
         </scene>
     </scenes>
-    <classes>
-        <class className="GameViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/GameViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="downvoteStuff:"/>
-                <relationship kind="action" name="exitAction:"/>
-                <relationship kind="action" name="playMusic:"/>
-                <relationship kind="action" name="upvoteStuff:"/>
-                <relationship kind="outlet" name="artistLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="exitButton" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="playlistTable" candidateClass="UITableView"/>
-                <relationship kind="outlet" name="songLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="userTable" candidateClass="UITableView"/>
-            </relationships>
-        </class>
-        <class className="MainViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/MainViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="hostGameAction:"/>
-                <relationship kind="outlet" name="hostGameButton" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="nameTextField" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="sessionsLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="statusLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="tableView" candidateClass="UITableView"/>
-                <relationship kind="outlet" name="waitLabel" candidateClass="UILabel"/>
-            </relationships>
-        </class>
-        <class className="NSLayoutConstraint" superclassName="NSObject">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/NSLayoutConstraint.h"/>
-        </class>
-    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>

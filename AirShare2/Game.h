@@ -34,12 +34,14 @@ ServerState;
 - (void)gameServerNoNetwork:(Game *)server;
 
 - (PlaylistItem *)getCurrentPlaylistItem;
+- (void)setPlaybackProgress:(double)f;
 @end
 
 @interface Game : NSObject <GKSessionDelegate, AVAudioPlayerDelegate> {
     MusicUpload *_uploader;
     MusicDownload *_downloader;
     
+    NSTimer *_audioPlayerTimer;
     AVAudioPlayer *_audioPlayer;
     
     BOOL _audioPlaying;
