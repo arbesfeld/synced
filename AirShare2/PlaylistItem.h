@@ -26,10 +26,11 @@ PlaylistItemType;
 @property (nonatomic, strong) NSString *name;
 @property (nonatomic, strong) NSString *subtitle;
 @property (nonatomic, strong) NSString *ID;
+@property (nonatomic, strong) NSDate *date;
 @property (nonatomic, assign) PlaylistItemType playlistItemType;
 @property (nonatomic, assign) double loadProgress;
 
-- (id)initPlaylistItemWithName:(NSString *)name andSubtitle:(NSString *)subtitle andID:(NSString *)ID andPlaylistItemType:(PlaylistItemType)playListItemType;
+- (id)initPlaylistItemWithName:(NSString *)name andSubtitle:(NSString *)subtitle andID:(NSString *)ID andDate:(NSDate *)date andPlaylistItemType:(PlaylistItemType)playListItemType;
 
 - (void)setUpvoteCount:(int)upvoteCount andDownvoteCount:(int)downvoteCount;
 - (int)getUpvoteCount;

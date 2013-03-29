@@ -55,6 +55,16 @@
 		NSString *ID = [data rw_stringAtOffset:offset bytesRead:&count];
 		offset += count;
         
+        
+        NSString *dateString = [data rw_stringAtOffset:offset bytesRead:&count];
+        offset += count;
+        
+        // convert dateString to NSDate
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:DATE_FORMAT];
+        NSDate *date = [[NSDate alloc] init];
+        date = [dateFormatter dateFromString:dateString];
+        
         int upvoteCount = [data rw_int8AtOffset:offset];
         offset += 1;
         
@@ -69,7 +79,7 @@
             // music item
             case PlaylistItemTypeSong:
             {
-                MusicItem *musicItem = [MusicItem musicItemWithName:name andSubtitle:subtitle andID:ID];
+                MusicItem *musicItem = [MusicItem musicItemWithName:name andSubtitle:subtitle andID:ID andDate:date];
                 [musicItem setUpvoteCount:upvoteCount andDownvoteCount:downvoteCount];
                 [playlist addObject:musicItem];
                 
@@ -92,7 +102,7 @@
     int currentPlaylistItemType = [data rw_int8AtOffset:offset];
     offset += 1;
     
-    PlaylistItem *currentPlaylistItem = [[PlaylistItem alloc] initPlaylistItemWithName:currentName andSubtitle:currentSubtitle andID:currentID andPlaylistItemType:currentPlaylistItemType];
+    PlaylistItem *currentPlaylistItem = [[PlaylistItem alloc] initPlaylistItemWithName:currentName andSubtitle:currentSubtitle andID:currentID andDate:nil andPlaylistItemType:currentPlaylistItemType];
     
 	return [[self class] packetWithPlayers:players andPlaylist:playlist andCurrentItem:currentPlaylistItem];
 }
@@ -129,6 +139,13 @@
         [data rw_appendString:playlistItem.name];
         [data rw_appendString:playlistItem.subtitle];
         [data rw_appendString:playlistItem.ID];
+        
+        // convert NSDate to dateString
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:DATE_FORMAT];
+        NSString *dateString = [dateFormatter stringFromDate:playlistItem.date];
+        [data rw_appendString:dateString];
+        
         [data rw_appendInt8: [playlistItem getUpvoteCount]];
         [data rw_appendInt8: [playlistItem getDownvoteCount]];
         [data rw_appendInt8:  playlistItem.playlistItemType];

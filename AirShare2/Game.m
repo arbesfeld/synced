@@ -324,7 +324,7 @@ const int WAIT_TIME = 15; // wait WAIT_TIME for others to download music
     NSString *ID = [self genRandStringLength:6];
     
     // -1 is placeholder for filesize
-    MusicItem *musicItem = [MusicItem musicItemWithName:songName andSubtitle:artistName andID:ID];
+    MusicItem *musicItem = [MusicItem musicItemWithName:songName andSubtitle:artistName andID:ID andDate:[NSDate date]];
     
     // temporarily add for display purposes
     [self addItemToPlaylist:musicItem];
@@ -611,7 +611,6 @@ const int WAIT_TIME = 15; // wait WAIT_TIME for others to download music
 
 - (void)getServerTimeWithCompletion:(void(^)(NSDate *serverTime))completionBlock
 {
-    
     NSError *error;
     NSDate *downloadStartTime = [NSDate date];
     NSData *receivedData = [NSURLConnection sendSynchronousRequest:_serverTimeRequest
@@ -631,7 +630,7 @@ const int WAIT_TIME = 15; // wait WAIT_TIME for others to download music
         NSDate *time = [dateFormatter dateFromString:dateString];
         NSTimeInterval downloadTime = [downloadFinishTime timeIntervalSinceDate:downloadStartTime];
         NSLog(@"Download time = %f", downloadTime);
-        [time dateByAddingTimeInterval:downloadTime];
+        //[time dateByAddingTimeInterval:downloadTime];
         completionBlock(time);
     }
 }

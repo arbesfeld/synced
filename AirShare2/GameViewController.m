@@ -29,7 +29,7 @@ const double epsilon = 0.02;
 {
 	[super viewDidLoad];
     // visual placeholder
-    _currentPlaylistItem = [[PlaylistItem alloc] initPlaylistItemWithName:@"No Songs Playing" andSubtitle:@"" andID:@"000000" andPlaylistItemType:PlaylistItemTypeNone];
+    _currentPlaylistItem = [[PlaylistItem alloc] initPlaylistItemWithName:@"No Songs Playing" andSubtitle:@"" andID:@"000000" andDate:nil andPlaylistItemType:PlaylistItemTypeNone];
     _voteAmount = [[NSMutableDictionary alloc] initWithCapacity:10];
 }
 

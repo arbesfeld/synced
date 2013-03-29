@@ -35,23 +35,19 @@
         _upvoteButton.frame = CGRectMake(270.0f, 5.0f, 30.0f, 30.0f);
         [_upvoteButton setTitle:@"+" forState:UIControlStateNormal];
         [_upvoteButton setEnabled:upvoteButtonEnabled];
-        [self.contentView addSubview:_upvoteButton];
         
         self.upvoteLabel = [[UILabel alloc] init];
         _upvoteLabel.frame = CGRectMake(280.0f, 35.0f, 15.0f, 30.0f);
         _upvoteLabel.text = [NSString stringWithFormat:@"%d", [playlistItem getUpvoteCount]];
-        [self.contentView addSubview:_upvoteLabel];
         
         _downvoteButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         _downvoteButton.frame = CGRectMake(5.0f, 5.0f, 30.0f, 30.0f);
         [_downvoteButton setTitle:@"-" forState:UIControlStateNormal];
         [_downvoteButton setEnabled:downvoteButtonEnabled];
-        [self.contentView addSubview:_downvoteButton];
         
         self.downvoteLabel = [[UILabel alloc] init];
         _downvoteLabel.frame = CGRectMake(15.0f, 35.0f, 15.0f, 30.0f);
         _downvoteLabel.text = [NSString stringWithFormat:@"%d", [playlistItem getDownvoteCount]];
-        [self.contentView addSubview:_downvoteLabel];
         
         _loadProgress = [[UIProgressView alloc] init];
         _loadProgress.frame = CGRectMake(55.0f, 50.0f, 200.0f, 15.0f);
@@ -59,6 +55,11 @@
         //NSLog(@"Load progress = %f", playlistItem.loadProgress);
         if(playlistItem.loadProgress != 1.0) {
             [self.contentView addSubview:_loadProgress];
+        } else {
+            [self.contentView addSubview:_upvoteButton];
+            [self.contentView addSubview:_upvoteLabel];
+            [self.contentView addSubview:_downvoteButton];
+            [self.contentView addSubview:_downvoteLabel];
         }
         
         [_upvoteButton addTarget:self

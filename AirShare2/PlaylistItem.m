@@ -22,13 +22,14 @@
 #endif
 }
 
-- (id)initPlaylistItemWithName:(NSString *)name andSubtitle:(NSString *)subtitle andID:(NSString *)ID andPlaylistItemType:(PlaylistItemType)playListItemType
+- (id)initPlaylistItemWithName:(NSString *)name andSubtitle:(NSString *)subtitle andID:(NSString *)ID andDate:(NSDate *)date andPlaylistItemType:(PlaylistItemType)playListItemType
 {
     if(self = [super init]) {
         self.name = name;
         self.subtitle = subtitle;
         self.ID = ID;
         self.playlistItemType = playListItemType;
+        self.date = date;
         _upvoteCount = 0;
         _downvoteCount = 0;
         _loadProgress = 0.0;
@@ -63,7 +64,11 @@
 }
 
 - (NSComparisonResult)compare:(PlaylistItem *)other {
-    return  [other getScore] - [self getScore];
+    if([other getScore] - [self getScore] == 0) {
+        return [self.date timeIntervalSinceDate:other.date];
+    } else {
+        return [other getScore] - [self getScore];
+    }
 }
 
 - (NSString *)description

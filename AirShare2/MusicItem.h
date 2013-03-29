@@ -12,6 +12,6 @@
 
 @property (nonatomic, retain) NSURL *songURL;
 
-+ (id)musicItemWithName:(NSString *)name andSubtitle:(NSString *)subtitle andID:(NSString *)ID;
++ (id)musicItemWithName:(NSString *)name andSubtitle:(NSString *)subtitle andID:(NSString *)ID andDate:(NSDate *)date;
 
 @end

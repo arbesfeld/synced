@@ -26,7 +26,16 @@
     NSString *ID = [data rw_stringAtOffset:offset bytesRead:&count];
     offset += count;
     
-    MusicItem *musicItem = [MusicItem musicItemWithName:songName andSubtitle:artistName andID:ID];
+    NSString *dateString = [data rw_stringAtOffset:offset bytesRead:&count];
+    offset += count;
+    
+    // convert dateString to NSDate
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:DATE_FORMAT];
+    NSDate *date = [[NSDate alloc] init];
+    date = [dateFormatter dateFromString:dateString];
+    
+    MusicItem *musicItem = [MusicItem musicItemWithName:songName andSubtitle:artistName andID:ID andDate:date];
 	return [[self class] packetWithMusicItem:musicItem];
 }
  
@@ -49,6 +58,12 @@
     [data rw_appendString:self.musicItem.name];
     [data rw_appendString:self.musicItem.subtitle];
     [data rw_appendString:self.musicItem.ID];
+    
+    // convert NSDate to dateString
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:DATE_FORMAT];
+    NSString *dateString = [dateFormatter stringFromDate:self.musicItem.date];
+    [data rw_appendString:dateString];
 }
 
 @end
