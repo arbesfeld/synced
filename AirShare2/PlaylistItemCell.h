@@ -7,7 +7,27 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "PlaylistItem.h"
+
+@class PlaylistItemCell;
+
+@protocol PlaylistItemDelegate <NSObject>
+
+- (void)voteForItem:(PlaylistItem *)playlistItem withValue:(int)value upvote:(BOOL)upvote;
+- (void)reloadTable;
+
+@end
 
 @interface PlaylistItemCell : UITableViewCell
 
+@property (nonatomic, weak) id <PlaylistItemDelegate> delegate;
+
+@property (nonatomic, weak) UIButton *upvoteButton;
+@property (nonatomic, weak) UIButton *downvoteButton;
+@property (nonatomic, strong) UILabel *upvoteLabel;
+@property (nonatomic, strong) UILabel *downvoteLabel;
+@property (nonatomic, strong) UIProgressView *loadProgress;
+@property (nonatomic, strong) PlaylistItem *playlistItem;
+
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier playlistItem:(PlaylistItem *)playlistItem voteValue:(int)voteValue;
 @end

@@ -11,8 +11,7 @@
 @interface MusicItem : PlaylistItem
 
 @property (nonatomic, retain) NSURL *songURL;
-@property (nonatomic, assign) int fileSize;
 
-+ (id)musicItemWithName:(NSString *)name andSubtitle:(NSString *)subtitle andID:(NSString *)ID andFileSize:(int)fileSize;
++ (id)musicItemWithName:(NSString *)name andSubtitle:(NSString *)subtitle andID:(NSString *)ID;
 
 @end

@@ -69,10 +69,7 @@
             // music item
             case PlaylistItemTypeSong:
             {
-                int fileSize = [data rw_int32AtOffset:offset];
-                offset += 4;
-                
-                MusicItem *musicItem = [MusicItem musicItemWithName:name andSubtitle:subtitle andID:ID andFileSize:fileSize];
+                MusicItem *musicItem = [MusicItem musicItemWithName:name andSubtitle:subtitle andID:ID];
                 [musicItem setUpvoteCount:upvoteCount andDownvoteCount:downvoteCount];
                 [playlist addObject:musicItem];
                 
@@ -135,16 +132,6 @@
         [data rw_appendInt8: [playlistItem getUpvoteCount]];
         [data rw_appendInt8: [playlistItem getDownvoteCount]];
         [data rw_appendInt8:  playlistItem.playlistItemType];
-        switch(playlistItem.playlistItemType) {
-            case PlaylistItemTypeSong:
-            {
-                [data rw_appendInt32:((MusicItem *)playlistItem).fileSize];
-                break;
-            }
-            default:
-                NSLog(@"Do not recognize playlistItemType!");
-                break;
-        }
      }
     
     [data rw_appendString:self.currentPlaylistItem.name];

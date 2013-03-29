@@ -24,7 +24,6 @@ ServerState;
 - (void)game:(Game *)game didQuitWithReason:(QuitReason)reason;
 
 - (void)reloadTable;
-- (void)reloadItem:(PlaylistItem *)playlistItem;
 
 - (void)game:(Game *)game setCurrentItem:(PlaylistItem *)playlistItem;
 

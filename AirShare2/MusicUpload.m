@@ -15,7 +15,7 @@
 
 @implementation MusicUpload
 
-- (void)convertAndUpload:(MusicItem *)musicItem withAssetURL:(NSURL *)assetURL completion:(void (^)(int fileSize))completionBlock{
+- (void)convertAndUpload:(MusicItem *)musicItem withAssetURL:(NSURL *)assetURL completion:(void (^)())completionBlock{
 	// set up an AVAssetReader to read from the iPod Library
 	AVURLAsset *songAsset = [AVURLAsset URLAssetWithURL:assetURL options:nil];
     
@@ -127,18 +127,16 @@
                          [formData appendPartWithFormData:[musicItem.ID dataUsingEncoding:NSUTF8StringEncoding]
                                                      name:@"id"];
                      }];
-                     __block int fileSize = 0;
                      AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
                      [operation setUploadProgressBlock:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
                          //NSLog(@"Sent %lld of %lld bytes", totalBytesWritten, totalBytesExpectedToWrite);
                          musicItem.loadProgress = (double)totalBytesWritten / totalBytesExpectedToWrite;
-                         fileSize = totalBytesExpectedToWrite;
                      }];
                      [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
                          NSLog(@"Upload Success: %@", operation.responseString);
                          musicItem.loadProgress = 1.0;
                          // now tell others that you have uploaded
-                         completionBlock(fileSize);
+                         completionBlock();
                      }
                       failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                           NSLog(@"Upload Error: %@",  operation.responseString);

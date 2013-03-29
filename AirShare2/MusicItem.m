@@ -12,12 +12,12 @@
 
 @synthesize songURL = _songURL;
 
-+ (id)musicItemWithName:(NSString *)name andSubtitle:(NSString *)subtitle andID:(NSString *)ID andFileSize:(int)fileSize;
++ (id)musicItemWithName:(NSString *)name andSubtitle:(NSString *)subtitle andID:(NSString *)ID;
 {
-	return [[[self class] alloc] initMusicItemWithName:name andSubtitle:subtitle andID:ID andFileSize:fileSize];
+	return [[[self class] alloc] initMusicItemWithName:name andSubtitle:subtitle andID:ID];
 }
 
-- (id)initMusicItemWithName:(NSString *)name andSubtitle:(NSString *)subtitle andID:(NSString *)ID andFileSize:(int)fileSize;
+- (id)initMusicItemWithName:(NSString *)name andSubtitle:(NSString *)subtitle andID:(NSString *)ID
 {
 	if ((self = [super initPlaylistItemWithName:name andSubtitle:subtitle andID:ID andPlaylistItemType:PlaylistItemTypeSong]))
 	{
@@ -26,7 +26,6 @@
         NSString *fileName = [NSString stringWithFormat:@"%@.m4a", ID];
         NSString *songPath = [documentsDirectoryPath stringByAppendingPathComponent:fileName];
 		self.songURL = [[NSURL alloc] initWithString:songPath];
-        self.fileSize = fileSize;
 	}
 	return self;
 }
@@ -34,6 +33,6 @@
 
 - (NSString *)description
 {
-	return [NSString stringWithFormat:@"%@, url = %@, filesize = %d", [super description],[self.songURL absoluteString], self.fileSize];
+	return [NSString stringWithFormat:@"%@, url = %@", [super description],[self.songURL absoluteString]];
 }
 @end

@@ -26,10 +26,7 @@
     NSString *ID = [data rw_stringAtOffset:offset bytesRead:&count];
     offset += count;
     
-    int fileSize = [data rw_int32AtOffset:offset];
-    offset += 4;
-    
-    MusicItem *musicItem = [MusicItem musicItemWithName:songName andSubtitle:artistName andID:ID andFileSize:fileSize];
+    MusicItem *musicItem = [MusicItem musicItemWithName:songName andSubtitle:artistName andID:ID];
 	return [[self class] packetWithMusicItem:musicItem];
 }
  
@@ -52,7 +49,6 @@
     [data rw_appendString:self.musicItem.name];
     [data rw_appendString:self.musicItem.subtitle];
     [data rw_appendString:self.musicItem.ID];
-    [data rw_appendInt32:self.musicItem.fileSize];
 }
 
 @end

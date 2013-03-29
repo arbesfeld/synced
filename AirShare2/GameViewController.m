@@ -1,7 +1,7 @@
 #import "GameViewController.h"
 #import "PlaylistItemCell.h"
 
-const double epsilon = 1e-2;
+const double epsilon = 0.02;
 
 @interface GameViewController ()
 
@@ -101,16 +101,6 @@ const double epsilon = 1e-2;
     [self.playlistTable reloadData];
 }
 
-- (void)reloadItem:(PlaylistItem *)playlistItem {
-    [self.playlistTable beginUpdates];
-    for(int i = 0; i < self.game.playlist.count; i++) {
-        if([((PlaylistItem *)self.game.playlist[i]).ID isEqualToString:playlistItem.ID]) {
-            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:i inSection:0];
-            [self.playlistTable reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-        }
-    }
-    [self.playlistTable endUpdates];
-}
 - (void)game:(Game *)game setCurrentItem:(PlaylistItem *)playlistItem
 {
     _currentPlaylistItem = playlistItem;
@@ -156,126 +146,32 @@ const double epsilon = 1e-2;
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"CellIdentifier";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     
     if(tableView == self.userTable) {
-        if (cell == nil)
-            cell = [[UITableViewCell alloc] init];
-        
-        NSString *peerID = [[_game.players allKeys] objectAtIndex:indexPath.row];
-        cell.textLabel.text = [_game displayNameForPeerID:peerID];
-    }
-    // else, is the music list
-    else {
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
         if (cell == nil) {
-            cell = [[PlaylistItemCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
+            cell = [[UITableViewCell alloc] init];
+            NSString *peerID = [[_game.players allKeys] objectAtIndex:indexPath.row];
+            cell.textLabel.text = [_game displayNameForPeerID:peerID];
         }
-        
-        PlaylistItem *selectedItem = ((PlaylistItem *)[_game.playlist objectAtIndex:indexPath.row]);
-        
-        // set status of buttons
-        BOOL upvoteButtonEnabled = YES;
-        BOOL downvoteButtonEnabled = YES;
-        int voteValue = [[_voteAmount objectForKey:selectedItem.ID] intValue];
-        if(voteValue > 0) {
-            upvoteButtonEnabled = NO;
-        } else if(voteValue < 0) {
-            downvoteButtonEnabled = NO;
-        }
-        
-        cell.textLabel.text = selectedItem.name;
-        cell.textLabel.textAlignment = NSTextAlignmentCenter;
-        cell.detailTextLabel.text = selectedItem.subtitle;
-        cell.detailTextLabel.textAlignment = NSTextAlignmentCenter;
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        
-        UIButton *upvoteButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        upvoteButton.frame = CGRectMake(270.0f, 5.0f, 30.0f, 30.0f);
-        [upvoteButton setTitle:@"+" forState:UIControlStateNormal];
-        [upvoteButton setTag:100];
-        [upvoteButton setEnabled:upvoteButtonEnabled];
-        [cell.contentView addSubview:upvoteButton];
-        
-        UILabel *upvoteLabel = [[UILabel alloc] init];
-        upvoteLabel.frame = CGRectMake(280.0f, 35.0f, 15.0f, 30.0f);
-        upvoteLabel.text = [NSString stringWithFormat:@"%d", [selectedItem getUpvoteCount]];
-        [cell.contentView addSubview:upvoteLabel];
-        
-        UIButton *downvoteButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        downvoteButton.frame = CGRectMake(5.0f, 5.0f, 30.0f, 30.0f);
-        [downvoteButton setTitle:@"-" forState:UIControlStateNormal];
-        [downvoteButton setTag:101];
-        [downvoteButton setEnabled:downvoteButtonEnabled];
-        [cell.contentView addSubview:downvoteButton];
-        
-        UILabel *downvoteLabel = [[UILabel alloc] init];
-        downvoteLabel.frame = CGRectMake(15.0f, 35.0f, 15.0f, 30.0f);
-        downvoteLabel.text = [NSString stringWithFormat:@"%d", [selectedItem getDownvoteCount]];
-        [cell.contentView addSubview:downvoteLabel];
-        
-        UIProgressView *loadProgress = [[UIProgressView alloc] init];
-        loadProgress.frame = CGRectMake(55.0f, 50.0f, 200.0f, 15.0f);
-        loadProgress.progress = selectedItem.loadProgress;
-        if(loadProgress.progress <= 1.0 - epsilon) {
-            [cell.contentView addSubview:loadProgress];
-        }
-        
-        [upvoteButton addTarget:self
-                      action:@selector(upvoteButtonPressed:)
-            forControlEvents:UIControlEventTouchUpInside];
-        
-        [downvoteButton addTarget:self
-                       action:@selector(downvoteButtonPressed:)
-             forControlEvents:UIControlEventTouchUpInside];
-        
-        
+        return cell;
     }
-    return cell;
+    // else, is the playlist
+    else {
+        PlaylistItemCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+        PlaylistItem *selectedItem = ((PlaylistItem *)[_game.playlist objectAtIndex:indexPath.row]);
+        if (cell == nil) {
+            cell = [[PlaylistItemCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:nil playlistItem:selectedItem voteValue:[[_voteAmount objectForKey:selectedItem.ID] intValue]];
+            cell.delegate = self;
+        }
+        return cell;
+    }
 }
 
 
 #pragma mark - UITableViewDelegate
 
-
-- (IBAction)upvoteButtonPressed:(id)sender
-{
-    UIButton *upvoteButton = ((UIButton *)sender);
-    [upvoteButton setEnabled:NO];
-    
-    UITableViewCell *cell = (UITableViewCell *)[[upvoteButton superview] superview];
-    NSIndexPath *indexPath = [_playlistTable indexPathForCell:cell];
-    PlaylistItem *selectedItem = (PlaylistItem *)[_game.playlist objectAtIndex:indexPath.row];
-    [self voteForItem:selectedItem withValue:1 upvote:YES];
-    
-    // 101 set as downvote tag
-    UIButton *downvoteButton = (UIButton *)[cell.contentView viewWithTag:101];
-    if(![downvoteButton isEnabled]) {
-        // user no longer wants it to be downvoted
-        [self voteForItem:selectedItem withValue:-1 upvote:NO];
-        
-        [downvoteButton setEnabled:YES];
-    }
-    [self reloadTable];
-}
-
-- (IBAction)downvoteButtonPressed:(id)sender
-{
-    UIButton *downvoteButton = ((UIButton *)sender);
-    [downvoteButton setEnabled:NO];
-    
-    UITableViewCell *cell = (UITableViewCell *)[[downvoteButton superview] superview];
-    NSIndexPath *indexPath = [_playlistTable indexPathForCell:cell];
-    PlaylistItem *selectedItem = (PlaylistItem *)[_game.playlist objectAtIndex:indexPath.row];
-    [self voteForItem:selectedItem withValue:1 upvote:NO];
-    
-    // 100 set as upvote tag
-    UIButton *upvoteButton = (UIButton *)[cell.contentView viewWithTag:100];
-    if(![upvoteButton isEnabled]) {
-        // user no longer wants it to be upvoted
-        [self voteForItem:selectedItem withValue:-1 upvote:YES];
-    }
-    [self reloadTable];
-}
+#pragma mark - PlaylistItemDelegate
 
 // value is a int that represents the weight of the vote
 - (void)voteForItem:(PlaylistItem *)playlistItem withValue:(int)value upvote:(BOOL)upvote {

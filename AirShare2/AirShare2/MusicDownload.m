@@ -19,7 +19,7 @@
         [prams appendFormat:@"%@=%@&",keys,[dict objectForKey:keys]];
     }
     NSString *removeLastChar = [prams substringWithRange:NSMakeRange(0, [prams length]-1)];
-    NSString *urlString = [NSString stringWithFormat:@"%@airshare-download.php?%@.m4a", BASE_URL, removeLastChar];
+    NSString *urlString = [NSString stringWithFormat:@"%@airshare-download2.php?%@.m4a", BASE_URL, removeLastChar];
     
     NSLog(@"GET Request = %@",urlString);
     
@@ -35,15 +35,16 @@
     
     AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
     [httpClient registerHTTPOperationClass:[AFHTTPRequestOperation class]];
+    operation.outputStream = [NSOutputStream outputStreamToFileAtPath:saveName append:NO];
     [operation setDownloadProgressBlock:^(NSUInteger bytesDownloaded, long long totalBytesDownloaded, long long totalBytesExpectedToDownload) {
-        musicItem.loadProgress = (double)totalBytesDownloaded / musicItem.fileSize;
-        NSLog(@"Downloaded %lld bytes of %d bytes", totalBytesDownloaded, musicItem.fileSize);
+        musicItem.loadProgress = (double)totalBytesDownloaded / totalBytesExpectedToDownload;
+        //NSLog(@"Downloaded %lld bytes of %lld bytes", totalBytesDownloaded, totalBytesExpectedToDownload);
     }];
     [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"Download Success, data length: %d", [responseObject length]);
+        NSLog(@"Download Success");
         musicItem.loadProgress = 1.0;
         // write the song to disk
-        [responseObject writeToFile:saveName atomically:NO];
+        //[responseObject writeToFile:saveName atomically:NO];
         completionBlock();
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
