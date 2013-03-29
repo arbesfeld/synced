@@ -19,7 +19,7 @@
         [prams appendFormat:@"%@=%@&",keys,[dict objectForKey:keys]];
     }
     NSString *removeLastChar = [prams substringWithRange:NSMakeRange(0, [prams length]-1)];
-    NSString *urlString = [NSString stringWithFormat:@"%@airshare-download2.php?%@.m4a", BASE_URL, removeLastChar];
+    NSString *urlString = [NSString stringWithFormat:@"%@airshare-download.php?%@.m4a", BASE_URL, removeLastChar];
     
     NSLog(@"GET Request = %@",urlString);
     
