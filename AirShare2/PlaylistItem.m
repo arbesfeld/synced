@@ -49,7 +49,8 @@
     return _downvoteCount;
 }
 - (int)getScore {
-    return 1000 * (_upvoteCount - _downvoteCount) + abs(_upvoteCount) + abs(_downvoteCount);
+    //return 1000 * (_upvoteCount - _downvoteCount) + abs(_upvoteCount) + abs(_downvoteCount);
+    return _upvoteCount - _downvoteCount;
 }
 
 - (void)upvote:(int)amount {

@@ -30,7 +30,6 @@
 
 - (void)reload
 {
-    NSLog(@"Reload");
     _matchmakingClient = nil;
     _matchmakingClient = [[MatchmakingClient alloc] init];
     _matchmakingClient.delegate = self;

@@ -12,9 +12,9 @@
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier playlistItem:(PlaylistItem *)playlistItem voteValue:(int)voteValue
 {
-    self.playlistItem = playlistItem;
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
+        self.playlistItem = playlistItem;
         self.selectionStyle = UITableViewCellSelectionStyleNone;
         
         self.textLabel.text = playlistItem.name;

@@ -24,6 +24,7 @@ ServerState;
 - (void)game:(Game *)game didQuitWithReason:(QuitReason)reason;
 
 - (void)reloadTable;
+- (void)audioPlayerFinishedPlaying;
 
 - (void)game:(Game *)game setCurrentItem:(PlaylistItem *)playlistItem;
 
@@ -42,7 +43,6 @@ ServerState;
     
     NSTimer *_audioPlayerTimer, *_waitTimer;
     AVAudioPlayer *_audioPlayer;
-    NSMutableURLRequest *_serverTimeRequest;
     BOOL _audioPlaying;
 }
 
@@ -62,8 +62,6 @@ ServerState;
 
 - (NSString *)displayNameForPeerID:(NSString *)peerID;
 
-- (void)addItemToPlaylist:(PlaylistItem *)playlistItem;
 - (void)uploadMusicWithMediaItem:(MPMediaItem *)song;
-- (void)hasDownloadedMusic:(MusicItem *)musicItem;
 - (void)sendVotePacketForItem:(PlaylistItem *)selectedItem andAmount:(int)amount upvote:(BOOL)upvote;
 @end

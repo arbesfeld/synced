@@ -112,11 +112,7 @@
                         <rect key="frame" x="0.0" y="20" width="320" height="548"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nPy-zn-dlt">
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="21" id="9Kd-GP-EWl"/>
-                                    <constraint firstAttribute="width" constant="125" id="XCC-uh-IAm"/>
-                                </constraints>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" text="Waiting for song..." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nPy-zn-dlt">
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
@@ -168,22 +164,22 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="265" id="7ZT-iE-8X4"/>
-                                    <constraint firstAttribute="width" constant="303" id="L4K-so-u70"/>
+                                    <constraint firstAttribute="width" constant="303" id="KQP-hh-R18"/>
                                 </constraints>
                                 <connections>
                                     <outlet property="dataSource" destination="FQX-ru-M2g" id="gBR-V0-bi1"/>
                                     <outlet property="delegate" destination="FQX-ru-M2g" id="7az-Qd-NeP"/>
                                 </connections>
                             </tableView>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rlj-36-yiK">
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" text="Add a song" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rlj-36-yiK">
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="98" id="FEs-Qx-m4e"/>
+                                    <constraint firstAttribute="height" constant="21" id="qR3-mV-ggb"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <progressView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WD3-Wu-ZGd">
+                            <progressView hidden="YES" opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WD3-Wu-ZGd">
                                 <constraints>
                                     <constraint firstAttribute="width" constant="258" id="lp7-l0-qNo"/>
                                 </constraints>
@@ -196,23 +192,24 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="1Sy-ST-eaC" firstAttribute="centerX" secondItem="WD3-Wu-ZGd" secondAttribute="centerX" type="default" id="32o-Rl-QoU"/>
-                            <constraint firstItem="WD3-Wu-ZGd" firstAttribute="centerX" secondItem="BCy-oa-ZtW" secondAttribute="centerX" type="default" id="9Gn-t9-Ha9"/>
+                            <constraint firstItem="rlj-36-yiK" firstAttribute="leading" secondItem="BCy-oa-ZtW" secondAttribute="leading" constant="20" symbolic="YES" type="default" id="87h-BW-YT0"/>
                             <constraint firstItem="1Sy-ST-eaC" firstAttribute="leading" secondItem="ge9-R5-1vQ" secondAttribute="leading" type="default" id="BdX-J5-AbL"/>
-                            <constraint firstAttribute="trailing" secondItem="rlj-36-yiK" secondAttribute="trailing" constant="46" id="Eph-l5-1Mc"/>
+                            <constraint firstItem="WD3-Wu-ZGd" firstAttribute="top" secondItem="BCy-oa-ZtW" secondAttribute="top" constant="48" id="Ebm-7G-Ty7"/>
+                            <constraint firstAttribute="trailing" secondItem="rlj-36-yiK" secondAttribute="trailing" constant="20" symbolic="YES" type="default" id="GYZ-BK-cky"/>
                             <constraint firstItem="1Sy-ST-eaC" firstAttribute="trailing" secondItem="ge9-R5-1vQ" secondAttribute="trailing" type="default" id="GgN-LQ-klt"/>
+                            <constraint firstItem="rlj-36-yiK" firstAttribute="top" secondItem="BCy-oa-ZtW" secondAttribute="top" constant="22" id="HTx-TQ-tRp"/>
+                            <constraint firstItem="nPy-zn-dlt" firstAttribute="leading" secondItem="BCy-oa-ZtW" secondAttribute="leading" constant="20" symbolic="YES" type="default" id="Nnq-aV-RdL"/>
                             <constraint firstItem="uh1-8p-J3r" firstAttribute="leading" secondItem="BCy-oa-ZtW" secondAttribute="leading" constant="20" symbolic="YES" type="default" id="Qwq-M1-Js2"/>
+                            <constraint firstItem="ge9-R5-1vQ" firstAttribute="top" secondItem="WD3-Wu-ZGd" secondAttribute="bottom" constant="8" symbolic="YES" type="default" id="R0b-HK-x5e"/>
                             <constraint firstItem="IVa-kZ-LtJ" firstAttribute="leading" secondItem="BCy-oa-ZtW" secondAttribute="leading" constant="20" symbolic="YES" type="default" id="TZm-PA-Axt"/>
-                            <constraint firstItem="WD3-Wu-ZGd" firstAttribute="top" secondItem="BCy-oa-ZtW" secondAttribute="top" constant="40" id="UjW-Sy-LZV"/>
-                            <constraint firstItem="nPy-zn-dlt" firstAttribute="leading" secondItem="BCy-oa-ZtW" secondAttribute="leading" constant="34" id="XaH-dF-7Jt"/>
+                            <constraint firstItem="WD3-Wu-ZGd" firstAttribute="centerX" secondItem="rlj-36-yiK" secondAttribute="centerX" type="default" id="aAC-Cq-O3D"/>
+                            <constraint firstAttribute="trailing" secondItem="nPy-zn-dlt" secondAttribute="trailing" constant="20" symbolic="YES" type="default" id="adc-2z-yZ2"/>
                             <constraint firstAttribute="trailing" secondItem="YuW-3R-SF1" secondAttribute="trailing" constant="20" symbolic="YES" type="default" id="bYs-Pt-9Te"/>
                             <constraint firstAttribute="bottom" secondItem="1Sy-ST-eaC" secondAttribute="bottom" constant="20" symbolic="YES" type="default" id="fc3-Md-gcf"/>
                             <constraint firstAttribute="bottom" secondItem="IVa-kZ-LtJ" secondAttribute="bottom" constant="164" id="g0d-n2-v5O"/>
-                            <constraint firstItem="ge9-R5-1vQ" firstAttribute="top" secondItem="BCy-oa-ZtW" secondAttribute="top" constant="58" id="gAH-Jj-pOI"/>
-                            <constraint firstItem="nPy-zn-dlt" firstAttribute="top" secondItem="BCy-oa-ZtW" secondAttribute="top" constant="9" id="hot-lA-jQf"/>
-                            <constraint firstItem="rlj-36-yiK" firstAttribute="baseline" secondItem="nPy-zn-dlt" secondAttribute="baseline" type="default" id="j0n-Va-YVe"/>
-                            <constraint firstItem="rlj-36-yiK" firstAttribute="top" secondItem="nPy-zn-dlt" secondAttribute="top" type="default" id="l7c-FA-srL"/>
                             <constraint firstItem="YuW-3R-SF1" firstAttribute="baseline" secondItem="IVa-kZ-LtJ" secondAttribute="baseline" type="default" id="nZE-0l-iFs"/>
+                            <constraint firstItem="ge9-R5-1vQ" firstAttribute="centerX" secondItem="WD3-Wu-ZGd" secondAttribute="centerX" type="default" id="piN-9u-Jdb"/>
+                            <constraint firstItem="nPy-zn-dlt" firstAttribute="top" secondItem="BCy-oa-ZtW" secondAttribute="top" constant="1" id="z31-Pq-ZhP"/>
                             <constraint firstAttribute="bottom" secondItem="uh1-8p-J3r" secondAttribute="bottom" constant="120" id="zYH-VK-suR"/>
                         </constraints>
                     </view>

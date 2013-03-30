@@ -101,11 +101,14 @@ const double epsilon = 0.02;
     [self.playlistTable reloadData];
 }
 
+- (void)audioPlayerFinishedPlaying
+{
+    [self setHeaderWithSongName:@"Waiting for song..." andArtistName:@""];
+}
 - (void)game:(Game *)game setCurrentItem:(PlaylistItem *)playlistItem
 {
     _currentPlaylistItem = playlistItem;
-    self.songLabel.text = playlistItem.name;
-    self.artistLabel.text = playlistItem.subtitle;
+    [self setHeaderWithSongName:playlistItem.name andArtistName:playlistItem.subtitle];
 }
 
 - (void)gameServerSessionDidEnd:(Game *)server;
@@ -124,6 +127,11 @@ const double epsilon = 0.02;
 
 - (void)setPlaybackProgress:(double)f {
     self.playbackProgressBar.progress = f;
+    if(f == 0.0) {
+        self.playbackProgressBar.hidden = YES;
+    } else {
+        self.playbackProgressBar.hidden = NO;
+    }
 }
 #pragma mark - UITableViewDataSource
 
@@ -168,6 +176,14 @@ const double epsilon = 0.02;
     }
 }
 
+- (void)setHeaderWithSongName:(NSString *)songName andArtistName:(NSString *)artistName
+{
+    self.songLabel.text = songName;
+    self.songLabel.font = [UIFont systemFontOfSize:17];
+    self.artistLabel.text = artistName;
+    self.artistLabel.font = [UIFont systemFontOfSize:13];
+    self.artistLabel.textColor = [UIColor grayColor];
+}
 
 #pragma mark - UITableViewDelegate
 
