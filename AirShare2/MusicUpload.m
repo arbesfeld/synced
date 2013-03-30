@@ -15,7 +15,7 @@
 
 @implementation MusicUpload
 
-- (void)convertAndUpload:(MusicItem *)musicItem withAssetURL:(NSURL *)assetURL completion:(void (^)())completionBlock{
+- (void)convertAndUpload:(MusicItem *)musicItem withAssetURL:(NSURL *)assetURL andSessionID:(NSString *)sessionID completion:(void (^)())completionBlock{
 	// set up an AVAssetReader to read from the iPod Library
 	AVURLAsset *songAsset = [AVURLAsset URLAssetWithURL:assetURL options:nil];
     
@@ -126,6 +126,8 @@
                          [formData appendPartWithFileData:songData name:@"musicfile" fileName:fileName mimeType:@"audio/x-m4a"];
                          [formData appendPartWithFormData:[musicItem.ID dataUsingEncoding:NSUTF8StringEncoding]
                                                      name:@"id"];
+                         [formData appendPartWithFormData:[sessionID dataUsingEncoding:NSUTF8StringEncoding]
+                                                     name:@"sessionid"];
                      }];
                      AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
                      [operation setUploadProgressBlock:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {

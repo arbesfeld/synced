@@ -13,6 +13,6 @@
 
 @interface MusicUpload : NSObject
 
-- (void)convertAndUpload:(MusicItem *)musicItem withAssetURL:(NSURL *)assetURL completion:(void (^)())completionBlock;
+- (void)convertAndUpload:(MusicItem *)musicItem withAssetURL:(NSURL *)assetURL andSessionID:(NSString *)sessionID completion:(void (^)())completionBlock;
 
 @end

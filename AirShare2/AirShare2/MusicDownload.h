@@ -11,6 +11,6 @@
 
 @interface MusicDownload : NSObject
 
-- (void)downloadFileWithMusicItem:(MusicItem *)musicItem completion:(void (^)(void))completionBlock;
+- (void)downloadFileWithMusicItem:(MusicItem *)musicItem andSessionID:(NSString *)sessionID completion:(void (^)(void))completionBlock;
 
 @end

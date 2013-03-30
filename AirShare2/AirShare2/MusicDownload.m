@@ -11,9 +11,9 @@
 
 @implementation MusicDownload
 
--(void)downloadFileWithMusicItem:(MusicItem *)musicItem completion:(void (^)(void))completionBlock{
+-(void)downloadFileWithMusicItem:(MusicItem *)musicItem andSessionID:(NSString *)sessionID completion:(void (^)(void))completionBlock{
     // make the GET request URL
-    NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:musicItem.ID, @"id", nil];
+    NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:musicItem.ID, @"id", sessionID, @"sessionid", nil];
     NSMutableString *prams = [[NSMutableString alloc] init];
     for (id keys in dict) {
         [prams appendFormat:@"%@=%@&",keys,[dict objectForKey:keys]];
@@ -43,8 +43,6 @@
     [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"Download Success");
         musicItem.loadProgress = 1.0;
-        // write the song to disk
-        //[responseObject writeToFile:saveName atomically:NO];
         completionBlock();
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {

@@ -13,7 +13,7 @@
 #import "PacketPlayMusicNow.h"
 #import "PacketVote.h"
 
-const double DELAY_TIME = 2.000; // wait DELAY_TIME seconds until songs play
+const double DELAY_TIME = 2.00000; // wait DELAY_TIME seconds until songs play
 const int WAIT_TIME = 15; // wait WAIT_TIME for others to download music
 
 @implementation Game
@@ -86,7 +86,7 @@ const int WAIT_TIME = 15; // wait WAIT_TIME for others to download music
 	_session = session;
 	_session.available = YES;
 	_session.delegate = self;
-    
+    _serverPeerID = session.peerID;
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@airshare-time.php", BASE_URL]];
     _serverTimeRequest = [NSMutableURLRequest requestWithURL:url];
     
@@ -174,7 +174,7 @@ const int WAIT_TIME = 15; // wait WAIT_TIME for others to download music
                                                                         userInfo:musicItem
                                                                          repeats:YES];
             
-            [_downloader downloadFileWithMusicItem:musicItem completion:^ {
+            [_downloader downloadFileWithMusicItem:musicItem andSessionID:_serverPeerID completion:^ {
                 NSLog(@"Added music item with description: %@", [musicItem description]);
                 [self.delegate reloadTable];
                 [loadProgressTimer invalidate];
@@ -262,7 +262,7 @@ const int WAIT_TIME = 15; // wait WAIT_TIME for others to download music
                                                                         userInfo:musicItem
                                                                          repeats:YES];
             
-            [_downloader downloadFileWithMusicItem:musicItem completion:^{
+            [_downloader downloadFileWithMusicItem:musicItem andSessionID:_serverPeerID completion:^{
                 NSLog(@"Added music item with description: %@", [musicItem description]);
                 
                 [self.delegate reloadTable];
@@ -336,7 +336,7 @@ const int WAIT_TIME = 15; // wait WAIT_TIME for others to download music
                                                                  repeats:YES];
     
     NSURL *assetURL = [song valueForProperty:MPMediaItemPropertyAssetURL];
-    [_uploader convertAndUpload:musicItem withAssetURL:assetURL completion:^ {
+    [_uploader convertAndUpload:musicItem withAssetURL:assetURL andSessionID:_serverPeerID completion:^ {
         // reload one last time to make sure the progress bar is gone
         [self.delegate reloadTable];
         [loadProgressTimer invalidate];
@@ -428,6 +428,7 @@ const int WAIT_TIME = 15; // wait WAIT_TIME for others to download music
         [self performSelector:@selector(playMusicItemWithSongID:) withObject:musicItem.ID afterDelay:DELAY_TIME];
         
         NSDate *playDate = [serverTime dateByAddingTimeInterval:DELAY_TIME];
+        NSLog(@"Playdate = %@", playDate);
         PacketPlayMusicNow *packet = [PacketPlayMusicNow packetWithSongID:musicItem.ID andTime:playDate];
         [self sendPacketToAllClients:packet];
         
@@ -616,10 +617,10 @@ const int WAIT_TIME = 15; // wait WAIT_TIME for others to download music
     NSData *receivedData = [NSURLConnection sendSynchronousRequest:_serverTimeRequest
                                                  returningResponse:nil
                                                              error:&error];
-    NSDate *downloadFinishTime = [NSDate date];
+    double timePassed_ms = [downloadStartTime timeIntervalSinceNow] * -1000.0;
+    timePassed_ms /= 1000.0;
     NSString *dateString = [[NSString alloc] initWithData:receivedData
                                                  encoding:NSUTF8StringEncoding];
-
     //NSLog(@"Time from server = %@", dateString);
     if(error) {
         NSLog(@"Error: %@", error);
@@ -628,9 +629,9 @@ const int WAIT_TIME = 15; // wait WAIT_TIME for others to download music
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
         [dateFormatter setDateFormat:DATE_FORMAT];
         NSDate *time = [dateFormatter dateFromString:dateString];
-        NSTimeInterval downloadTime = [downloadFinishTime timeIntervalSinceDate:downloadStartTime];
-        NSLog(@"Download time = %f", downloadTime);
-        //[time dateByAddingTimeInterval:downloadTime];
+        NSLog(@"Download time = %f", timePassed_ms);
+        time = [time dateByAddingTimeInterval:timePassed_ms];
+        NSString *dateString2 = [dateFormatter stringFromDate:time];
         completionBlock(time);
     }
 }
@@ -738,6 +739,22 @@ const int WAIT_TIME = 15; // wait WAIT_TIME for others to download music
 
 # pragma mark - End Session Handling
 
+- (void)destroyFilesWithSessionID:(NSString *)sessionID
+{
+    NSError *error;
+    
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@airshare-destroy.php?sessionid=%@", BASE_URL, sessionID]];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+    [NSURLConnection sendSynchronousRequest:request
+                          returningResponse:nil
+                                      error:&error];
+    if(error) {
+        NSLog(@"Error destroying files: %@", error);
+    } else {
+        NSLog(@"Files with sessionid = %@ destroyed", sessionID);
+    }
+}
+
 - (void)endSession
 {
 	_serverState = ServerStateIdle;
@@ -764,6 +781,7 @@ const int WAIT_TIME = 15; // wait WAIT_TIME for others to download music
 	if (reason == QuitReasonUserQuit)
 	{
 		if (self.isServer) {
+            [self destroyFilesWithSessionID:_session.sessionID];
 			Packet *packet = [Packet packetWithType:PacketTypeServerQuit];
 			[self sendPacketToAllClients:packet];
 		} else {
