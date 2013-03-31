@@ -64,6 +64,7 @@
 		EA18C2041707E2C8008F5DAF /* upvote.png in Resources */ = {isa = PBXBuildFile; fileRef = EA18C2021707E2C8008F5DAF /* upvote.png */; };
 		EA18C2071707E3E4008F5DAF /* downvote_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = EA18C2051707E3E4008F5DAF /* downvote_selected.png */; };
 		EA18C2081707E3E4008F5DAF /* upvote_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = EA18C2061707E3E4008F5DAF /* upvote_selected.png */; };
+		EA18C20A1707FF2D008F5DAF /* cancel.png in Resources */ = {isa = PBXBuildFile; fileRef = EA18C2091707FF2D008F5DAF /* cancel.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -158,6 +159,7 @@
 		EA18C2021707E2C8008F5DAF /* upvote.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = upvote.png; path = Graphics/upvote.png; sourceTree = "<group>"; };
 		EA18C2051707E3E4008F5DAF /* downvote_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = downvote_selected.png; path = Graphics/downvote_selected.png; sourceTree = "<group>"; };
 		EA18C2061707E3E4008F5DAF /* upvote_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = upvote_selected.png; path = Graphics/upvote_selected.png; sourceTree = "<group>"; };
+		EA18C2091707FF2D008F5DAF /* cancel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = cancel.png; path = Graphics/cancel.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -378,6 +380,7 @@
 			isa = PBXGroup;
 			children = (
 				EA18C2051707E3E4008F5DAF /* downvote_selected.png */,
+				EA18C2091707FF2D008F5DAF /* cancel.png */,
 				EA18C2061707E3E4008F5DAF /* upvote_selected.png */,
 				EA18C2011707E2C8008F5DAF /* downvote.png */,
 				EA18C2021707E2C8008F5DAF /* upvote.png */,
@@ -449,6 +452,7 @@
 				EA18C2041707E2C8008F5DAF /* upvote.png in Resources */,
 				EA18C2071707E3E4008F5DAF /* downvote_selected.png in Resources */,
 				EA18C2081707E3E4008F5DAF /* upvote_selected.png in Resources */,
+				EA18C20A1707FF2D008F5DAF /* cancel.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -62,8 +62,12 @@
         _downvoteLabel.backgroundColor = [UIColor clearColor];
         
         _cancelButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        _cancelButton.frame = CGRectMake(260.0f, 5.0f, 50.0f, 50.0f);
-        [_cancelButton setTitle:@"Cancel" forState:UIControlStateNormal];
+        _cancelButton.frame = CGRectMake(245.0f, 0.0f, 70.0f, 70.0f);
+        [_cancelButton setBackgroundImage:[UIImage imageNamed:@"cancel.png"] forState: UIControlStateNormal];
+        [_cancelButton setBackgroundImage:[UIImage imageNamed:@"cancel.png"] forState: UIControlStateHighlighted];
+        [_cancelButton setBackgroundImage:[UIImage imageNamed:@"cancel.png"] forState: UIControlStateSelected];
+        _cancelButton.showsTouchWhenHighlighted = YES;
+        //[_cancelButton setTitle:@"Cancel" forState:UIControlStateNormal];
         
         _loadProgress = [[UIProgressView alloc] init];
         _loadProgress.frame = CGRectMake(55.0f, 50.0f, 200.0f, 15.0f);
