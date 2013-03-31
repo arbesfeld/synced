@@ -4,7 +4,7 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>AirShare2.xcscheme</key>
+		<key>LocationTest2.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>0</integer>
@@ -12,7 +12,7 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>55FCC54816ED3D4C0000BCBD</key>
+		<key>EA18C1D31707804D008F5DAF</key>
 		<dict>
 			<key>primary</key>
 			<true/>

@@ -14,10 +14,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "55FCC54816ED3D4C0000BCBD"
-               BuildableName = "AirShare2.app"
-               BlueprintName = "AirShare2"
-               ReferencedContainer = "container:AirShare2.xcodeproj">
+               BlueprintIdentifier = "EA18C1D31707804D008F5DAF"
+               BuildableName = "LocationTest2.app"
+               BlueprintName = "LocationTest2"
+               ReferencedContainer = "container:LocationTest2.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -32,10 +32,10 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "55FCC54816ED3D4C0000BCBD"
-            BuildableName = "AirShare2.app"
-            BlueprintName = "AirShare2"
-            ReferencedContainer = "container:AirShare2.xcodeproj">
+            BlueprintIdentifier = "EA18C1D31707804D008F5DAF"
+            BuildableName = "LocationTest2.app"
+            BlueprintName = "LocationTest2"
+            ReferencedContainer = "container:LocationTest2.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </TestAction>
@@ -51,10 +51,10 @@
       <BuildableProductRunnable>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "55FCC54816ED3D4C0000BCBD"
-            BuildableName = "AirShare2.app"
-            BlueprintName = "AirShare2"
-            ReferencedContainer = "container:AirShare2.xcodeproj">
+            BlueprintIdentifier = "EA18C1D31707804D008F5DAF"
+            BuildableName = "LocationTest2.app"
+            BlueprintName = "LocationTest2"
+            ReferencedContainer = "container:LocationTest2.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -69,10 +69,10 @@
       <BuildableProductRunnable>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "55FCC54816ED3D4C0000BCBD"
-            BuildableName = "AirShare2.app"
-            BlueprintName = "AirShare2"
-            ReferencedContainer = "container:AirShare2.xcodeproj">
+            BlueprintIdentifier = "EA18C1D31707804D008F5DAF"
+            BuildableName = "LocationTest2.app"
+            BlueprintName = "LocationTest2"
+            ReferencedContainer = "container:LocationTest2.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

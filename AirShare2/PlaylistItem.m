@@ -14,6 +14,8 @@
 @synthesize subtitle = _subtitle;
 @synthesize playlistItemType = _playlistItemType;
 @synthesize loadProgress = _loadProgress;
+@synthesize cancelled = _cancelled;
+@synthesize uploadOperation = _uploadOperation;
 
 - (void)dealloc
 {
@@ -33,6 +35,8 @@
         _upvoteCount = 0;
         _downvoteCount = 0;
         _loadProgress = 0.0;
+        _cancelled = NO;
+        _uploadOperation = nil;
     }
     return self;
 }
@@ -75,6 +79,19 @@
 - (NSString *)description
 {
 	return [NSString stringWithFormat:@"%@ name = %@, subtitle = %@, ID = %@, progress = %f", [super description], self.name, self.subtitle, self.ID, self.loadProgress];
+}
+
+- (void)cancel
+{
+    if (_uploadOperation != nil) {
+        [_uploadOperation cancel];
+    }
+    _cancelled = YES;
+}
+
+- (BOOL)isCancelled
+{
+    return _cancelled == YES;
 }
 
 @end

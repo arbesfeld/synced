@@ -603,6 +603,13 @@ const int WAIT_TIME_DOWNLOAD = 8; // wait time for others to download music afte
     [self sendPacketToAllClients:packet];
 }
 
+- (void)removeCancelledUpload:(NSInteger)index
+{
+    if ([[_playlist objectAtIndex:index] isCancelled]) {
+        [_playlist removeObjectAtIndex:index];
+    }
+}
+
 #pragma mark - Utility
 
 - (NSString *)displayNameForPeerID:(NSString *)peerID
