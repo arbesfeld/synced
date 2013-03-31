@@ -52,6 +52,7 @@ const int WAIT_TIME_DOWNLOAD = 8; // wait time for others to download music afte
         _audioPlayer =  nil;
         _audioPlaying = NO;
         _dateFormatter = [[NSDateFormatter alloc] init];
+        _haveSkippedThisSong = NO;
         [_dateFormatter setDateFormat:DATE_FORMAT];
 	}
 	return self;
@@ -76,6 +77,8 @@ const int WAIT_TIME_DOWNLOAD = 8; // wait time for others to download music afte
     
     Packet *packet = [PacketSignIn packetWithPlayerName:_localPlayerName];
 	[self sendPacketToServer:packet];
+    
+    [self.delegate game:self setSkipSongCount:0];
 }
 
 - (void)startServerGameWithSession:(GKSession *)session playerName:(NSString *)name clients:(NSArray *)clients
@@ -99,6 +102,7 @@ const int WAIT_TIME_DOWNLOAD = 8; // wait time for others to download music afte
 	player.peerID = _session.peerID;
     
 	[_players setObject:player forKey:player.peerID];
+    [self.delegate game:self setSkipSongCount:0];
 }
 
 #pragma mark - GKSession Data Receive Handler
@@ -148,6 +152,10 @@ const int WAIT_TIME_DOWNLOAD = 8; // wait time for others to download music afte
             
             PlaylistItem *currentItem = ((PacketGameState *)packet).currentPlaylistItem;
             [self.delegate game:self setCurrentItem:currentItem];
+            
+            _skipSongCount = ((PacketGameState *)packet).skipCount;
+            [self.delegate game:self setSkipSongCount:_skipSongCount];
+            
             [self.delegate reloadTable];
             
             break;
@@ -196,6 +204,13 @@ const int WAIT_TIME_DOWNLOAD = 8; // wait time for others to download music afte
             }
             [self.delegate reloadTable];
             
+            break;
+        }
+        case PacketTypeSkipMusic:
+        {
+            NSLog(@"Client received PacketTypeSkipMusic");
+            _skipSongCount++;
+            [self.delegate game:self setSkipSongCount:_skipSongCount];
             break;
         }
         case PacketTypeServerQuit:
@@ -290,6 +305,13 @@ const int WAIT_TIME_DOWNLOAD = 8; // wait time for others to download music afte
             
             break;
         }
+        case PacketTypeSkipMusic:
+        {
+            NSLog(@"Server received PacketTypeSkipMusic");
+            _skipSongCount++;
+            [self.delegate game:self setSkipSongCount:_skipSongCount];
+            break;
+        }
         case PacketTypeClientQuit:
         {
 			[self clientDidDisconnect:player.peerID];
@@ -305,10 +327,10 @@ const int WAIT_TIME_DOWNLOAD = 8; // wait time for others to download music afte
 
 - (void)uploadMusicWithMediaItem:(MPMediaItem *)song
 {
-    NSLog(@"Game: playMusicWithName: %@", [song valueForProperty:MPMediaItemPropertyTitle]);
+   // NSLog(@"Game: playMusicWithName: %@", [song valueForProperty:MPMediaItemPropertyTitle]);
     NSString *songName = [song valueForProperty:MPMediaItemPropertyTitle];
     NSString *artistName = [song valueForProperty:MPMediaItemPropertyArtist];
-    NSString *ID = [self genRandStringLength:8];
+    NSString *ID = [self genRandStringLength:6];
     
     MusicItem *musicItem = [MusicItem musicItemWithName:songName andSubtitle:artistName andID:ID andDate:[NSDate date]];
     
@@ -336,6 +358,24 @@ const int WAIT_TIME_DOWNLOAD = 8; // wait time for others to download music afte
         PacketMusicDownload *packet = [PacketMusicDownload packetWithID:ID];
         [self sendPacketToAllClients:packet];
     }];
+}
+
+- (void)skipButtonPressed
+{
+    if(_audioPlaying && !_haveSkippedThisSong) {
+        _haveSkippedThisSong = YES;
+        _skipSongCount++;
+        [self.delegate game:self setSkipSongCount:_skipSongCount];
+        
+        Packet *packet = [Packet packetWithType:PacketTypeSkipMusic];
+        [self sendPacketToAllClients:packet];
+        
+        // if we exceed half the player count, stop the audio and let the next song play
+        if(_players.count / 2 < _skipSongCount) {
+            [_audioPlayer stop];
+            [self audioPlayerDidFinishPlaying:_audioPlayer successfully:YES];
+        }
+    }
 }
 
 - (void)downloadMusicWithID:(NSString *)ID
@@ -475,6 +515,10 @@ const int WAIT_TIME_DOWNLOAD = 8; // wait time for others to download music afte
                                                             repeats:YES];
     }
     [self removeItemFromPlaylist:musicItem];
+    
+    _haveSkippedThisSong = NO;
+    _skipSongCount = 0;
+    [self.delegate game:self setSkipSongCount:_skipSongCount];
 }
 
 - (BOOL)allPlayersHaveMusic:(MusicItem *)musicItem
@@ -550,7 +594,7 @@ const int WAIT_TIME_DOWNLOAD = 8; // wait time for others to download music afte
 - (void)sendGameStatePacket {
     NSAssert(self.isServer, @"Client in sendGameStatePacket:");
     
-    Packet *packet = [PacketGameState packetWithPlayers:_players andPlaylist:_playlist andCurrentItem:[self.delegate getCurrentPlaylistItem]];
+    Packet *packet = [PacketGameState packetWithPlayers:_players andPlaylist:_playlist andCurrentItem:[self.delegate getCurrentPlaylistItem] andSkipCount:_skipSongCount];
     [self sendPacketToAllClients:packet];
 }
 
@@ -597,7 +641,8 @@ const int WAIT_TIME_DOWNLOAD = 8; // wait time for others to download music afte
         Player *player = [[Player alloc] init];
         player.peerID = peerID;
         [_players setObject:player forKey:player.peerID];
-        [self.delegate gameServer:self clientDidConnect:player];
+        [self.delegate game:self clientDidConnect:player];
+        [self.delegate game:self setSkipSongCount:_skipSongCount];
     }
 }
 
@@ -614,7 +659,8 @@ const int WAIT_TIME_DOWNLOAD = 8; // wait time for others to download music afte
             PacketOtherClientQuit *packet = [PacketOtherClientQuit packetWithPeerID:peerID];
             [self sendPacketToAllClients:packet];
         }
-        [self.delegate gameServer:self clientDidDisconnect:player];
+        [self.delegate game:self clientDidDisconnect:player];
+        [self.delegate game:self setSkipSongCount:_skipSongCount];
     }
 }
 
@@ -777,7 +823,7 @@ const int WAIT_TIME_DOWNLOAD = 8; // wait time for others to download music afte
     [_audioPlayer stop];
 	[_session disconnectFromAllPeers];
     
-	[self.delegate gameServerSessionDidEnd:self];
+	[self.delegate gameSessionDidEnd:self];
 }
 
 - (void)stopAcceptingConnections

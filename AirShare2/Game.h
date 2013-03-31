@@ -27,11 +27,13 @@ ServerState;
 - (void)audioPlayerFinishedPlaying;
 
 - (void)game:(Game *)game setCurrentItem:(PlaylistItem *)playlistItem;
+- (void)game:(Game *)game setSkipSongCount:(int)skipSongCount;
 
-- (void)gameServer:(Game *)server clientDidConnect:(Player *)player;
-- (void)gameServer:(Game *)server clientDidDisconnect:(Player *)player;
-- (void)gameServerSessionDidEnd:(Game *)server;
-- (void)gameServerNoNetwork:(Game *)server;
+- (void)game:(Game *)game clientDidConnect:(Player *)player;
+- (void)game:(Game *)game clientDidDisconnect:(Player *)player;
+
+- (void)gameSessionDidEnd:(Game *)server;
+- (void)gameNoNetwork:(Game *)server;
 
 - (PlaylistItem *)getCurrentPlaylistItem;
 - (void)setPlaybackProgress:(double)f;
@@ -43,7 +45,8 @@ ServerState;
     
     NSTimer *_audioPlayerTimer, *_waitTimer;
     AVAudioPlayer *_audioPlayer;
-    BOOL _audioPlaying;
+    BOOL _audioPlaying, _haveSkippedThisSong;
+    int _skipSongCount;
 }
 
 @property (nonatomic, weak) id <GameDelegate> delegate;
@@ -63,5 +66,6 @@ ServerState;
 - (NSString *)displayNameForPeerID:(NSString *)peerID;
 
 - (void)uploadMusicWithMediaItem:(MPMediaItem *)song;
+- (void)skipButtonPressed;
 - (void)sendVotePacketForItem:(PlaylistItem *)selectedItem andAmount:(int)amount upvote:(BOOL)upvote;
 @end

@@ -14,7 +14,8 @@
 @property (nonatomic, strong) NSMutableDictionary *players;
 @property (nonatomic, strong) NSMutableArray *playlist;
 @property (nonatomic, strong) PlaylistItem *currentPlaylistItem;
+@property (nonatomic, assign) int skipCount;
 
-+ (id)packetWithPlayers:(NSMutableDictionary *)players andPlaylist:(NSMutableArray *)playlist andCurrentItem:(PlaylistItem *)currentPlaylistItem;
++ (id)packetWithPlayers:(NSMutableDictionary *)players andPlaylist:(NSMutableArray *)playlist andCurrentItem:(PlaylistItem *)currentPlaylistItem andSkipCount:(int)skipCount;
 
 @end
