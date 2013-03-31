@@ -20,7 +20,9 @@
 		self.locMgr = [[CLLocationManager alloc] init];
 		self.locMgr.delegate = self;
         
-        _locMgr.desiredAccuracy = kCLLocationAccuracyBest;
+        //The location manager object manages power aggressively by turning off hardware when it is not needed. For example, setting the desired accuracy for location events to one kilometer gives the location manager the flexibility to turn off GPS hardware and rely solely on the WiFi or cell radios. 
+        
+        _locMgr.desiredAccuracy = kCLLocationAccuracyBestForNavigation;
         _locMgr.distanceFilter = kCLHeadingFilterNone;
 	}
     
