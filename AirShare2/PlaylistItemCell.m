@@ -61,12 +61,22 @@
         _downvoteLabel.text = [NSString stringWithFormat:@"%d", [playlistItem getDownvoteCount]];
         _downvoteLabel.backgroundColor = [UIColor clearColor];
         
+        _cancelButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        _cancelButton.frame = CGRectMake(260.0f, 5.0f, 50.0f, 50.0f);
+        [_cancelButton setTitle:@"Cancel" forState:UIControlStateNormal];
+        
         _loadProgress = [[UIProgressView alloc] init];
         _loadProgress.frame = CGRectMake(55.0f, 50.0f, 200.0f, 15.0f);
         _loadProgress.progress = playlistItem.loadProgress;
         //NSLog(@"Load progress = %f", playlistItem.loadProgress);
         if(playlistItem.loadProgress != 1.0) {
             [self.contentView addSubview:_loadProgress];
+            
+            // Right now, cancel only cancels the upload operation.
+            // We don't want to be canceling before the upload begins.
+            if (playlistItem.loadProgress > 0.0 && !playlistItem.cancelled) {
+                [self.contentView addSubview:_cancelButton];
+            }
         } else {
             [self.contentView addSubview:_upvoteButton];
             [self.contentView addSubview:_upvoteLabel];
@@ -81,6 +91,8 @@
         [_downvoteButton addTarget:self
                             action:@selector(downvoteButtonPressed:)
                   forControlEvents:UIControlEventTouchUpInside];
+        
+        [_cancelButton addTarget:self action:@selector(cancelButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
     }
     return self;
 }
@@ -113,6 +125,13 @@
         [_upvoteButton setEnabled:YES];
     }
     [self.delegate reloadTable];
+}
+
+- (IBAction)cancelButtonPressed:(id)sender
+{
+    [self.playlistItem cancel];
+    [_cancelButton removeFromSuperview];
+    NSLog(@"Cancelled an upload.");
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated

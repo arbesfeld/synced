@@ -63,5 +63,6 @@ ServerState;
 - (NSString *)displayNameForPeerID:(NSString *)peerID;
 
 - (void)uploadMusicWithMediaItem:(MPMediaItem *)song;
+- (void)removeCancelledUpload:(NSInteger)index;
 - (void)sendVotePacketForItem:(PlaylistItem *)selectedItem andAmount:(int)amount upvote:(BOOL)upvote;
 @end

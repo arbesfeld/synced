@@ -16,6 +16,8 @@ typedef enum
 }
 PlaylistItemType;
 
+#import "AFNetworking.h" // for AFHTTPRequestOperation
+
 #import <Foundation/Foundation.h>
 
 @interface PlaylistItem : NSObject {
@@ -29,6 +31,8 @@ PlaylistItemType;
 @property (nonatomic, strong) NSDate *date;
 @property (nonatomic, assign) PlaylistItemType playlistItemType;
 @property (nonatomic, assign) double loadProgress;
+@property (nonatomic, assign) BOOL cancelled;
+@property (nonatomic, assign) AFHTTPRequestOperation *uploadOperation;
 
 - (id)initPlaylistItemWithName:(NSString *)name andSubtitle:(NSString *)subtitle andID:(NSString *)ID andDate:(NSDate *)date andPlaylistItemType:(PlaylistItemType)playListItemType;
 
@@ -40,4 +44,7 @@ PlaylistItemType;
 
 - (void)upvote:(int)amount;
 - (void)downvote:(int)amount;
+
+- (void)cancel;
+- (BOOL)isCancelled;
 @end

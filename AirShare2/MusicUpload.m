@@ -145,6 +145,7 @@
                           
                       }];
                      [httpClient enqueueHTTPRequestOperation:operation];
+                     musicItem.uploadOperation = operation;
                  }];
                  
                  break;
