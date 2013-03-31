@@ -1,0 +1,251 @@
+DATA POINT 0 at 2013-03-30-18:27:32
+latitude: +38.887372
+longitude: -77.343589
+altitude: +112.001495
+horizontal accuracy: 5.00
+vertical accuracy: 3.00
+
+DATA POINT 1 at 2013-03-30-18:27:34
+latitude: +38.887372
+longitude: -77.343589
+altitude: +112.597931
+horizontal accuracy: 5.00
+vertical accuracy: 3.00
+
+DATA POINT 2 at 2013-03-30-18:27:35
+latitude: +38.887419
+longitude: -77.343569
+altitude: +112.985931
+horizontal accuracy: 5.00
+vertical accuracy: 3.00
+
+DATA POINT 3 at 2013-03-30-18:27:48
+latitude: +38.887419
+longitude: -77.343569
+altitude: +112.985931
+horizontal accuracy: 5.00
+vertical accuracy: 3.00
+
+DATA POINT 4 at 2013-03-30-18:27:48
+latitude: +38.887419
+longitude: -77.343569
+altitude: +113.304535
+horizontal accuracy: 5.00
+vertical accuracy: 3.00
+
+DATA POINT 5 at 2013-03-30-18:27:49
+latitude: +38.887419
+longitude: -77.343569
+altitude: +113.124237
+horizontal accuracy: 5.00
+vertical accuracy: 3.00
+
+DATA POINT 6 at 2013-03-30-18:27:50
+latitude: +38.887419
+longitude: -77.343569
+altitude: +113.111969
+horizontal accuracy: 5.00
+vertical accuracy: 3.00
+
+DATA POINT 7 at 2013-03-30-18:27:51
+latitude: +38.887419
+longitude: -77.343569
+altitude: +113.730316
+horizontal accuracy: 5.00
+vertical accuracy: 3.00
+
+DATA POINT 8 at 2013-03-30-18:27:52
+latitude: +38.887423
+longitude: -77.343590
+altitude: +113.823029
+horizontal accuracy: 5.00
+vertical accuracy: 3.00
+
+DATA POINT 9 at 2013-03-30-18:27:53
+latitude: +38.887419
+longitude: -77.343593
+altitude: +114.258270
+horizontal accuracy: 5.00
+vertical accuracy: 3.00
+
+DATA POINT 10 at 2013-03-30-18:27:54
+latitude: +38.887413
+longitude: -77.343598
+altitude: +114.197174
+horizontal accuracy: 5.00
+vertical accuracy: 3.00
+
+DATA POINT 11 at 2013-03-30-18:27:55
+latitude: +38.887408
+longitude: -77.343604
+altitude: +114.869354
+horizontal accuracy: 5.00
+vertical accuracy: 3.00
+
+DATA POINT 12 at 2013-03-30-18:27:56
+latitude: +38.887403
+longitude: -77.343610
+altitude: +115.278168
+horizontal accuracy: 5.00
+vertical accuracy: 3.00
+
+DATA POINT 13 at 2013-03-30-18:27:57
+latitude: +38.887398
+longitude: -77.343616
+altitude: +115.032440
+horizontal accuracy: 5.00
+vertical accuracy: 3.00
+
+DATA POINT 14 at 2013-03-30-18:27:58
+latitude: +38.887387
+longitude: -77.343620
+altitude: +113.968781
+horizontal accuracy: 5.00
+vertical accuracy: 3.00
+
+DATA POINT 15 at 2013-03-30-18:27:59
+latitude: +38.887373
+longitude: -77.343618
+altitude: +113.339935
+horizontal accuracy: 5.00
+vertical accuracy: 3.00
+
+DATA POINT 16 at 2013-03-30-18:28:00
+latitude: +38.887373
+longitude: -77.343618
+altitude: +113.849091
+horizontal accuracy: 5.00
+vertical accuracy: 3.00
+
+DATA POINT 17 at 2013-03-30-18:28:01
+latitude: +38.887328
+longitude: -77.343595
+altitude: +114.204681
+horizontal accuracy: 5.00
+vertical accuracy: 3.00
+
+DATA POINT 18 at 2013-03-30-18:28:02
+latitude: +38.887328
+longitude: -77.343595
+altitude: +114.507111
+horizontal accuracy: 5.00
+vertical accuracy: 3.00
+
+DATA POINT 19 at 2013-03-30-18:28:03
+latitude: +38.887328
+longitude: -77.343595
+altitude: +114.686005
+horizontal accuracy: 5.00
+vertical accuracy: 2.00
+
+DATA POINT 20 at 2013-03-30-18:28:04
+latitude: +38.887328
+longitude: -77.343595
+altitude: +114.540985
+horizontal accuracy: 5.00
+vertical accuracy: 2.00
+
+DATA POINT 21 at 2013-03-30-18:28:05
+latitude: +38.887328
+longitude: -77.343595
+altitude: +115.023651
+horizontal accuracy: 5.00
+vertical accuracy: 2.00
+
+DATA POINT 22 at 2013-03-30-18:28:06
+latitude: +38.887328
+longitude: -77.343595
+altitude: +115.001312
+horizontal accuracy: 5.00
+vertical accuracy: 2.00
+
+DATA POINT 23 at 2013-03-30-18:28:07
+latitude: +38.887328
+longitude: -77.343595
+altitude: +114.375763
+horizontal accuracy: 5.00
+vertical accuracy: 2.00
+
+DATA POINT 24 at 2013-03-30-18:28:08
+latitude: +38.887328
+longitude: -77.343595
+altitude: +114.150177
+horizontal accuracy: 5.00
+vertical accuracy: 2.00
+
+DATA POINT 25 at 2013-03-30-18:28:09
+latitude: +38.887328
+longitude: -77.343595
+altitude: +114.783905
+horizontal accuracy: 5.00
+vertical accuracy: 2.00
+
+DATA POINT 26 at 2013-03-30-18:28:10
+latitude: +38.887304
+longitude: -77.343595
+altitude: +115.552216
+horizontal accuracy: 5.00
+vertical accuracy: 2.00
+
+DATA POINT 27 at 2013-03-30-18:28:11
+latitude: +38.887301
+longitude: -77.343598
+altitude: +115.984528
+horizontal accuracy: 5.00
+vertical accuracy: 2.00
+
+DATA POINT 28 at 2013-03-30-18:28:12
+latitude: +38.887299
+longitude: -77.343602
+altitude: +116.430206
+horizontal accuracy: 5.00
+vertical accuracy: 2.00
+
+DATA POINT 29 at 2013-03-30-18:28:13
+latitude: +38.887297
+longitude: -77.343606
+altitude: +116.636505
+horizontal accuracy: 5.00
+vertical accuracy: 2.00
+
+DATA POINT 30 at 2013-03-30-18:28:15
+latitude: +38.887297
+longitude: -77.343606
+altitude: +116.279388
+horizontal accuracy: 5.00
+vertical accuracy: 3.00
+
+DATA POINT 31 at 2013-03-30-18:28:15
+latitude: +38.887297
+longitude: -77.343606
+altitude: +115.764679
+horizontal accuracy: 5.00
+vertical accuracy: 2.00
+
+DATA POINT 32 at 2013-03-30-18:28:17
+latitude: +38.887297
+longitude: -77.343606
+altitude: +116.684235
+horizontal accuracy: 5.00
+vertical accuracy: 2.00
+
+DATA POINT 33 at 2013-03-30-18:28:18
+latitude: +38.887297
+longitude: -77.343606
+altitude: +116.211639
+horizontal accuracy: 5.00
+vertical accuracy: 2.00
+
+DATA POINT 34 at 2013-03-30-18:28:19
+latitude: +38.887297
+longitude: -77.343606
+altitude: +115.937836
+horizontal accuracy: 5.00
+vertical accuracy: 2.00
+
+DATA POINT 35 at 2013-03-30-18:28:20
+latitude: +38.887293
+longitude: -77.343612
+altitude: +116.005646
+horizontal accuracy: 5.00
+vertical accuracy: 2.00
