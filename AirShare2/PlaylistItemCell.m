@@ -32,22 +32,34 @@
         }
         
         _upvoteButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        _upvoteButton.frame = CGRectMake(270.0f, 5.0f, 30.0f, 30.0f);
-        [_upvoteButton setTitle:@"+" forState:UIControlStateNormal];
+        _upvoteButton.frame = CGRectMake(260.0f, 5.0f, 50.0f, 50.0f);
+        [_upvoteButton setBackgroundImage:[UIImage imageNamed:@"upvote.png"] forState: UIControlStateNormal];
+        [_upvoteButton setBackgroundImage:[UIImage imageNamed:@"upvote.png"] forState: UIControlStateHighlighted];
+        [_upvoteButton setBackgroundImage:[UIImage imageNamed:@"upvote.png"] forState: UIControlStateSelected];
+        [_upvoteButton setBackgroundImage:[UIImage imageNamed:@"upvote_selected.png"] forState: UIControlStateDisabled];
+        _upvoteButton.showsTouchWhenHighlighted = YES;
+        //[_upvoteButton setTitle:@"+" forState:UIControlStateNormal];
         [_upvoteButton setEnabled:upvoteButtonEnabled];
         
         self.upvoteLabel = [[UILabel alloc] init];
         _upvoteLabel.frame = CGRectMake(280.0f, 35.0f, 15.0f, 30.0f);
         _upvoteLabel.text = [NSString stringWithFormat:@"%d", [playlistItem getUpvoteCount]];
+        _upvoteLabel.backgroundColor = [UIColor clearColor];
         
         _downvoteButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        _downvoteButton.frame = CGRectMake(5.0f, 5.0f, 30.0f, 30.0f);
-        [_downvoteButton setTitle:@"-" forState:UIControlStateNormal];
+        _downvoteButton.frame = CGRectMake(-5.0f, 5.0f, 50.0f, 50.0f);
+        [_downvoteButton setBackgroundImage:[UIImage imageNamed:@"downvote.png"] forState: UIControlStateNormal];
+        [_downvoteButton setBackgroundImage:[UIImage imageNamed:@"downvote.png"] forState: UIControlStateHighlighted];
+        [_downvoteButton setBackgroundImage:[UIImage imageNamed:@"downvote.png"] forState: UIControlStateSelected];
+        [_downvoteButton setBackgroundImage:[UIImage imageNamed:@"downvote_selected.png"] forState: UIControlStateDisabled];
+        _downvoteButton.showsTouchWhenHighlighted = YES;
+        //[_downvoteButton setTitle:@"-" forState:UIControlStateNormal];
         [_downvoteButton setEnabled:downvoteButtonEnabled];
         
         self.downvoteLabel = [[UILabel alloc] init];
         _downvoteLabel.frame = CGRectMake(15.0f, 35.0f, 15.0f, 30.0f);
         _downvoteLabel.text = [NSString stringWithFormat:@"%d", [playlistItem getDownvoteCount]];
+        _downvoteLabel.backgroundColor = [UIColor clearColor];
         
         _loadProgress = [[UIProgressView alloc] init];
         _loadProgress.frame = CGRectMake(55.0f, 50.0f, 200.0f, 15.0f);

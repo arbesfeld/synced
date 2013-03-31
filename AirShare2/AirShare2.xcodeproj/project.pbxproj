@@ -60,6 +60,10 @@
 		55FCC5C516ED79C70000BCBD /* Packet.m in Sources */ = {isa = PBXBuildFile; fileRef = 55FCC5C416ED79C70000BCBD /* Packet.m */; };
 		55FCC5C816ED7A5E0000BCBD /* NSData+AirShareAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 55FCC5C716ED7A5E0000BCBD /* NSData+AirShareAdditions.m */; };
 		89B257DF16F140D30018695A /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 89B257DE16F140D30018695A /* QuartzCore.framework */; };
+		EA18C2031707E2C8008F5DAF /* downvote.png in Resources */ = {isa = PBXBuildFile; fileRef = EA18C2011707E2C8008F5DAF /* downvote.png */; };
+		EA18C2041707E2C8008F5DAF /* upvote.png in Resources */ = {isa = PBXBuildFile; fileRef = EA18C2021707E2C8008F5DAF /* upvote.png */; };
+		EA18C2071707E3E4008F5DAF /* downvote_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = EA18C2051707E3E4008F5DAF /* downvote_selected.png */; };
+		EA18C2081707E3E4008F5DAF /* upvote_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = EA18C2061707E3E4008F5DAF /* upvote_selected.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -150,6 +154,10 @@
 		55FCC5C616ED7A5E0000BCBD /* NSData+AirShareAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+AirShareAdditions.h"; sourceTree = "<group>"; };
 		55FCC5C716ED7A5E0000BCBD /* NSData+AirShareAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+AirShareAdditions.m"; sourceTree = "<group>"; };
 		89B257DE16F140D30018695A /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		EA18C2011707E2C8008F5DAF /* downvote.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = downvote.png; path = Graphics/downvote.png; sourceTree = "<group>"; };
+		EA18C2021707E2C8008F5DAF /* upvote.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = upvote.png; path = Graphics/upvote.png; sourceTree = "<group>"; };
+		EA18C2051707E3E4008F5DAF /* downvote_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = downvote_selected.png; path = Graphics/downvote_selected.png; sourceTree = "<group>"; };
+		EA18C2061707E3E4008F5DAF /* upvote_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = upvote_selected.png; path = Graphics/upvote_selected.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -231,6 +239,7 @@
 		55FCC54016ED3D4C0000BCBD = {
 			isa = PBXGroup;
 			children = (
+				EA18C2001707E1A4008F5DAF /* Graphics */,
 				5590968816FF5E9B004149A0 /* AFNetworking */,
 				55FCC5C916ED7A620000BCBD /* AirShareAdditions */,
 				55FCC5BF16ED62680000BCBD /* DataModel */,
@@ -365,6 +374,17 @@
 			name = AirShareAdditions;
 			sourceTree = "<group>";
 		};
+		EA18C2001707E1A4008F5DAF /* Graphics */ = {
+			isa = PBXGroup;
+			children = (
+				EA18C2051707E3E4008F5DAF /* downvote_selected.png */,
+				EA18C2061707E3E4008F5DAF /* upvote_selected.png */,
+				EA18C2011707E2C8008F5DAF /* downvote.png */,
+				EA18C2021707E2C8008F5DAF /* upvote.png */,
+			);
+			name = Graphics;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -425,6 +445,10 @@
 				558E14B516F185600076F6FC /* bgGreyImg.png in Resources */,
 				558E14B616F185600076F6FC /* CenturyGothicStd-Bold.otf in Resources */,
 				558E14B716F185600076F6FC /* CenturyGothicStd.otf in Resources */,
+				EA18C2031707E2C8008F5DAF /* downvote.png in Resources */,
+				EA18C2041707E2C8008F5DAF /* upvote.png in Resources */,
+				EA18C2071707E3E4008F5DAF /* downvote_selected.png in Resources */,
+				EA18C2081707E3E4008F5DAF /* upvote_selected.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
