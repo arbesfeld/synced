@@ -89,6 +89,11 @@
 	 {
          //NSLog (@"top of block");
 		 while (assetWriterInput.readyForMoreMediaData) {
+             if ([musicItem isCancelled]) {
+                 // early cancellation---should quit now
+                 return;
+             }
+             
              CMSampleBufferRef nextBuffer = [assetReaderOutput copyNextSampleBuffer];
              if (nextBuffer) {
                  // append buffer
@@ -144,6 +149,10 @@
                           NSLog(@"Upload Error: %@",  operation.responseString);
                           
                       }];
+                     if ([musicItem isCancelled]) {
+                         // check again for early cancellation
+                         return;
+                     }
                      [httpClient enqueueHTTPRequestOperation:operation];
                      musicItem.uploadOperation = operation;
                  }];

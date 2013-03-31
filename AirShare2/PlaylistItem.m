@@ -36,6 +36,7 @@
         _downvoteCount = 0;
         _loadProgress = 0.0;
         _cancelled = NO;
+        _uploadOperation = nil;
     }
     return self;
 }
@@ -82,7 +83,9 @@
 
 - (void)cancel
 {
-    [_uploadOperation cancel];
+    if (_uploadOperation != nil) {
+        [_uploadOperation cancel];
+    }
     _cancelled = YES;
 }
 

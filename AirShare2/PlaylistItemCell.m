@@ -76,9 +76,8 @@
         if(playlistItem.loadProgress != 1.0) {
             [self.contentView addSubview:_loadProgress];
             
-            // Right now, cancel only cancels the upload operation.
-            // We don't want to be canceling before the upload begins.
-            if (playlistItem.loadProgress > 0.0 && !playlistItem.cancelled) {
+            // We can only cancel once the looping begins in music upload code.
+            if (!playlistItem.cancelled) {
                 [self.contentView addSubview:_cancelButton];
             }
         } else {
