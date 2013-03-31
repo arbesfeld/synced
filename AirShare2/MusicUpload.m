@@ -9,7 +9,7 @@
 #import "MusicUpload.h"
 #import <AudioToolbox/AudioToolbox.h> // for the core audio constants
 #import "AFNetworking.h"
-#import "PacketMusic.h"
+#import "PacketMusicDownload.h"
 #import "MusicItem.h"
 #import "Game.h"
 
@@ -121,6 +121,7 @@
                      NSLog(@"Uploading to server: %@", fileName);
                      
                      NSURL *url = [NSURL URLWithString:BASE_URL];
+                     NSLog(@"Posting with id = %@ and sessionid = %@", musicItem.ID, sessionID);
                      AFHTTPClient *httpClient = [[AFHTTPClient alloc] initWithBaseURL:url];
                      NSMutableURLRequest *request = [httpClient multipartFormRequestWithMethod:@"POST" path:@"/airshare-upload.php" parameters:nil constructingBodyWithBlock: ^(id <AFMultipartFormData>formData) {
                          [formData appendPartWithFileData:songData name:@"musicfile" fileName:fileName mimeType:@"audio/x-m4a"];

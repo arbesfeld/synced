@@ -10,7 +10,8 @@ typedef enum
 	PacketTypeClientQuit,              // client to server
     
     PacketTypeGameState,               // server to client
-    PacketTypeMusic,                   // server to client and client to server
+    PacketTypePlaylistItem,            // client to everyone
+    PacketTypeMusicDownload,           // server to client and client to server
     PacketTypeMusicResponse,           // client to server
     PacketTypePlayMusicNow,            // server to client
     PacketTypeVote,                    // client to server

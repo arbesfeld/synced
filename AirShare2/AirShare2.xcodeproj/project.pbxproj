@@ -28,10 +28,11 @@
 		559096C616FFB3DE004149A0 /* AFXMLRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 559096BC16FFB3DE004149A0 /* AFXMLRequestOperation.m */; };
 		559096C716FFB3DE004149A0 /* UIImageView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 559096BE16FFB3DE004149A0 /* UIImageView+AFNetworking.m */; };
 		559096CA16FFE28A004149A0 /* MusicDownload.m in Sources */ = {isa = PBXBuildFile; fileRef = 559096C916FFE28A004149A0 /* MusicDownload.m */; };
-		559096CD16FFE70C004149A0 /* PacketMusic.m in Sources */ = {isa = PBXBuildFile; fileRef = 559096CC16FFE70C004149A0 /* PacketMusic.m */; };
+		559096CD16FFE70C004149A0 /* PacketMusicDownload.m in Sources */ = {isa = PBXBuildFile; fileRef = 559096CC16FFE70C004149A0 /* PacketMusicDownload.m */; };
 		559096D01700038F004149A0 /* PlaylistItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 559096CF1700038F004149A0 /* PlaylistItem.m */; };
 		559096D3170006AB004149A0 /* MusicItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 559096D2170006AB004149A0 /* MusicItem.m */; };
 		5591DC7D1703669A0086BC99 /* PacketVote.m in Sources */ = {isa = PBXBuildFile; fileRef = 5591DC7C1703669A0086BC99 /* PacketVote.m */; };
+		5592E74317089019003BF84E /* PacketPlaylistItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 5592E74217089019003BF84E /* PacketPlaylistItem.m */; };
 		5592FEFD1700D65B0038ED40 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5592FEFC1700D65B0038ED40 /* CoreAudio.framework */; };
 		5596E08C16F62FB600511D3E /* PacketOtherClientQuit.m in Sources */ = {isa = PBXBuildFile; fileRef = 5596E08B16F62FB600511D3E /* PacketOtherClientQuit.m */; };
 		5596E0C916F6746900511D3E /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5596E0C816F6746900511D3E /* MediaPlayer.framework */; };
@@ -99,14 +100,16 @@
 		559096BE16FFB3DE004149A0 /* UIImageView+AFNetworking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+AFNetworking.m"; sourceTree = "<group>"; };
 		559096C816FFE28A004149A0 /* MusicDownload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MusicDownload.h; path = AirShare2/MusicDownload.h; sourceTree = "<group>"; };
 		559096C916FFE28A004149A0 /* MusicDownload.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MusicDownload.m; path = AirShare2/MusicDownload.m; sourceTree = "<group>"; };
-		559096CB16FFE70C004149A0 /* PacketMusic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PacketMusic.h; sourceTree = "<group>"; };
-		559096CC16FFE70C004149A0 /* PacketMusic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PacketMusic.m; sourceTree = "<group>"; };
+		559096CB16FFE70C004149A0 /* PacketMusicDownload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PacketMusicDownload.h; sourceTree = "<group>"; };
+		559096CC16FFE70C004149A0 /* PacketMusicDownload.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PacketMusicDownload.m; sourceTree = "<group>"; };
 		559096CE1700038F004149A0 /* PlaylistItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlaylistItem.h; sourceTree = "<group>"; };
 		559096CF1700038F004149A0 /* PlaylistItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlaylistItem.m; sourceTree = "<group>"; };
 		559096D1170006AB004149A0 /* MusicItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MusicItem.h; sourceTree = "<group>"; };
 		559096D2170006AB004149A0 /* MusicItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MusicItem.m; sourceTree = "<group>"; };
 		5591DC7B1703669A0086BC99 /* PacketVote.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PacketVote.h; sourceTree = "<group>"; };
 		5591DC7C1703669A0086BC99 /* PacketVote.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PacketVote.m; sourceTree = "<group>"; };
+		5592E74117089019003BF84E /* PacketPlaylistItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PacketPlaylistItem.h; sourceTree = "<group>"; };
+		5592E74217089019003BF84E /* PacketPlaylistItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PacketPlaylistItem.m; sourceTree = "<group>"; };
 		5592FEFC1700D65B0038ED40 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
 		5596E08A16F62FB600511D3E /* PacketOtherClientQuit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PacketOtherClientQuit.h; sourceTree = "<group>"; };
 		5596E08B16F62FB600511D3E /* PacketOtherClientQuit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PacketOtherClientQuit.m; sourceTree = "<group>"; };
@@ -319,14 +322,16 @@
 				558E14AA16F182480076F6FC /* PacketSignIn.m */,
 				552CDD20170279BF003CA4EB /* PacketGameState.h */,
 				552CDD21170279BF003CA4EB /* PacketGameState.m */,
-				5596E08A16F62FB600511D3E /* PacketOtherClientQuit.h */,
-				5596E08B16F62FB600511D3E /* PacketOtherClientQuit.m */,
-				559096CB16FFE70C004149A0 /* PacketMusic.h */,
-				559096CC16FFE70C004149A0 /* PacketMusic.m */,
+				5592E74117089019003BF84E /* PacketPlaylistItem.h */,
+				5592E74217089019003BF84E /* PacketPlaylistItem.m */,
+				559096CB16FFE70C004149A0 /* PacketMusicDownload.h */,
+				559096CC16FFE70C004149A0 /* PacketMusicDownload.m */,
 				552CDD1D17026493003CA4EB /* PacketMusicResponse.h */,
 				552CDD1E17026493003CA4EB /* PacketMusicResponse.m */,
 				55A31C0217017B6F00A1FFC8 /* PacketPlayMusicNow.h */,
 				55A31C0317017B6F00A1FFC8 /* PacketPlayMusicNow.m */,
+				5596E08A16F62FB600511D3E /* PacketOtherClientQuit.h */,
+				5596E08B16F62FB600511D3E /* PacketOtherClientQuit.m */,
 				5591DC7B1703669A0086BC99 /* PacketVote.h */,
 				5591DC7C1703669A0086BC99 /* PacketVote.m */,
 				5590968916FF5ED4004149A0 /* MusicUpload.h */,
@@ -458,7 +463,7 @@
 				559096C616FFB3DE004149A0 /* AFXMLRequestOperation.m in Sources */,
 				559096C716FFB3DE004149A0 /* UIImageView+AFNetworking.m in Sources */,
 				559096CA16FFE28A004149A0 /* MusicDownload.m in Sources */,
-				559096CD16FFE70C004149A0 /* PacketMusic.m in Sources */,
+				559096CD16FFE70C004149A0 /* PacketMusicDownload.m in Sources */,
 				559096D01700038F004149A0 /* PlaylistItem.m in Sources */,
 				559096D3170006AB004149A0 /* MusicItem.m in Sources */,
 				55A31C0417017B6F00A1FFC8 /* PacketPlayMusicNow.m in Sources */,
@@ -466,6 +471,7 @@
 				552CDD22170279BF003CA4EB /* PacketGameState.m in Sources */,
 				5591DC7D1703669A0086BC99 /* PacketVote.m in Sources */,
 				558E0D641704DE3100BF230D /* PlaylistItemCell.m in Sources */,
+				5592E74317089019003BF84E /* PacketPlaylistItem.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

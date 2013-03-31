@@ -8,10 +8,11 @@
 #import "PacketSignIn.h"
 #import "PacketGameState.h"
 #import "PacketOtherClientQuit.h"
-#import "PacketMusic.h"
+#import "PacketMusicDownload.h"
 #import "PacketMusicResponse.h"
 #import "PacketPlayMusicNow.h"
 #import "PacketVote.h"
+#import "PacketPlaylistItem.h"
 
 const double DELAY_TIME = 2.00000; // wait DELAY_TIME seconds until songs play
 const int WAIT_TIME_UPLOAD = 20; // wait time for others to download music after uploading
@@ -151,52 +152,50 @@ const int WAIT_TIME_DOWNLOAD = 8; // wait time for others to download music afte
             
             break;
         }
-        case PacketTypeMusic:
+        case PacketTypePlaylistItem:
         {
-            MusicItem *packetMusicItem = ((PacketMusic *)packet).musicItem;
-            NSString *ID = packetMusicItem.ID;
-            
-            MusicItem *musicItem = (MusicItem *)[self playlistItemWithID:ID];
-            NSLog(@"Client recieved music packet with description = %@", [packetMusicItem description]);
-            if(!musicItem) {
-                NSLog(@"Music item not in list!");
-                musicItem = packetMusicItem;
-            }
-            
-            //[self addItemToPlaylist:musicItem];
-            NSTimer *loadProgressTimer = [NSTimer scheduledTimerWithTimeInterval:0.5
-                                                                          target:self
-                                                                        selector:@selector(handleLoadProgressTimer:)
-                                                                        userInfo:musicItem
-                                                                         repeats:YES];
-            
-            [_downloader downloadFileWithMusicItem:musicItem andSessionID:_serverPeerID completion:^ {
-                NSLog(@"Added music item with description: %@", [musicItem description]);
-                [self.delegate reloadTable];
-                [loadProgressTimer invalidate];
-                
-                [self hasDownloadedMusic:musicItem myMusic:NO];
-            }];
+            PlaylistItem *playlistItem = ((PacketPlaylistItem *)packet).playlistItem;
+            NSLog(@"Client received playlistItemPacket with song %@", playlistItem.name);
+            [self addItemToPlaylist:playlistItem];
+            break;
+        }
+        case PacketTypeMusicDownload:
+        {
+            NSString *ID = ((PacketMusicDownload *)packet).ID;
+            [self downloadMusicWithID:ID];
             break;
         }
         case PacketTypePlayMusicNow:
         {
             // instruction to play music
             NSString *ID = ((PacketPlayMusicNow *)packet).ID;
+            MusicItem *musicItem = (MusicItem *)[self playlistItemWithID:ID];
             NSDate *playDate = ((PacketPlayMusicNow *)packet).time;
-            NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-            [dateFormatter setDateFormat:DATE_FORMAT];
-            NSString *playDateString = [dateFormatter stringFromDate:playDate];
-            
-            NSLog(@"Client received packet PlayTypeMusicNow, ID = %@, playString = %@", ID, playDateString);
             
             [self getServerTimeWithCompletion:^(NSDate *serverTime) {
                 double delay = [playDate timeIntervalSinceDate:serverTime];
                 NSLog(@"Client to play music item, id = %@, delay: %f", ID, delay);
-                [self performSelector:@selector(playMusicItemWithSongID:) withObject:ID afterDelay:delay];
+                [self performSelector:@selector(playLoadedMusicItem:) withObject:musicItem afterDelay:delay];
+                [self prepareToPlayMusicItem:musicItem];
             }];
+            break;
+        }
+        case PacketTypeVote:
+        {
+            // client has voted
+            NSString *ID  = ((PacketVote *)packet).ID;
+            int amount  = [((PacketVote *)packet) getAmount];
+            BOOL upvote  = [((PacketVote *)packet) getUpvote];
+            NSLog(@"Client recieved vote, ID = %@, amount = %d, upvote = %@", ID, amount, upvote == YES ? @"YES" : @"NO");
+            
             PlaylistItem *playlistItem = [self playlistItemWithID:ID];
-            [_playlist removeObject:playlistItem];
+            if(upvote) {
+                [playlistItem upvote:amount];
+            } else {
+                [playlistItem downvote:amount];
+            }
+            [self.delegate reloadTable];
+            
             break;
         }
         case PacketTypeServerQuit:
@@ -236,36 +235,29 @@ const int WAIT_TIME_DOWNLOAD = 8; // wait time for others to download music afte
                 NSLog(@"Updating player = %@ with item = %@", player.name, [playlistItem description]);
                 // only update if you have fully loaded the song
                 if(playlistItem.playlistItemType == PlaylistItemTypeSong && playlistItem.loadProgress == 1.0) {
-                    PacketMusic *packet = [PacketMusic packetWithMusicItem:(MusicItem *)playlistItem];
+                    PacketMusicDownload *packet = [PacketMusicDownload packetWithID:playlistItem.ID];
                     [self sendPacket:packet toClientWithPeerID:player.peerID];
                 }
             }
 			break;
         }
-        case PacketTypeMusic:
+        case PacketTypePlaylistItem:
+        {
+            PlaylistItem *playlistItem = ((PacketPlaylistItem *)packet).playlistItem;
+            NSLog(@"Server received playlistItemPacket with song %@", playlistItem.name);
+            [self addItemToPlaylist:playlistItem];
+            break;
+        }
+        case PacketTypeMusicDownload:
         {
             // instruction to download music
-            MusicItem *musicItem  = ((PacketMusic *)packet).musicItem;
-            NSLog(@"Server recieved music packet with description: %@", [musicItem description]);
-            
-            [self addItemToPlaylist:musicItem];
+            NSString *ID = ((PacketMusicDownload *)packet).ID;\
+    
             // since they sent the packet, they must have the song
-            [player.hasMusicList setObject:@YES forKey:musicItem.ID];
+            [player.hasMusicList setObject:@YES forKey:ID];
             
-            NSTimer *loadProgressTimer = [NSTimer scheduledTimerWithTimeInterval:0.5
-                                                                          target:self
-                                                                        selector:@selector(handleLoadProgressTimer:)
-                                                                        userInfo:musicItem
-                                                                         repeats:YES];
+            [self downloadMusicWithID:ID];
             
-            [_downloader downloadFileWithMusicItem:musicItem andSessionID:_serverPeerID completion:^{
-                NSLog(@"Added music item with description: %@", [musicItem description]);
-                
-                [self.delegate reloadTable];
-                [loadProgressTimer invalidate];
-                
-                [self hasDownloadedMusic:musicItem myMusic:NO];
-            }];
             break;
         }
         case PacketTypeMusicResponse:
@@ -295,7 +287,6 @@ const int WAIT_TIME_DOWNLOAD = 8; // wait time for others to download music afte
                 [playlistItem downvote:amount];
             }
             [self.delegate reloadTable];
-            [self sendGameStatePacket];
             
             break;
         }
@@ -317,13 +308,14 @@ const int WAIT_TIME_DOWNLOAD = 8; // wait time for others to download music afte
     NSLog(@"Game: playMusicWithName: %@", [song valueForProperty:MPMediaItemPropertyTitle]);
     NSString *songName = [song valueForProperty:MPMediaItemPropertyTitle];
     NSString *artistName = [song valueForProperty:MPMediaItemPropertyArtist];
-    NSString *ID = [self genRandStringLength:6];
+    NSString *ID = [self genRandStringLength:8];
     
-    // -1 is placeholder for filesize
     MusicItem *musicItem = [MusicItem musicItemWithName:songName andSubtitle:artistName andID:ID andDate:[NSDate date]];
     
-    // temporarily add for display purposes
     [self addItemToPlaylist:musicItem];
+    
+    PacketPlaylistItem *packet = [PacketPlaylistItem packetWithPlaylistItem:musicItem];
+    [self sendPacketToAllClients:packet];
     
     NSTimer *loadProgressTimer = [NSTimer scheduledTimerWithTimeInterval:0.5
                                                                   target:self
@@ -332,6 +324,7 @@ const int WAIT_TIME_DOWNLOAD = 8; // wait time for others to download music afte
                                                                  repeats:YES];
     
     NSURL *assetURL = [song valueForProperty:MPMediaItemPropertyAssetURL];
+    
     [_uploader convertAndUpload:musicItem withAssetURL:assetURL andSessionID:_serverPeerID completion:^ {
         // reload one last time to make sure the progress bar is gone
         [self.delegate reloadTable];
@@ -339,12 +332,34 @@ const int WAIT_TIME_DOWNLOAD = 8; // wait time for others to download music afte
         
         [self hasDownloadedMusic:musicItem myMusic:YES];
         
-        NSLog(@"Sending packet with: %@", [musicItem description]);
-        PacketMusic *packet = [PacketMusic packetWithMusicItem:musicItem];
+        NSLog(@"Sending music download packet with: %@", [musicItem description]);
+        PacketMusicDownload *packet = [PacketMusicDownload packetWithID:ID];
         [self sendPacketToAllClients:packet];
     }];
 }
 
+- (void)downloadMusicWithID:(NSString *)ID
+{
+    NSLog(@"Recieved music download packet with ID: %@", ID);
+    
+    // to do: in case you receive this before "PacketTypePlaylistItem"
+    MusicItem *musicItem = (MusicItem *)[self playlistItemWithID:ID];
+    NSLog(@"Downloading music item with name = %@", musicItem.name);
+    NSTimer *loadProgressTimer = [NSTimer scheduledTimerWithTimeInterval:0.5
+                                                                  target:self
+                                                                selector:@selector(handleLoadProgressTimer:)
+                                                                userInfo:musicItem
+                                                                 repeats:YES];
+    
+    [_downloader downloadFileWithMusicItem:musicItem andSessionID:_serverPeerID completion:^{
+        NSLog(@"Added music item with description: %@", [musicItem description]);
+        // reload table last time to make sure progress bar is full
+        [self.delegate reloadTable];
+        [loadProgressTimer invalidate];
+        
+        [self hasDownloadedMusic:musicItem myMusic:NO];
+    }];
+}
 
 - (void)hasDownloadedMusic:(MusicItem *)musicItem myMusic:(BOOL)myMusic
 {
@@ -368,23 +383,28 @@ const int WAIT_TIME_DOWNLOAD = 8; // wait time for others to download music afte
     }
 }
 
-- (void)addItemToPlaylist:(PlaylistItem *)playlistItem {
-    //NSAssert(self.isServer, @"Client in addItemToPlaylist:");
-    
+- (void)addItemToPlaylist:(PlaylistItem *)playlistItem
+{
+    //NSLog(@"Adding item = %@", [playlistItem description]);
     [_playlist addObject:playlistItem];
     [self.delegate reloadTable];
-    if(self.isServer)
-        [self sendGameStatePacket];
 }
 
-
-- (void)serverTryPlayingMusic:(MusicItem *)musicItem waitTime:(int)waitTime {
+- (void)removeItemFromPlaylist:(PlaylistItem *)playlistItem
+{
+    [self.delegate game:self setCurrentItem:playlistItem];
+    [_playlist removeObject:playlistItem];
+    [self.delegate reloadTable];
+}
+- (void)serverTryPlayingMusic:(MusicItem *)musicItem waitTime:(int)waitTime
+{
     NSAssert(self.isServer, @"Client in serverTryPlayingMusic:");
     
     if( !_audioPlaying && [self allPlayersHaveMusic:musicItem]) {
         _audioPlaying = YES;
         [_waitTimer invalidate];
-        [self playItem:musicItem];
+        _waitTimer = nil;
+        [self serverStartPlayingMusic:musicItem];
     } else if(!_audioPlaying) {
         NSLog(@"created wait timer");
         // create a timer to start playing unless you receive another PacketMusicResponse
@@ -394,6 +414,67 @@ const int WAIT_TIME_DOWNLOAD = 8; // wait time for others to download music afte
                                                     userInfo:musicItem
                                                      repeats:NO];
     }
+}
+
+
+- (void)serverStartPlayingMusic:(MusicItem *)musicItem {
+    NSAssert(self.isServer, @"Client in serverStartPlayingMusic:");
+    
+    _audioPlaying = YES;
+    
+    [self getServerTimeWithCompletion:^(NSDate *serverTime) {
+        [self performSelector:@selector(playLoadedMusicItem:) withObject:musicItem afterDelay:DELAY_TIME];
+        
+        [self prepareToPlayMusicItem:musicItem];
+        
+        NSDate *playDate = [serverTime dateByAddingTimeInterval:DELAY_TIME];
+        NSLog(@"Playdate = %@", playDate);
+        PacketPlayMusicNow *packet = [PacketPlayMusicNow packetWithSongID:musicItem.ID andTime:playDate];
+        [self sendPacketToAllClients:packet];
+        
+        NSLog(@"Server preparing to play music item with name = %@ and delay = %f", musicItem.name, DELAY_TIME);
+        [self prepareToPlayMusicItem:musicItem];
+    }];
+}
+
+- (void)prepareToPlayMusicItem:(MusicItem *)musicItem
+{
+    NSArray *dirs = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectoryPath = [dirs objectAtIndex:0];
+    NSString *fileName = [NSString stringWithFormat:@"%@.m4a", musicItem.ID];
+    NSString *songPath = [documentsDirectoryPath stringByAppendingPathComponent:fileName];
+    NSURL *songURL = [[NSURL alloc] initWithString:songPath];
+    
+    NSError *error;
+    _audioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:songURL error:&error];
+    _audioPlayer.delegate = self;
+    if (_audioPlayer == nil) {
+        _audioPlaying = NO;
+        NSLog(@"AudioPlayer did not load properly: %@", [error description]);
+    } else {
+        _audioPlaying = YES;
+        
+        //        [[AVAudioSession sharedInstance] setDelegate: self];
+        //        NSError *setCategoryError = nil;
+        //        [[AVAudioSession sharedInstance] setCategory: AVAudioSessionCategoryPlayback error: &setCategoryError];
+        
+        [_audioPlayer prepareToPlay];
+    }
+}
+- (void)playLoadedMusicItem:(MusicItem *)musicItem
+{
+    NSLog(@"Playing music item, name = %@", musicItem.name);
+    
+    if(_audioPlayer != nil) {
+        _audioPlaying = YES;
+        [_audioPlayer play];
+        _audioPlayerTimer = [NSTimer scheduledTimerWithTimeInterval:0.5
+                                                             target:self
+                                                           selector:@selector(updatePlaybackProgress:)
+                                                           userInfo:nil
+                                                            repeats:YES];
+    }
+    [self removeItemFromPlaylist:musicItem];
 }
 
 - (BOOL)allPlayersHaveMusic:(MusicItem *)musicItem
@@ -407,78 +488,6 @@ const int WAIT_TIME_DOWNLOAD = 8; // wait time for others to download music afte
         }
 	}
     return YES;
-}
-
-- (void)playItem:(PlaylistItem *)playlistItem
-{
-    NSAssert(self.isServer, @"Client in playItem:");
-    [_waitTimer invalidate];
-    _waitTimer = nil;
-    
-    if(playlistItem.playlistItemType == PlaylistItemTypeSong) {
-        [self serverStartPlayingMusic:(MusicItem *)playlistItem];
-    }
-}
-
-- (void)serverStartPlayingMusic:(MusicItem *)musicItem {
-    NSAssert(self.isServer, @"Client in serverStartPlayingMusic:");
-    
-    _audioPlaying = YES;
-    
-    [self getServerTimeWithCompletion:^(NSDate *serverTime) {
-        [self performSelector:@selector(playMusicItemWithSongID:) withObject:musicItem.ID afterDelay:DELAY_TIME];
-        
-        NSDate *playDate = [serverTime dateByAddingTimeInterval:DELAY_TIME];
-        NSLog(@"Playdate = %@", playDate);
-        PacketPlayMusicNow *packet = [PacketPlayMusicNow packetWithSongID:musicItem.ID andTime:playDate];
-        [self sendPacketToAllClients:packet];
-        
-        // now remove the item from the list and make it the "current song"
-        [self.delegate game:self setCurrentItem:musicItem];
-        
-        PlaylistItem *removedItem = nil;
-        for(PlaylistItem *playlistItem in _playlist) {
-            if([playlistItem isEqual:musicItem]) {
-                removedItem = playlistItem;
-                break;
-            }
-        }
-        [_playlist removeObject:removedItem];
-        
-        [self.delegate reloadTable];
-        [self sendGameStatePacket];
-        
-        NSLog(@"Server preparing to play music item with name = %@ and delay = %f", musicItem.name, DELAY_TIME);
-    }];
-
-}
-
-- (void)playMusicItemWithSongID:(NSString *)ID
-{
-    NSArray *dirs = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectoryPath = [dirs objectAtIndex:0];
-    NSString *fileName = [NSString stringWithFormat:@"%@.m4a", ID];
-    NSString *songPath = [documentsDirectoryPath stringByAppendingPathComponent:fileName];
-    NSURL *songURL = [[NSURL alloc] initWithString:songPath];
-    
-    NSLog(@"Playing music item, songPath = %@", songPath);
-    NSError *error;
-    
-    _audioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:songURL error:&error];
-    _audioPlayer.delegate = self;
-    if (_audioPlayer == nil) {
-        _audioPlaying = NO;
-        NSLog(@"AudioPlayer did not load properly: %@", [error description]);
-    } else {
-        _audioPlaying = YES;
-        [_audioPlayer prepareToPlay];
-        [_audioPlayer play];
-        _audioPlayerTimer = [NSTimer scheduledTimerWithTimeInterval:0.5
-                                                             target:self
-                                                           selector:@selector(updatePlaybackProgress:)
-                                                           userInfo:nil
-                                                            repeats:YES];
-    }
 }
 
 #pragma mark - AVAudioPlayerDelegate
@@ -546,14 +555,8 @@ const int WAIT_TIME_DOWNLOAD = 8; // wait time for others to download music afte
 }
 
 - (void)sendVotePacketForItem:(PlaylistItem *)selectedItem andAmount:(int)amount upvote:(BOOL)upvote {
-    if(self.isServer) {
-        // we have handled the upvote, now send a game state packet
-        [self sendGameStatePacket];
-    } else {
-        // let the server know amount the upvote
-        PacketVote *packet = [PacketVote packetWithSongID:selectedItem.ID andAmount:amount upvote:upvote];
-        [self sendPacketToServer:packet];
-    }
+    PacketVote *packet = [PacketVote packetWithSongID:selectedItem.ID andAmount:amount upvote:upvote];
+    [self sendPacketToAllClients:packet];
 }
 
 #pragma mark - Utility
@@ -659,8 +662,6 @@ const int WAIT_TIME_DOWNLOAD = 8; // wait time for others to download music afte
     [self serverStartPlayingMusic:musicItem];
 }
 - (void)handleLoadProgressTimer:(NSTimer *)timer {
-    // reload only the updated item
-   // PlaylistItem *playlistItem = (PlaylistItem *)[timer userInfo];
     [self.delegate reloadTable];
 }
 #pragma mark - GKSessionDelegate
