@@ -597,7 +597,6 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../../../Desktop\"",
-					"\"$(SRCROOT)/Debug-iphonesimulator\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AirShare2/AirShare2-Prefix.pch";
@@ -615,7 +614,6 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../../../Desktop\"",
-					"\"$(SRCROOT)/Debug-iphonesimulator\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AirShare2/AirShare2-Prefix.pch";

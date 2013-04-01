@@ -344,6 +344,9 @@ const int WAIT_TIME_DOWNLOAD = 8; // wait time for others to download music afte
                                                                 selector:@selector(handleLoadProgressTimer:)
                                                                 userInfo:musicItem
                                                                  repeats:YES];
+    // make the progress bar appear so that it looks smoother
+    musicItem.loadProgress = 0.001;
+    [self handleLoadProgressTimer:loadProgressTimer];
     
     NSURL *assetURL = [song valueForProperty:MPMediaItemPropertyAssetURL];
     
@@ -362,7 +365,7 @@ const int WAIT_TIME_DOWNLOAD = 8; // wait time for others to download music afte
 
 - (void)skipButtonPressed
 {
-    if(_audioPlaying && !_haveSkippedThisSong) {
+    if(!_haveSkippedThisSong) {
         _haveSkippedThisSong = YES;
         _skipSongCount++;
         [self.delegate game:self setSkipSongCount:_skipSongCount];
@@ -371,7 +374,7 @@ const int WAIT_TIME_DOWNLOAD = 8; // wait time for others to download music afte
         [self sendPacketToAllClients:packet];
         
         // if we exceed half the player count, stop the audio and let the next song play
-        if(_players.count / 2 < _skipSongCount) {
+        if(_audioPlaying && _audioPlayer != nil &&  _players.count / 2 < _skipSongCount) {
             [_audioPlayer stop];
             [self audioPlayerDidFinishPlaying:_audioPlayer successfully:YES];
         }
@@ -390,6 +393,9 @@ const int WAIT_TIME_DOWNLOAD = 8; // wait time for others to download music afte
                                                                 selector:@selector(handleLoadProgressTimer:)
                                                                 userInfo:musicItem
                                                                  repeats:YES];
+    // make the progress bar appear so that it looks smoother
+    musicItem.loadProgress = 0.001;
+    [self handleLoadProgressTimer:loadProgressTimer];
     
     [_downloader downloadFileWithMusicItem:musicItem andSessionID:_serverPeerID completion:^{
         NSLog(@"Added music item with description: %@", [musicItem description]);
@@ -494,9 +500,9 @@ const int WAIT_TIME_DOWNLOAD = 8; // wait time for others to download music afte
     } else {
         _audioPlaying = YES;
         
-        //        [[AVAudioSession sharedInstance] setDelegate: self];
-        //        NSError *setCategoryError = nil;
-        //        [[AVAudioSession sharedInstance] setCategory: AVAudioSessionCategoryPlayback error: &setCategoryError];
+        [[AVAudioSession sharedInstance] setDelegate: self];
+        NSError *setCategoryError = nil;
+        [[AVAudioSession sharedInstance] setCategory: AVAudioSessionCategoryPlayback error: &setCategoryError];
         
         [_audioPlayer prepareToPlay];
     }
