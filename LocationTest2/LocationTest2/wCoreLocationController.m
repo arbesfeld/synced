@@ -24,6 +24,8 @@
         
         _locMgr.desiredAccuracy = kCLLocationAccuracyBestForNavigation;
         _locMgr.distanceFilter = kCLHeadingFilterNone;
+        
+        [_locMgr startUpdatingLocation];
 	}
     
 	return self;

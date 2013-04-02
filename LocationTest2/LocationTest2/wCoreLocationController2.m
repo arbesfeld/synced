@@ -19,11 +19,12 @@
 	if(self != nil) {
 		self.locMgr = [[CLLocationManager alloc] init];
 		self.locMgr.delegate = self;
+        //[self.locMgr startMonitoringSignificantLocationChanges];
         
-        //The location manager object manages power aggressively by turning off hardware when it is not needed. For example, setting the desired accuracy for location events to one kilometer gives the location manager the flexibility to turn off GPS hardware and rely solely on the WiFi or cell radio.
-        
-        _locMgr.desiredAccuracy = kCLLocationAccuracyKilometer; // BestForNavigation
+        _locMgr.desiredAccuracy = kCLLocationAccuracyKilometer;
         _locMgr.distanceFilter = kCLHeadingFilterNone;
+        
+        [_locMgr startUpdatingLocation];
 	}
     
 	return self;

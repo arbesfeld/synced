@@ -31,8 +31,6 @@
     count = 0;
     count2 = 0;
     buttonMode = 0;
-    [CLController.locMgr startUpdatingLocation];
-    [CLController2.locMgr startUpdatingLocation]; //startMonitoringSignificantLocationChanges];
 }
 
 - (IBAction)startStopClearButton:(id)sender {
@@ -60,32 +58,32 @@
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     if (buttonIndex == 0) {
-        if (count > 0) {
+        if (count == 0) {
             textView.text = [NSString stringWithFormat:@"%@\n", textView.text];
         }
-        if (count2 > 0) {
+        if (count2 == 0) {
             textView2.text = [NSString stringWithFormat:@"%@\n", textView2.text];
         }
         
         count++;
         count2++;
-        textView.text = [NSString stringWithFormat:@"%@***%@***\n", textView.text, [[alertView textFieldAtIndex:0] text]];
-        textView2.text = [NSString stringWithFormat:@"%@***%@***\n", textView2.text, [[alertView textFieldAtIndex:0] text]];
+        textView.text = [NSString stringWithFormat:@"%@\n***%@***\n", textView.text, [[alertView textFieldAtIndex:0] text]];
+        textView2.text = [NSString stringWithFormat:@"%@\n***%@***\n", textView2.text, [[alertView textFieldAtIndex:0] text]];
     }
 }
 
 - (IBAction)clearButton:(id)sender {
-    textView.text = @"";
-    textView2.text = @"";
+    textView.text = @"Location Data (GPS enabled):";
+    textView2.text = @"Location Data (GPS disabled):";
     count = 0;
     count2 = 0;
 }
 
 - (void)locationUpdate:(CLLocation *)location {
-	latitudeLongitudeLabel.text = [NSString stringWithFormat:@"lat/long: %+.6f\u00B0/%+.6f\u00B0", location.coordinate.latitude, location.coordinate.longitude];
+	latitudeLongitudeLabel.text = [NSString stringWithFormat:@"lat/long: %+.3f\u00B0/%+.3f\u00B0", location.coordinate.latitude, location.coordinate.longitude];
 	altitudeLabel.text = [NSString stringWithFormat:@"altitude: %+.6fm", [location altitude]];
     
-    accuracyLabel.text = [NSString stringWithFormat:@"horiz/vert accuracy: %.2fm / %.2fm", location.horizontalAccuracy, location.verticalAccuracy];
+    accuracyLabel.text = [NSString stringWithFormat:@"horiz/vert acc: %.1fm / %.1fm", location.horizontalAccuracy, location.verticalAccuracy];
     
     if (buttonMode == 1) {
         NSDate* now = [NSDate date];
@@ -97,20 +95,20 @@
         NSInteger month = [dateComponents month];
         NSInteger day = [dateComponents day];
         NSInteger year = [dateComponents year];
-        if (count > 0) {
+        if (count == 0) {
             textView.text = [NSString stringWithFormat:@"%@\n", textView.text];
         }
-        textView.text = [NSString stringWithFormat:@"%@DATA POINT %d at %04d-%02d-%02d-%02d:%02d:%02d\n", textView.text, count, year, month, day, hour, minute, second];
+        textView.text = [NSString stringWithFormat:@"%@\nDATA POINT %d at %04d-%02d-%02d-%02d:%02d:%02d\n", textView.text, count, year, month, day, hour, minute, second];
         textView.text = [NSString stringWithFormat:@"%@latitude: %+.6f\nlongitude: %+.6f\naltitude: %+.6f\nhorizontal accuracy: %.2f\nvertical accuracy: %.2f\n", textView.text, location.coordinate.latitude, location.coordinate.longitude, [location altitude], location.horizontalAccuracy, location.verticalAccuracy];
         count++;
     }
 }
 
 - (void)locationUpdate2:(CLLocation *)location {
-	latitudeLongitudeLabel2.text = [NSString stringWithFormat:@"lat/long: %+.6f\u00B0/%+.6f\u00B0", location.coordinate.latitude, location.coordinate.longitude];
+	latitudeLongitudeLabel2.text = [NSString stringWithFormat:@"lat/long: %+.3f\u00B0/%+.3f\u00B0", location.coordinate.latitude, location.coordinate.longitude];
 	altitudeLabel2.text = [NSString stringWithFormat:@"altitude: %+.6fm", [location altitude]];
     
-    accuracyLabel2.text = [NSString stringWithFormat:@"horiz/vert accuracy: %.2fm / %.2fm", location.horizontalAccuracy, location.verticalAccuracy];
+    accuracyLabel2.text = [NSString stringWithFormat:@"horiz/vert acc: %.1fm / %.1fm", location.horizontalAccuracy, location.verticalAccuracy];
     
     if (buttonMode == 1) {
         NSDate* now = [NSDate date];
@@ -122,21 +120,21 @@
         NSInteger month = [dateComponents month];
         NSInteger day = [dateComponents day];
         NSInteger year = [dateComponents year];
-        if (count2 > 0) {
+        if (count2 == 0) {
             textView2.text = [NSString stringWithFormat:@"%@\n", textView2.text];
         }
-        textView2.text = [NSString stringWithFormat:@"%@DATA POINT %d at %04d-%02d-%02d-%02d:%02d:%02d\n", textView2.text, count, year, month, day, hour, minute, second];
+        textView2.text = [NSString stringWithFormat:@"%@\nDATA POINT %d at %04d-%02d-%02d-%02d:%02d:%02d\n", textView2.text, count2, year, month, day, hour, minute, second];
         textView2.text = [NSString stringWithFormat:@"%@latitude: %+.6f\nlongitude: %+.6f\naltitude: %+.6f\nhorizontal accuracy: %.2f\nvertical accuracy: %.2f\n", textView2.text, location.coordinate.latitude, location.coordinate.longitude, [location altitude], location.horizontalAccuracy, location.verticalAccuracy];
         count2++;
     }
 }
 
 - (void)locationError:(NSError *)error {
-	altitudeLabel.text = [error description];
+	textView.text = [error description];
 }
 
 - (void)locationError2:(NSError *)error {
-	altitudeLabel2.text = [error description];
+	textView2.text = [error description];
 }
 
 @end

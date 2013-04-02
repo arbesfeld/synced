@@ -34,11 +34,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "LocationTest2/wViewController.m"
-         timestampString = "386455358.53025"
+         timestampString = "386463618.421179"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "135"
-         endingLineNumber = "135"
+         startingLineNumber = "133"
+         endingLineNumber = "133"
          landmarkName = "-locationError:"
          landmarkType = "5">
       </FileBreakpoint>
