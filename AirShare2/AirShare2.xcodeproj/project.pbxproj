@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		552CDD1F17026493003CA4EB /* PacketMusicResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 552CDD1E17026493003CA4EB /* PacketMusicResponse.m */; };
 		552CDD22170279BF003CA4EB /* PacketGameState.m in Sources */ = {isa = PBXBuildFile; fileRef = 552CDD21170279BF003CA4EB /* PacketGameState.m */; };
+		558B71D91708EF29004E05D5 /* PacketMusicDownload.m in Sources */ = {isa = PBXBuildFile; fileRef = 558B71D81708EF29004E05D5 /* PacketMusicDownload.m */; };
+		558B71DC1708EF34004E05D5 /* PacketPlaylistItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 558B71DB1708EF34004E05D5 /* PacketPlaylistItem.m */; };
 		558E0D641704DE3100BF230D /* PlaylistItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 558E0D631704DE3100BF230D /* PlaylistItemCell.m */; };
 		558E14AB16F182480076F6FC /* PacketSignIn.m in Sources */ = {isa = PBXBuildFile; fileRef = 558E14AA16F182480076F6FC /* PacketSignIn.m */; };
 		558E14B516F185600076F6FC /* bgGreyImg.png in Resources */ = {isa = PBXBuildFile; fileRef = 558E14B216F185600076F6FC /* bgGreyImg.png */; };
@@ -28,7 +30,6 @@
 		559096C616FFB3DE004149A0 /* AFXMLRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 559096BC16FFB3DE004149A0 /* AFXMLRequestOperation.m */; };
 		559096C716FFB3DE004149A0 /* UIImageView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 559096BE16FFB3DE004149A0 /* UIImageView+AFNetworking.m */; };
 		559096CA16FFE28A004149A0 /* MusicDownload.m in Sources */ = {isa = PBXBuildFile; fileRef = 559096C916FFE28A004149A0 /* MusicDownload.m */; };
-		559096CD16FFE70C004149A0 /* PacketMusic.m in Sources */ = {isa = PBXBuildFile; fileRef = 559096CC16FFE70C004149A0 /* PacketMusic.m */; };
 		559096D01700038F004149A0 /* PlaylistItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 559096CF1700038F004149A0 /* PlaylistItem.m */; };
 		559096D3170006AB004149A0 /* MusicItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 559096D2170006AB004149A0 /* MusicItem.m */; };
 		5591DC7D1703669A0086BC99 /* PacketVote.m in Sources */ = {isa = PBXBuildFile; fileRef = 5591DC7C1703669A0086BC99 /* PacketVote.m */; };
@@ -72,6 +73,10 @@
 		552CDD1E17026493003CA4EB /* PacketMusicResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PacketMusicResponse.m; sourceTree = "<group>"; };
 		552CDD20170279BF003CA4EB /* PacketGameState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PacketGameState.h; sourceTree = "<group>"; };
 		552CDD21170279BF003CA4EB /* PacketGameState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PacketGameState.m; sourceTree = "<group>"; };
+		558B71D71708EF29004E05D5 /* PacketMusicDownload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PacketMusicDownload.h; sourceTree = "<group>"; };
+		558B71D81708EF29004E05D5 /* PacketMusicDownload.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PacketMusicDownload.m; sourceTree = "<group>"; };
+		558B71DA1708EF34004E05D5 /* PacketPlaylistItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PacketPlaylistItem.h; sourceTree = "<group>"; };
+		558B71DB1708EF34004E05D5 /* PacketPlaylistItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PacketPlaylistItem.m; sourceTree = "<group>"; };
 		558E0D621704DE3100BF230D /* PlaylistItemCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlaylistItemCell.h; sourceTree = "<group>"; };
 		558E0D631704DE3100BF230D /* PlaylistItemCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlaylistItemCell.m; sourceTree = "<group>"; };
 		558E14A916F182480076F6FC /* PacketSignIn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PacketSignIn.h; sourceTree = "<group>"; };
@@ -104,8 +109,6 @@
 		559096BE16FFB3DE004149A0 /* UIImageView+AFNetworking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+AFNetworking.m"; sourceTree = "<group>"; };
 		559096C816FFE28A004149A0 /* MusicDownload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MusicDownload.h; path = AirShare2/MusicDownload.h; sourceTree = "<group>"; };
 		559096C916FFE28A004149A0 /* MusicDownload.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MusicDownload.m; path = AirShare2/MusicDownload.m; sourceTree = "<group>"; };
-		559096CB16FFE70C004149A0 /* PacketMusic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PacketMusic.h; sourceTree = "<group>"; };
-		559096CC16FFE70C004149A0 /* PacketMusic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PacketMusic.m; sourceTree = "<group>"; };
 		559096CE1700038F004149A0 /* PlaylistItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlaylistItem.h; sourceTree = "<group>"; };
 		559096CF1700038F004149A0 /* PlaylistItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlaylistItem.m; sourceTree = "<group>"; };
 		559096D1170006AB004149A0 /* MusicItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MusicItem.h; sourceTree = "<group>"; };
@@ -332,10 +335,12 @@
 				552CDD21170279BF003CA4EB /* PacketGameState.m */,
 				5596E08A16F62FB600511D3E /* PacketOtherClientQuit.h */,
 				5596E08B16F62FB600511D3E /* PacketOtherClientQuit.m */,
-				559096CB16FFE70C004149A0 /* PacketMusic.h */,
-				559096CC16FFE70C004149A0 /* PacketMusic.m */,
+				558B71D71708EF29004E05D5 /* PacketMusicDownload.h */,
+				558B71D81708EF29004E05D5 /* PacketMusicDownload.m */,
 				552CDD1D17026493003CA4EB /* PacketMusicResponse.h */,
 				552CDD1E17026493003CA4EB /* PacketMusicResponse.m */,
+				558B71DA1708EF34004E05D5 /* PacketPlaylistItem.h */,
+				558B71DB1708EF34004E05D5 /* PacketPlaylistItem.m */,
 				55A31C0217017B6F00A1FFC8 /* PacketPlayMusicNow.h */,
 				55A31C0317017B6F00A1FFC8 /* PacketPlayMusicNow.m */,
 				5591DC7B1703669A0086BC99 /* PacketVote.h */,
@@ -486,7 +491,6 @@
 				559096C616FFB3DE004149A0 /* AFXMLRequestOperation.m in Sources */,
 				559096C716FFB3DE004149A0 /* UIImageView+AFNetworking.m in Sources */,
 				559096CA16FFE28A004149A0 /* MusicDownload.m in Sources */,
-				559096CD16FFE70C004149A0 /* PacketMusic.m in Sources */,
 				559096D01700038F004149A0 /* PlaylistItem.m in Sources */,
 				559096D3170006AB004149A0 /* MusicItem.m in Sources */,
 				55A31C0417017B6F00A1FFC8 /* PacketPlayMusicNow.m in Sources */,
@@ -494,6 +498,8 @@
 				552CDD22170279BF003CA4EB /* PacketGameState.m in Sources */,
 				5591DC7D1703669A0086BC99 /* PacketVote.m in Sources */,
 				558E0D641704DE3100BF230D /* PlaylistItemCell.m in Sources */,
+				558B71D91708EF29004E05D5 /* PacketMusicDownload.m in Sources */,
+				558B71DC1708EF34004E05D5 /* PacketPlaylistItem.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -591,7 +597,6 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../../../Desktop\"",
-					"\"$(SRCROOT)/Debug-iphonesimulator\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AirShare2/AirShare2-Prefix.pch";
@@ -609,7 +614,6 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../../../Desktop\"",
-					"\"$(SRCROOT)/Debug-iphonesimulator\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AirShare2/AirShare2-Prefix.pch";

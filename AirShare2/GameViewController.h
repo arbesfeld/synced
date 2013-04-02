@@ -18,9 +18,11 @@
     PlaylistItem *_currentPlaylistItem;
     NSMutableDictionary *_voteAmount; // key is songID, value is vote amount
 }
+@property (nonatomic, weak) IBOutlet UILabel *skipSongLabel;
 @property (nonatomic, weak) IBOutlet UILabel *songLabel;
 @property (nonatomic, weak) IBOutlet UILabel *artistLabel;
 @property (nonatomic, weak) IBOutlet UIButton *exitButton;
+@property (weak, nonatomic) IBOutlet UIButton *skipSongButton;
 @property (nonatomic, weak) IBOutlet UITableView *userTable;
 @property (nonatomic, weak) IBOutlet UITableView *playlistTable;
 @property (nonatomic, weak) IBOutlet UIProgressView *playbackProgressBar;
@@ -30,5 +32,6 @@
 
 - (IBAction)exitAction:(id)sender;
 - (IBAction)playMusic:(id)sender;
+- (IBAction)skipMusic:(id)sender;
 
 @end

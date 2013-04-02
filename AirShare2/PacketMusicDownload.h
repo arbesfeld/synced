@@ -7,12 +7,11 @@
 //
 
 #import "Packet.h"
-#import "MusicItem.h"
 
-@interface PacketMusic : Packet
+@interface PacketMusicDownload : Packet
 
-@property (nonatomic, strong) MusicItem *musicItem;
+@property (nonatomic, strong) NSString *ID;
 
-+ (id)packetWithMusicItem:(MusicItem *)musicItem;
++ (id)packetWithID:(NSString *)ID;
 
 @end

@@ -13,13 +13,13 @@
 
 -(void)downloadFileWithMusicItem:(MusicItem *)musicItem andSessionID:(NSString *)sessionID completion:(void (^)(void))completionBlock{
     // make the GET request URL
-    NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:musicItem.ID, @"id", sessionID, @"sessionid", nil];
+    NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:sessionID, @"sessionid", musicItem.ID, @"id", nil];
     NSMutableString *prams = [[NSMutableString alloc] init];
     for (id keys in dict) {
         [prams appendFormat:@"%@=%@&",keys,[dict objectForKey:keys]];
     }
     NSString *removeLastChar = [prams substringWithRange:NSMakeRange(0, [prams length]-1)];
-    NSString *urlString = [NSString stringWithFormat:@"%@airshare-download.php?%@.m4a", BASE_URL, removeLastChar];
+    NSString *urlString = [NSString stringWithFormat:@"%@airshare-download.php?%@", BASE_URL, removeLastChar];
     
     NSLog(@"GET Request = %@",urlString);
     

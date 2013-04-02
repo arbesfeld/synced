@@ -82,13 +82,13 @@ const double epsilon = 0.02;
 	[self.delegate gameViewController:self didQuitWithReason:reason];
 }
 
-- (void)gameServer:(Game *)server clientDidConnect:(Player *)player;
+- (void)game:(Game *)game clientDidConnect:(Player *)player;
 {
     [self.userTable reloadData];
     [self.playlistTable reloadData];
 }
 
-- (void)gameServer:(Game *)server clientDidDisconnect:(Player *)player;
+- (void)game:(Game *)game clientDidDisconnect:(Player *)player;
 {
     [self.userTable reloadData];
     [self.playlistTable reloadData];
@@ -111,12 +111,17 @@ const double epsilon = 0.02;
     [self setHeaderWithSongName:playlistItem.name andArtistName:playlistItem.subtitle];
 }
 
-- (void)gameServerSessionDidEnd:(Game *)server;
+- (void)game:(Game *)game setSkipSongCount:(int)skipSongCount
+{
+    self.skipSongLabel.text = [NSString stringWithFormat:@"%d/%d", skipSongCount, game.players.count];
+}
+
+- (void)gameSessionDidEnd:(Game *)server;
 {
     
 }
 
-- (void)gameServerNoNetwork:(Game *)server;
+- (void)gameNoNetwork:(Game *)server;
 {
     
 }
@@ -203,7 +208,6 @@ const double epsilon = 0.02;
     self.artistLabel.font = [UIFont systemFontOfSize:13];
     self.artistLabel.textColor = [UIColor grayColor];
 }
-
 #pragma mark - UITableViewDelegate
 
 #pragma mark - PlaylistItemDelegate
@@ -248,6 +252,10 @@ const double epsilon = 0.02;
     mediaPicker.prompt = @"Select song to play";
     
     [self presentViewController:mediaPicker animated:YES completion:nil];
+}
+    
+- (IBAction)skipMusic:(id)sender {
+    [_game skipButtonPressed];
 }
 
 - (void) mediaPicker: (MPMediaPickerController *)mediaPicker didPickMediaItems: (MPMediaItemCollection *) mediaItemCollection

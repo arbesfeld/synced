@@ -104,21 +104,25 @@
     
     PlaylistItem *currentPlaylistItem = [[PlaylistItem alloc] initPlaylistItemWithName:currentName andSubtitle:currentSubtitle andID:currentID andDate:nil andPlaylistItemType:currentPlaylistItemType];
     
-	return [[self class] packetWithPlayers:players andPlaylist:playlist andCurrentItem:currentPlaylistItem];
+    int skipSongCount = [data rw_int8AtOffset:offset];
+    offset += 1;
+    
+	return [[self class] packetWithPlayers:players andPlaylist:playlist andCurrentItem:currentPlaylistItem andSkipCount:skipSongCount];
 }
 
-+ (id)packetWithPlayers:(NSMutableDictionary *)players andPlaylist:(NSMutableArray *)playlist andCurrentItem:(PlaylistItem *)currentPlaylistItem
++ (id)packetWithPlayers:(NSMutableDictionary *)players andPlaylist:(NSMutableArray *)playlist andCurrentItem:(PlaylistItem *)currentPlaylistItem andSkipCount:(int)skipCount
 {
-	return [[[self class] alloc] initWithPlayers:players andPlaylist:playlist andCurrentItem:currentPlaylistItem];
+	return [[[self class] alloc] initWithPlayers:players andPlaylist:playlist andCurrentItem:currentPlaylistItem andSkipCount:skipCount];
 }
 
-- (id)initWithPlayers:(NSMutableDictionary *)players andPlaylist:(NSMutableArray *)playlist andCurrentItem:(PlaylistItem *)currentPlaylistItem
+- (id)initWithPlayers:(NSMutableDictionary *)players andPlaylist:(NSMutableArray *)playlist andCurrentItem:(PlaylistItem *)currentPlaylistItem andSkipCount:(int)skipCount
 {
 	if ((self = [super initWithType:PacketTypeGameState]))
 	{
 		self.players = players;
         self.playlist = playlist;
         self.currentPlaylistItem = currentPlaylistItem;
+        self.skipCount = skipCount;
 	}
 	return self;
 }
@@ -155,6 +159,8 @@
     [data rw_appendString:self.currentPlaylistItem.subtitle];
     [data rw_appendString:self.currentPlaylistItem.ID];
     [data rw_appendInt8:  self.currentPlaylistItem.playlistItemType];
+    
+    [data rw_appendInt8:  self.skipCount];
 }
 
 @end

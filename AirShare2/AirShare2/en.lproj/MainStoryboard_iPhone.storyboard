@@ -189,26 +189,48 @@
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="0" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="96i-Zy-Rwc">
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eeC-ei-Tr1">
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                <state key="normal" title="Skip">
+                                    <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <state key="highlighted">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="skipMusic:" destination="FQX-ru-M2g" eventType="touchUpInside" id="aAs-m9-Ara"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="rlj-36-yiK" firstAttribute="leading" secondItem="BCy-oa-ZtW" secondAttribute="leading" constant="20" symbolic="YES" type="default" id="87h-BW-YT0"/>
-                            <constraint firstItem="1Sy-ST-eaC" firstAttribute="leading" secondItem="ge9-R5-1vQ" secondAttribute="leading" type="default" id="BdX-J5-AbL"/>
+                            <constraint firstItem="ge9-R5-1vQ" firstAttribute="leading" secondItem="1Sy-ST-eaC" secondAttribute="leading" type="default" id="AD0-By-EFO"/>
+                            <constraint firstAttribute="trailing" secondItem="YuW-3R-SF1" secondAttribute="trailing" constant="18" id="BM8-fe-yTf"/>
                             <constraint firstItem="WD3-Wu-ZGd" firstAttribute="top" secondItem="BCy-oa-ZtW" secondAttribute="top" constant="48" id="Ebm-7G-Ty7"/>
+                            <constraint firstItem="eeC-ei-Tr1" firstAttribute="baseline" secondItem="IVa-kZ-LtJ" secondAttribute="baseline" type="default" id="FVH-V7-zhq"/>
                             <constraint firstAttribute="trailing" secondItem="rlj-36-yiK" secondAttribute="trailing" constant="20" symbolic="YES" type="default" id="GYZ-BK-cky"/>
                             <constraint firstItem="1Sy-ST-eaC" firstAttribute="trailing" secondItem="ge9-R5-1vQ" secondAttribute="trailing" type="default" id="GgN-LQ-klt"/>
                             <constraint firstItem="rlj-36-yiK" firstAttribute="top" secondItem="BCy-oa-ZtW" secondAttribute="top" constant="22" id="HTx-TQ-tRp"/>
+                            <constraint firstItem="96i-Zy-Rwc" firstAttribute="leading" secondItem="IVa-kZ-LtJ" secondAttribute="trailing" constant="8" symbolic="YES" type="default" id="HW9-Kd-jDa"/>
                             <constraint firstItem="nPy-zn-dlt" firstAttribute="leading" secondItem="BCy-oa-ZtW" secondAttribute="leading" constant="20" symbolic="YES" type="default" id="Nnq-aV-RdL"/>
                             <constraint firstItem="uh1-8p-J3r" firstAttribute="leading" secondItem="BCy-oa-ZtW" secondAttribute="leading" constant="20" symbolic="YES" type="default" id="Qwq-M1-Js2"/>
                             <constraint firstItem="ge9-R5-1vQ" firstAttribute="top" secondItem="WD3-Wu-ZGd" secondAttribute="bottom" constant="8" symbolic="YES" type="default" id="R0b-HK-x5e"/>
-                            <constraint firstItem="IVa-kZ-LtJ" firstAttribute="leading" secondItem="BCy-oa-ZtW" secondAttribute="leading" constant="20" symbolic="YES" type="default" id="TZm-PA-Axt"/>
+                            <constraint firstAttribute="trailing" secondItem="eeC-ei-Tr1" secondAttribute="trailing" constant="81" id="TPG-HV-g9T"/>
+                            <constraint firstItem="ge9-R5-1vQ" firstAttribute="leading" secondItem="BCy-oa-ZtW" secondAttribute="leading" constant="8" id="TPh-fp-fan"/>
                             <constraint firstItem="WD3-Wu-ZGd" firstAttribute="centerX" secondItem="rlj-36-yiK" secondAttribute="centerX" type="default" id="aAC-Cq-O3D"/>
                             <constraint firstAttribute="trailing" secondItem="nPy-zn-dlt" secondAttribute="trailing" constant="20" symbolic="YES" type="default" id="adc-2z-yZ2"/>
-                            <constraint firstAttribute="trailing" secondItem="YuW-3R-SF1" secondAttribute="trailing" constant="20" symbolic="YES" type="default" id="bYs-Pt-9Te"/>
                             <constraint firstAttribute="bottom" secondItem="1Sy-ST-eaC" secondAttribute="bottom" constant="20" symbolic="YES" type="default" id="fc3-Md-gcf"/>
                             <constraint firstAttribute="bottom" secondItem="IVa-kZ-LtJ" secondAttribute="bottom" constant="164" id="g0d-n2-v5O"/>
-                            <constraint firstItem="YuW-3R-SF1" firstAttribute="baseline" secondItem="IVa-kZ-LtJ" secondAttribute="baseline" type="default" id="nZE-0l-iFs"/>
-                            <constraint firstItem="ge9-R5-1vQ" firstAttribute="centerX" secondItem="WD3-Wu-ZGd" secondAttribute="centerX" type="default" id="piN-9u-Jdb"/>
+                            <constraint firstItem="eeC-ei-Tr1" firstAttribute="centerY" secondItem="96i-Zy-Rwc" secondAttribute="centerY" type="default" id="jRA-hM-0Jj"/>
+                            <constraint firstItem="eeC-ei-Tr1" firstAttribute="baseline" secondItem="YuW-3R-SF1" secondAttribute="baseline" type="default" id="lDf-CS-7Ri"/>
+                            <constraint firstItem="IVa-kZ-LtJ" firstAttribute="leading" secondItem="BCy-oa-ZtW" secondAttribute="leading" constant="6" id="rta-7l-AT9"/>
                             <constraint firstItem="nPy-zn-dlt" firstAttribute="top" secondItem="BCy-oa-ZtW" secondAttribute="top" constant="1" id="z31-Pq-ZhP"/>
                             <constraint firstAttribute="bottom" secondItem="uh1-8p-J3r" secondAttribute="bottom" constant="120" id="zYH-VK-suR"/>
                         </constraints>
@@ -218,6 +240,8 @@
                         <outlet property="exitButton" destination="YuW-3R-SF1" id="PO5-ox-su0"/>
                         <outlet property="playbackProgressBar" destination="WD3-Wu-ZGd" id="Jcq-8g-IJ2"/>
                         <outlet property="playlistTable" destination="ge9-R5-1vQ" id="yzh-kt-lei"/>
+                        <outlet property="skipSongButton" destination="eeC-ei-Tr1" id="bJd-MO-M65"/>
+                        <outlet property="skipSongLabel" destination="96i-Zy-Rwc" id="P4E-b4-gyK"/>
                         <outlet property="songLabel" destination="nPy-zn-dlt" id="bJG-gd-6t0"/>
                         <outlet property="userTable" destination="1Sy-ST-eaC" id="SWy-XQ-Qwx"/>
                     </connections>
@@ -227,6 +251,39 @@
             <point key="canvasLocation" x="457" y="88"/>
         </scene>
     </scenes>
+    <classes>
+        <class className="GameViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/GameViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="exitAction:"/>
+                <relationship kind="action" name="playMusic:"/>
+                <relationship kind="action" name="skipMusic:"/>
+                <relationship kind="outlet" name="artistLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="exitButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="playbackProgressBar" candidateClass="UIProgressView"/>
+                <relationship kind="outlet" name="playlistTable" candidateClass="UITableView"/>
+                <relationship kind="outlet" name="skipSongButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="skipSongLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="songLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="userTable" candidateClass="UITableView"/>
+            </relationships>
+        </class>
+        <class className="MainViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/MainViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="hostGameAction:"/>
+                <relationship kind="outlet" name="hostGameButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="nameTextField" candidateClass="UITextField"/>
+                <relationship kind="outlet" name="sessionsLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="statusLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="tableView" candidateClass="UITableView"/>
+                <relationship kind="outlet" name="waitLabel" candidateClass="UILabel"/>
+            </relationships>
+        </class>
+        <class className="NSLayoutConstraint" superclassName="NSObject">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/NSLayoutConstraint.h"/>
+        </class>
+    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>
