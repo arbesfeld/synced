@@ -3,8 +3,9 @@
 #import "MatchmakingServer.h"
 #import "PlaylistItem.h"
 #import "PlaylistItemCell.h"
-
+#import "ECSlidingViewController.h"
 #import <MediaPlayer/MediaPlayer.h>
+#import "MenuViewController.h"
 
 @class GameViewController;
 
@@ -14,7 +15,7 @@
 
 @end
 
-@interface GameViewController : UIViewController <UIAlertViewDelegate, UITableViewDataSource, UITableViewDelegate, MPMediaPickerControllerDelegate, GameDelegate, PlaylistItemDelegate> {
+@interface GameViewController : UIViewController <UIAlertViewDelegate, UITableViewDataSource, UITableViewDelegate, MPMediaPickerControllerDelegate, GameDelegate, PlaylistItemDelegate, UIApplicationDelegate> {
     PlaylistItem *_currentPlaylistItem;
     NSMutableDictionary *_voteAmount; // key is songID, value is vote amount
 }
@@ -26,6 +27,7 @@
 @property (nonatomic, weak) IBOutlet UITableView *userTable;
 @property (nonatomic, weak) IBOutlet UITableView *playlistTable;
 @property (nonatomic, weak) IBOutlet UIProgressView *playbackProgressBar;
+
 
 @property (nonatomic, weak) id <GameViewControllerDelegate> delegate;
 @property (nonatomic, strong) Game *game;

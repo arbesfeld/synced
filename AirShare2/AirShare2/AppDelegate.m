@@ -6,15 +6,19 @@
 //  Copyright (c) 2013 Matthew Arbesfeld. All rights reserved.
 //
 
+#import "MainViewController.h"
 #import "AppDelegate.h"
 
 @implementation AppDelegate
 
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
-    return YES;
-}
+    //self.window.rootViewController = viewController;
+
+    
+    return YES;}
 							
 - (void)applicationWillResignActive:(UIApplication *)application
 {
