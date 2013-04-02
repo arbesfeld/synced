@@ -69,6 +69,7 @@ const int WAIT_TIME_DOWNLOAD = 8; // wait time for others to download music afte
 	_session.delegate = self;
     
     self.maxClients = 4;
+    _clockOffsetTotal = 0.0;
     
 	[_session setDataReceiveHandler:self withContext:nil];
     
@@ -91,6 +92,7 @@ const int WAIT_TIME_DOWNLOAD = 8; // wait time for others to download music afte
     _serverPeerID = session.peerID;
     
     self.maxClients = 4;
+    _clockOffsetTotal = 0.0;
     
 	[_session setDataReceiveHandler:self withContext:nil];
     
@@ -178,14 +180,11 @@ const int WAIT_TIME_DOWNLOAD = 8; // wait time for others to download music afte
             // instruction to play music
             NSString *ID = ((PacketPlayMusicNow *)packet).ID;
             MusicItem *musicItem = (MusicItem *)[self playlistItemWithID:ID];
-            NSDate *playDate = ((PacketPlayMusicNow *)packet).time;
             
-            [self getServerTimeWithCompletion:^(NSDate *serverTime) {
-                double delay = [playDate timeIntervalSinceDate:serverTime];
-                NSLog(@"Client to play music item, id = %@, delay: %f", ID, delay);
-                [self performSelector:@selector(playLoadedMusicItem:) withObject:musicItem afterDelay:delay];
-                [self prepareToPlayMusicItem:musicItem];
-            }];
+            NSLog(@"Client to play music item, id = %@", ID);
+            [self performSelector:@selector(playLoadedMusicItem:) withObject:musicItem afterDelay:DELAY_TIME];
+            [self prepareToPlayMusicItem:musicItem];
+            
             break;
         }
         case PacketTypeVote:
@@ -473,19 +472,14 @@ const int WAIT_TIME_DOWNLOAD = 8; // wait time for others to download music afte
     
     _audioPlaying = YES;
     
-    [self getServerTimeWithCompletion:^(NSDate *serverTime) {
-        [self performSelector:@selector(playLoadedMusicItem:) withObject:musicItem afterDelay:DELAY_TIME];
+    [self prepareToPlayMusicItem:musicItem];
+    
+    PacketPlayMusicNow *packet = [PacketPlayMusicNow packetWithSongID:musicItem.ID];
+    packet.sendReliably = false;
+    [self sendPacketToAllClients:packet];
+    [self performSelector:@selector(playLoadedMusicItem:) withObject:musicItem afterDelay:DELAY_TIME];
         
-        [self prepareToPlayMusicItem:musicItem];
-        
-        NSDate *playDate = [serverTime dateByAddingTimeInterval:DELAY_TIME];
-        NSLog(@"Playdate = %@", playDate);
-        PacketPlayMusicNow *packet = [PacketPlayMusicNow packetWithSongID:musicItem.ID andTime:playDate];
-        [self sendPacketToAllClients:packet];
-        
-        NSLog(@"Server preparing to play music item with name = %@ and delay = %f", musicItem.name, DELAY_TIME);
-        [self prepareToPlayMusicItem:musicItem];
-    }];
+    NSLog(@"Server preparing to play music item with name = %@", musicItem.name);
 }
 
 - (void)prepareToPlayMusicItem:(MusicItem *)musicItem
@@ -570,7 +564,7 @@ const int WAIT_TIME_DOWNLOAD = 8; // wait time for others to download music afte
 
 - (void)sendPacketToAllClients:(Packet *)packet
 {
-	GKSendDataMode dataMode = GKSendDataReliable;
+	GKSendDataMode dataMode = packet.sendReliably ? GKSendDataReliable : GKSendDataUnreliable;
 	NSData *data = [packet data];
 	NSError *error;
 	if (![_session sendDataToAllPeers:data withDataMode:dataMode error:&error])
@@ -582,7 +576,7 @@ const int WAIT_TIME_DOWNLOAD = 8; // wait time for others to download music afte
 - (void)sendPacket:(Packet *)packet toClientWithPeerID:(NSString *)peerID
 {
     //NSLog(@"Sending packet to server");
-	GKSendDataMode dataMode = GKSendDataReliable;
+	GKSendDataMode dataMode = packet.sendReliably ? GKSendDataReliable : GKSendDataUnreliable;
 	NSData *data = [packet data];
 	NSError *error;
 	if (![_session sendData:data toPeers:[NSArray arrayWithObject:peerID] withDataMode:dataMode error:&error])
@@ -593,7 +587,7 @@ const int WAIT_TIME_DOWNLOAD = 8; // wait time for others to download music afte
 - (void)sendPacketToServer:(Packet *)packet
 {
     //NSLog(@"Sending packet to server");
-	GKSendDataMode dataMode = GKSendDataReliable;
+	GKSendDataMode dataMode = packet.sendReliably ? GKSendDataReliable : GKSendDataUnreliable;
 	NSData *data = [packet data];
 	NSError *error;
 	if (![_session sendData:data toPeers:[NSArray arrayWithObject:_serverPeerID] withDataMode:dataMode error:&error])

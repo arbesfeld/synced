@@ -46,7 +46,8 @@ ServerState;
     NSTimer *_audioPlayerTimer, *_waitTimer;
     AVAudioPlayer *_audioPlayer;
     BOOL _audioPlaying, _haveSkippedThisSong;
-    int _skipSongCount;
+    int _skipSongCount, _syncPacketCount;
+    double _clockOffsetTotal;
 }
 
 @property (nonatomic, weak) id <GameDelegate> delegate;
