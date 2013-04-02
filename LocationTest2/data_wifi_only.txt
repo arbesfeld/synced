@@ -1,0 +1,702 @@
+Location Data: WIFI ONLY
+Team airShare
+
+DATA POINT 0 at 11:36:50
+latitude: +42.357811
+longitude: -71.093215
+altitude: +13.740292
+horizontal accuracy: 65.00
+vertical accuracy: 10.00
+
+DATA POINT 1 at 11:36:50
+latitude: +42.357811
+longitude: -71.093215
+altitude: +13.740292
+horizontal accuracy: 65.00
+vertical accuracy: 10.00
+
+DATA POINT 2 at 11:36:51
+latitude: +42.357779
+longitude: -71.093249
+altitude: +13.514390
+horizontal accuracy: 65.00
+vertical accuracy: 10.00
+
+DATA POINT 3 at 11:36:52
+latitude: +42.357788
+longitude: -71.093246
+altitude: +13.275400
+horizontal accuracy: 65.00
+vertical accuracy: 10.00
+
+DATA POINT 4 at 11:38:42
+latitude: +42.358289
+longitude: -71.093570
+altitude: +15.270934
+horizontal accuracy: 65.00
+vertical accuracy: 13.13
+
+DATA POINT 5 at 11:38:42
+latitude: +42.358289
+longitude: -71.093570
+altitude: +15.270934
+horizontal accuracy: 65.00
+vertical accuracy: 13.13
+
+DATA POINT 6 at 11:38:42
+latitude: +42.358294
+longitude: -71.093571
+altitude: +15.581778
+horizontal accuracy: 65.00
+vertical accuracy: 10.25
+
+DATA POINT 7 at 11:38:43
+latitude: +42.358293
+longitude: -71.093571
+altitude: +15.695560
+horizontal accuracy: 65.00
+vertical accuracy: 10.00
+
+DATA POINT 8 at 11:41:04
+latitude: +42.358987
+longitude: -71.093937
+altitude: +16.273062
+horizontal accuracy: 65.00
+vertical accuracy: 14.10
+
+DATA POINT 9 at 11:41:04
+latitude: +42.358987
+longitude: -71.093937
+altitude: +16.273062
+horizontal accuracy: 65.00
+vertical accuracy: 14.10
+
+DATA POINT 10 at 11:41:04
+latitude: +42.358989
+longitude: -71.093939
+altitude: +16.344278
+horizontal accuracy: 65.00
+vertical accuracy: 10.77
+
+DATA POINT 11 at 11:41:06
+latitude: +42.358989
+longitude: -71.093939
+altitude: +16.372524
+horizontal accuracy: 65.00
+vertical accuracy: 10.00
+
+DATA POINT 12 at 11:41:13
+latitude: +42.358989
+longitude: -71.093939
+altitude: +16.372524
+horizontal accuracy: 65.00
+vertical accuracy: 10.00
+
+DATA POINT 13 at 11:41:13
+latitude: +42.358989
+longitude: -71.093939
+altitude: +16.372524
+horizontal accuracy: 65.00
+vertical accuracy: 10.00
+
+DATA POINT 14 at 11:41:14
+latitude: +42.359250
+longitude: -71.094009
+altitude: +16.463293
+horizontal accuracy: 65.00
+vertical accuracy: 10.78
+
+DATA POINT 15 at 11:41:14
+latitude: +42.359260
+longitude: -71.094029
+altitude: +16.548338
+horizontal accuracy: 65.00
+vertical accuracy: 10.02
+
+DATA POINT 16 at 11:41:19
+latitude: +42.359260
+longitude: -71.094029
+altitude: +16.548338
+horizontal accuracy: 65.00
+vertical accuracy: 10.02
+
+DATA POINT 17 at 11:41:19
+latitude: +42.359260
+longitude: -71.094029
+altitude: +16.548338
+horizontal accuracy: 65.00
+vertical accuracy: 10.02
+
+DATA POINT 18 at 11:41:20
+latitude: +42.359312
+longitude: -71.094081
+altitude: +16.715071
+horizontal accuracy: 65.00
+vertical accuracy: 10.28
+
+DATA POINT 19 at 11:41:21
+latitude: +42.359276
+longitude: -71.094065
+altitude: +16.791580
+horizontal accuracy: 65.00
+vertical accuracy: 10.00
+
+DATA POINT 20 at 11:41:35
+latitude: +42.359276
+longitude: -71.094065
+altitude: +16.791580
+horizontal accuracy: 65.00
+vertical accuracy: 10.00
+
+DATA POINT 21 at 11:41:35
+latitude: +42.359276
+longitude: -71.094065
+altitude: +16.791580
+horizontal accuracy: 65.00
+vertical accuracy: 10.00
+
+DATA POINT 22 at 11:41:35
+latitude: +42.359161
+longitude: -71.094034
+altitude: +16.782900
+horizontal accuracy: 65.00
+vertical accuracy: 10.63
+
+DATA POINT 23 at 11:41:36
+latitude: +42.359178
+longitude: -71.094043
+altitude: +16.879036
+horizontal accuracy: 65.00
+vertical accuracy: 10.03
+
+DATA POINT 24 at 11:42:12
+latitude: +42.359178
+longitude: -71.094043
+altitude: +16.879036
+horizontal accuracy: 65.00
+vertical accuracy: 10.03
+
+DATA POINT 25 at 11:42:12
+latitude: +42.359178
+longitude: -71.094043
+altitude: +16.879036
+horizontal accuracy: 65.00
+vertical accuracy: 10.03
+
+DATA POINT 26 at 11:42:12
+latitude: +42.358888
+longitude: -71.093825
+altitude: +17.053509
+horizontal accuracy: 65.00
+vertical accuracy: 11.87
+
+DATA POINT 27 at 11:42:13
+latitude: +42.358967
+longitude: -71.093898
+altitude: +16.967342
+horizontal accuracy: 65.00
+vertical accuracy: 10.00
+
+DATA POINT 28 at 11:42:20
+latitude: +42.358967
+longitude: -71.093898
+altitude: +16.967342
+horizontal accuracy: 65.00
+vertical accuracy: 10.00
+
+DATA POINT 29 at 11:42:20
+latitude: +42.358967
+longitude: -71.093898
+altitude: +16.967342
+horizontal accuracy: 65.00
+vertical accuracy: 10.00
+
+DATA POINT 30 at 11:42:20
+latitude: +42.359029
+longitude: -71.093945
+altitude: +16.496046
+horizontal accuracy: 65.00
+vertical accuracy: 10.00
+
+DATA POINT 31 at 11:42:21
+latitude: +42.359015
+longitude: -71.093951
+altitude: +16.504444
+horizontal accuracy: 65.00
+vertical accuracy: 10.00
+
+DATA POINT 32 at 11:42:32
+latitude: +42.359015
+longitude: -71.093951
+altitude: +16.504444
+horizontal accuracy: 65.00
+vertical accuracy: 10.00
+
+DATA POINT 33 at 11:42:32
+latitude: +42.359015
+longitude: -71.093951
+altitude: +16.504444
+horizontal accuracy: 65.00
+vertical accuracy: 10.00
+
+DATA POINT 34 at 11:42:32
+latitude: +42.358896
+longitude: -71.094326
+altitude: +16.592894
+horizontal accuracy: 65.00
+vertical accuracy: 10.14
+
+DATA POINT 35 at 11:42:33
+latitude: +42.358949
+longitude: -71.094224
+altitude: +16.684618
+horizontal accuracy: 65.00
+vertical accuracy: 10.00
+
+DATA POINT 36 at 11:42:39
+latitude: +42.358949
+longitude: -71.094224
+altitude: +16.684618
+horizontal accuracy: 65.00
+vertical accuracy: 10.00
+
+DATA POINT 37 at 11:42:39
+latitude: +42.358949
+longitude: -71.094224
+altitude: +16.684618
+horizontal accuracy: 65.00
+vertical accuracy: 10.00
+
+DATA POINT 38 at 11:42:39
+latitude: +42.358931
+longitude: -71.094192
+altitude: +16.787785
+horizontal accuracy: 65.00
+vertical accuracy: 11.25
+
+DATA POINT 39 at 11:42:40
+latitude: +42.358911
+longitude: -71.094231
+altitude: +16.881531
+horizontal accuracy: 65.00
+vertical accuracy: 10.98
+
+DATA POINT 40 at 11:43:00
+latitude: +42.358911
+longitude: -71.094231
+altitude: +16.881531
+horizontal accuracy: 65.00
+vertical accuracy: 10.98
+
+DATA POINT 41 at 11:43:00
+latitude: +42.358911
+longitude: -71.094231
+altitude: +16.881531
+horizontal accuracy: 65.00
+vertical accuracy: 10.98
+
+DATA POINT 42 at 11:43:00
+latitude: +42.359063
+longitude: -71.094422
+altitude: +17.060696
+horizontal accuracy: 65.00
+vertical accuracy: 15.28
+
+DATA POINT 43 at 11:43:01
+latitude: +42.359018
+longitude: -71.094396
+altitude: +17.230289
+horizontal accuracy: 65.00
+vertical accuracy: 14.77
+
+DATA POINT 44 at 11:43:31
+latitude: +42.359018
+longitude: -71.094396
+altitude: +17.230289
+horizontal accuracy: 65.00
+vertical accuracy: 14.77
+
+DATA POINT 45 at 11:43:31
+latitude: +42.359018
+longitude: -71.094396
+altitude: +17.230289
+horizontal accuracy: 65.00
+vertical accuracy: 14.77
+
+DATA POINT 46 at 11:43:31
+latitude: +42.358913
+longitude: -71.094371
+altitude: +17.482744
+horizontal accuracy: 65.00
+vertical accuracy: 19.25
+
+DATA POINT 47 at 11:43:31
+latitude: +42.358958
+longitude: -71.094311
+altitude: +17.694803
+horizontal accuracy: 65.00
+vertical accuracy: 18.50
+
+DATA POINT 48 at 11:43:43
+latitude: +42.358958
+longitude: -71.094311
+altitude: +17.694803
+horizontal accuracy: 65.00
+vertical accuracy: 18.50
+
+DATA POINT 49 at 11:43:43
+latitude: +42.358958
+longitude: -71.094311
+altitude: +17.694803
+horizontal accuracy: 65.00
+vertical accuracy: 18.50
+
+DATA POINT 50 at 11:43:44
+latitude: +42.359244
+longitude: -71.094647
+altitude: +17.910547
+horizontal accuracy: 65.00
+vertical accuracy: 19.50
+
+DATA POINT 51 at 11:43:45
+latitude: +42.359232
+longitude: -71.094689
+altitude: +18.092049
+horizontal accuracy: 65.00
+vertical accuracy: 18.79
+
+DATA POINT 52 at 11:43:57
+latitude: +42.359232
+longitude: -71.094689
+altitude: +18.092049
+horizontal accuracy: 65.00
+vertical accuracy: 18.79
+
+DATA POINT 53 at 11:43:57
+latitude: +42.359232
+longitude: -71.094689
+altitude: +18.092049
+horizontal accuracy: 65.00
+vertical accuracy: 18.79
+
+DATA POINT 54 at 11:43:57
+latitude: +42.359463
+longitude: -71.094397
+altitude: +18.120127
+horizontal accuracy: 165.00
+vertical accuracy: 20.62
+
+DATA POINT 55 at 11:43:58
+latitude: +42.359500
+longitude: -71.094250
+altitude: +18.299744
+horizontal accuracy: 65.00
+vertical accuracy: 19.71
+
+DATA POINT 56 at 11:44:15
+latitude: +42.359479
+longitude: -71.094113
+altitude: +15.837379
+horizontal accuracy: 65.00
+vertical accuracy: 10.03
+
+DATA POINT 57 at 11:44:15
+latitude: +42.359495
+longitude: -71.094121
+altitude: +15.302266
+horizontal accuracy: 65.00
+vertical accuracy: 10.00
+
+DATA POINT 58 at 11:44:25
+latitude: +42.359495
+longitude: -71.094121
+altitude: +15.302266
+horizontal accuracy: 65.00
+vertical accuracy: 10.00
+
+DATA POINT 59 at 11:44:26
+latitude: +42.359495
+longitude: -71.094121
+altitude: +15.302266
+horizontal accuracy: 65.00
+vertical accuracy: 10.00
+
+DATA POINT 60 at 11:44:26
+latitude: +42.359632
+longitude: -71.094308
+altitude: +14.651992
+horizontal accuracy: 65.00
+vertical accuracy: 10.00
+
+DATA POINT 61 at 11:44:27
+latitude: +42.359634
+longitude: -71.094307
+altitude: +14.624054
+horizontal accuracy: 65.00
+vertical accuracy: 10.00
+
+DATA POINT 62 at 11:44:47
+latitude: +42.359634
+longitude: -71.094307
+altitude: +14.624054
+horizontal accuracy: 65.00
+vertical accuracy: 10.00
+
+DATA POINT 63 at 11:44:47
+latitude: +42.359634
+longitude: -71.094307
+altitude: +14.624054
+horizontal accuracy: 65.00
+vertical accuracy: 10.00
+
+DATA POINT 64 at 11:44:47
+latitude: +42.359907
+longitude: -71.094709
+altitude: +14.063828
+horizontal accuracy: 65.00
+vertical accuracy: 10.00
+
+DATA POINT 65 at 11:44:48
+latitude: +42.359887
+longitude: -71.094710
+altitude: +13.863437
+horizontal accuracy: 65.00
+vertical accuracy: 10.00
+
+DATA POINT 66 at 11:45:08
+latitude: +42.359887
+longitude: -71.094710
+altitude: +13.863437
+horizontal accuracy: 65.00
+vertical accuracy: 10.00
+
+DATA POINT 67 at 11:45:08
+latitude: +42.359887
+longitude: -71.094710
+altitude: +13.863437
+horizontal accuracy: 65.00
+vertical accuracy: 10.00
+
+DATA POINT 68 at 11:45:09
+latitude: +42.359913
+longitude: -71.095126
+altitude: +14.129080
+horizontal accuracy: 65.00
+vertical accuracy: 10.77
+
+DATA POINT 69 at 11:45:10
+latitude: +42.359964
+longitude: -71.095074
+altitude: +14.309768
+horizontal accuracy: 65.00
+vertical accuracy: 10.00
+
+DATA POINT 70 at 11:46:01
+latitude: +42.361100
+longitude: -71.096662
+altitude: +14.842649
+horizontal accuracy: 65.00
+vertical accuracy: 19.51
+
+DATA POINT 71 at 11:46:08
+latitude: +42.360690
+longitude: -71.096264
+altitude: +15.329602
+horizontal accuracy: 65.00
+vertical accuracy: 19.59
+
+DATA POINT 72 at 11:46:14
+latitude: +42.360690
+longitude: -71.096264
+altitude: +15.329602
+horizontal accuracy: 65.00
+vertical accuracy: 19.59
+
+DATA POINT 73 at 11:46:14
+latitude: +42.360690
+longitude: -71.096264
+altitude: +15.329602
+horizontal accuracy: 65.00
+vertical accuracy: 19.59
+
+DATA POINT 74 at 11:46:15
+latitude: +42.360629
+longitude: -71.096373
+altitude: +15.770195
+horizontal accuracy: 65.00
+vertical accuracy: 19.58
+
+DATA POINT 75 at 11:46:15
+latitude: +42.360699
+longitude: -71.096378
+altitude: +16.138939
+horizontal accuracy: 65.00
+vertical accuracy: 18.82
+
+DATA POINT 76 at 11:46:16
+latitude: +42.360735
+longitude: -71.096377
+altitude: +16.449978
+horizontal accuracy: 65.00
+vertical accuracy: 18.09
+
+DATA POINT 77 at 11:46:24
+latitude: +42.361144
+longitude: -71.096537
+altitude: +16.836529
+horizontal accuracy: 65.00
+vertical accuracy: 18.37
+
+DATA POINT 78 at 11:46:28
+latitude: +42.361144
+longitude: -71.096537
+altitude: +16.836529
+horizontal accuracy: 65.00
+vertical accuracy: 18.37
+
+DATA POINT 79 at 11:46:28
+latitude: +42.361144
+longitude: -71.096537
+altitude: +16.836529
+horizontal accuracy: 65.00
+vertical accuracy: 18.37
+
+DATA POINT 80 at 11:46:28
+latitude: +42.361231
+longitude: -71.096446
+altitude: +17.164253
+horizontal accuracy: 65.00
+vertical accuracy: 17.90
+
+DATA POINT 81 at 11:46:33
+latitude: +42.361017
+longitude: -71.096299
+altitude: +17.391212
+horizontal accuracy: 65.00
+vertical accuracy: 18.04
+
+DATA POINT 82 at 11:46:40
+latitude: +42.361239
+longitude: -71.096739
+altitude: +17.607000
+horizontal accuracy: 65.00
+vertical accuracy: 18.33
+
+DATA POINT 83 at 11:46:48
+latitude: +42.361317
+longitude: -71.096834
+altitude: +17.842535
+horizontal accuracy: 65.00
+vertical accuracy: 18.69
+
+DATA POINT 84 at 11:46:49
+latitude: +42.361309
+longitude: -71.096815
+altitude: +18.034288
+horizontal accuracy: 65.00
+vertical accuracy: 17.81
+
+DATA POINT 85 at 11:46:55
+latitude: +42.361334
+longitude: -71.096874
+altitude: +18.227650
+horizontal accuracy: 65.00
+vertical accuracy: 17.89
+
+DATA POINT 86 at 11:47:01
+latitude: +42.361396
+longitude: -71.096955
+altitude: +18.402296
+horizontal accuracy: 65.00
+vertical accuracy: 17.95
+
+DATA POINT 87 at 11:47:09
+latitude: +42.361487
+longitude: -71.097159
+altitude: +18.564171
+horizontal accuracy: 65.00
+vertical accuracy: 18.04
+
+DATA POINT 88 at 11:47:09
+latitude: +42.361490
+longitude: -71.097168
+altitude: +18.692921
+horizontal accuracy: 65.00
+vertical accuracy: 17.09
+
+DATA POINT 89 at 11:47:15
+latitude: +42.361596
+longitude: -71.097276
+altitude: +18.809425
+horizontal accuracy: 65.00
+vertical accuracy: 17.33
+
+DATA POINT 90 at 11:47:22
+latitude: +42.361623
+longitude: -71.097309
+altitude: +18.915590
+horizontal accuracy: 65.00
+vertical accuracy: 17.53
+
+DATA POINT 91 at 11:47:29
+latitude: +42.361637
+longitude: -71.097295
+altitude: +19.013245
+horizontal accuracy: 65.00
+vertical accuracy: 17.69
+
+DATA POINT 92 at 11:47:29
+latitude: +42.361637
+longitude: -71.097292
+altitude: +19.092182
+horizontal accuracy: 65.00
+vertical accuracy: 16.82
+
+DATA POINT 93 at 11:47:36
+latitude: +42.361528
+longitude: -71.097238
+altitude: +19.166090
+horizontal accuracy: 65.00
+vertical accuracy: 17.10
+
+DATA POINT 94 at 11:47:43
+latitude: +42.361678
+longitude: -71.097522
+altitude: +19.238251
+horizontal accuracy: 65.00
+vertical accuracy: 16.97
+
+DATA POINT 95 at 11:47:49
+latitude: +42.361828
+longitude: -71.097756
+altitude: +19.299517
+horizontal accuracy: 65.00
+vertical accuracy: 16.81
+
+DATA POINT 96 at 11:47:55
+latitude: +42.361828
+longitude: -71.097756
+altitude: +19.299517
+horizontal accuracy: 65.00
+vertical accuracy: 16.81
+
+DATA POINT 97 at 11:47:55
+latitude: +42.361828
+longitude: -71.097756
+altitude: +19.299517
+horizontal accuracy: 65.00
+vertical accuracy: 16.81
+
+DATA POINT 98 at 11:47:55
+latitude: +42.362014
+longitude: -71.098074
+altitude: +19.348576
+horizontal accuracy: 65.00
+vertical accuracy: 16.38
+
+DATA POINT 99 at 11:47:56
+latitude: +42.361910
+longitude: -71.097871
+altitude: +19.389645
+horizontal accuracy: 65.00
+vertical accuracy: 15.76

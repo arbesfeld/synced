@@ -130,11 +130,9 @@
 }
 
 - (void)locationError:(NSError *)error {
-	textView.text = [error description];
 }
 
 - (void)locationError2:(NSError *)error {
-	textView2.text = [error description];
 }
 
 @end
