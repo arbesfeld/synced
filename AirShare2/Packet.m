@@ -15,6 +15,7 @@ const size_t PACKET_HEADER_SIZE = 10;
 
 @synthesize packetType = _packetType;
 @synthesize packetNumber = _packetNumber;
+@synthesize sendReliably = _sendReliably;
 
 + (id)packetWithType:(PacketType)packetType
 {
@@ -34,7 +35,6 @@ const size_t PACKET_HEADER_SIZE = 10;
 		NSLog(@"Error: Packet has invalid header");
 		return nil;
 	}
-    
 	int packetNumber = [data rw_int32AtOffset:4];
 	PacketType packetType = [data rw_int16AtOffset:8];
     
@@ -45,6 +45,8 @@ const size_t PACKET_HEADER_SIZE = 10;
         case PacketTypeServerQuit:
         case PacketTypeClientQuit:
         case PacketTypeSkipMusic:
+        case PacketTypePlayingMusic:
+        case PacketTypeCancelMusic:
 			packet = [Packet packetWithType:packetType];
 			break;
             
@@ -93,6 +95,7 @@ const size_t PACKET_HEADER_SIZE = 10;
 	{
 		self.packetNumber = -1;
 		self.packetType = packetType;
+        self.sendReliably = YES;
 	}
 	return self;
 }

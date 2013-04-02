@@ -20,6 +20,7 @@
 		EA18C1F41707804D008F5DAF /* wViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EA18C1F31707804D008F5DAF /* wViewController.m */; };
 		EA18C1FB1707806B008F5DAF /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EA18C1FA1707806B008F5DAF /* CoreLocation.framework */; };
 		EA18C1FE17078097008F5DAF /* wCoreLocationController.m in Sources */ = {isa = PBXBuildFile; fileRef = EA18C1FD17078097008F5DAF /* wCoreLocationController.m */; };
+		EA18C20D1708CBFF008F5DAF /* wCoreLocationController2.m in Sources */ = {isa = PBXBuildFile; fileRef = EA18C20C1708CBFE008F5DAF /* wCoreLocationController2.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,6 +43,8 @@
 		EA18C1FA1707806B008F5DAF /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		EA18C1FC17078096008F5DAF /* wCoreLocationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = wCoreLocationController.h; sourceTree = "<group>"; };
 		EA18C1FD17078097008F5DAF /* wCoreLocationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = wCoreLocationController.m; sourceTree = "<group>"; };
+		EA18C20B1708CBFE008F5DAF /* wCoreLocationController2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = wCoreLocationController2.h; sourceTree = "<group>"; };
+		EA18C20C1708CBFE008F5DAF /* wCoreLocationController2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = wCoreLocationController2.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,6 +98,8 @@
 				EA18C1EF1707804D008F5DAF /* MainStoryboard.storyboard */,
 				EA18C1FC17078096008F5DAF /* wCoreLocationController.h */,
 				EA18C1FD17078097008F5DAF /* wCoreLocationController.m */,
+				EA18C20B1708CBFE008F5DAF /* wCoreLocationController2.h */,
+				EA18C20C1708CBFE008F5DAF /* wCoreLocationController2.m */,
 				EA18C1F21707804D008F5DAF /* wViewController.h */,
 				EA18C1F31707804D008F5DAF /* wViewController.m */,
 				EA18C1DE1707804D008F5DAF /* Supporting Files */,
@@ -187,6 +192,7 @@
 				EA18C1E81707804D008F5DAF /* wAppDelegate.m in Sources */,
 				EA18C1F41707804D008F5DAF /* wViewController.m in Sources */,
 				EA18C1FE17078097008F5DAF /* wCoreLocationController.m in Sources */,
+				EA18C20D1708CBFF008F5DAF /* wCoreLocationController2.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -309,6 +315,7 @@
 				EA18C1F91707804D008F5DAF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

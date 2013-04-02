@@ -6,9 +6,9 @@
 //  Copyright (c) 2013 Alex Chen. All rights reserved.
 //
 
-#import "wCoreLocationController.h"
+#import "wCoreLocationController2.h"
 
-@implementation wCoreLocationController
+@implementation wCoreLocationController2
 
 @synthesize locMgr = _locMgr;
 @synthesize delegate;
@@ -19,10 +19,9 @@
 	if(self != nil) {
 		self.locMgr = [[CLLocationManager alloc] init];
 		self.locMgr.delegate = self;
+        //[self.locMgr startMonitoringSignificantLocationChanges];
         
-        //The location manager object manages power aggressively by turning off hardware when it is not needed. For example, setting the desired accuracy for location events to one kilometer gives the location manager the flexibility to turn off GPS hardware and rely solely on the WiFi or cell radios. 
-        
-        _locMgr.desiredAccuracy = kCLLocationAccuracyBestForNavigation;
+        _locMgr.desiredAccuracy = kCLLocationAccuracyKilometer;
         _locMgr.distanceFilter = kCLHeadingFilterNone;
         
         [_locMgr startUpdatingLocation];
@@ -32,14 +31,14 @@
 }
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation {
-	if([self.delegate conformsToProtocol:@protocol(wCoreLocationControllerDelegate)]) {
-		[self.delegate locationUpdate:newLocation];
+	if([self.delegate conformsToProtocol:@protocol(wCoreLocationControllerDelegate2)]) {
+		[self.delegate locationUpdate2:newLocation];
 	}
 }
 
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error {
-	if([self.delegate conformsToProtocol:@protocol(wCoreLocationControllerDelegate)]) {
-		[self.delegate locationError:error];
+	if([self.delegate conformsToProtocol:@protocol(wCoreLocationControllerDelegate2)]) {
+		[self.delegate locationError2:error];
 	}
 }
 

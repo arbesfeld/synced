@@ -15,7 +15,9 @@ typedef enum
     PacketTypeMusicDownload,           // server to client and client to server
     PacketTypeMusicResponse,           // client to server
     PacketTypePlayMusicNow,            // server to client
-    PacketTypeVote,                     // client to server
+    PacketTypeVote,                    // client to server
+    PacketTypePlayingMusic,            // client to server
+    PacketTypeCancelMusic,             // server to client
 }
 PacketType;
 
@@ -25,6 +27,7 @@ const size_t PACKET_HEADER_SIZE;
 
 @property (nonatomic, assign) PacketType packetType;
 @property (nonatomic, assign) int packetNumber;
+@property (nonatomic, assign) BOOL sendReliably;
 
 + (id)packetWithType:(PacketType)packetType;
 + (id)packetWithData:(NSData *)data;

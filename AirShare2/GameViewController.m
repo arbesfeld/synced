@@ -127,7 +127,6 @@ const double epsilon = 0.02;
 
 - (void)gameNoNetwork:(Game *)server;
 {
-    
 }
 
 - (PlaylistItem *)getCurrentPlaylistItem {
