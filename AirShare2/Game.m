@@ -211,6 +211,7 @@ const int WAIT_TIME_DOWNLOAD = 8; // wait time for others to download music afte
             NSLog(@"Client received PacketTypeSkipMusic");
             _skipSongCount++;
             [self.delegate game:self setSkipSongCount:_skipSongCount];
+            [self trySkippingSong];
             break;
         }
         case PacketTypeServerQuit:
@@ -310,6 +311,7 @@ const int WAIT_TIME_DOWNLOAD = 8; // wait time for others to download music afte
             NSLog(@"Server received PacketTypeSkipMusic");
             _skipSongCount++;
             [self.delegate game:self setSkipSongCount:_skipSongCount];
+            [self trySkippingSong];
             break;
         }
         case PacketTypeClientQuit:
@@ -345,7 +347,7 @@ const int WAIT_TIME_DOWNLOAD = 8; // wait time for others to download music afte
                                                                 userInfo:musicItem
                                                                  repeats:YES];
     // make the progress bar appear so that it looks smoother
-    musicItem.loadProgress = 0.001;
+    musicItem.loadProgress = 0.00001;
     [self handleLoadProgressTimer:loadProgressTimer];
     
     NSURL *assetURL = [song valueForProperty:MPMediaItemPropertyAssetURL];
@@ -373,14 +375,17 @@ const int WAIT_TIME_DOWNLOAD = 8; // wait time for others to download music afte
         Packet *packet = [Packet packetWithType:PacketTypeSkipMusic];
         [self sendPacketToAllClients:packet];
         
-        // if we exceed half the player count, stop the audio and let the next song play
-        if(_audioPlaying && _audioPlayer != nil &&  _players.count / 2 < _skipSongCount) {
-            [_audioPlayer stop];
-            [self audioPlayerDidFinishPlaying:_audioPlayer successfully:YES];
-        }
+        [self trySkippingSong];
     }
 }
-
+- (void)trySkippingSong
+{
+    // if we exceed half the player count, stop the audio and let the next song play
+    if(_audioPlaying && _audioPlayer != nil &&  _players.count / 2 < _skipSongCount) {
+        [_audioPlayer stop];
+        [self audioPlayerDidFinishPlaying:_audioPlayer successfully:YES];
+    }
+}
 - (void)downloadMusicWithID:(NSString *)ID
 {
     NSLog(@"Recieved music download packet with ID: %@", ID);
@@ -394,7 +399,7 @@ const int WAIT_TIME_DOWNLOAD = 8; // wait time for others to download music afte
                                                                 userInfo:musicItem
                                                                  repeats:YES];
     // make the progress bar appear so that it looks smoother
-    musicItem.loadProgress = 0.001;
+    musicItem.loadProgress = 0.00001;
     [self handleLoadProgressTimer:loadProgressTimer];
     
     [_downloader downloadFileWithMusicItem:musicItem andSessionID:_serverPeerID completion:^{
@@ -700,8 +705,8 @@ const int WAIT_TIME_DOWNLOAD = 8; // wait time for others to download music afte
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
         [dateFormatter setDateFormat:DATE_FORMAT];
         NSDate *time = [dateFormatter dateFromString:dateString];
-        NSLog(@"Download time = %f", downloadTime);
-        time = [time dateByAddingTimeInterval:downloadTime];
+        NSLog(@"Download time = %f", downloadTime/2.0);
+        time = [time dateByAddingTimeInterval:downloadTime/2.0];
         completionBlock(time);
     }
 }

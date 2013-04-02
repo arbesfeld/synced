@@ -54,6 +54,7 @@
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:DATE_FORMAT];
     NSString *dateString = [dateFormatter stringFromDate:self.time];
+    NSLog(@"Date string = %@", dateString);
     [data rw_appendString:dateString];
 }
 
