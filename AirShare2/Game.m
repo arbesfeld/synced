@@ -47,6 +47,8 @@ const int WAIT_TIME_DOWNLOAD = 8; // wait time for others to download music afte
 	{
 		_players = [NSMutableDictionary dictionaryWithCapacity:4];
         _playlist = [[NSMutableArray alloc] initWithCapacity:10];
+        _willPlayMusic = [NSMutableDictionary dictionaryWithCapacity:4];
+                          
         _uploader = [[MusicUpload alloc] init];
         _downloader = [[MusicDownload alloc] init];
         _audioPlayer =  nil;
@@ -182,8 +184,18 @@ const int WAIT_TIME_DOWNLOAD = 8; // wait time for others to download music afte
             MusicItem *musicItem = (MusicItem *)[self playlistItemWithID:ID];
             
             NSLog(@"Client to play music item, id = %@", ID);
-            [self performSelector:@selector(playLoadedMusicItem:) withObject:musicItem afterDelay:DELAY_TIME];
+            
+            _playMusicTimer = [NSTimer scheduledTimerWithTimeInterval:DELAY_TIME
+                                                               target:self
+                                                             selector:@selector(playLoadedMusicItem:)
+                                                             userInfo:musicItem
+                                                              repeats:NO];
+            
             [self prepareToPlayMusicItem:musicItem];
+            
+            // tell the server that you received the packet
+            Packet *packet = [Packet packetWithType:PacketTypePlayingMusic];
+            [self sendPacketToServer:packet];
             
             break;
         }
@@ -202,6 +214,15 @@ const int WAIT_TIME_DOWNLOAD = 8; // wait time for others to download music afte
                 [playlistItem downvote:amount];
             }
             [self.delegate reloadTable];
+            
+            break;
+        }
+        case PacketTypeCancelMusic:
+        {
+            NSLog(@"Client canceling music");
+            // no longer play music
+            [_playMusicTimer invalidate];
+            _playMusicTimer = nil;
             
             break;
         }
@@ -242,7 +263,7 @@ const int WAIT_TIME_DOWNLOAD = 8; // wait time for others to download music afte
             player.name = ((PacketSignIn *)packet).playerName;
             
             NSLog(@"Server received sign in from client '%@'", player.name);
-            
+            //NSLog(@"Players = %@", [_players description]);
             [self sendGameStatePacket];
                      
             // TODO: send PacketTypeMusic to client for all songs
@@ -303,6 +324,16 @@ const int WAIT_TIME_DOWNLOAD = 8; // wait time for others to download music afte
             }
             [self.delegate reloadTable];
             
+            break;
+        }
+        case PacketTypePlayingMusic:
+        {
+            // the client has received the PlayMusicNow packet
+            [_willPlayMusic setObject:@YES forKey:player.peerID];
+            if([self allPlayersWillPlayMusic]) {
+                [_cancelMusicTimer invalidate];
+                _cancelMusicTimer = nil;
+            }
             break;
         }
         case PacketTypeSkipMusic:
@@ -474,11 +505,26 @@ const int WAIT_TIME_DOWNLOAD = 8; // wait time for others to download music afte
     
     [self prepareToPlayMusicItem:musicItem];
     
+    _willPlayMusic = [NSMutableDictionary dictionaryWithCapacity:10];
+    [_willPlayMusic setObject:@YES forKey:_serverPeerID];
+    
     PacketPlayMusicNow *packet = [PacketPlayMusicNow packetWithSongID:musicItem.ID];
     packet.sendReliably = false;
     [self sendPacketToAllClients:packet];
-    [self performSelector:@selector(playLoadedMusicItem:) withObject:musicItem afterDelay:DELAY_TIME];
-        
+    
+    _playMusicTimer = [NSTimer scheduledTimerWithTimeInterval:DELAY_TIME
+                                                       target:self
+                                                     selector:@selector(playLoadedMusicItem:)
+                                                     userInfo:musicItem
+                                                      repeats:NO];
+    
+    // cancel the music unless you receive a response from all peers
+    _cancelMusicTimer = [NSTimer scheduledTimerWithTimeInterval:DELAY_TIME * 0.75
+                                                         target:self
+                                                       selector:@selector(cancelMusic:)
+                                                       userInfo:musicItem
+                                                        repeats:NO];
+    
     NSLog(@"Server preparing to play music item with name = %@", musicItem.name);
 }
 
@@ -506,8 +552,9 @@ const int WAIT_TIME_DOWNLOAD = 8; // wait time for others to download music afte
         [_audioPlayer prepareToPlay];
     }
 }
-- (void)playLoadedMusicItem:(MusicItem *)musicItem
+- (void)playLoadedMusicItem:(NSTimer *)timer
 {
+    MusicItem *musicItem = (MusicItem *)[timer userInfo];
     NSLog(@"Playing music item, name = %@", musicItem.name);
     
     if(_audioPlayer != nil) {
@@ -526,6 +573,20 @@ const int WAIT_TIME_DOWNLOAD = 8; // wait time for others to download music afte
     [self.delegate game:self setSkipSongCount:_skipSongCount];
 }
 
+- (void)cancelMusic:(NSTimer *)timer
+{
+    NSAssert(self.isServer, @"Client in cancelMusic:");
+    [_playMusicTimer invalidate];
+    _playMusicTimer = nil;
+    
+    // tell others that you have canceled the music
+    Packet *packet = [Packet packetWithType:PacketTypeCancelMusic];
+    [self sendPacketToAllClients:packet];
+    
+    // retry playing the music
+    [self serverTryPlayingMusic:(MusicItem *)[timer userInfo] waitTime:WAIT_TIME_DOWNLOAD];
+    
+}
 - (BOOL)allPlayersHaveMusic:(MusicItem *)musicItem
 {
     for (NSString *peerID in _players)
@@ -539,6 +600,17 @@ const int WAIT_TIME_DOWNLOAD = 8; // wait time for others to download music afte
     return YES;
 }
 
+- (BOOL)allPlayersWillPlayMusic
+{
+    for (NSString *peerID in _players)
+	{
+		if(![_willPlayMusic objectForKey:peerID]) {
+            NSLog(@"No music from player = %@", [[self playerWithPeerID:peerID] description]);
+            return NO;
+        }
+	}
+    return YES;
+}
 #pragma mark - AVAudioPlayerDelegate
 
 - (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag

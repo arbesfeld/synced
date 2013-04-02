@@ -45,6 +45,8 @@ const size_t PACKET_HEADER_SIZE = 10;
         case PacketTypeServerQuit:
         case PacketTypeClientQuit:
         case PacketTypeSkipMusic:
+        case PacketTypePlayingMusic:
+        case PacketTypeCancelMusic:
 			packet = [Packet packetWithType:packetType];
 			break;
             

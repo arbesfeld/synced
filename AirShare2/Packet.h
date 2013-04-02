@@ -16,7 +16,8 @@ typedef enum
     PacketTypeMusicResponse,           // client to server
     PacketTypePlayMusicNow,            // server to client
     PacketTypeVote,                    // client to server
-    
+    PacketTypePlayingMusic,            // client to server
+    PacketTypeCancelMusic,             // server to client
 }
 PacketType;
 

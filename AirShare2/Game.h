@@ -43,7 +43,9 @@ ServerState;
     MusicUpload *_uploader;
     MusicDownload *_downloader;
     
-    NSTimer *_audioPlayerTimer, *_waitTimer;
+    NSMutableDictionary *_willPlayMusic;
+    
+    NSTimer *_audioPlayerTimer, *_waitTimer, *_playMusicTimer, *_cancelMusicTimer;
     AVAudioPlayer *_audioPlayer;
     BOOL _audioPlaying, _haveSkippedThisSong;
     int _skipSongCount, _syncPacketCount;
