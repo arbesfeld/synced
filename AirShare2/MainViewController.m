@@ -4,7 +4,6 @@
 #import "MatchmakingClient.h"
 #import <QuartzCore/QuartzCore.h>
 
-
 @interface MainViewController ()
 
 @end
@@ -21,17 +20,12 @@
     NSString *_serverName;
 }
 
-
-
 - (void)viewDidLoad
 {
 	[super viewDidLoad];
     
     _quitReasonClient = QuitReasonConnectionDropped;
     [self setupUI];
-    
-
-
 }
 
 - (void)reload
@@ -48,8 +42,6 @@
 - (void)viewWillAppear:(BOOL)animated
 {
 	[super viewWillAppear:animated];
-    
-
     [self reload];
 }
 
@@ -321,9 +313,6 @@
     self.tableView.layer.cornerRadius = 7;
     self.tableView.layer.masksToBounds = YES;
 }
-
-
-
 
 
 #pragma mark - Delloc

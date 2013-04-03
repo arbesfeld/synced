@@ -31,10 +31,6 @@ const double epsilon = 0.02;
     // visual placeholder
     _currentPlaylistItem = [[PlaylistItem alloc] initPlaylistItemWithName:@"No Songs Playing" andSubtitle:@"" andID:@"000000" andDate:nil andPlaylistItemType:PlaylistItemTypeNone];
     _voteAmount = [[NSMutableDictionary alloc] initWithCapacity:10];
-    
-    ECSlidingViewController *slidingViewController = (ECSlidingViewController *)self.window.rootViewController;
-    
-    slidingViewController.topViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"GameViewController"];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -279,18 +275,4 @@ const double epsilon = 0.02;
 {
     [mediaPicker dismissViewControllerAnimated:YES completion:nil];
 }
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    
-    if (![self.slidingViewController.underLeftViewController isKindOfClass:[MenuViewController class]]) {
-        self.slidingViewController.underLeftViewController  = [self.storyboard instantiateViewControllerWithIdentifier:@"Menu"];
-    }
-    
-    [self.view addGestureRecognizer:self.slidingViewController.panGesture];
-    [self.slidingViewController setAnchorRightRevealAmount:280.0f];
-}
-
-
 @end
