@@ -1,5 +1,6 @@
 #import "GameViewController.h"
 #import "PlaylistItemCell.h"
+#import "ECSlidingViewController.h"
 
 const double epsilon = 0.02;
 
@@ -31,6 +32,10 @@ const double epsilon = 0.02;
     // visual placeholder
     _currentPlaylistItem = [[PlaylistItem alloc] initPlaylistItemWithName:@"No Songs Playing" andSubtitle:@"" andID:@"000000" andDate:nil andPlaylistItemType:PlaylistItemTypeNone];
     _voteAmount = [[NSMutableDictionary alloc] initWithCapacity:10];
+    
+    ECSlidingViewController *slidingViewController = (ECSlidingViewController *)self.window.rootViewController;
+    
+    slidingViewController.topViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"SlidingViewController"];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
