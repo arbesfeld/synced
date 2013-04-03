@@ -262,7 +262,7 @@ const int WAIT_TIME_DOWNLOAD = 8; // wait time for others to download music afte
         {
             player.name = ((PacketSignIn *)packet).playerName;
             
-            NSLog(@"Server received sign in from client '%@'", player.name);
+            NSLog(@"Server received sign in from client %@", player.name);
             //NSLog(@"Players = %@", [_players description]);
             [self sendGameStatePacket];
                      
