@@ -304,14 +304,18 @@
 -(void)setupUI
 {
     self.view.backgroundColor = [[UIColor alloc] initWithPatternImage:[UIImage imageNamed:@"bgGreyImg.png"]];
-    [[UILabel appearance] setFont:[UIFont fontWithName:@"Century Gothic Std" size:17.0]];
-    [[UILabel appearance] setTextColor:[UIColor colorWithHue:0.0 saturation:0.0 brightness:.2 alpha:1.0]];
-    [[UIButton appearance] setFont:[UIFont fontWithName:@"Century Gothic Std" size:17.0]];
-    [[UIButton appearance] setTitleColor:[UIColor colorWithHue:0.0 saturation:0.0 brightness:0.2 alpha:1.0] forState:UIControlStateNormal];
-    [self.sessionsLabel setFont:[UIFont systemFontOfSize:24]];
+    [self.sessionsLabel setFont:[UIFont systemFontOfSize:20]];
     [self.sessionsLabel setTextAlignment:NSTextAlignmentCenter];
     self.tableView.layer.cornerRadius = 7;
     self.tableView.layer.masksToBounds = YES;
+    
+    //Global UI
+    [[UILabel appearance] setFont:[UIFont fontWithName:@"gothic" size:17.0]];
+    [[UILabel appearance] setTextColor:[UIColor colorWithHue:0.0 saturation:0.0 brightness:.2 alpha:1.0]];
+    [[UIButton appearance] setFont:[UIFont fontWithName:@"gothic" size:17.0]];
+    [[UIButton appearance] setTitleColor:[UIColor colorWithHue:0.0 saturation:0.0 brightness:0.2 alpha:1.0] forState:UIControlStateNormal];
+
+    [_hostGameButton setTitle:@"Host Game" forState:UIControlStateNormal];
 }
 
 

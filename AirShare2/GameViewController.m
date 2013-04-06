@@ -33,9 +33,10 @@ const double epsilon = 0.02;
     _currentPlaylistItem = [[PlaylistItem alloc] initPlaylistItemWithName:@"No Songs Playing" andSubtitle:@"" andID:@"000000" andDate:nil andPlaylistItemType:PlaylistItemTypeNone];
     _voteAmount = [[NSMutableDictionary alloc] initWithCapacity:10];
     
-    ECSlidingViewController *slidingViewController = (ECSlidingViewController *)self.window.rootViewController;
+    self.view.backgroundColor = [[UIColor alloc] initWithPatternImage:[UIImage imageNamed:@"bgGreyImg.png"]];
+    self.playlistTable.layer.cornerRadius = 12;
+    self.playlistTable.layer.masksToBounds = YES;
     
-    slidingViewController.topViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"SlidingViewController"];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -181,6 +182,7 @@ const double epsilon = 0.02;
             NSString *peerID = [[_game.players allKeys] objectAtIndex:indexPath.row];
             cell.textLabel.text = [_game displayNameForPeerID:peerID];
         }
+
         return cell;
     }
     // else, is the playlist
@@ -193,6 +195,7 @@ const double epsilon = 0.02;
                 selectedItem = ((PlaylistItem *)[_game.playlist objectAtIndex:indexPath.row]);
             } else {
                 NSLog(@"Attempted to put more rows than there were songs. Error!");
+
                 return cell;
             }
         }
@@ -200,6 +203,10 @@ const double epsilon = 0.02;
             cell = [[PlaylistItemCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:nil playlistItem:selectedItem voteValue:[[_voteAmount objectForKey:selectedItem.ID] intValue]];
             cell.delegate = self;
         }
+        //cell.textLabel.backgroundColor=[UIColor clearColor];
+        //cell.detailTextLabel.backgroundColor=[UIColor clearColor];
+        //cell.contentView.backgroundColor=[UIColor clearColor];
+
         return cell;
     }
 }
