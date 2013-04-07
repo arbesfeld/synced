@@ -23,7 +23,7 @@
 - (void)viewDidLoad
 {
 	[super viewDidLoad];
-    
+    [_hostGameButton setTitle:@"Host Game" forState:UIControlStateNormal];
     _quitReasonClient = QuitReasonConnectionDropped;
     [self setupUI];
 }
