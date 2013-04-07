@@ -1,24 +1,20 @@
 //
-//  PacketPlayMusicNow.m
+//  PacketSyncResponse.m
 //  AirShare2
 //
-//  Created by mata on 3/26/13.
+//  Created by mata on 4/6/13.
 //  Copyright (c) 2013 Matthew Arbesfeld. All rights reserved.
 //
-//  Server to client -> play music at specific time
 
-#import "PacketPlayMusicNow.h"
+#import "PacketSyncResponse.h"
 #import "NSData+AirShareAdditions.h"
 
-@implementation PacketPlayMusicNow
+@implementation PacketSyncResponse
 
 + (id)packetWithData:(NSData *)data
 {
 	size_t offset = PACKET_HEADER_SIZE;
 	size_t count;
-    
-    NSString *ID = [data rw_stringAtOffset:offset bytesRead:&count];
-    offset += count;
     
     NSString *dateString = [data rw_stringAtOffset:offset bytesRead:&count];
     offset += count;
@@ -28,19 +24,18 @@
     [dateFormatter setDateFormat:DATE_FORMAT];
     NSDate *time = [dateFormatter dateFromString:dateString];
 
-	return [[self class] packetWithSongID:ID andTime:time];
+	return [[self class] packetWithTime:time];
 }
 
-+ (id)packetWithSongID:(NSString *)ID andTime:(NSDate *)time
++ (id)packetWithTime:(NSDate *)time
 {
-	return [[[self class] alloc] initWithSongID:ID andTime:time];
+	return [[[self class] alloc] initWithTime:time];
 }
 
-- (id)initWithSongID:(NSString *)ID andTime:(NSDate *)time
+- (id)initWithTime:(NSDate *)time
 {
-	if ((self = [super initWithType:PacketTypePlayMusicNow]))
+	if ((self = [super initWithType:PacketTypeSyncResponse]))
 	{
-		self.ID = ID;
         self.time = time;
 	}
 	return self;
@@ -48,8 +43,6 @@
 
 - (void)addPayloadToData:(NSMutableData *)data
 {
-    [data rw_appendString:self.ID];
-    
     // convert NSDate to dateString
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:DATE_FORMAT];

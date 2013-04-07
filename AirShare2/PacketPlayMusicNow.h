@@ -11,7 +11,9 @@
 @interface PacketPlayMusicNow : Packet
 
 @property (nonatomic, strong) NSString *ID;
+@property (nonatomic, strong) NSDate *time;
 
-+ (id)packetWithSongID:(NSString *)ID;
+
++ (id)packetWithSongID:(NSString *)ID andTime:(NSDate *)time;
 
 @end

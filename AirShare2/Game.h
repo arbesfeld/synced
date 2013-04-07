@@ -43,13 +43,10 @@ ServerState;
     MusicUpload *_uploader;
     MusicDownload *_downloader;
     
-    NSMutableDictionary *_willPlayMusic;
-    
-    NSTimer *_audioPlayerTimer, *_waitTimer, *_playMusicTimer, *_cancelMusicTimer;
+    NSTimer *_audioPlayerTimer, *_waitTimer, *_playMusicTimer;
     AVAudioPlayer *_audioPlayer;
     BOOL _audioPlaying, _haveSkippedThisSong;
     int _skipSongCount, _syncPacketCount;
-    double _clockOffsetTotal;
 }
 
 @property (nonatomic, weak) id <GameDelegate> delegate;

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="3084" systemVersion="12C3012" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="2">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="3084" systemVersion="12C3103" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="2">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="2083"/>
     </dependencies>
@@ -141,7 +141,6 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YuW-3R-SF1">
                                 <constraints>
                                     <constraint firstAttribute="width" constant="113" id="bit-ZD-cka"/>
-                                    <constraint firstAttribute="height" constant="86" id="uNX-Vn-O8E"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                 <state key="normal" title="Exit">
@@ -243,10 +242,8 @@
                         <constraints>
                             <constraint firstItem="qGG-Mn-1P9" firstAttribute="centerX" secondItem="ge9-R5-1vQ" secondAttribute="centerX" type="default" id="1cR-JE-Gc7"/>
                             <constraint firstItem="12U-g7-co7" firstAttribute="leading" secondItem="BCy-oa-ZtW" secondAttribute="leading" type="default" id="3o3-Ep-qaK"/>
-                            <constraint firstItem="IVa-kZ-LtJ" firstAttribute="baseline" secondItem="YuW-3R-SF1" secondAttribute="baseline" type="default" id="4Bt-xS-s36"/>
                             <constraint firstAttribute="bottom" secondItem="nPy-zn-dlt" secondAttribute="bottom" constant="63" type="user" id="6az-og-mze"/>
                             <constraint firstItem="96i-Zy-Rwc" firstAttribute="baseline" secondItem="eeC-ei-Tr1" secondAttribute="baseline" type="default" id="79D-8y-gqT"/>
-                            <constraint firstItem="YuW-3R-SF1" firstAttribute="top" secondItem="BCy-oa-ZtW" secondAttribute="top" type="default" id="8sO-sH-ZPv"/>
                             <constraint firstItem="12U-g7-co7" firstAttribute="trailing" secondItem="BCy-oa-ZtW" secondAttribute="trailing" type="default" id="93H-vz-f8t"/>
                             <constraint firstItem="1Sy-ST-eaC" firstAttribute="bottom" secondItem="uh1-8p-J3r" secondAttribute="bottom" type="default" id="Alr-P4-l8w"/>
                             <constraint firstItem="ge9-R5-1vQ" firstAttribute="leading" secondItem="BCy-oa-ZtW" secondAttribute="leading" type="default" id="IWt-nQ-jOy"/>
@@ -263,14 +260,16 @@
                             <constraint firstItem="nPy-zn-dlt" firstAttribute="top" secondItem="WD3-Wu-ZGd" secondAttribute="bottom" constant="8" symbolic="YES" type="default" id="fvk-AU-1Fe"/>
                             <constraint firstItem="1Sy-ST-eaC" firstAttribute="leading" secondItem="BCy-oa-ZtW" secondAttribute="leading" constant="104" id="hA6-A8-OcM"/>
                             <constraint firstItem="qGG-Mn-1P9" firstAttribute="centerX" secondItem="WD3-Wu-ZGd" secondAttribute="centerX" type="default" id="iGw-qa-Lx6"/>
+                            <constraint firstItem="YuW-3R-SF1" firstAttribute="bottom" secondItem="IVa-kZ-LtJ" secondAttribute="bottom" type="default" id="mak-Jm-1Ra"/>
                             <constraint firstItem="qGG-Mn-1P9" firstAttribute="leading" secondItem="BCy-oa-ZtW" secondAttribute="leading" constant="40" id="nIM-US-4sd"/>
                             <constraint firstItem="YuW-3R-SF1" firstAttribute="trailing" secondItem="BCy-oa-ZtW" secondAttribute="trailing" type="default" id="nfk-8u-mMQ"/>
                             <constraint firstItem="ge9-R5-1vQ" firstAttribute="top" secondItem="BCy-oa-ZtW" secondAttribute="top" constant="85" type="user" id="noq-56-Af3"/>
                             <constraint firstItem="uh1-8p-J3r" firstAttribute="top" secondItem="BCy-oa-ZtW" secondAttribute="top" constant="-121" id="oLb-YI-89P"/>
                             <constraint firstAttribute="bottom" secondItem="qGG-Mn-1P9" secondAttribute="bottom" constant="20" symbolic="YES" type="default" id="p0B-Zk-pkP"/>
+                            <constraint firstItem="YuW-3R-SF1" firstAttribute="centerY" secondItem="IVa-kZ-LtJ" secondAttribute="centerY" type="default" id="pS0-a3-y5Z"/>
                             <constraint firstItem="nPy-zn-dlt" firstAttribute="leading" secondItem="BCy-oa-ZtW" secondAttribute="leading" constant="-38" id="rtS-6r-5L7"/>
                             <constraint firstItem="12U-g7-co7" firstAttribute="top" secondItem="BCy-oa-ZtW" secondAttribute="top" type="default" id="ssx-GJ-u7N"/>
-                            <constraint firstItem="IVa-kZ-LtJ" firstAttribute="top" secondItem="BCy-oa-ZtW" secondAttribute="top" type="default" id="t7p-t2-j3w"/>
+                            <constraint firstItem="YuW-3R-SF1" firstAttribute="top" secondItem="BCy-oa-ZtW" secondAttribute="top" constant="-1" id="w26-gw-7zo"/>
                         </constraints>
                     </view>
                     <connections>
@@ -312,45 +311,6 @@
         <image name="music symbol-01.png" width="237" height="243"/>
         <image name="skip-01.png" width="135" height="158"/>
     </resources>
-    <classes>
-        <class className="ECSlidingViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/ECSlidingViewController.h"/>
-        </class>
-        <class className="GameViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/GameViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="exitAction:"/>
-                <relationship kind="action" name="playMusic:"/>
-                <relationship kind="action" name="skipMusic:"/>
-                <relationship kind="outlet" name="artistLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="exitButton" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="playbackProgressBar" candidateClass="UIProgressView"/>
-                <relationship kind="outlet" name="playlistTable" candidateClass="UITableView"/>
-                <relationship kind="outlet" name="skipSongButton" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="skipSongLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="songLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="userTable" candidateClass="UITableView"/>
-            </relationships>
-        </class>
-        <class className="MPVolumeView" superclassName="UIView">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/MPVolumeView.h"/>
-        </class>
-        <class className="MainViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/MainViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="hostGameAction:"/>
-                <relationship kind="outlet" name="hostGameButton" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="nameTextField" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="sessionsLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="statusLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="tableView" candidateClass="UITableView"/>
-                <relationship kind="outlet" name="waitLabel" candidateClass="UILabel"/>
-            </relationships>
-        </class>
-        <class className="NSLayoutConstraint" superclassName="NSObject">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/NSLayoutConstraint.h"/>
-        </class>
-    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>

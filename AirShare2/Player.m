@@ -6,6 +6,9 @@
 @synthesize name = _name;
 @synthesize peerID = _peerID;
 @synthesize hasMusicList = _hasMusicList;
+@synthesize packetSendTime = _packetSendTime;
+@synthesize timeOffset = _timeOffset;
+@synthesize syncPacketsReceived = _syncPacketsReceived;
 
 - (void)dealloc
 {
@@ -18,6 +21,9 @@
 	if ((self = [super init]))
 	{
         _hasMusicList = [[NSMutableDictionary alloc] initWithCapacity:10];
+        _packetSendTime = [[NSMutableArray alloc] initWithCapacity:50];
+        _timeOffset = 0.0;
+        _syncPacketsReceived = 0;
 	}
 	return self;
 }
