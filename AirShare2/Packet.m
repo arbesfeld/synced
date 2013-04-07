@@ -9,6 +9,7 @@
 #import "PacketVote.h"
 #import "PacketPlaylistItem.h"
 #import "PacketSyncResponse.h"
+#import "PacketCancelMusic.h"
 
 const size_t PACKET_HEADER_SIZE = 10;
 
@@ -75,6 +76,9 @@ const size_t PACKET_HEADER_SIZE = 10;
             break;
         case PacketTypeVote:
             packet = [PacketVote packetWithData:data];
+            break;
+        case PacketTypeCancelMusic:
+            packet = [PacketCancelMusic packetWithData:data];
             break;
 		default:
 			NSLog(@"Error: Packet has invalid type");

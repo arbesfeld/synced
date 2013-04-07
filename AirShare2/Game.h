@@ -67,7 +67,8 @@ ServerState;
 
 - (void)uploadMusicWithMediaItem:(MPMediaItem *)song;
 - (void)skipButtonPressed;
-- (void)removeCancelledUpload:(NSInteger)index;
+- (void)removeCancelledUploads;
 
 - (void)sendVotePacketForItem:(PlaylistItem *)selectedItem andAmount:(int)amount upvote:(BOOL)upvote;
+- (void)sendCancelMusicPacket:(PlaylistItem *)selectedItem;
 @end

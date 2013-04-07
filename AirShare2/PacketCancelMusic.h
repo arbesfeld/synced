@@ -10,4 +10,8 @@
 
 @interface PacketCancelMusic : Packet
 
+@property (nonatomic, strong) NSString *ID;
+
++ (id)packetWithID:(NSString *)ID;
+
 @end

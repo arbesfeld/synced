@@ -14,6 +14,7 @@
 @protocol PlaylistItemDelegate <NSObject>
 
 - (void)voteForItem:(PlaylistItem *)playlistItem withValue:(int)value upvote:(BOOL)upvote;
+- (void)cancelMusicAndUpdateAll:(PlaylistItem *)playlistItem;
 - (void)reloadTable;
 
 @end

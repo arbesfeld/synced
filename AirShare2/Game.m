@@ -14,6 +14,7 @@
 #import "PacketVote.h"
 #import "PacketPlaylistItem.h"
 #import "PacketSyncResponse.h"
+#import "PacketCancelMusic.h"
 
 const double DELAY_TIME = 2.00000; // wait DELAY_TIME seconds until songs play
 const int WAIT_TIME_UPLOAD = 20; // wait time for others to download music after uploading
@@ -233,6 +234,19 @@ const double SYNC_PACKET_COUNT = 100.0;
             [self trySkippingSong];
             break;
         }
+        case PacketTypeCancelMusic:
+        {
+            NSLog(@"Client received PacketTypeCancelMusic");
+            // cancel the song
+            NSString *ID = ((PacketMusicDownload *)packet).ID;
+            for (int i = 0; i < [_playlist count]; i++) {
+                if ([((PlaylistItem *)[_playlist objectAtIndex:i]).ID isEqual:ID]) {
+                    [[_playlist objectAtIndex:i] cancel];
+                }
+            }
+            // we don't have to remove it: this is handled in the view controller
+            break;
+        }
         case PacketTypeServerQuit:
         {
 			[self quitGameWithReason:QuitReasonServerQuit];
@@ -354,6 +368,19 @@ const double SYNC_PACKET_COUNT = 100.0;
             _skipSongCount++;
             [self.delegate game:self setSkipSongCount:_skipSongCount];
             [self trySkippingSong];
+            break;
+        }
+        case PacketTypeCancelMusic:
+        {
+            NSLog(@"Server received PacketTypeCancelMusic");
+            // cancel the song
+            NSString *ID = ((PacketMusicDownload *)packet).ID;
+            for (int i = 0; i < [_playlist count]; i++) {
+                if ([((PlaylistItem *)[_playlist objectAtIndex:i]).ID isEqual:ID]) {
+                    [[_playlist objectAtIndex:i] cancel];
+                }
+            }
+            // we don't have to remove it: this is handled in the view controller
             break;
         }
         case PacketTypeClientQuit:
@@ -623,6 +650,15 @@ const double SYNC_PACKET_COUNT = 100.0;
     return YES;
 }
 
+- (void)removeCancelledUploads
+{
+    for (int i = 0; i < [_playlist count]; i++) {
+        if ([[_playlist objectAtIndex:i] isCancelled]) {
+            [_playlist removeObjectAtIndex:i];
+        }
+    }
+}
+
 #pragma mark - AVAudioPlayerDelegate
 
 - (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag
@@ -663,7 +699,7 @@ const double SYNC_PACKET_COUNT = 100.0;
 	GKSendDataMode dataMode = packet.sendReliably ? GKSendDataReliable : GKSendDataUnreliable;
 	NSData *data = [packet data];
 	NSError *error;
-	if (![_session sendData:data toPeers:[NSArray arrayWithObject:peerID] withDataMode:dataMode error:&error])
+	 if (![_session sendData:data toPeers:[NSArray arrayWithObject:peerID] withDataMode:dataMode error:&error])
 	{
 		NSLog(@"Error sending data to client: %@", error);
 	}
@@ -692,11 +728,10 @@ const double SYNC_PACKET_COUNT = 100.0;
     [self sendPacketToAllClients:packet];
 }
 
-- (void)removeCancelledUpload:(NSInteger)index
+- (void)sendCancelMusicPacket:(PlaylistItem *)selectedItem
 {
-    if ([[_playlist objectAtIndex:index] isCancelled]) {
-        [_playlist removeObjectAtIndex:index];
-    }
+    PacketCancelMusic *packet = [PacketCancelMusic packetWithID:selectedItem.ID];
+    [self sendPacketToAllClients:packet];
 }
 
 #pragma mark - Utility

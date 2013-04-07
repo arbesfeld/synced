@@ -74,6 +74,7 @@
 		55FCC5C516ED79C70000BCBD /* Packet.m in Sources */ = {isa = PBXBuildFile; fileRef = 55FCC5C416ED79C70000BCBD /* Packet.m */; };
 		55FCC5C816ED7A5E0000BCBD /* NSData+AirShareAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 55FCC5C716ED7A5E0000BCBD /* NSData+AirShareAdditions.m */; };
 		89B257DF16F140D30018695A /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 89B257DE16F140D30018695A /* QuartzCore.framework */; };
+		EAB726371711EFDC0084D2CC /* PacketCancelMusic.m in Sources */ = {isa = PBXBuildFile; fileRef = EAB726361711EFDC0084D2CC /* PacketCancelMusic.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -184,6 +185,8 @@
 		55FCC5C716ED7A5E0000BCBD /* NSData+AirShareAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+AirShareAdditions.m"; sourceTree = "<group>"; };
 		89AC5B50170FA81500FB7975 /* gothic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = gothic.ttf; sourceTree = "<group>"; };
 		89B257DE16F140D30018695A /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		EAB726351711EFDB0084D2CC /* PacketCancelMusic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PacketCancelMusic.h; sourceTree = "<group>"; };
+		EAB726361711EFDC0084D2CC /* PacketCancelMusic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PacketCancelMusic.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -370,6 +373,8 @@
 				552CDD21170279BF003CA4EB /* PacketGameState.m */,
 				5596E08A16F62FB600511D3E /* PacketOtherClientQuit.h */,
 				5596E08B16F62FB600511D3E /* PacketOtherClientQuit.m */,
+				EAB726351711EFDB0084D2CC /* PacketCancelMusic.h */,
+				EAB726361711EFDC0084D2CC /* PacketCancelMusic.m */,
 				558B71D71708EF29004E05D5 /* PacketMusicDownload.h */,
 				558B71D81708EF29004E05D5 /* PacketMusicDownload.m */,
 				552CDD1D17026493003CA4EB /* PacketMusicResponse.h */,
@@ -550,6 +555,7 @@
 				5592DE83170BAA9F00C766B0 /* UIImage+ImageWithUIView.m in Sources */,
 				5592DE87170BABAE00C766B0 /* SlidingViewController.m in Sources */,
 				55453437171124EB00B4704F /* PacketSyncResponse.m in Sources */,
+				EAB726371711EFDC0084D2CC /* PacketCancelMusic.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

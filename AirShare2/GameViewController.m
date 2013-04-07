@@ -190,7 +190,7 @@ const double epsilon = 0.02;
         PlaylistItemCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
         PlaylistItem *selectedItem = ((PlaylistItem *)[_game.playlist objectAtIndex:indexPath.row]);
         while ([selectedItem isCancelled]) {
-            [_game removeCancelledUpload:indexPath.row];
+            [_game removeCancelledUploads];
             if ([_game.playlist count] >= indexPath.row) {
                 selectedItem = ((PlaylistItem *)[_game.playlist objectAtIndex:indexPath.row]);
             } else {
@@ -245,6 +245,13 @@ const double epsilon = 0.02;
         [_voteAmount setObject:value forKey:ID];
     }
 }
+
+- (void)cancelMusicAndUpdateAll:(PlaylistItem *)playlistItem {
+    [playlistItem cancel];
+    // send a packet
+    [self.game sendCancelMusicPacket:playlistItem];
+}
+
 #pragma mark - UIAlertViewDelegate
 
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
