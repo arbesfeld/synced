@@ -269,19 +269,19 @@ const double SYNC_PACKET_COUNT = 100.0;
         case PacketTypeSyncResponse:
         {
             NSDate *receiveTime = [NSDate date];
-            NSLog(@"PacketTypeSyncResponse with packetNumer = %d", packet.packetNumber);
+            //NSLog(@"PacketTypeSyncResponse with packetNumer = %d", packet.packetNumber);
             NSDate *sendTime = player.packetSendTime[packet.packetNumber];
             NSTimeInterval packetSendTime = [receiveTime timeIntervalSinceDate:sendTime] / 2.0;
-            NSLog(@"Packet send time = %f", packetSendTime);
+            //NSLog(@"Packet send time = %f", packetSendTime);
             
             NSDate *theirTime = ((PacketSyncResponse *)packet).time;
             theirTime = [theirTime dateByAddingTimeInterval:packetSendTime];
             
-            NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-            [dateFormatter setDateFormat:DATE_FORMAT];
-            NSString *theirTimeString = [dateFormatter stringFromDate:theirTime];
-            NSString *receiveTimeString = [dateFormatter stringFromDate:receiveTime];
-            NSLog(@"Their time = %@, my time = %@", theirTimeString, receiveTimeString);
+//            NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+//            [dateFormatter setDateFormat:DATE_FORMAT];
+//            NSString *theirTimeString = [dateFormatter stringFromDate:theirTime];
+//            NSString *receiveTimeString = [dateFormatter stringFromDate:receiveTime];
+//            NSLog(@"Their time = %@, my time = %@", theirTimeString, receiveTimeString);
             
             NSTimeInterval timeOffset = [theirTime timeIntervalSinceDate:receiveTime];
             player.timeOffset += timeOffset;
@@ -535,7 +535,6 @@ const double SYNC_PACKET_COUNT = 100.0;
 
 - (void)serverStartPlayingMusic:(MusicItem *)musicItem {
     NSAssert(self.isServer, @"Client in serverStartPlayingMusic:");
-    
     _audioPlaying = YES;
     
     
@@ -587,6 +586,10 @@ const double SYNC_PACKET_COUNT = 100.0;
         [[AVAudioSession sharedInstance] setCategory: AVAudioSessionCategoryPlayback error: &setCategoryError];
         
         [_audioPlayer prepareToPlay];
+        
+        // prime the audio player
+        [_audioPlayer play];
+        [_audioPlayer stop];
     }
 }
 - (void)playLoadedMusicItem:(NSTimer *)timer
@@ -798,6 +801,10 @@ const double SYNC_PACKET_COUNT = 100.0;
 
 - (void)handleWaitTimer:(NSTimer *)timer {
     NSLog(@"Wait timer called! Playing music");
+    if(_audioPlaying) {
+        return;
+    }
+    
     _audioPlaying = YES;
     // means you should start playing MusicItem
     MusicItem *musicItem = (MusicItem *)[timer userInfo];
