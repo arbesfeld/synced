@@ -105,6 +105,8 @@ const double epsilon = 0.02;
     _game.playlist = [NSMutableArray arrayWithArray:[_game.playlist sortedArrayUsingSelector:@selector(compare:)]];
     [self.userTable reloadData];
     [self.playlistTable reloadData];
+
+    
 }
 
 - (void)audioPlayerFinishedPlaying

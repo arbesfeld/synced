@@ -28,6 +28,7 @@
 @property (nonatomic, strong) UILabel *upvoteLabel;
 @property (nonatomic, strong) UILabel *downvoteLabel;
 @property (nonatomic, weak) UIButton *cancelButton;
+@property (nonatomic, strong) UIImageView *waitingView;
 @property (nonatomic, strong) UIProgressView *loadProgress;
 @property (nonatomic, strong) PlaylistItem *playlistItem;
 

@@ -7,6 +7,7 @@
 //
 
 #import "PlaylistItemCell.h"
+#import "UIImage+animatedGIF.h"
 
 @implementation PlaylistItemCell
 
@@ -18,8 +19,10 @@
         self.selectionStyle = UITableViewCellSelectionStyleNone;
         
         self.textLabel.text = playlistItem.name;
+        self.textLabel.backgroundColor = [UIColor clearColor];
         self.textLabel.textAlignment = NSTextAlignmentCenter;
         self.detailTextLabel.text = playlistItem.subtitle;
+        self.detailTextLabel.backgroundColor = [UIColor clearColor];
         self.detailTextLabel.textAlignment = NSTextAlignmentCenter;
         
         // set status of buttons
@@ -32,7 +35,7 @@
         }
         
         _upvoteButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        _upvoteButton.frame = CGRectMake(260.0f, 5.0f, 50.0f, 50.0f);
+        _upvoteButton.frame = CGRectMake(270.0f, 0.0f, 50.0f, 50.0f);
         [_upvoteButton setBackgroundImage:[UIImage imageNamed:@"upvote.png"] forState: UIControlStateNormal];
         [_upvoteButton setBackgroundImage:[UIImage imageNamed:@"upvote.png"] forState: UIControlStateHighlighted];
         [_upvoteButton setBackgroundImage:[UIImage imageNamed:@"upvote.png"] forState: UIControlStateSelected];
@@ -42,12 +45,12 @@
         [_upvoteButton setEnabled:upvoteButtonEnabled];
         
         self.upvoteLabel = [[UILabel alloc] init];
-        _upvoteLabel.frame = CGRectMake(280.0f, 35.0f, 15.0f, 30.0f);
+        _upvoteLabel.frame = CGRectMake(290.0f, 30.0f, 15.0f, 30.0f);
         _upvoteLabel.text = [NSString stringWithFormat:@"%d", [playlistItem getUpvoteCount]];
         _upvoteLabel.backgroundColor = [UIColor clearColor];
         
         _downvoteButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        _downvoteButton.frame = CGRectMake(-5.0f, 5.0f, 50.0f, 50.0f);
+        _downvoteButton.frame = CGRectMake(0.0f, 0.0f, 50.0f, 50.0f);
         [_downvoteButton setBackgroundImage:[UIImage imageNamed:@"downvote.png"] forState: UIControlStateNormal];
         [_downvoteButton setBackgroundImage:[UIImage imageNamed:@"downvote.png"] forState: UIControlStateHighlighted];
         [_downvoteButton setBackgroundImage:[UIImage imageNamed:@"downvote.png"] forState: UIControlStateSelected];
@@ -57,25 +60,33 @@
         [_downvoteButton setEnabled:downvoteButtonEnabled];
         
         self.downvoteLabel = [[UILabel alloc] init];
-        _downvoteLabel.frame = CGRectMake(15.0f, 35.0f, 15.0f, 30.0f);
+        _downvoteLabel.frame = CGRectMake(20.0f, 30.0f, 15.0f, 30.0f);
         _downvoteLabel.text = [NSString stringWithFormat:@"%d", [playlistItem getDownvoteCount]];
         _downvoteLabel.backgroundColor = [UIColor clearColor];
+
+        NSURL *url = [[NSBundle mainBundle] URLForResource:@"loading" withExtension:@"gif"];
+        _waitingView = [[UIImageView alloc] initWithFrame:CGRectMake(20.0f, 20.0f, 20.0f, 20.0f)];
+        _waitingView.image = [UIImage animatedImageWithAnimatedGIFData:[NSData dataWithContentsOfURL:url]];
         
         _cancelButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        _cancelButton.frame = CGRectMake(245.0f, 0.0f, 70.0f, 70.0f);
+        _cancelButton.frame = CGRectMake(255.0f, 0.0f, 70.0f, 70.0f);
         [_cancelButton setBackgroundImage:[UIImage imageNamed:@"cancel.png"] forState: UIControlStateNormal];
         [_cancelButton setBackgroundImage:[UIImage imageNamed:@"cancel.png"] forState: UIControlStateHighlighted];
         [_cancelButton setBackgroundImage:[UIImage imageNamed:@"cancel.png"] forState: UIControlStateSelected];
         _cancelButton.showsTouchWhenHighlighted = YES;
         //[_cancelButton setTitle:@"Cancel" forState:UIControlStateNormal];
         
+        
         _loadProgress = [[UIProgressView alloc] init];
         _loadProgress.frame = CGRectMake(55.0f, 50.0f, 200.0f, 15.0f);
         _loadProgress.progress = playlistItem.loadProgress;
         //NSLog(@"Load progress = %f", playlistItem.loadProgress);
         if(playlistItem.loadProgress != 1.0) {
-            [self.contentView addSubview:_loadProgress];
-            
+            if(playlistItem.loadProgress == 0.0) {
+                [self.contentView addSubview:_waitingView];
+            } else {
+                [self.contentView addSubview:_loadProgress];
+            }
             // We can only cancel once the looping begins in music upload code.
             if (!playlistItem.cancelled) {
                 [self.contentView addSubview:_cancelButton];

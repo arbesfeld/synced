@@ -439,9 +439,6 @@ const double SYNC_PACKET_COUNT = 100.0;
                                                                 selector:@selector(handleLoadProgressTimer:)
                                                                 userInfo:musicItem
                                                                  repeats:YES];
-    // make the progress bar appear so that it looks smoother
-    musicItem.loadProgress = 0.00001;
-    [self handleLoadProgressTimer:loadProgressTimer];
     
     NSURL *assetURL = [song valueForProperty:MPMediaItemPropertyAssetURL];
     
@@ -491,9 +488,6 @@ const double SYNC_PACKET_COUNT = 100.0;
                                                                 selector:@selector(handleLoadProgressTimer:)
                                                                 userInfo:musicItem
                                                                  repeats:YES];
-    // make the progress bar appear so that it looks smoother
-    musicItem.loadProgress = 0.00001;
-    [self handleLoadProgressTimer:loadProgressTimer];
     
     [_downloader downloadFileWithMusicItem:musicItem andSessionID:_serverPeerID completion:^{
         NSLog(@"Added music item with description: %@", [musicItem description]);
