@@ -15,7 +15,7 @@
 
 @implementation MusicUpload
 
-- (void)convertAndUpload:(MusicItem *)musicItem withAssetURL:(NSURL *)assetURL andSessionID:(NSString *)sessionID startLoadProgressTimer:(void (^)())loadProgressTimerBlock completion:(void (^)())completionBlock{
+- (void)convertAndUpload:(MusicItem *)musicItem withAssetURL:(NSURL *)assetURL andSessionID:(NSString *)sessionID progress:(void (^)())progress completion:(void (^)())completionBlock{
 	// set up an AVAssetReader to read from the iPod Library
 	AVURLAsset *songAsset = [AVURLAsset URLAssetWithURL:assetURL options:nil];
     
@@ -110,6 +110,7 @@
 //                                     waitUntilDone:NO];
              } else {
                  // done!
+                 __block int it = 0;
                  [assetWriterInput markAsFinished];
                  [assetWriter finishWritingWithCompletionHandler:^{
                      [assetReader cancelReading];
@@ -138,7 +139,10 @@
                      AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
                      [operation setUploadProgressBlock:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
                          //NSLog(@"Sent %lld of %lld bytes", totalBytesWritten, totalBytesExpectedToWrite);
-                         loadProgressTimerBlock();
+                         if(it % 300 == 0) {
+                             progress();
+                         }
+                         it++;
                          musicItem.loadProgress = (double)totalBytesWritten / totalBytesExpectedToWrite;
                      }];
                      [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {

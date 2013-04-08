@@ -24,6 +24,10 @@ ServerState;
 - (void)game:(Game *)game didQuitWithReason:(QuitReason)reason;
 
 - (void)reloadTable;
+- (void)reloadPlaylistItem:(PlaylistItem *)playlistItem;
+- (void)addPlaylistItem:(PlaylistItem *)playlistItem;
+- (void)removePlaylistItem:(PlaylistItem *)playlistItem animation:(UITableViewRowAnimation)animation;
+
 - (void)audioPlayerFinishedPlaying;
 
 - (void)game:(Game *)game setCurrentItem:(PlaylistItem *)playlistItem;
@@ -68,6 +72,7 @@ ServerState;
 - (void)uploadMusicWithMediaItem:(MPMediaItem *)song;
 - (void)skipButtonPressed;
 - (void)cancelMusic:(PlaylistItem *)selectedItem;
+- (int)indexForPlaylistItem:(PlaylistItem *)playlistItem;
 
 - (void)sendVotePacketForItem:(PlaylistItem *)selectedItem andAmount:(int)amount upvote:(BOOL)upvote;
 - (void)sendCancelMusicPacket:(PlaylistItem *)selectedItem;

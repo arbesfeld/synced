@@ -220,7 +220,7 @@
     
 	if (_matchmakingClient != nil)
 	{
-		self.waitLabel.text = @"Connect...";
+		self.waitLabel.text = @"Connecting...";
         
 		NSString *peerID = [_matchmakingClient peerIDForAvailableServerAtIndex:indexPath.row];
 		[_matchmakingClient connectToServerWithPeerID:peerID];

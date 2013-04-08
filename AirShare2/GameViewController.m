@@ -106,14 +106,43 @@ const double epsilon = 0.02;
     _game.playlist = [NSMutableArray arrayWithArray:[_game.playlist sortedArrayUsingSelector:@selector(compare:)]];
     [self.userTable reloadData];
     [self.playlistTable reloadData];
+}
 
-    
+- (void)reloadPlaylistItem:(PlaylistItem *)playlistItem
+{
+    [self.playlistTable beginUpdates];
+    int loc = [self.game indexForPlaylistItem:playlistItem];
+    [self.playlistTable reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:loc inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+    [self.playlistTable endUpdates];
+}
+
+- (void)addPlaylistItem:(PlaylistItem *)playlistItem
+{
+    [self.playlistTable beginUpdates];
+    int loc = [self.game indexForPlaylistItem:playlistItem];
+    //NSLog(@"inserting at loc %d", loc);
+    [self.playlistTable insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:loc inSection:0]] withRowAnimation:UITableViewRowAnimationRight];
+        
+    [self.playlistTable endUpdates];
+}
+
+- (void)removePlaylistItem:(PlaylistItem *)playlistItem animation:(UITableViewRowAnimation)animation
+{
+    [self.playlistTable beginUpdates];
+    int loc = [self.game indexForPlaylistItem:playlistItem];
+    [self.playlistTable deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:loc inSection:0]] withRowAnimation:animation];
+        
+    [self.game.playlist removeObject:playlistItem];
+    [self.playlistTable endUpdates];
 }
 
 - (void)audioPlayerFinishedPlaying
 {
     _waitingLabel.hidden = NO;
+    _songLabel.hidden = YES;
+    _artistLabel.hidden = YES;
 }
+
 - (void)game:(Game *)game setCurrentItem:(PlaylistItem *)playlistItem
 {
     _currentPlaylistItem = playlistItem;
@@ -169,9 +198,11 @@ const double epsilon = 0.02;
         }
     }
 }
+
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
     cell.backgroundColor = [UIColor clearColor];
 }
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"CellIdentifier";
@@ -201,6 +232,10 @@ const double epsilon = 0.02;
 
 - (void)setHeaderWithSongName:(NSString *)songName andArtistName:(NSString *)artistName
 {
+    _songLabel.hidden = NO;
+    _artistLabel.hidden = NO;
+    _playbackProgressBar.hidden = NO;
+    
     self.songLabel.text = songName;
     self.songLabel.font = [UIFont systemFontOfSize:17];
     self.artistLabel.text = artistName;

@@ -53,7 +53,11 @@
     return _downvoteCount;
 }
 - (int)getScore {
-    return _upvoteCount - _downvoteCount;
+    if(_loadProgress != 1.0) {
+        return -1000 +_upvoteCount - _downvoteCount;
+    } else {
+        return _upvoteCount - _downvoteCount;
+    }
 }
 
 - (void)upvote:(int)amount {
