@@ -15,7 +15,7 @@
 
 @end
 
-@interface GameViewController : UIViewController <UIAlertViewDelegate, UIApplicationDelegate, UITableViewDataSource, UITableViewDelegate, MPMediaPickerControllerDelegate, GameDelegate, PlaylistItemDelegate, UILabel> {
+@interface GameViewController : UIViewController <UIAlertViewDelegate, UIApplicationDelegate, UITableViewDataSource, UITableViewDelegate, MPMediaPickerControllerDelegate, GameDelegate, PlaylistItemDelegate> {
     PlaylistItem *_currentPlaylistItem;
     NSMutableDictionary *_voteAmount; // key is songID, value is vote amount
 }
