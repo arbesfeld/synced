@@ -239,12 +239,7 @@ const double SYNC_PACKET_COUNT = 100.0;
             NSLog(@"Client received PacketTypeCancelMusic");
             // cancel the song
             NSString *ID = ((PacketMusicDownload *)packet).ID;
-            for (int i = 0; i < [_playlist count]; i++) {
-                if ([((PlaylistItem *)[_playlist objectAtIndex:i]).ID isEqual:ID]) {
-                    [[_playlist objectAtIndex:i] cancel];
-                }
-            }
-            // we don't have to remove it: this is handled in the view controller
+            [_playlist removeObject:[self playlistItemWithID:ID]];
             break;
         }
         case PacketTypeServerQuit:
@@ -375,12 +370,7 @@ const double SYNC_PACKET_COUNT = 100.0;
             NSLog(@"Server received PacketTypeCancelMusic");
             // cancel the song
             NSString *ID = ((PacketMusicDownload *)packet).ID;
-            for (int i = 0; i < [_playlist count]; i++) {
-                if ([((PlaylistItem *)[_playlist objectAtIndex:i]).ID isEqual:ID]) {
-                    [[_playlist objectAtIndex:i] cancel];
-                }
-            }
-            // we don't have to remove it: this is handled in the view controller
+            [_playlist removeObject:[self playlistItemWithID:ID]];
             break;
         }
         case PacketTypeClientQuit:
@@ -647,13 +637,9 @@ const double SYNC_PACKET_COUNT = 100.0;
     return YES;
 }
 
-- (void)removeCancelledUploads
+- (void)cancelMusic:(PlaylistItem *)selectedItem;
 {
-    for (int i = 0; i < [_playlist count]; i++) {
-        if ([[_playlist objectAtIndex:i] isCancelled]) {
-            [_playlist removeObjectAtIndex:i];
-        }
-    }
+    [_playlist removeObject:[self playlistItemWithID:selectedItem.ID]];
 }
 
 #pragma mark - AVAudioPlayerDelegate
