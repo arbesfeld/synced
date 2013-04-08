@@ -14,9 +14,7 @@
 @synthesize subtitle = _subtitle;
 @synthesize playlistItemType = _playlistItemType;
 @synthesize loadProgress = _loadProgress;
-@synthesize cancelled = _cancelled;
 @synthesize belongsToUser = _belongsToUser;
-@synthesize uploadOperation = _uploadOperation;
 
 - (void)dealloc
 {

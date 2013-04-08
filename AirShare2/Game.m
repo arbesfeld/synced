@@ -239,7 +239,10 @@ const double SYNC_PACKET_COUNT = 100.0;
             NSLog(@"Client received PacketTypeCancelMusic");
             // cancel the song
             NSString *ID = ((PacketMusicDownload *)packet).ID;
+            
             [_playlist removeObject:[self playlistItemWithID:ID]];
+            
+            [self.delegate reloadTable];
             break;
         }
         case PacketTypeServerQuit:
