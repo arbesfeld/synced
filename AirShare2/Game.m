@@ -424,6 +424,8 @@ const double SYNC_PACKET_COUNT = 100.0;
     PacketPlaylistItem *packet = [PacketPlaylistItem packetWithPlaylistItem:musicItem];
     [self sendPacketToAllClients:packet];
     
+    [musicItem setBelongsToUser:YES];
+    
     NSTimer *loadProgressTimer = [NSTimer scheduledTimerWithTimeInterval:0.5
                                                                   target:self
                                                                 selector:@selector(handleLoadProgressTimer:)

@@ -88,7 +88,7 @@
                 [self.contentView addSubview:_loadProgress];
             }
             // We can only cancel once the looping begins in music upload code.
-            if (!playlistItem.cancelled) {
+            if (!playlistItem.cancelled && playlistItem.belongsToUser == YES) {
                 [self.contentView addSubview:_cancelButton];
             }
         } else {

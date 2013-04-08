@@ -15,6 +15,7 @@
 @synthesize playlistItemType = _playlistItemType;
 @synthesize loadProgress = _loadProgress;
 @synthesize cancelled = _cancelled;
+@synthesize belongsToUser = _belongsToUser;
 @synthesize uploadOperation = _uploadOperation;
 
 - (void)dealloc
@@ -37,6 +38,7 @@
         _loadProgress = 0.0;
         _cancelled = NO;
         _uploadOperation = nil;
+        _belongsToUser = NO;
     }
     return self;
 }
