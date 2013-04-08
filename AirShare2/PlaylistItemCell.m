@@ -76,7 +76,7 @@
         _cancelButton.showsTouchWhenHighlighted = YES;
         //[_cancelButton setTitle:@"Cancel" forState:UIControlStateNormal];
         
-        
+
         _loadProgress = [[UIProgressView alloc] init];
         _loadProgress.frame = CGRectMake(55.0f, 50.0f, 200.0f, 15.0f);
         _loadProgress.progress = playlistItem.loadProgress;
