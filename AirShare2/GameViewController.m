@@ -179,7 +179,8 @@ const double epsilon = 0.02;
             NSString *peerID = [[_game.players allKeys] objectAtIndex:indexPath.row];
             cell.textLabel.text = [_game displayNameForPeerID:peerID];
         }
-        
+        cell.backgroundColor = [UIColor clearColor];
+        cell.contentView.backgroundColor = [UIColor clearColor];
         return cell;
     }
     // else, is the playlist
@@ -192,7 +193,8 @@ const double epsilon = 0.02;
             cell = [[PlaylistItemCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:nil playlistItem:selectedItem voteValue:[[_voteAmount objectForKey:selectedItem.ID] intValue]];
             cell.delegate = self;
         }
-
+        cell.backgroundColor = [UIColor clearColor];
+        cell.contentView.backgroundColor = [UIColor clearColor];
         return cell;
     }
 }

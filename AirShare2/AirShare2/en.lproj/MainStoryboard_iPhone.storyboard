@@ -190,8 +190,8 @@
                                     <action selector="playMusic:" destination="FQX-ru-M2g" eventType="touchUpInside" id="Rck-B9-MZ7"/>
                                 </connections>
                             </button>
-                            <tableView clipsSubviews="YES" contentMode="center" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="66" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="ge9-R5-1vQ">
-                                <color key="backgroundColor" white="0.97445255474452552" alpha="0.45000000000000001" colorSpace="calibratedWhite"/>
+                            <tableView clipsSubviews="YES" contentMode="center" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="singleLineEtched" rowHeight="66" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="ge9-R5-1vQ">
+                                <color key="backgroundColor" white="1" alpha="0.45000000000000001" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" priority="1" constant="336" type="user" id="9Di-zw-JHq"/>
                                 </constraints>
