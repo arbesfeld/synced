@@ -7,6 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <QuartzCore/QuartzCore.h>
+
 #import "PlaylistItem.h"
 
 @class PlaylistItemCell;
@@ -29,7 +31,7 @@
 @property (nonatomic, strong) UILabel *downvoteLabel;
 @property (nonatomic, weak) UIButton *cancelButton;
 @property (nonatomic, strong) UIImageView *waitingView;
-@property (nonatomic, strong) UIProgressView *loadProgress;
+@property (nonatomic, strong) UIView *loadProgress;
 @property (nonatomic, strong) PlaylistItem *playlistItem;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier playlistItem:(PlaylistItem *)playlistItem voteValue:(int)voteValue;

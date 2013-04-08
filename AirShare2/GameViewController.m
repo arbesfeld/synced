@@ -34,9 +34,9 @@ const double epsilon = 0.02;
     _voteAmount = [[NSMutableDictionary alloc] initWithCapacity:10];
     
     self.view.backgroundColor = [[UIColor alloc] initWithPatternImage:[UIImage imageNamed:@"bgGreyImg.png"]];
-    self.playlistTable.layer.cornerRadius = 12;
+    //self.playlistTable.layer.cornerRadius = 12;
     self.playlistTable.layer.masksToBounds = YES;
-    
+    //self.playlistTable.separatorStyle = UITableViewCellSeparatorStyleNone;
 
 }
 
@@ -112,11 +112,12 @@ const double epsilon = 0.02;
 
 - (void)audioPlayerFinishedPlaying
 {
-    [self setHeaderWithSongName:@"Waiting for song..." andArtistName:@""];
+    _waitingLabel.hidden = NO;
 }
 - (void)game:(Game *)game setCurrentItem:(PlaylistItem *)playlistItem
 {
     _currentPlaylistItem = playlistItem;
+    _waitingLabel.hidden = YES;
     [self setHeaderWithSongName:playlistItem.name andArtistName:playlistItem.subtitle];
 }
 
@@ -168,6 +169,9 @@ const double epsilon = 0.02;
         }
     }
 }
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+    cell.backgroundColor = [UIColor clearColor];
+}
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"CellIdentifier";
@@ -179,8 +183,6 @@ const double epsilon = 0.02;
             NSString *peerID = [[_game.players allKeys] objectAtIndex:indexPath.row];
             cell.textLabel.text = [_game displayNameForPeerID:peerID];
         }
-        cell.backgroundColor = [UIColor clearColor];
-        cell.contentView.backgroundColor = [UIColor clearColor];
         return cell;
     }
     // else, is the playlist
@@ -193,8 +195,6 @@ const double epsilon = 0.02;
             cell = [[PlaylistItemCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:nil playlistItem:selectedItem voteValue:[[_voteAmount objectForKey:selectedItem.ID] intValue]];
             cell.delegate = self;
         }
-        cell.backgroundColor = [UIColor clearColor];
-        cell.contentView.backgroundColor = [UIColor clearColor];
         return cell;
     }
 }

@@ -22,6 +22,7 @@
 @property (nonatomic, weak) IBOutlet UILabel *skipSongLabel;
 @property (nonatomic, weak) IBOutlet UILabel *songLabel;
 @property (nonatomic, weak) IBOutlet UILabel *artistLabel;
+@property (weak, nonatomic) IBOutlet UILabel *waitingLabel;
 @property (nonatomic, weak) IBOutlet UIButton *exitButton;
 @property (weak, nonatomic) IBOutlet UIButton *skipSongButton;
 @property (nonatomic, weak) IBOutlet UITableView *userTable;

@@ -429,7 +429,7 @@ const double SYNC_PACKET_COUNT = 100.0;
     
     [musicItem setBelongsToUser:YES];
     
-    __block NSTimer *loadProgressTimer;
+    //__block NSTimer *loadProgressTimer;
     
     NSURL *assetURL = [song valueForProperty:MPMediaItemPropertyAssetURL];
     
@@ -437,15 +437,10 @@ const double SYNC_PACKET_COUNT = 100.0;
                    withAssetURL:assetURL
                    andSessionID:_serverPeerID 
          startLoadProgressTimer:^{
-        loadProgressTimer = [NSTimer scheduledTimerWithTimeInterval:0.5
-                                           target:self
-                                         selector:@selector(handleLoadProgressTimer:)
-                                         userInfo:musicItem
-                                          repeats:YES];
+             [self.delegate reloadTable];
     } completion:^ {
         // reload one last time to make sure the progress bar is gone
         [self.delegate reloadTable];
-        [loadProgressTimer invalidate];
         
         [self hasDownloadedMusic:musicItem myMusic:YES];
         

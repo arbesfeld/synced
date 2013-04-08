@@ -119,6 +119,7 @@
                                                            error:nil];
                      NSLog (@"Converting done. File size is %lld", [outputFileAttributes fileSize]);
                      
+                     //loadProgressTimerBlock();
                      // now upload to server
                      NSData *songData = [NSData dataWithContentsOfFile:exportPath];
                      
@@ -136,8 +137,8 @@
                      }];
                      AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
                      [operation setUploadProgressBlock:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
-                         loadProgressTimerBlock();
                          //NSLog(@"Sent %lld of %lld bytes", totalBytesWritten, totalBytesExpectedToWrite);
+                         loadProgressTimerBlock();
                          musicItem.loadProgress = (double)totalBytesWritten / totalBytesExpectedToWrite;
                      }];
                      [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
