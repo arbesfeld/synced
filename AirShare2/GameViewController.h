@@ -8,13 +8,14 @@
 
 @class GameViewController;
 
+
 @protocol GameViewControllerDelegate <NSObject>
 
 - (void)gameViewController:(GameViewController *)controller didQuitWithReason:(QuitReason)reason;
 
 @end
 
-@interface GameViewController : UIViewController <UIAlertViewDelegate, UIApplicationDelegate, UITableViewDataSource, UITableViewDelegate, MPMediaPickerControllerDelegate, GameDelegate, PlaylistItemDelegate> {
+@interface GameViewController : UIViewController <UIAlertViewDelegate, UIApplicationDelegate, UITableViewDataSource, UITableViewDelegate, MPMediaPickerControllerDelegate, GameDelegate, PlaylistItemDelegate, UILabel> {
     PlaylistItem *_currentPlaylistItem;
     NSMutableDictionary *_voteAmount; // key is songID, value is vote amount
 }

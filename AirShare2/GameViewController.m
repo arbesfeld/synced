@@ -37,6 +37,7 @@ const double epsilon = 0.02;
     self.playlistTable.layer.cornerRadius = 12;
     self.playlistTable.layer.masksToBounds = YES;
     
+
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -178,7 +179,7 @@ const double epsilon = 0.02;
             NSString *peerID = [[_game.players allKeys] objectAtIndex:indexPath.row];
             cell.textLabel.text = [_game displayNameForPeerID:peerID];
         }
-
+        
         return cell;
     }
     // else, is the playlist
