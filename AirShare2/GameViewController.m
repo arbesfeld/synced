@@ -161,6 +161,9 @@ const double epsilon = 0.02;
             //return [_game.playlist count];
             //count the songs that are still valid (not cancelled)
             NSInteger len = [_game.playlist count];
+            return len;
+            
+            /* (no longer used)
             NSInteger res = len;
             for (NSInteger i = 0; i < len; i++) {
                 if ([(PlaylistItem *)[_game.playlist objectAtIndex:i] isCancelled]) {
@@ -168,6 +171,7 @@ const double epsilon = 0.02;
                 }
             }
             return res;
+            */
         } else {
             return 0;
         }
@@ -191,6 +195,8 @@ const double epsilon = 0.02;
     else {
         PlaylistItemCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
         PlaylistItem *selectedItem = ((PlaylistItem *)[_game.playlist objectAtIndex:indexPath.row]);
+        
+        /* (no longer used)
         while ([selectedItem isCancelled]) {
             [_game removeCancelledUploads];
             if ([_game.playlist count] >= indexPath.row) {
@@ -201,6 +207,8 @@ const double epsilon = 0.02;
                 return cell;
             }
         }
+        */
+         
         if (cell == nil) {
             cell = [[PlaylistItemCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:nil playlistItem:selectedItem voteValue:[[_voteAmount objectForKey:selectedItem.ID] intValue]];
             cell.delegate = self;
@@ -250,6 +258,7 @@ const double epsilon = 0.02;
 
 - (void)cancelMusicAndUpdateAll:(PlaylistItem *)playlistItem {
     [playlistItem cancel];
+    [self.game cancelMusic:playlistItem];
     // send a packet
     [self.game sendCancelMusicPacket:playlistItem];
 }
