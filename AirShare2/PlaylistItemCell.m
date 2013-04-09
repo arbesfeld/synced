@@ -15,7 +15,7 @@
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        const NSArray *colorTable = [[NSArray alloc] initWithObjects:[UIColor greenColor], [UIColor orangeColor],[UIColor cyanColor], [UIColor yellowColor], [UIColor magentaColor], nil];
+        const NSArray *colorTable = [[NSArray alloc] initWithObjects: [UIColor colorWithRed:254/255.0 green:219/255.0 blue:114/255.0 alpha:.8],[UIColor colorWithRed:165/255.0 green:254/225.0 blue:113/225.0 alpha:.8], [UIColor colorWithRed:113/255.0 green:254/225.0 blue:146/225.0 alpha:.8], [UIColor colorWithRed:113/255.0 green:169/225.0 blue:254/225.0 alpha:.8], [UIColor colorWithRed:113/255.0 green:254/225.0 blue:235/225.0 alpha:.8], [UIColor colorWithRed:113/255.0 green:115/225.0 blue:254/225.0 alpha:.8], [UIColor colorWithRed:188/255.0 green:113/225.0 blue:254/225.0 alpha:.8], [UIColor colorWithRed:254/255.0 green:113/225.0 blue:188/225.0 alpha:.8], [UIColor colorWithRed:254/255.0 green:165/225.0 blue:113/225.0 alpha:.8], [UIColor colorWithRed:254/255.0 green:115/225.0 blue:113/225.0 alpha:.8], nil];
         
         self.playlistItem = playlistItem;
         self.selectionStyle = UITableViewCellSelectionStyleNone;
