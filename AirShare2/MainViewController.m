@@ -23,7 +23,7 @@
 - (void)viewDidLoad
 {
 	[super viewDidLoad];
-    [_hostGameButton setTitle:@"Host Game" forState:UIControlStateNormal];
+    [_hostGameButton setTitle:@"Host Session" forState:UIControlStateNormal];
     _quitReasonClient = QuitReasonConnectionDropped;
     [self setupUI];
 }
@@ -315,7 +315,7 @@
     [[UIButton appearance] setFont:[UIFont fontWithName:@"gothic" size:17.0]];
     [[UIButton appearance] setTitleColor:[UIColor colorWithHue:0.0 saturation:0.0 brightness:0.2 alpha:1.0] forState:UIControlStateNormal];
 
-    [_hostGameButton setTitle:@"Host Game" forState:UIControlStateNormal];
+    [_hostGameButton setTitle:@"Host Session" forState:UIControlStateNormal];
 }
 
 

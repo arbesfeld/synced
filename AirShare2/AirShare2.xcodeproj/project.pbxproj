@@ -16,7 +16,7 @@
 		558E14AB16F182480076F6FC /* PacketSignIn.m in Sources */ = {isa = PBXBuildFile; fileRef = 558E14AA16F182480076F6FC /* PacketSignIn.m */; };
 		558E14B616F185600076F6FC /* CenturyGothicStd-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 558E14B316F185600076F6FC /* CenturyGothicStd-Bold.otf */; };
 		558E14B716F185600076F6FC /* CenturyGothicStd.otf in Resources */ = {isa = PBXBuildFile; fileRef = 558E14B416F185600076F6FC /* CenturyGothicStd.otf */; };
-		5590968B16FF5ED4004149A0 /* MusicUpload.m in Sources */ = {isa = PBXBuildFile; fileRef = 5590968A16FF5ED4004149A0 /* MusicUpload.m */; };
+		5590968B16FF5ED4004149A0 /* MusicUpload.m in Sources */ = {isa = PBXBuildFile; fileRef = 5590968A16FF5ED4004149A0 /* MusicUpload.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		5590968D16FF63C5004149A0 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5590968C16FF63C5004149A0 /* CFNetwork.framework */; };
 		5590968E16FF64A5004149A0 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5596E0D816F692D300511D3E /* MobileCoreServices.framework */; };
 		5590969016FF6553004149A0 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5590968F16FF6553004149A0 /* SystemConfiguration.framework */; };

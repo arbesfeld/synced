@@ -30,13 +30,19 @@ const double epsilon = 0.02;
 {
 	[super viewDidLoad];
     // visual placeholder
-    _currentPlaylistItem = [[PlaylistItem alloc] initPlaylistItemWithName:@"No Songs Playing" andSubtitle:@"" andID:@"000000" andDate:nil andPlaylistItemType:PlaylistItemTypeNone];
+    _currentPlaylistItem = [[PlaylistItem alloc] initPlaylistItemWithName:@"" andSubtitle:@"" andID:@"" andDate:nil andPlaylistItemType:PlaylistItemTypeNone];
+    _currentPlaylistItem.loadProgress = 0.0;
     _voteAmount = [[NSMutableDictionary alloc] initWithCapacity:10];
     
     self.view.backgroundColor = [[UIColor alloc] initWithPatternImage:[UIImage imageNamed:@"bgGreyImg.png"]];
     //self.playlistTable.layer.cornerRadius = 12;
     self.playlistTable.layer.masksToBounds = YES;
+
     //self.playlistTable.separatorStyle = UITableViewCellSeparatorStyleNone;
+    
+    self.songLabel.hidden = YES;
+    self.artistLabel.hidden = YES;
+    self.waitingLabel.hidden = NO;
 
 }
 
@@ -146,6 +152,10 @@ const double epsilon = 0.02;
 - (void)game:(Game *)game setCurrentItem:(PlaylistItem *)playlistItem
 {
     _currentPlaylistItem = playlistItem;
+    if([_currentPlaylistItem.name isEqualToString:@""] && [_currentPlaylistItem.subtitle isEqualToString:@""] && [_currentPlaylistItem.ID isEqualToString:@""]) {
+        return;
+    }
+    
     _waitingLabel.hidden = YES;
     [self setHeaderWithSongName:playlistItem.name andArtistName:playlistItem.subtitle];
 }
