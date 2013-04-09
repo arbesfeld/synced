@@ -14,9 +14,7 @@
 @synthesize subtitle = _subtitle;
 @synthesize playlistItemType = _playlistItemType;
 @synthesize loadProgress = _loadProgress;
-@synthesize cancelled = _cancelled;
 @synthesize belongsToUser = _belongsToUser;
-@synthesize uploadOperation = _uploadOperation;
 
 - (void)dealloc
 {
@@ -55,13 +53,11 @@
     return _downvoteCount;
 }
 - (int)getScore {
-    //return 1000 * (_upvoteCount - _downvoteCount) + abs(_upvoteCount) + abs(_downvoteCount);
-    int score = 0;
-    if(self.loadProgress != 1.0) {
-        // if you haven't uplaoded, show at bottom of list
-        score -= 1000;
+    if(_loadProgress != 1.0) {
+        return -1000 +_upvoteCount - _downvoteCount;
+    } else {
+        return _upvoteCount - _downvoteCount;
     }
-    return score + _upvoteCount - _downvoteCount;
 }
 
 - (void)upvote:(int)amount {

@@ -17,8 +17,8 @@
 #import "PacketCancelMusic.h"
 
 const double DELAY_TIME = 2.00000; // wait DELAY_TIME seconds until songs play
-const int WAIT_TIME_UPLOAD = 20; // wait time for others to download music after uploading
-const int WAIT_TIME_DOWNLOAD = 8; // wait time for others to download music after downloading
+const int WAIT_TIME_UPLOAD = 25; // wait time for others to download music after uploading
+const int WAIT_TIME_DOWNLOAD = 12; // wait time for others to download music after downloading
 const double SYNC_PACKET_COUNT = 100.0;
 
 @implementation Game
@@ -239,7 +239,9 @@ const double SYNC_PACKET_COUNT = 100.0;
             NSLog(@"Client received PacketTypeCancelMusic");
             // cancel the song
             NSString *ID = ((PacketMusicDownload *)packet).ID;
-            [_playlist removeObject:[self playlistItemWithID:ID]];
+            PlaylistItem *playlistItem = [self playlistItemWithID:ID];
+            
+            [self cancelMusic:playlistItem];
             break;
         }
         case PacketTypeServerQuit:
@@ -286,13 +288,8 @@ const double SYNC_PACKET_COUNT = 100.0;
             NSDate *theirTime = ((PacketSyncResponse *)packet).time;
             theirTime = [theirTime dateByAddingTimeInterval:packetSendTime];
             
-//            NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-//            [dateFormatter setDateFormat:DATE_FORMAT];
-//            NSString *theirTimeString = [dateFormatter stringFromDate:theirTime];
-//            NSString *receiveTimeString = [dateFormatter stringFromDate:receiveTime];
-//            NSLog(@"Their time = %@, my time = %@", theirTimeString, receiveTimeString);
-            
             NSTimeInterval timeOffset = [theirTime timeIntervalSinceDate:receiveTime];
+            
             player.timeOffset += timeOffset;
             player.syncPacketsReceived++;
             
@@ -370,7 +367,9 @@ const double SYNC_PACKET_COUNT = 100.0;
             NSLog(@"Server received PacketTypeCancelMusic");
             // cancel the song
             NSString *ID = ((PacketMusicDownload *)packet).ID;
-            [_playlist removeObject:[self playlistItemWithID:ID]];
+            PlaylistItem *playlistItem = [self playlistItemWithID:ID];
+            [self cancelMusic:playlistItem];
+            
             break;
         }
         case PacketTypeClientQuit:
@@ -404,7 +403,7 @@ const double SYNC_PACKET_COUNT = 100.0;
     // send packets to sync with the player
     Packet *packet = [Packet packetWithType:PacketTypeSync];
     packet.packetNumber = 0;
-    //packet.sendReliably = NO;
+    
     //mark when you sent this packet
     player.packetSendTime[0] = [NSDate date];
     [self sendPacket:packet toClientWithPeerID:player.peerID];
@@ -418,28 +417,25 @@ const double SYNC_PACKET_COUNT = 100.0;
     NSString *ID = [self genRandStringLength:6];
     
     MusicItem *musicItem = [MusicItem musicItemWithName:songName andSubtitle:artistName andID:ID andDate:[NSDate date]];
+    [musicItem setBelongsToUser:YES];
     
     [self addItemToPlaylist:musicItem];
     
     PacketPlaylistItem *packet = [PacketPlaylistItem packetWithPlaylistItem:musicItem];
     [self sendPacketToAllClients:packet];
     
-    [musicItem setBelongsToUser:YES];
-    
-    NSTimer *loadProgressTimer = [NSTimer scheduledTimerWithTimeInterval:0.5
-                                                                  target:self
-                                                                selector:@selector(handleLoadProgressTimer:)
-                                                                userInfo:musicItem
-                                                                 repeats:YES];
     
     NSURL *assetURL = [song valueForProperty:MPMediaItemPropertyAssetURL];
     
-    [_uploader convertAndUpload:musicItem withAssetURL:assetURL andSessionID:_serverPeerID completion:^ {
+    [_uploader convertAndUpload:musicItem
+                   withAssetURL:assetURL
+                   andSessionID:_serverPeerID progress:^{
+        [self.delegate reloadPlaylistItem:musicItem];
+    } completion:^ {
         // reload one last time to make sure the progress bar is gone
         [self.delegate reloadTable];
-        [loadProgressTimer invalidate];
         
-        [self hasDownloadedMusic:musicItem myMusic:YES];
+        [self hasDownloadedMusic:musicItem];
         
         NSLog(@"Sending music download packet with: %@", [musicItem description]);
         PacketMusicDownload *packet = [PacketMusicDownload packetWithID:ID];
@@ -475,23 +471,19 @@ const double SYNC_PACKET_COUNT = 100.0;
     // to do: in case you receive this before "PacketTypePlaylistItem"
     MusicItem *musicItem = (MusicItem *)[self playlistItemWithID:ID];
     NSLog(@"Downloading music item with name = %@", musicItem.name);
-    NSTimer *loadProgressTimer = [NSTimer scheduledTimerWithTimeInterval:0.5
-                                                                  target:self
-                                                                selector:@selector(handleLoadProgressTimer:)
-                                                                userInfo:musicItem
-                                                                 repeats:YES];
     
-    [_downloader downloadFileWithMusicItem:musicItem andSessionID:_serverPeerID completion:^{
+    [_downloader downloadFileWithMusicItem:musicItem andSessionID:_serverPeerID progress:^ {
+        [self.delegate reloadPlaylistItem:musicItem];
+    } completion:^{
         NSLog(@"Added music item with description: %@", [musicItem description]);
         // reload table last time to make sure progress bar is full
         [self.delegate reloadTable];
-        [loadProgressTimer invalidate];
         
-        [self hasDownloadedMusic:musicItem myMusic:NO];
+        [self hasDownloadedMusic:musicItem];
     }];
 }
 
-- (void)hasDownloadedMusic:(MusicItem *)musicItem myMusic:(BOOL)myMusic
+- (void)hasDownloadedMusic:(MusicItem *)musicItem
 {
     // this can be called both after someone downloads others' music,
     // and after they have uploaded their own music
@@ -500,7 +492,7 @@ const double SYNC_PACKET_COUNT = 100.0;
         //[self addItemToPlaylist:musicItem];
         // mark that you have item
         [((Player *)[_players objectForKey:_session.peerID]).hasMusicList setObject:@YES forKey:musicItem.ID];
-        if(myMusic) {
+        if(musicItem.belongsToUser) {
             [self serverTryPlayingMusic:musicItem waitTime:WAIT_TIME_UPLOAD];
         } else {
             [self serverTryPlayingMusic:musicItem waitTime:WAIT_TIME_DOWNLOAD];
@@ -517,15 +509,15 @@ const double SYNC_PACKET_COUNT = 100.0;
 {
     //NSLog(@"Adding item = %@", [playlistItem description]);
     [_playlist addObject:playlistItem];
-    [self.delegate reloadTable];
+    [self.delegate addPlaylistItem:playlistItem];
 }
 
 - (void)removeItemFromPlaylist:(PlaylistItem *)playlistItem
 {
     [self.delegate game:self setCurrentItem:playlistItem];
-    [_playlist removeObject:playlistItem];
-    [self.delegate reloadTable];
+    [self.delegate removePlaylistItem:playlistItem animation:UITableViewRowAnimationTop];
 }
+
 - (void)serverTryPlayingMusic:(MusicItem *)musicItem waitTime:(int)waitTime
 {
     NSAssert(self.isServer, @"Client in serverTryPlayingMusic:");
@@ -639,11 +631,6 @@ const double SYNC_PACKET_COUNT = 100.0;
     return YES;
 }
 
-- (void)cancelMusic:(PlaylistItem *)selectedItem;
-{
-    [_playlist removeObject:[self playlistItemWithID:selectedItem.ID]];
-}
-
 #pragma mark - AVAudioPlayerDelegate
 
 - (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag
@@ -719,6 +706,11 @@ const double SYNC_PACKET_COUNT = 100.0;
     [self sendPacketToAllClients:packet];
 }
 
+- (void)cancelMusic:(PlaylistItem *)selectedItem
+{
+    [self.delegate removePlaylistItem:selectedItem animation:UITableViewRowAnimationRight];
+}
+
 #pragma mark - Utility
 
 - (NSString *)displayNameForPeerID:(NSString *)peerID
@@ -726,6 +718,15 @@ const double SYNC_PACKET_COUNT = 100.0;
 	return [_session displayNameForPeer:peerID];
 }
 
+- (int)indexForPlaylistItem:(PlaylistItem *)playlistItem
+{
+    for(int i = 0; i < self.playlist.count; i++) {
+        if(self.playlist[i] == playlistItem) {
+            return i;
+        }
+    }
+    return -1;
+}
 - (Player *)playerWithPeerID:(NSString *)peerID
 {
 	return [_players objectForKey:peerID];
@@ -827,9 +828,7 @@ const double SYNC_PACKET_COUNT = 100.0;
     MusicItem *musicItem = (MusicItem *)[timer userInfo];
     [self serverStartPlayingMusic:musicItem];
 }
-- (void)handleLoadProgressTimer:(NSTimer *)timer {
-    [self.delegate reloadTable];
-}
+
 #pragma mark - GKSessionDelegate
 
 - (void)session:(GKSession *)session peer:(NSString *)peerID didChangeState:(GKPeerConnectionState)state

@@ -15,6 +15,8 @@
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
+        const NSArray *colorTable = [[NSArray alloc] initWithObjects: [UIColor colorWithRed:254/255.0 green:219/255.0 blue:114/255.0 alpha:.8],[UIColor colorWithRed:165/255.0 green:254/225.0 blue:113/225.0 alpha:.8], [UIColor colorWithRed:113/255.0 green:254/225.0 blue:146/225.0 alpha:.8], [UIColor colorWithRed:113/255.0 green:169/225.0 blue:254/225.0 alpha:.8], [UIColor colorWithRed:113/255.0 green:254/225.0 blue:235/225.0 alpha:.8], [UIColor colorWithRed:113/255.0 green:115/225.0 blue:254/225.0 alpha:.8], [UIColor colorWithRed:188/255.0 green:113/225.0 blue:254/225.0 alpha:.8], [UIColor colorWithRed:254/255.0 green:113/225.0 blue:188/225.0 alpha:.8], [UIColor colorWithRed:254/255.0 green:165/225.0 blue:113/225.0 alpha:.8], [UIColor colorWithRed:254/255.0 green:115/225.0 blue:113/225.0 alpha:.8], nil];
+        
         self.playlistItem = playlistItem;
         self.selectionStyle = UITableViewCellSelectionStyleNone;
         
@@ -24,6 +26,7 @@
         self.detailTextLabel.text = playlistItem.subtitle;
         self.detailTextLabel.backgroundColor = [UIColor clearColor];
         self.detailTextLabel.textAlignment = NSTextAlignmentCenter;
+        self.detailTextLabel.textColor = [UIColor blackColor];
         
         // set status of buttons
         BOOL upvoteButtonEnabled = YES;
@@ -65,33 +68,43 @@
         _downvoteLabel.backgroundColor = [UIColor clearColor];
 
         NSURL *url = [[NSBundle mainBundle] URLForResource:@"loading" withExtension:@"gif"];
-        _waitingView = [[UIImageView alloc] initWithFrame:CGRectMake(20.0f, 20.0f, 20.0f, 20.0f)];
+        _waitingView = [[UIImageView alloc] initWithFrame:CGRectMake(15.0f, 20.0f, 20.0f, 20.0f)];
         _waitingView.image = [UIImage animatedImageWithAnimatedGIFData:[NSData dataWithContentsOfURL:url]];
         
         _cancelButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        _cancelButton.frame = CGRectMake(255.0f, 0.0f, 70.0f, 70.0f);
+        _cancelButton.frame = CGRectMake(260.0f, 0.0f, 70.0f, 70.0f);
         [_cancelButton setBackgroundImage:[UIImage imageNamed:@"cancel.png"] forState: UIControlStateNormal];
         [_cancelButton setBackgroundImage:[UIImage imageNamed:@"cancel.png"] forState: UIControlStateHighlighted];
         [_cancelButton setBackgroundImage:[UIImage imageNamed:@"cancel.png"] forState: UIControlStateSelected];
         _cancelButton.showsTouchWhenHighlighted = YES;
         //[_cancelButton setTitle:@"Cancel" forState:UIControlStateNormal];
         
+
+        _loadProgress = [[UIView alloc] init];
+        _loadProgress.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y - 2, self.frame.size.width * playlistItem.loadProgress, self.frame.size.height + 2);
         
-        _loadProgress = [[UIProgressView alloc] init];
-        _loadProgress.frame = CGRectMake(55.0f, 50.0f, 200.0f, 15.0f);
-        _loadProgress.progress = playlistItem.loadProgress;
+        int colorID = (int)[playlistItem.ID characterAtIndex:0] % colorTable.count;
+        _loadProgress.backgroundColor = (UIColor *)colorTable[colorID];
+        _loadProgress.layer.borderColor = [UIColor grayColor].CGColor;
+        _loadProgress.layer.borderWidth = 1.0f;
+        _loadProgress.autoresizingMask = 0x3f;
+        // place behind other views
+        
         //NSLog(@"Load progress = %f", playlistItem.loadProgress);
         if(playlistItem.loadProgress != 1.0) {
             if(playlistItem.loadProgress == 0.0) {
                 [self.contentView addSubview:_waitingView];
             } else {
-                [self.contentView addSubview:_loadProgress];
+                // add load progress to back of cell
+                [self.contentView insertSubview:_loadProgress atIndex:0];
             }
             // We can only cancel once the looping begins in music upload code.
             if (!playlistItem.cancelled && playlistItem.belongsToUser == YES) {
                 [self.contentView addSubview:_cancelButton];
             }
         } else {
+            // add load progress to back of cell
+            [self.contentView insertSubview:_loadProgress atIndex:0];
             [self.contentView addSubview:_upvoteButton];
             [self.contentView addSubview:_upvoteLabel];
             [self.contentView addSubview:_downvoteButton];
@@ -110,7 +123,8 @@
     }
     return self;
 }
-
+-(void) drawRect:(CGRect)rect{
+}
 - (IBAction)upvoteButtonPressed:(id)sender
 {
     [_upvoteButton setEnabled:NO];
@@ -156,10 +170,10 @@
     // Configure the view for the selected state
 }
 
-- (void) layoutSubviews
+- (void)layoutSubviews
 {
     [super layoutSubviews];
-    self.textLabel.frame = CGRectMake(0, self.textLabel.frame.origin.y - 5, self.frame.size.width, self.textLabel.frame.size.height - 5);
-    self.detailTextLabel.frame = CGRectMake(0, self.detailTextLabel.frame.origin.y - 5, self.frame.size.width, self.detailTextLabel.frame.size.height - 5);
+    self.textLabel.frame = CGRectMake(40.0f, self.textLabel.frame.origin.y, self.frame.size.width - 80.0f, self.textLabel.frame.size.height);
+    self.detailTextLabel.frame = CGRectMake(40.0f, self.detailTextLabel.frame.origin.y, self.frame.size.width - 80.0f, self.detailTextLabel.frame.size.height);
 }
 @end

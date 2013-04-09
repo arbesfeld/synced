@@ -15,20 +15,24 @@
 
 @implementation MusicUpload
 
-- (void)convertAndUpload:(MusicItem *)musicItem withAssetURL:(NSURL *)assetURL andSessionID:(NSString *)sessionID completion:(void (^)())completionBlock{
+- (void)dealloc {
+    [super dealloc];
+}
+
+- (void)convertAndUpload:(MusicItem *)musicItem withAssetURL:(NSURL *)assetURL andSessionID:(NSString *)sessionID progress:(void (^)())progress completion:(void (^)())completionBlock{
 	// set up an AVAssetReader to read from the iPod Library
 	AVURLAsset *songAsset = [AVURLAsset URLAssetWithURL:assetURL options:nil];
     
 	NSError *assetError = nil;
-	AVAssetReader *assetReader = [AVAssetReader assetReaderWithAsset:songAsset
-															   error:&assetError];
+	AVAssetReader *assetReader = [[AVAssetReader assetReaderWithAsset:songAsset
+															   error:&assetError] retain];
 	if (assetError) {
 		NSLog (@"error: %@", assetError);
 		return;
 	}
-	AVAssetReaderOutput *assetReaderOutput = [AVAssetReaderAudioMixOutput
+	AVAssetReaderOutput *assetReaderOutput = [[AVAssetReaderAudioMixOutput
 											  assetReaderAudioMixOutputWithAudioTracks:songAsset.tracks
-                                              audioSettings: nil];
+                                              audioSettings: nil] retain];
 	if (! [assetReader canAddOutput: assetReaderOutput]) {
 		NSLog (@"can't add reader output... die!");
 		return;
@@ -39,15 +43,15 @@
 	NSArray *dirs = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
 	NSString *documentsDirectoryPath = [dirs objectAtIndex:0];
     NSString *fileName = [NSString stringWithFormat:@"%@.m4a", musicItem.ID];
-	NSString *exportPath = [documentsDirectoryPath stringByAppendingPathComponent:fileName];
+	NSString *exportPath = [[documentsDirectoryPath stringByAppendingPathComponent:fileName] retain];
     
 	if ([[NSFileManager defaultManager] fileExistsAtPath:exportPath]) {
 		[[NSFileManager defaultManager] removeItemAtPath:exportPath error:nil];
 	}
 	NSURL *exportURL = [NSURL fileURLWithPath:exportPath];
-	AVAssetWriter *assetWriter = [AVAssetWriter assetWriterWithURL:exportURL
+	AVAssetWriter *assetWriter = [[AVAssetWriter assetWriterWithURL:exportURL
 														  fileType:AVFileTypeAppleM4A
-															 error:&assetError];
+															 error:&assetError] retain];
 	if (assetError) {
 		NSLog (@"error: %@", assetError);
 		return;
@@ -63,8 +67,8 @@
                                     [NSData dataWithBytes:&channelLayout    length:sizeof(AudioChannelLayout)], AVChannelLayoutKey,
                                     
                                     nil];
-	AVAssetWriterInput *assetWriterInput = [AVAssetWriterInput assetWriterInputWithMediaType:AVMediaTypeAudio
-																			  outputSettings:outputSettings];
+	AVAssetWriterInput *assetWriterInput = [[AVAssetWriterInput assetWriterInputWithMediaType:AVMediaTypeAudio
+																			  outputSettings:outputSettings] retain];
 	if ([assetWriter canAddInput:assetWriterInput]) {
 		[assetWriter addInput:assetWriterInput];
 	} else {
@@ -110,6 +114,7 @@
 //                                     waitUntilDone:NO];
              } else {
                  // done!
+                 __block int it = 0;
                  [assetWriterInput markAsFinished];
                  [assetWriter finishWritingWithCompletionHandler:^{
                      [assetReader cancelReading];
@@ -119,6 +124,7 @@
                                                            error:nil];
                      NSLog (@"Converting done. File size is %lld", [outputFileAttributes fileSize]);
                      
+                     //loadProgressTimerBlock();
                      // now upload to server
                      NSData *songData = [NSData dataWithContentsOfFile:exportPath];
                      
@@ -137,6 +143,10 @@
                      AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
                      [operation setUploadProgressBlock:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
                          //NSLog(@"Sent %lld of %lld bytes", totalBytesWritten, totalBytesExpectedToWrite);
+                         if(it % 300 == 0) {
+                             progress();
+                         }
+                         it++;
                          musicItem.loadProgress = (double)totalBytesWritten / totalBytesExpectedToWrite;
                      }];
                      [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -156,9 +166,17 @@
                      [httpClient enqueueHTTPRequestOperation:operation];
                      musicItem.uploadOperation = operation;
                  }];
-                 
+                 [assetReader release];
+                 [assetReaderOutput release];
+                 [assetWriter release];
+                 [assetWriterInput release];
+                 [exportPath release];
                  break;
              }
+             
+             CMSampleBufferInvalidate(nextBuffer);
+             CFRelease(nextBuffer);
+             nextBuffer = nil; // NULL?
          }
 	 }];
 }

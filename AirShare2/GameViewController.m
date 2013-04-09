@@ -30,13 +30,20 @@ const double epsilon = 0.02;
 {
 	[super viewDidLoad];
     // visual placeholder
-    _currentPlaylistItem = [[PlaylistItem alloc] initPlaylistItemWithName:@"No Songs Playing" andSubtitle:@"" andID:@"000000" andDate:nil andPlaylistItemType:PlaylistItemTypeNone];
+    _currentPlaylistItem = [[PlaylistItem alloc] initPlaylistItemWithName:@"" andSubtitle:@"" andID:@"" andDate:nil andPlaylistItemType:PlaylistItemTypeNone];
+    _currentPlaylistItem.loadProgress = 0.0;
     _voteAmount = [[NSMutableDictionary alloc] initWithCapacity:10];
     
     self.view.backgroundColor = [[UIColor alloc] initWithPatternImage:[UIImage imageNamed:@"bgGreyImg.png"]];
-    self.playlistTable.layer.cornerRadius = 12;
+    //self.playlistTable.layer.cornerRadius = 12;
     self.playlistTable.layer.masksToBounds = YES;
+
+    //self.playlistTable.separatorStyle = UITableViewCellSeparatorStyleNone;
     
+    self.songLabel.hidden = YES;
+    self.artistLabel.hidden = YES;
+    self.waitingLabel.hidden = NO;
+
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -105,17 +112,51 @@ const double epsilon = 0.02;
     _game.playlist = [NSMutableArray arrayWithArray:[_game.playlist sortedArrayUsingSelector:@selector(compare:)]];
     [self.userTable reloadData];
     [self.playlistTable reloadData];
+}
 
-    
+- (void)reloadPlaylistItem:(PlaylistItem *)playlistItem
+{
+    [self.playlistTable beginUpdates];
+    int loc = [self.game indexForPlaylistItem:playlistItem];
+    [self.playlistTable reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:loc inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+    [self.playlistTable endUpdates];
+}
+
+- (void)addPlaylistItem:(PlaylistItem *)playlistItem
+{
+    [self.playlistTable beginUpdates];
+    int loc = [self.game indexForPlaylistItem:playlistItem];
+    //NSLog(@"inserting at loc %d", loc);
+    [self.playlistTable insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:loc inSection:0]] withRowAnimation:UITableViewRowAnimationRight];
+        
+    [self.playlistTable endUpdates];
+}
+
+- (void)removePlaylistItem:(PlaylistItem *)playlistItem animation:(UITableViewRowAnimation)animation
+{
+    [self.playlistTable beginUpdates];
+    int loc = [self.game indexForPlaylistItem:playlistItem];
+    [self.playlistTable deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:loc inSection:0]] withRowAnimation:animation];
+        
+    [self.game.playlist removeObject:playlistItem];
+    [self.playlistTable endUpdates];
 }
 
 - (void)audioPlayerFinishedPlaying
 {
-    [self setHeaderWithSongName:@"Waiting for song..." andArtistName:@""];
+    _waitingLabel.hidden = NO;
+    _songLabel.hidden = YES;
+    _artistLabel.hidden = YES;
 }
+
 - (void)game:(Game *)game setCurrentItem:(PlaylistItem *)playlistItem
 {
     _currentPlaylistItem = playlistItem;
+    if([_currentPlaylistItem.name isEqualToString:@""] && [_currentPlaylistItem.subtitle isEqualToString:@""] && [_currentPlaylistItem.ID isEqualToString:@""]) {
+        return;
+    }
+    
+    _waitingLabel.hidden = YES;
     [self setHeaderWithSongName:playlistItem.name andArtistName:playlistItem.subtitle];
 }
 
@@ -162,21 +203,16 @@ const double epsilon = 0.02;
             //count the songs that are still valid (not cancelled)
             NSInteger len = [_game.playlist count];
             return len;
-            
-            /* (no longer used)
-            NSInteger res = len;
-            for (NSInteger i = 0; i < len; i++) {
-                if ([(PlaylistItem *)[_game.playlist objectAtIndex:i] isCancelled]) {
-                    res--;
-                }
-            }
-            return res;
-            */
         } else {
             return 0;
         }
     }
 }
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+    cell.backgroundColor = [UIColor clearColor];
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"CellIdentifier";
@@ -188,7 +224,6 @@ const double epsilon = 0.02;
             NSString *peerID = [[_game.players allKeys] objectAtIndex:indexPath.row];
             cell.textLabel.text = [_game displayNameForPeerID:peerID];
         }
-
         return cell;
     }
     // else, is the playlist
@@ -196,33 +231,21 @@ const double epsilon = 0.02;
         PlaylistItemCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
         PlaylistItem *selectedItem = ((PlaylistItem *)[_game.playlist objectAtIndex:indexPath.row]);
         
-        /* (no longer used)
-        while ([selectedItem isCancelled]) {
-            [_game removeCancelledUploads];
-            if ([_game.playlist count] >= indexPath.row) {
-                selectedItem = ((PlaylistItem *)[_game.playlist objectAtIndex:indexPath.row]);
-            } else {
-                NSLog(@"Attempted to put more rows than there were songs. Error!");
-
-                return cell;
-            }
-        }
-        */
          
         if (cell == nil) {
             cell = [[PlaylistItemCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:nil playlistItem:selectedItem voteValue:[[_voteAmount objectForKey:selectedItem.ID] intValue]];
             cell.delegate = self;
         }
-        //cell.textLabel.backgroundColor=[UIColor clearColor];
-        //cell.detailTextLabel.backgroundColor=[UIColor clearColor];
-        //cell.contentView.backgroundColor=[UIColor clearColor];
-
         return cell;
     }
 }
 
 - (void)setHeaderWithSongName:(NSString *)songName andArtistName:(NSString *)artistName
 {
+    _songLabel.hidden = NO;
+    _artistLabel.hidden = NO;
+    _playbackProgressBar.hidden = NO;
+    
     self.songLabel.text = songName;
     self.songLabel.font = [UIFont systemFontOfSize:17];
     self.artistLabel.text = artistName;

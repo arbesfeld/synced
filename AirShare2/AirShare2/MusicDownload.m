@@ -11,7 +11,7 @@
 
 @implementation MusicDownload
 
--(void)downloadFileWithMusicItem:(MusicItem *)musicItem andSessionID:(NSString *)sessionID completion:(void (^)(void))completionBlock{
+-(void)downloadFileWithMusicItem:(MusicItem *)musicItem andSessionID:(NSString *)sessionID progress:(void (^)(void))progress completion:(void (^)(void))completionBlock{
     // make the GET request URL
     NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:sessionID, @"sessionid", musicItem.ID, @"id", nil];
     NSMutableString *prams = [[NSMutableString alloc] init];
@@ -32,12 +32,16 @@
     NSMutableURLRequest *request = [httpClient requestWithMethod:@"GET"
                                                             path:urlString
                                                       parameters:nil];
-    
+    __block int it = 0;
     AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
     [httpClient registerHTTPOperationClass:[AFHTTPRequestOperation class]];
     operation.outputStream = [NSOutputStream outputStreamToFileAtPath:saveName append:NO];
     [operation setDownloadProgressBlock:^(NSUInteger bytesDownloaded, long long totalBytesDownloaded, long long totalBytesExpectedToDownload) {
         musicItem.loadProgress = (double)totalBytesDownloaded / totalBytesExpectedToDownload;
+        if(it % 300 == 0) {
+            progress();
+        }
+        it++;
         //NSLog(@"Downloaded %lld bytes of %lld bytes", totalBytesDownloaded, totalBytesExpectedToDownload);
     }];
     [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
