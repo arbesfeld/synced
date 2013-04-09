@@ -37,6 +37,7 @@
         _cancelled = NO;
         _uploadOperation = nil;
         _belongsToUser = NO;
+        _justVoted = NO;
     }
     return self;
 }
@@ -53,11 +54,11 @@
     return _downvoteCount;
 }
 - (int)getScore {
-    if(_loadProgress != 1.0) {
-        return -1000 +_upvoteCount - _downvoteCount;
-    } else {
+//    if(_loadProgress != 1.0) {
+//        return -1000 +_upvoteCount - _downvoteCount;
+//    } else {
         return _upvoteCount - _downvoteCount;
-    }
+//    }
 }
 
 - (void)upvote:(int)amount {
