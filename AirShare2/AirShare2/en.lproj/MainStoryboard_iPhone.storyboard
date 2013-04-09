@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="3084" systemVersion="12C3012" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="2">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="3084" systemVersion="12C3103" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="2">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="2083"/>
     </dependencies>
@@ -85,7 +85,6 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="AD4-Q8-1a4" firstAttribute="bottom" secondItem="3" secondAttribute="bottom" type="default" id="2k9-Cy-0Lu"/>
-                            <constraint firstAttribute="bottom" secondItem="xQz-oA-iaC" secondAttribute="bottom" constant="34" type="user" id="4tP-hz-T0c"/>
                             <constraint firstItem="gao-GG-IxP" firstAttribute="top" secondItem="3" secondAttribute="top" constant="473" type="user" id="78b-ic-cV6"/>
                             <constraint firstItem="AD4-Q8-1a4" firstAttribute="top" secondItem="3" secondAttribute="top" type="default" id="7qb-yx-6F4"/>
                             <constraint firstItem="AD4-Q8-1a4" firstAttribute="trailing" secondItem="3" secondAttribute="trailing" type="default" id="8Le-CK-VCV"/>
@@ -94,8 +93,9 @@
                             <constraint firstAttribute="bottom" secondItem="edi-GE-42e" secondAttribute="bottom" constant="112" type="user" id="ExR-5q-DXG"/>
                             <constraint firstItem="kZ1-ww-eNC" firstAttribute="leading" secondItem="3" secondAttribute="leading" constant="18" id="ExR-Sk-s9v"/>
                             <constraint firstItem="edi-GE-42e" firstAttribute="top" secondItem="3" secondAttribute="top" constant="242" type="user" id="GaM-5f-H6i"/>
+                            <constraint firstAttribute="bottom" secondItem="xQz-oA-iaC" secondAttribute="bottom" constant="35" id="IeP-jP-OZE"/>
+                            <constraint firstAttribute="bottom" secondItem="HUI-8S-HhU" secondAttribute="bottom" constant="93" id="Kyj-lR-Agu"/>
                             <constraint firstItem="kZ1-ww-eNC" firstAttribute="top" secondItem="3" secondAttribute="top" constant="3" id="MIr-GJ-WrZ"/>
-                            <constraint firstAttribute="bottom" secondItem="HUI-8S-HhU" secondAttribute="bottom" constant="92" id="N5q-XB-Iof"/>
                             <constraint firstItem="xQz-oA-iaC" firstAttribute="centerX" secondItem="AD4-Q8-1a4" secondAttribute="centerX" type="default" id="P7i-YD-na3"/>
                             <constraint firstItem="GU4-nS-SJA" firstAttribute="top" secondItem="3" secondAttribute="top" constant="192" id="R9W-pW-Por"/>
                             <constraint firstItem="GU4-nS-SJA" firstAttribute="trailing" secondItem="edi-GE-42e" secondAttribute="trailing" type="default" id="Z9F-Lg-2qx"/>
@@ -376,7 +376,6 @@
                 <relationship kind="outlet" name="playlistTable" candidateClass="UITableView"/>
                 <relationship kind="outlet" name="skipSongButton" candidateClass="UIButton"/>
                 <relationship kind="outlet" name="skipSongLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="songLabel" candidateClass="UILabel"/>
                 <relationship kind="outlet" name="userTable" candidateClass="UITableView"/>
                 <relationship kind="outlet" name="waitingLabel" candidateClass="UILabel"/>
             </relationships>

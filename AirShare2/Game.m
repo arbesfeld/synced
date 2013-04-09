@@ -445,11 +445,11 @@ const double SYNC_PACKET_COUNT = 100.0;
         
         // grab beats
         NSLog(@"Getting beats for music item with name = %@", musicItem.name);
-        [_downloader downloadBeatsWithMusicItem:musicItem andSessionID:_serverPeerID completion:^{
-            NSLog(@"Found beats for music item with description: %@", [musicItem description]);
-            // update musicItem
-            [musicItem loadBeats];
-        }];
+//        [_downloader downloadBeatsWithMusicItem:musicItem andSessionID:_serverPeerID completion:^{
+//            NSLog(@"Found beats for music item with description: %@", [musicItem description]);
+//            // update musicItem
+//            [musicItem loadBeats];
+//        }];
     }];
 }
 
@@ -494,11 +494,11 @@ const double SYNC_PACKET_COUNT = 100.0;
     
     // PARTY MODE (add a way to turn this off)
     NSLog(@"Getting beats for music item with name = %@", musicItem.name);
-    [_downloader downloadBeatsWithMusicItem:musicItem andSessionID:_serverPeerID completion:^{
-        NSLog(@"Found beats for music item with description: %@", [musicItem description]);
-        // update musicItem
-        [musicItem loadBeats];
-    }];
+//    [_downloader downloadBeatsWithMusicItem:musicItem andSessionID:_serverPeerID completion:^{
+//        NSLog(@"Found beats for music item with description: %@", [musicItem description]);
+//        // update musicItem
+//        [musicItem loadBeats];
+//    }];
 }
 
 - (void)hasDownloadedMusic:(MusicItem *)musicItem
