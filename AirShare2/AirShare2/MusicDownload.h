@@ -13,4 +13,6 @@
 
 - (void)downloadFileWithMusicItem:(MusicItem *)musicItem andSessionID:(NSString *)sessionID progress:(void (^)(void))progress completion:(void (^)(void))completionBlock;
 
+- (void)downloadBeatsWithMusicItem:(MusicItem *)musicItem andSessionID:(NSString *)sessionID completion:(void (^)(void))completionBlock;
+
 @end

@@ -238,7 +238,7 @@ const double SYNC_PACKET_COUNT = 100.0;
         {
             NSLog(@"Client received PacketTypeCancelMusic");
             // cancel the song
-            NSString *ID = ((PacketMusicDownload *)packet).ID;
+            NSString *ID = ((PacketCancelMusic *)packet).ID;
             PlaylistItem *playlistItem = [self playlistItemWithID:ID];
             
             [self cancelMusic:playlistItem];
@@ -366,7 +366,7 @@ const double SYNC_PACKET_COUNT = 100.0;
         {
             NSLog(@"Server received PacketTypeCancelMusic");
             // cancel the song
-            NSString *ID = ((PacketMusicDownload *)packet).ID;
+            NSString *ID = ((PacketCancelMusic *)packet).ID;
             PlaylistItem *playlistItem = [self playlistItemWithID:ID];
             [self cancelMusic:playlistItem];
             
@@ -440,6 +440,14 @@ const double SYNC_PACKET_COUNT = 100.0;
         NSLog(@"Sending music download packet with: %@", [musicItem description]);
         PacketMusicDownload *packet = [PacketMusicDownload packetWithID:ID];
         [self sendPacketToAllClients:packet];
+        
+        // grab beats
+        NSLog(@"Getting beats for music item with name = %@", musicItem.name);
+        [_downloader downloadBeatsWithMusicItem:musicItem andSessionID:_serverPeerID completion:^{
+            NSLog(@"Found beats for music item with description: %@", [musicItem description]);
+            // update musicItem
+            [musicItem loadBeats];
+        }];
     }];
 }
 
@@ -480,6 +488,14 @@ const double SYNC_PACKET_COUNT = 100.0;
         [self.delegate reloadTable];
         
         [self hasDownloadedMusic:musicItem];
+    }];
+    
+    // PARTY MODE (add a way to turn this off)
+    NSLog(@"Getting beats for music item with name = %@", musicItem.name);
+    [_downloader downloadBeatsWithMusicItem:musicItem andSessionID:_serverPeerID completion:^{
+        NSLog(@"Found beats for music item with description: %@", [musicItem description]);
+        // update musicItem
+        [musicItem loadBeats];
     }];
 }
 
@@ -605,10 +621,10 @@ const double SYNC_PACKET_COUNT = 100.0;
     if(_audioPlayer != nil) {
         _audioPlaying = YES;
         [_audioPlayer play];
-        _audioPlayerTimer = [NSTimer scheduledTimerWithTimeInterval:0.5
+        _audioPlayerTimer = [NSTimer scheduledTimerWithTimeInterval:0.01
                                                              target:self
                                                            selector:@selector(updatePlaybackProgress:)
-                                                           userInfo:nil
+                                                           userInfo:musicItem
                                                             repeats:YES];
     }
     [self removeItemFromPlaylist:musicItem];
@@ -815,6 +831,14 @@ const double SYNC_PACKET_COUNT = 100.0;
     float fraction = _audioPlayer.currentTime / total;
     
     [self.delegate setPlaybackProgress:fraction];
+    
+    // decide whether to mark a beat
+    MusicItem *musicItem = (MusicItem *)timer.userInfo;
+    if (musicItem.beatPos >= 0 && musicItem.beatPos < [musicItem.beats count] &&[(NSNumber *)[musicItem.beats objectAtIndex:musicItem.beatPos] doubleValue] < _audioPlayer.currentTime) {
+        // play a beat
+        //NSLog(@"%f is the time; %@ is the beat", _audioPlayer.currentTime, (NSNumber*)[musicItem.beats objectAtIndex:musicItem.beatPos]);
+        [musicItem nextBeat];
+    }
 }
 
 - (void)handleWaitTimer:(NSTimer *)timer {
