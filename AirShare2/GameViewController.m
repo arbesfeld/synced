@@ -1,11 +1,14 @@
 #import "GameViewController.h"
 #import "PlaylistItemCell.h"
 #import "ECSlidingViewController.h"
+#import "MarqueeLabel.h"
+#import <QuartzCore/QuartzCore.h>
 
 const double epsilon = 0.02;
 
 @interface GameViewController ()
 
+@property (nonatomic, strong) MarqueeLabel * songTitle;
 
 @end
 
@@ -16,7 +19,7 @@ const double epsilon = 0.02;
 @synthesize delegate = _delegate;
 @synthesize game = _game;
 
-@synthesize songLabel = _songLabel;
+
 @synthesize artistLabel = _artistLabel;
 
 - (void)dealloc
@@ -40,9 +43,20 @@ const double epsilon = 0.02;
 
     //self.playlistTable.separatorStyle = UITableViewCellSeparatorStyleNone;
     
-    self.songLabel.hidden = YES;
+
     self.artistLabel.hidden = YES;
     self.waitingLabel.hidden = NO;
+    
+    self.songTitle = [[MarqueeLabel alloc] initWithFrame:CGRectMake(30, 75, self.view.frame.size.width-60.0f, 20.0f) duration:8.0 andFadeLength:10.0f];
+    self.songTitle.tag = 101;
+    self.songTitle.numberOfLines = 1;
+    self.songTitle.shadowOffset = CGSizeMake(0.0, -1.0);
+    self.songTitle.textAlignment = NSTextAlignmentCenter;
+    self.songTitle.textColor = [UIColor colorWithRed:0.234 green:0.234 blue:0.234 alpha:1.000];
+    self.songTitle.backgroundColor = [UIColor clearColor];
+    self.songTitle.font = [UIFont systemFontOfSize:17];
+    self.songTitle.text = @" ";
+    [self.view addSubview:self.songTitle];
 
 }
 
@@ -150,8 +164,8 @@ const double epsilon = 0.02;
 - (void)audioPlayerFinishedPlaying
 {
     _waitingLabel.hidden = NO;
-    _songLabel.hidden = YES;
     _artistLabel.hidden = YES;
+    self.songTitle.text = @" ";
 }
 
 - (void)game:(Game *)game setCurrentItem:(PlaylistItem *)playlistItem
@@ -247,15 +261,16 @@ const double epsilon = 0.02;
 
 - (void)setHeaderWithSongName:(NSString *)songName andArtistName:(NSString *)artistName
 {
-    _songLabel.hidden = NO;
+
     _artistLabel.hidden = NO;
     _playbackProgressBar.hidden = NO;
     
-    self.songLabel.text = songName;
-    self.songLabel.font = [UIFont systemFontOfSize:17];
+    self.songTitle.text = songName;
+
     self.artistLabel.text = artistName;
     self.artistLabel.font = [UIFont systemFontOfSize:13];
     self.artistLabel.textColor = [UIColor grayColor];
+    
 }
 #pragma mark - UITableViewDelegate
 

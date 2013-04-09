@@ -5,6 +5,8 @@
 #import "PlaylistItemCell.h"
 #import <MediaPlayer/MediaPlayer.h>
 
+
+
 @class GameViewController;
 
 
@@ -19,7 +21,6 @@
     NSMutableDictionary *_voteAmount; // key is songID, value is vote amount
 }
 @property (nonatomic, weak) IBOutlet UILabel *skipSongLabel;
-@property (nonatomic, weak) IBOutlet UILabel *songLabel;
 @property (nonatomic, weak) IBOutlet UILabel *artistLabel;
 @property (weak, nonatomic) IBOutlet UILabel *waitingLabel;
 @property (nonatomic, weak) IBOutlet UIButton *exitButton;

@@ -77,6 +77,7 @@
 		55FCC5C816ED7A5E0000BCBD /* NSData+AirShareAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 55FCC5C716ED7A5E0000BCBD /* NSData+AirShareAdditions.m */; };
 		89307B7717138BAC0008B488 /* upvote.png in Resources */ = {isa = PBXBuildFile; fileRef = 89307B7617138BAC0008B488 /* upvote.png */; };
 		89B257DF16F140D30018695A /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 89B257DE16F140D30018695A /* QuartzCore.framework */; };
+		89C016B01714B5B9003F0B26 /* MarqueeLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 89C016AF1714B545003F0B26 /* MarqueeLabel.m */; };
 		89E477281712837C00DE9ECE /* game.png in Resources */ = {isa = PBXBuildFile; fileRef = 89E477271712837C00DE9ECE /* game.png */; };
 		89E4772A1712869A00DE9ECE /* exit-01.png in Resources */ = {isa = PBXBuildFile; fileRef = 89E477291712869900DE9ECE /* exit-01.png */; };
 		89E4772E17128F9700DE9ECE /* movies-01.png in Resources */ = {isa = PBXBuildFile; fileRef = 89E4772D17128F9700DE9ECE /* movies-01.png */; };
@@ -195,6 +196,8 @@
 		89307B7617138BAC0008B488 /* upvote.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = upvote.png; path = Graphics/upvote.png; sourceTree = "<group>"; };
 		89AC5B50170FA81500FB7975 /* gothic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = gothic.ttf; sourceTree = "<group>"; };
 		89B257DE16F140D30018695A /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		89C016AE1714B545003F0B26 /* MarqueeLabel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MarqueeLabel.h; sourceTree = "<group>"; };
+		89C016AF1714B545003F0B26 /* MarqueeLabel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MarqueeLabel.m; sourceTree = "<group>"; };
 		89E477271712837C00DE9ECE /* game.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = game.png; path = Graphics/game.png; sourceTree = "<group>"; };
 		89E477291712869900DE9ECE /* exit-01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "exit-01.png"; path = "Graphics/exit-01.png"; sourceTree = "<group>"; };
 		89E4772D17128F9700DE9ECE /* movies-01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "movies-01.png"; path = "Graphics/movies-01.png"; sourceTree = "<group>"; };
@@ -230,6 +233,8 @@
 		558E0D651704DE3800BF230D /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				89C016AE1714B545003F0B26 /* MarqueeLabel.h */,
+				89C016AF1714B545003F0B26 /* MarqueeLabel.m */,
 				559D6B9A17120A2900C591D8 /* UIImage+animatedGIF.h */,
 				559D6B9B17120A2900C591D8 /* UIImage+animatedGIF.m */,
 				558E0D621704DE3100BF230D /* PlaylistItemCell.h */,
@@ -544,6 +549,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				89C016B01714B5B9003F0B26 /* MarqueeLabel.m in Sources */,
 				55FCC55916ED3D4C0000BCBD /* main.m in Sources */,
 				55FCC55D16ED3D4C0000BCBD /* AppDelegate.m in Sources */,
 				55FCC57816ED3DA20000BCBD /* MainViewController.m in Sources */,

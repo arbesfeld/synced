@@ -20,6 +20,7 @@
         self.playlistItem = playlistItem;
         self.selectionStyle = UITableViewCellSelectionStyleNone;
         
+        self.textLabel.font = [UIFont systemFontOfSize:17.0f];
         self.textLabel.text = playlistItem.name;
         self.textLabel.backgroundColor = [UIColor clearColor];
         self.textLabel.textAlignment = NSTextAlignmentCenter;
@@ -81,7 +82,7 @@
         
 
         _loadProgress = [[UIView alloc] init];
-        _loadProgress.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y - 2, self.frame.size.width * playlistItem.loadProgress, self.frame.size.height + 2);
+        _loadProgress.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y - 2, self.frame.size.width * playlistItem.loadProgress, self.frame.size.height + 1);
         _loadProgress.layer.borderColor = [UIColor grayColor].CGColor;
         _loadProgress.layer.borderWidth = 1.0f;
         _loadProgress.autoresizingMask = 0x3f;
