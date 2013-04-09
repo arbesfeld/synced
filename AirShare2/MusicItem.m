@@ -32,7 +32,7 @@
 		self.songURL = [[NSURL alloc] initWithString:songPath];
         self.beats = [[NSMutableArray alloc] init];
         self.beatPos = -1;
-        self.partyMode = YES;
+        self.partyMode = NO;
 	}
 	return self;
 }
