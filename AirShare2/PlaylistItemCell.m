@@ -20,6 +20,7 @@
         self.playlistItem = playlistItem;
         self.selectionStyle = UITableViewCellSelectionStyleNone;
         
+        self.textLabel.font = [UIFont systemFontOfSize:17.0f];
         self.textLabel.text = playlistItem.name;
         self.textLabel.backgroundColor = [UIColor clearColor];
         self.textLabel.textAlignment = NSTextAlignmentCenter;
@@ -81,13 +82,31 @@
         
 
         _loadProgress = [[UIView alloc] init];
-        _loadProgress.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y - 2, self.frame.size.width * playlistItem.loadProgress, self.frame.size.height + 2);
-        
-        int colorID = (int)[playlistItem.ID characterAtIndex:0] % colorTable.count;
-        _loadProgress.backgroundColor = (UIColor *)colorTable[colorID];
+        _loadProgress.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y - 2, self.frame.size.width * playlistItem.loadProgress, self.frame.size.height + 1);
         _loadProgress.layer.borderColor = [UIColor grayColor].CGColor;
         _loadProgress.layer.borderWidth = 1.0f;
         _loadProgress.autoresizingMask = 0x3f;
+        
+        int colorID = (int)[playlistItem.ID characterAtIndex:0] % colorTable.count;
+        UIColor *originalColor = (UIColor *)colorTable[colorID];
+        
+        _loadProgress.backgroundColor = originalColor;
+        // this item was voted on, transition from its original color
+        if(self.playlistItem.justVoted) {
+            CGFloat hue, saturation, brightness, alpha;
+            [originalColor getHue:&hue saturation:&saturation brightness:&brightness alpha:&alpha];
+            UIColor *flashedColor = [UIColor colorWithHue:hue saturation:MIN(1.0, saturation + 0.25) brightness:MAX(0.0, brightness - 0.1) alpha:alpha];
+            
+            [UIView animateWithDuration:0.65 animations:^ {
+                self.loadProgress.backgroundColor = flashedColor;
+            } completion:^(BOOL finished) {
+                [UIView animateWithDuration:0.65 animations:^ {
+                    _loadProgress.backgroundColor = originalColor;
+                }];
+            }];
+            self.playlistItem.justVoted = NO;
+        }
+        
         // place behind other views
         
         //NSLog(@"Load progress = %f", playlistItem.loadProgress);
@@ -123,8 +142,7 @@
     }
     return self;
 }
--(void) drawRect:(CGRect)rect{
-}
+
 - (IBAction)upvoteButtonPressed:(id)sender
 {
     [_upvoteButton setEnabled:NO];
@@ -137,6 +155,7 @@
         
         [_downvoteButton setEnabled:YES];
     }
+    self.playlistItem.justVoted = YES;
     [self.delegate reloadTable];
 }
 
@@ -152,6 +171,7 @@
         
         [_upvoteButton setEnabled:YES];
     }
+    self.playlistItem.justVoted = YES;
     [self.delegate reloadTable];
 }
 

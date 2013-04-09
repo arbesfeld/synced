@@ -26,6 +26,7 @@
     [_hostGameButton setTitle:@"Host Session" forState:UIControlStateNormal];
     _quitReasonClient = QuitReasonConnectionDropped;
     [self setupUI];
+
 }
 
 - (void)reload

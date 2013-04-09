@@ -222,6 +222,7 @@ const double SYNC_PACKET_COUNT = 100.0;
             } else {
                 [playlistItem downvote:amount];
             }
+            playlistItem.justVoted = YES;
             [self.delegate reloadTable];
             
             break;
@@ -350,6 +351,7 @@ const double SYNC_PACKET_COUNT = 100.0;
             } else {
                 [playlistItem downvote:amount];
             }
+            playlistItem.justVoted = YES;
             [self.delegate reloadTable];
             
             break;
