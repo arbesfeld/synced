@@ -32,7 +32,7 @@
 		self.songURL = [[NSURL alloc] initWithString:songPath];
         self.beats = [[NSMutableArray alloc] init];
         self.beatPos = -1;
-        self.partyMode = NO;
+        self.partyMode = YES;
 	}
 	return self;
 }
@@ -60,7 +60,7 @@
         NSString* cur = [allLinedStrings objectAtIndex:i];
     
         NSArray* singleStrs = [cur componentsSeparatedByCharactersInSet: [NSCharacterSet characterSetWithCharactersInString:@" "]];
-        if ([singleStrs count] > 1 && [[singleStrs objectAtIndex:1] hasPrefix:@"1"]) {
+        if ([singleStrs count] > 1 && [[singleStrs objectAtIndex:1] length] > 0) {
             // add it!
             NSString *beat = [[singleStrs objectAtIndex:0] substringToIndex:[[singleStrs objectAtIndex:0] length] - 1];
             //NSLog(@"Beat: %@", beat);
