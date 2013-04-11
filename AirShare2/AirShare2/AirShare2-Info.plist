@@ -26,6 +26,8 @@
 	<true/>
 	<key>UIAppFonts</key>
 	<array>
+		<string>CenturyGothicStd-Bold.otf</string>
+		<string>gothic.ttf</string>
 		<string>CenturyGothicStd.otf</string>
 	</array>
 	<key>UIMainStoryboardFile</key>

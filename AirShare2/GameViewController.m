@@ -47,7 +47,7 @@ const double epsilon = 0.02;
     self.artistLabel.hidden = YES;
     self.waitingLabel.hidden = NO;
     
-    self.songTitle = [[MarqueeLabel alloc] initWithFrame:CGRectMake(30, 75, self.view.frame.size.width-60.0f, 20.0f) duration:8.0 andFadeLength:10.0f];
+    self.songTitle = [[MarqueeLabel alloc] initWithFrame:CGRectMake(30, 70, self.view.frame.size.width-60.0f, 20.0f) duration:8.0 andFadeLength:10.0f];
     self.songTitle.tag = 101;
     self.songTitle.numberOfLines = 1;
     self.songTitle.shadowOffset = CGSizeMake(0.0, -1.0);
@@ -252,7 +252,7 @@ const double epsilon = 0.02;
         
          
         if (cell == nil) {
-            cell = [[PlaylistItemCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:nil playlistItem:selectedItem voteValue:[[_voteAmount objectForKey:selectedItem.ID] intValue]];
+            cell = [[PlaylistItemCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:nil playlistItem:selectedItem voteValue:[[_voteAmount objectForKey:selectedItem.ID] intValue] position:indexPath.row];
             cell.delegate = self;
         }
         return cell;
@@ -266,10 +266,10 @@ const double epsilon = 0.02;
     _playbackProgressBar.hidden = NO;
     
     self.songTitle.text = songName;
-
+    self.songTitle.font = [UIFont fontWithName:@"Century Gothic" size:18.0f];
     self.artistLabel.text = artistName;
-    self.artistLabel.font = [UIFont systemFontOfSize:13];
-    self.artistLabel.textColor = [UIColor grayColor];
+    self.artistLabel.font = [UIFont fontWithName:@"Century Gothic" size:14.0f];
+    self.artistLabel.textColor = [UIColor darkGrayColor];
     
 }
 #pragma mark - UITableViewDelegate

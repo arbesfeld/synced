@@ -23,7 +23,6 @@
 - (void)viewDidLoad
 {
 	[super viewDidLoad];
-    [_hostGameButton setTitle:@"Host Session" forState:UIControlStateNormal];
     _quitReasonClient = QuitReasonConnectionDropped;
     [self setupUI];
 
@@ -64,6 +63,9 @@
         return;
     
     _serverName = [alertView textFieldAtIndex:0].text;
+    if([_serverName isEqualToString:@""]) {
+        _serverName = nil;
+    }
     [self hostGameAction:self];
 }
 
@@ -221,7 +223,7 @@
     
 	if (_matchmakingClient != nil)
 	{
-		self.waitLabel.text = @"Connecting...";
+        _waitingView.hidden = NO;
         
 		NSString *peerID = [_matchmakingClient peerIDForAvailableServerAtIndex:indexPath.row];
 		[_matchmakingClient connectToServerWithPeerID:peerID];
@@ -305,18 +307,23 @@
 -(void)setupUI
 {
     self.view.backgroundColor = [[UIColor alloc] initWithPatternImage:[UIImage imageNamed:@"bgGreyImg.png"]];
-    [self.sessionsLabel setFont:[UIFont systemFontOfSize:20]];
-    [self.sessionsLabel setTextAlignment:NSTextAlignmentCenter];
     self.tableView.layer.cornerRadius = 7;
     self.tableView.layer.masksToBounds = YES;
     
+    NSLog(@"%@", [UIFont familyNames]);
     //Global UI
-    [[UILabel appearance] setFont:[UIFont fontWithName:@"gothic" size:17.0]];
+    [[UILabel appearance] setFont:[UIFont fontWithName:@"Century Gothic" size:17.0]];
     [[UILabel appearance] setTextColor:[UIColor colorWithHue:0.0 saturation:0.0 brightness:.2 alpha:1.0]];
-    [[UIButton appearance] setFont:[UIFont fontWithName:@"gothic" size:17.0]];
+    [[UIButton appearance] setFont:[UIFont fontWithName:@"Century Gothic" size:17.0]];
     [[UIButton appearance] setTitleColor:[UIColor colorWithHue:0.0 saturation:0.0 brightness:0.2 alpha:1.0] forState:UIControlStateNormal];
-
+    
+    self.sessionsLabel.font = [UIFont fontWithName:@"Century Gothic" size:20.0f];
     [_hostGameButton setTitle:@"Host Session" forState:UIControlStateNormal];
+    
+    NSURL *url = [[NSBundle mainBundle] URLForResource:@"loading" withExtension:@"gif"];
+    _waitingView = [[UIImageView alloc] initWithFrame:CGRectMake(15.0f, 20.0f, 15.0f, 15.0f)];
+    _waitingView.image = [UIImage animatedImageWithAnimatedGIFData:[NSData dataWithContentsOfURL:url]];
+    _waitingView.hidden = YES;
 }
 
 

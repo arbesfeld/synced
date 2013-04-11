@@ -34,6 +34,7 @@
         _upvoteCount = 0;
         _downvoteCount = 0;
         _loadProgress = 0.0;
+        _previousLoadProgress = 0.0;
         _cancelled = NO;
         _uploadOperation = nil;
         _belongsToUser = NO;

@@ -31,6 +31,7 @@ PlaylistItemType;
 @property (nonatomic, strong) NSDate *date;
 @property (nonatomic, assign) PlaylistItemType playlistItemType;
 @property (nonatomic, assign) double loadProgress;
+@property (nonatomic, assign) double previousLoadProgress; // used for UI loading animation 
 @property (nonatomic, assign) BOOL belongsToUser; // whether the user uploaded a given song
 @property (nonatomic, assign) BOOL cancelled;
 @property (nonatomic, assign) BOOL justVoted;

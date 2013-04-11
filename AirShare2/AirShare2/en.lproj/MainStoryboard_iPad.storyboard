@@ -54,14 +54,6 @@
                                     <outlet property="delegate" destination="2" id="8Zd-2o-WBm"/>
                                 </connections>
                             </tableView>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Wait Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nGB-Hn-Ad8">
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="105" id="Bqh-uV-y0G"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Current Sessions" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lgb-kf-s4i">
                                 <constraints>
                                     <constraint firstAttribute="width" constant="247" id="4sv-j9-cHu"/>
@@ -82,8 +74,6 @@
                             <constraint firstItem="9at-aE-qek" firstAttribute="top" secondItem="5" secondAttribute="top" constant="42" id="Pgd-Mo-tHL"/>
                             <constraint firstItem="Lgb-kf-s4i" firstAttribute="top" secondItem="5" secondAttribute="top" constant="5" id="VpB-D3-8Qc"/>
                             <constraint firstItem="vRK-Xc-yKZ" firstAttribute="leading" secondItem="5" secondAttribute="leading" constant="145" id="ZgE-v2-x5k"/>
-                            <constraint firstItem="nGB-Hn-Ad8" firstAttribute="baseline" secondItem="E5i-71-qHh" secondAttribute="baseline" type="default" id="aNB-d5-RBX"/>
-                            <constraint firstItem="nGB-Hn-Ad8" firstAttribute="leading" secondItem="5" secondAttribute="leading" constant="171" id="emy-yn-qpn"/>
                             <constraint firstItem="9at-aE-qek" firstAttribute="leading" secondItem="5" secondAttribute="leading" constant="330" id="tB7-di-9hj"/>
                             <constraint firstItem="E5i-71-qHh" firstAttribute="top" secondItem="5" secondAttribute="top" constant="350" id="vBC-fJ-ne1"/>
                         </constraints>
@@ -93,7 +83,6 @@
                         <outlet property="nameTextField" destination="8mm-gt-wR1" id="iZG-tt-lpf"/>
                         <outlet property="statusLabel" destination="E5i-71-qHh" id="nj0-RT-D58"/>
                         <outlet property="tableView" destination="9at-aE-qek" id="CU9-HZ-LXk"/>
-                        <outlet property="waitLabel" destination="nGB-Hn-Ad8" id="L7S-Nt-6an"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3" sceneMemberID="firstResponder"/>
@@ -179,9 +168,15 @@
             <relationships>
                 <relationship kind="action" name="exitAction:"/>
                 <relationship kind="action" name="playMusic:"/>
-                <relationship kind="outlet" name="centerLabel" candidateClass="UILabel"/>
+                <relationship kind="action" name="skipMusic:"/>
+                <relationship kind="outlet" name="artistLabel" candidateClass="UILabel"/>
                 <relationship kind="outlet" name="exitButton" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="tableView" candidateClass="UITableView"/>
+                <relationship kind="outlet" name="playbackProgressBar" candidateClass="UIProgressView"/>
+                <relationship kind="outlet" name="playlistTable" candidateClass="UITableView"/>
+                <relationship kind="outlet" name="skipSongButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="skipSongLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="userTable" candidateClass="UITableView"/>
+                <relationship kind="outlet" name="waitingLabel" candidateClass="UILabel"/>
             </relationships>
         </class>
         <class className="MainViewController" superclassName="UIViewController">
@@ -193,7 +188,7 @@
                 <relationship kind="outlet" name="sessionsLabel" candidateClass="UILabel"/>
                 <relationship kind="outlet" name="statusLabel" candidateClass="UILabel"/>
                 <relationship kind="outlet" name="tableView" candidateClass="UITableView"/>
-                <relationship kind="outlet" name="waitLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="waitingView" candidateClass="UIImageView"/>
             </relationships>
         </class>
         <class className="NSLayoutConstraint" superclassName="NSObject">
