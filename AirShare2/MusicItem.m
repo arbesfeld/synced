@@ -25,10 +25,9 @@
 {
 	if ((self = [super initPlaylistItemWithName:name andSubtitle:subtitle andID:ID andDate:date andPlaylistItemType:PlaylistItemTypeSong]))
 	{
-        NSArray *dirs = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-        NSString *documentsDirectoryPath = [dirs objectAtIndex:0];
+        NSString *tempPath = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
         NSString *fileName = [NSString stringWithFormat:@"%@.m4a", ID];
-        NSString *songPath = [documentsDirectoryPath stringByAppendingPathComponent:fileName];
+        NSString *songPath = [tempPath stringByAppendingPathComponent:fileName];
 		self.songURL = [[NSURL alloc] initWithString:songPath];
         self.beats = [[NSMutableArray alloc] init];
         self.beatPos = -1;

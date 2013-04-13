@@ -40,14 +40,13 @@
 	[assetReader addOutput: assetReaderOutput];
     
     // export path is where it is saved locally
-	NSArray *dirs = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-	NSString *documentsDirectoryPath = [dirs objectAtIndex:0];
+    NSString *tempPath = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
     NSString *fileName = [NSString stringWithFormat:@"%@.m4a", musicItem.ID];
-	NSString *exportPath = [[documentsDirectoryPath stringByAppendingPathComponent:fileName] retain];
-    
+	NSString *exportPath = [[tempPath stringByAppendingPathComponent:fileName] retain];
 	if ([[NSFileManager defaultManager] fileExistsAtPath:exportPath]) {
 		[[NSFileManager defaultManager] removeItemAtPath:exportPath error:nil];
 	}
+    NSLog(@"Export path = %@", exportPath);
 	NSURL *exportURL = [NSURL fileURLWithPath:exportPath];
 	AVAssetWriter *assetWriter = [[AVAssetWriter assetWriterWithURL:exportURL
 														  fileType:AVFileTypeAppleM4A
@@ -128,10 +127,8 @@
                      // now upload to server
                      NSData *songData = [NSData dataWithContentsOfFile:exportPath];
                      
-                     NSLog(@"Uploading to server: %@", musicItem.ID);
-                     
                      NSURL *url = [NSURL URLWithString:BASE_URL];
-                     NSLog(@"Posting with id = %@ and sessionid = %@", musicItem.ID, sessionID);
+                     NSLog(@"Uploading with id = %@ and sessionid = %@", musicItem.ID, sessionID);
                      AFHTTPClient *httpClient = [[AFHTTPClient alloc] initWithBaseURL:url];
                      NSMutableURLRequest *request = [httpClient multipartFormRequestWithMethod:@"POST" path:@"/airshare-upload.php" parameters:nil constructingBodyWithBlock: ^(id <AFMultipartFormData>formData) {
                          [formData appendPartWithFileData:songData name:@"musicfile" fileName:musicItem.ID mimeType:@"audio/x-m4a"];
@@ -144,7 +141,7 @@
                      __block int ntimes = 5;
                      [operation setUploadProgressBlock:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
                          //NSLog(@"Sent %lld of %lld bytes", totalBytesWritten, totalBytesExpectedToWrite);
-                         if(it % 300 == 0) {
+                         if(it % 600 == 0) {
                              progress();
                          }
                          it++;
@@ -160,7 +157,7 @@
                           NSLog(@"Upload Error: %@",  operation.responseString);
                           if(ntimes > 0) {
                               // retry upload
-                              [httpClient enqueueHTTPRequestOperation:operation];
+                          //    [httpClient enqueueHTTPRequestOperation:operation];
                           }
                           ntimes--;
                       }];

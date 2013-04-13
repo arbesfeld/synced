@@ -24,8 +24,9 @@
     NSLog(@"GET Request = %@",urlString);
     
     // the name of the locally saved file
-    NSString *saveName = [NSString stringWithFormat:@"%@.m4a", musicItem.ID];
-    saveName = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:saveName];
+    NSString *tempPath = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    NSString *fileName = [NSString stringWithFormat:@"%@.m4a", musicItem.ID];
+    NSString *songPath = [tempPath stringByAppendingPathComponent:fileName];
 
     // asynchronous download
     AFHTTPClient *httpClient = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:BASE_URL]];
@@ -35,7 +36,7 @@
     __block int it = 0, ntimes = 5;
     AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
     [httpClient registerHTTPOperationClass:[AFHTTPRequestOperation class]];
-    operation.outputStream = [NSOutputStream outputStreamToFileAtPath:saveName append:NO];
+    operation.outputStream = [NSOutputStream outputStreamToFileAtPath:songPath append:NO];
     [operation setDownloadProgressBlock:^(NSUInteger bytesDownloaded, long long totalBytesDownloaded, long long totalBytesExpectedToDownload) {
         musicItem.loadProgress = (double)totalBytesDownloaded / totalBytesExpectedToDownload;
         if(it % 300 == 0) {
@@ -52,7 +53,7 @@
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Download Error: %@", error);
         if(ntimes > 0) {
-            [operation start];
+        //    [operation start];
         }
         ntimes--;
     }];

@@ -59,11 +59,9 @@ const double epsilon = 0.02;
     [self.view addSubview:self.songTitle];
 
 }
-
 - (void)viewWillDisappear:(BOOL)animated
 {
 	[super viewWillDisappear:animated];
-    
 	[_alertView dismissWithClickedButtonIndex:_alertView.cancelButtonIndex animated:NO];
 }
 

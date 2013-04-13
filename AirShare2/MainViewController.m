@@ -42,6 +42,7 @@
 - (void)viewWillAppear:(BOOL)animated
 {
 	[super viewWillAppear:animated];
+    _waitingView.hidden = YES;
     [self reload];
 }
 

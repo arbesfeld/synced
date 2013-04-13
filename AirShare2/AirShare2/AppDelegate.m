@@ -14,6 +14,9 @@
 {
     [UIApplication sharedApplication].idleTimerDisabled = YES;
     
+    [[AVAudioSession sharedInstance] setDelegate: self];
+    NSError *setCategoryError = nil;
+    [[AVAudioSession sharedInstance] setCategory: AVAudioSessionCategoryPlayback error: &setCategoryError];
     // Override point for customization after application launch.
     return YES;
 }

@@ -17,8 +17,8 @@
 #import "PacketCancelMusic.h"
 
 const double DELAY_TIME = 2.00000; // wait DELAY_TIME seconds until songs play
-const int WAIT_TIME_UPLOAD = 25; // wait time for others to download music after uploading
-const int WAIT_TIME_DOWNLOAD = 12; // wait time for others to download music after downloading
+const int WAIT_TIME_UPLOAD = 25; // server wait time for others to download music after uploading
+const int WAIT_TIME_DOWNLOAD = 20; // server wait time for others to download music after downloading
 const double SYNC_PACKET_COUNT = 100.0;
 
 @implementation Game
@@ -589,10 +589,9 @@ const double SYNC_PACKET_COUNT = 100.0;
 
 - (void)prepareToPlayMusicItem:(MusicItem *)musicItem
 {
-    NSArray *dirs = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectoryPath = [dirs objectAtIndex:0];
+    NSString *tempPath = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
     NSString *fileName = [NSString stringWithFormat:@"%@.m4a", musicItem.ID];
-    NSString *songPath = [documentsDirectoryPath stringByAppendingPathComponent:fileName];
+    NSString *songPath = [tempPath stringByAppendingPathComponent:fileName];
     NSURL *songURL = [[NSURL alloc] initWithString:songPath];
     
     NSError *error;
@@ -603,10 +602,6 @@ const double SYNC_PACKET_COUNT = 100.0;
         NSLog(@"AudioPlayer did not load properly: %@", [error description]);
     } else {
         _audioPlaying = YES;
-        
-        [[AVAudioSession sharedInstance] setDelegate: self];
-        NSError *setCategoryError = nil;
-        [[AVAudioSession sharedInstance] setCategory: AVAudioSessionCategoryPlayback error: &setCategoryError];
         
         [_audioPlayer prepareToPlay];
         
@@ -943,18 +938,16 @@ const double SYNC_PACKET_COUNT = 100.0;
 
 - (void)destroyFilesWithSessionID:(NSString *)sessionID
 {
-    NSError *error;
-    
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@airshare-destroy.php?sessionid=%@", BASE_URL, sessionID]];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
-    [NSURLConnection sendSynchronousRequest:request
-                          returningResponse:nil
-                                      error:&error];
-    if(error) {
-        NSLog(@"Error destroying files: %@", error);
-    } else {
-        NSLog(@"Files with sessionid = %@ destroyed", sessionID);
-    }
+    NSOperationQueue *queue = [[NSOperationQueue alloc] init];
+    [NSURLConnection sendAsynchronousRequest:request queue:queue completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+        if(error) {
+            NSLog(@"Error destroying files: %@", error);
+        } else {
+            NSLog(@"Files with sessionid = %@ destroyed", sessionID);
+        }
+    }];
 }
 
 - (void)endSession
