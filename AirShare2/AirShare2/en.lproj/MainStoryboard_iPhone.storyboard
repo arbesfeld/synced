@@ -73,24 +73,32 @@
                                     <action selector="hostGameAction:" destination="2" eventType="touchUpInside" id="mrf-ej-Yf1"/>
                                 </connections>
                             </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bht-7b-rQK">
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="15" id="K2L-33-D6W"/>
+                                    <constraint firstAttribute="height" constant="15" id="aJk-9s-rdf"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="bht-7b-rQK" firstAttribute="centerX" secondItem="AD4-Q8-1a4" secondAttribute="centerX" type="default" id="0sA-V4-PaA"/>
                             <constraint firstItem="AD4-Q8-1a4" firstAttribute="bottom" secondItem="3" secondAttribute="bottom" type="default" id="2k9-Cy-0Lu"/>
                             <constraint firstItem="gao-GG-IxP" firstAttribute="top" secondItem="3" secondAttribute="top" constant="473" type="user" id="78b-ic-cV6"/>
                             <constraint firstItem="AD4-Q8-1a4" firstAttribute="top" secondItem="3" secondAttribute="top" type="default" id="7qb-yx-6F4"/>
                             <constraint firstItem="AD4-Q8-1a4" firstAttribute="trailing" secondItem="3" secondAttribute="trailing" type="default" id="8Le-CK-VCV"/>
                             <constraint firstItem="xeb-dW-sZd" firstAttribute="leading" secondItem="3" secondAttribute="leading" constant="-100" id="AZR-XK-j3H"/>
-                            <constraint firstItem="edi-GE-42e" firstAttribute="centerX" secondItem="xQz-oA-iaC" secondAttribute="centerX" type="default" id="DLU-pr-kzE"/>
                             <constraint firstItem="kZ1-ww-eNC" firstAttribute="leading" secondItem="3" secondAttribute="leading" constant="18" id="ExR-Sk-s9v"/>
-                            <constraint firstItem="edi-GE-42e" firstAttribute="centerX" secondItem="AD4-Q8-1a4" secondAttribute="centerX" type="default" id="H9L-bH-2MS"/>
                             <constraint firstItem="kZ1-ww-eNC" firstAttribute="top" secondItem="3" secondAttribute="top" constant="3" id="MIr-GJ-WrZ"/>
+                            <constraint firstItem="bht-7b-rQK" firstAttribute="centerX" secondItem="edi-GE-42e" secondAttribute="centerX" type="default" id="MYW-TD-z5t"/>
+                            <constraint firstAttribute="bottom" secondItem="bht-7b-rQK" secondAttribute="bottom" constant="94" id="Rhd-w8-Rrx"/>
                             <constraint firstItem="GU4-nS-SJA" firstAttribute="top" secondItem="3" secondAttribute="top" constant="186" id="T4G-sQ-9fs"/>
                             <constraint firstItem="GU4-nS-SJA" firstAttribute="trailing" secondItem="edi-GE-42e" secondAttribute="trailing" type="default" id="Z9F-Lg-2qx"/>
                             <constraint firstItem="xeb-dW-sZd" firstAttribute="leading" secondItem="gao-GG-IxP" secondAttribute="leading" type="default" id="epv-6x-c9q"/>
                             <constraint firstItem="AD4-Q8-1a4" firstAttribute="leading" secondItem="3" secondAttribute="leading" type="default" id="gJu-DT-hbJ"/>
-                            <constraint firstAttribute="bottom" secondItem="xQz-oA-iaC" secondAttribute="bottom" constant="28" id="jQ6-pr-Tqc"/>
+                            <constraint firstItem="bht-7b-rQK" firstAttribute="centerX" secondItem="xQz-oA-iaC" secondAttribute="centerX" type="default" id="hSF-ww-hB6"/>
                             <constraint firstItem="GU4-nS-SJA" firstAttribute="leading" secondItem="edi-GE-42e" secondAttribute="leading" type="default" id="lu8-wx-Qha"/>
+                            <constraint firstAttribute="bottom" secondItem="xQz-oA-iaC" secondAttribute="bottom" constant="28" id="lz8-8x-qGF"/>
                             <constraint firstItem="edi-GE-42e" firstAttribute="top" secondItem="3" secondAttribute="top" constant="229" id="smh-9W-dkJ"/>
                             <constraint firstItem="xeb-dW-sZd" firstAttribute="top" secondItem="3" secondAttribute="top" constant="451" id="uLD-Vn-OxP"/>
                         </constraints>
@@ -101,6 +109,7 @@
                         <outlet property="sessionsLabel" destination="GU4-nS-SJA" id="I4H-iV-wsb"/>
                         <outlet property="statusLabel" destination="xeb-dW-sZd" id="NAs-sU-0LO"/>
                         <outlet property="tableView" destination="edi-GE-42e" id="5k0-m4-D9H"/>
+                        <outlet property="waitingView" destination="bht-7b-rQK" id="shA-XQ-Pv9"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4" sceneMemberID="firstResponder"/>

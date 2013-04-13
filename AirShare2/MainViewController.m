@@ -310,7 +310,6 @@
     self.tableView.layer.cornerRadius = 7;
     self.tableView.layer.masksToBounds = YES;
     
-    NSLog(@"%@", [UIFont familyNames]);
     //Global UI
     [[UILabel appearance] setFont:[UIFont fontWithName:@"Century Gothic" size:17.0]];
     [[UILabel appearance] setTextColor:[UIColor colorWithHue:0.0 saturation:0.0 brightness:.2 alpha:1.0]];
@@ -321,7 +320,6 @@
     [_hostGameButton setTitle:@"Host Session" forState:UIControlStateNormal];
     
     NSURL *url = [[NSBundle mainBundle] URLForResource:@"loading" withExtension:@"gif"];
-    _waitingView = [[UIImageView alloc] initWithFrame:CGRectMake(15.0f, 20.0f, 15.0f, 15.0f)];
     _waitingView.image = [UIImage animatedImageWithAnimatedGIFData:[NSData dataWithContentsOfURL:url]];
     _waitingView.hidden = YES;
 }

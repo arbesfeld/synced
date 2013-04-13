@@ -141,6 +141,7 @@
                                                      name:@"sessionid"];
                      }];
                      AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+                     __block int ntimes = 5;
                      [operation setUploadProgressBlock:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
                          //NSLog(@"Sent %lld of %lld bytes", totalBytesWritten, totalBytesExpectedToWrite);
                          if(it % 300 == 0) {
@@ -157,7 +158,11 @@
                      }
                       failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                           NSLog(@"Upload Error: %@",  operation.responseString);
-                          
+                          if(ntimes > 0) {
+                              // retry upload
+                              [httpClient enqueueHTTPRequestOperation:operation];
+                          }
+                          ntimes--;
                       }];
                      if ([musicItem isCancelled]) {
                          // check again for early cancellation
@@ -179,10 +184,5 @@
              nextBuffer = nil; // NULL?
          }
 	 }];
-}
-
--(void)updateSizeLabel:(NSNumber*)convertedByteCountNumber {
-	UInt64 convertedByteCount = [convertedByteCountNumber longValue];
-	NSLog(@"%lld bytes converted", convertedByteCount);
 }
 @end

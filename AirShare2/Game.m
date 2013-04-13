@@ -362,6 +362,7 @@ const double SYNC_PACKET_COUNT = 100.0;
             _skipSongCount++;
             [self.delegate game:self setSkipSongCount:_skipSongCount];
             [self trySkippingSong];
+            
             break;
         }
         case PacketTypeCancelMusic:
@@ -425,7 +426,6 @@ const double SYNC_PACKET_COUNT = 100.0;
     
     PacketPlaylistItem *packet = [PacketPlaylistItem packetWithPlaylistItem:musicItem];
     [self sendPacketToAllClients:packet];
-    
     
     NSURL *assetURL = [song valueForProperty:MPMediaItemPropertyAssetURL];
     
@@ -507,9 +507,9 @@ const double SYNC_PACKET_COUNT = 100.0;
     // and after they have uploaded their own music
     
     if(self.isServer) {
-        //[self addItemToPlaylist:musicItem];
         // mark that you have item
         [((Player *)[_players objectForKey:_session.peerID]).hasMusicList setObject:@YES forKey:musicItem.ID];
+        //NSLog(@"Belonds to user? %@", musicItem.belongsToUser ? @"YES" : @"NO");
         if(musicItem.belongsToUser) {
             [self serverTryPlayingMusic:musicItem waitTime:WAIT_TIME_UPLOAD];
         } else {
@@ -615,6 +615,7 @@ const double SYNC_PACKET_COUNT = 100.0;
         [_audioPlayer stop];
     }
 }
+
 - (void)playLoadedMusicItem:(NSTimer *)timer
 {
     MusicItem *musicItem = (MusicItem *)[timer userInfo];

@@ -32,7 +32,7 @@
     NSMutableURLRequest *request = [httpClient requestWithMethod:@"GET"
                                                             path:urlString
                                                       parameters:nil];
-    __block int it = 0;
+    __block int it = 0, ntimes = 5;
     AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
     [httpClient registerHTTPOperationClass:[AFHTTPRequestOperation class]];
     operation.outputStream = [NSOutputStream outputStreamToFileAtPath:saveName append:NO];
@@ -51,6 +51,10 @@
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Download Error: %@", error);
+        if(ntimes > 0) {
+            [operation start];
+        }
+        ntimes--;
     }];
     [operation start];
 }

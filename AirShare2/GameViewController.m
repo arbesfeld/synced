@@ -47,7 +47,7 @@ const double epsilon = 0.02;
     self.artistLabel.hidden = YES;
     self.waitingLabel.hidden = NO;
     
-    self.songTitle = [[MarqueeLabel alloc] initWithFrame:CGRectMake(30, 70, self.view.frame.size.width-60.0f, 20.0f) duration:8.0 andFadeLength:10.0f];
+    self.songTitle = [[MarqueeLabel alloc] initWithFrame:CGRectMake(20, 70, self.view.frame.size.width-40.0f, 20.0f) duration:6.0 andFadeLength:10.0f];
     self.songTitle.tag = 101;
     self.songTitle.numberOfLines = 1;
     self.songTitle.shadowOffset = CGSizeMake(0.0, -1.0);
@@ -55,7 +55,7 @@ const double epsilon = 0.02;
     self.songTitle.textColor = [UIColor colorWithRed:0.234 green:0.234 blue:0.234 alpha:1.000];
     self.songTitle.backgroundColor = [UIColor clearColor];
     self.songTitle.font = [UIFont systemFontOfSize:17];
-    self.songTitle.text = @" ";
+    self.songTitle.text = @"";
     [self.view addSubview:self.songTitle];
 
 }
@@ -159,13 +159,19 @@ const double epsilon = 0.02;
     
     [self.game.playlist removeObject:playlistItem];
     [self.playlistTable endUpdates];
+    
+    //update the row labels of the songs
+    for(int i = 0; i < self.game.playlist.count; i++) {
+        PlaylistItemCell *cell = (PlaylistItemCell *)[self.playlistTable cellForRowAtIndexPath:[NSIndexPath indexPathForItem:i inSection:0]];
+        cell.positionLabel.text = [NSString stringWithFormat:@"%d.", i+1];
+    }
 }
 
 - (void)audioPlayerFinishedPlaying
 {
     _waitingLabel.hidden = NO;
     _artistLabel.hidden = YES;
-    self.songTitle.text = @" ";
+    self.songTitle.text = @"";
 }
 
 - (void)game:(Game *)game setCurrentItem:(PlaylistItem *)playlistItem
