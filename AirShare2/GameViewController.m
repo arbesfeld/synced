@@ -57,6 +57,7 @@ const double epsilon = 0.02;
     self.songTitle.font = [UIFont systemFontOfSize:17];
     self.songTitle.text = @"";
     [self.view addSubview:self.songTitle];
+    
 
 }
 - (void)viewWillDisappear:(BOOL)animated

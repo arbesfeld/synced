@@ -25,12 +25,14 @@
 	[super viewDidLoad];
     _quitReasonClient = QuitReasonConnectionDropped;
     [self setupUI];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(reload)
+                                                 name:UIApplicationDidBecomeActiveNotification object:nil];
 
 }
 
 - (void)reload
 {
-    _matchmakingClient = nil;
     _matchmakingClient = [[MatchmakingClient alloc] init];
     _matchmakingClient.delegate = self;
     [_matchmakingClient startSearchingForServersWithSessionID:SESSION_ID];

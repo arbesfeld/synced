@@ -58,6 +58,18 @@ const double SYNC_PACKET_COUNT = 100.0;
         _dateFormatter = [[NSDateFormatter alloc] init];
         _haveSkippedThisSong = NO;
         [_dateFormatter setDateFormat:DATE_FORMAT];
+        
+        
+        
+        NSString *emptyPath = [[NSBundle mainBundle] pathForResource:@"empty" ofType:@"mp3"];
+        NSError *error;
+        _audioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL fileURLWithPath:emptyPath] error:&error];
+        _audioPlayer.delegate = self;
+        if (_audioPlayer == nil) {
+            NSLog(@"AudioPlayer did not load properly: %@", [error description]);
+        } else {
+            [_audioPlayer play];
+        }
 	}
 	return self;
 }
@@ -656,6 +668,9 @@ const double SYNC_PACKET_COUNT = 100.0;
     _audioPlayerTimer = nil;
     _audioPlaying = NO;
     
+    NSString *emptyPath = [[NSBundle mainBundle] pathForResource:@"empty" ofType:@"mp3"];
+    self.audioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL fileURLWithPath:emptyPath] error:nil];
+    
     if(self.isServer) {
         // try to play the next item on the list that is not loading
         for(PlaylistItem *playlistItem in _playlist) {
@@ -796,33 +811,6 @@ const double SYNC_PACKET_COUNT = 100.0;
 }
 
 #pragma mark - Time Utilities
-
-- (void)getServerTimeWithCompletion:(void(^)(NSDate *serverTime))completionBlock
-{
-    NSError *error;
-    NSDate *downloadStartTime = [NSDate date];
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@airshare-time.php", BASE_URL]];
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
-    NSData *receivedData = [NSURLConnection sendSynchronousRequest:request
-                                                 returningResponse:nil
-                                                             error:&error];
-    double downloadTime = [downloadStartTime timeIntervalSinceNow] * -1000.0;
-    downloadTime /= 1000.0;
-    NSString *dateString = [[NSString alloc] initWithData:receivedData
-                                                 encoding:NSUTF8StringEncoding];
-    //NSLog(@"Time from server = %@", dateString);
-    if(error) {
-        NSLog(@"Error: %@", error);
-        completionBlock([NSDate date]);
-    } else {
-        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-        [dateFormatter setDateFormat:DATE_FORMAT];
-        NSDate *time = [dateFormatter dateFromString:dateString];
-        NSLog(@"Download time = %f", downloadTime/2.0);
-        time = [time dateByAddingTimeInterval:downloadTime/2.0];
-        completionBlock(time);
-    }
-}
 
 - (void)updatePlaybackProgress:(NSTimer *)timer {
     float total = _audioPlayer.duration;

@@ -48,7 +48,6 @@ ServerState;
     MusicDownload *_downloader;
     
     NSTimer *_audioPlayerTimer, *_waitTimer, *_playMusicTimer;
-    AVAudioPlayer *_audioPlayer;
     BOOL _audioPlaying, _haveSkippedThisSong;
     int _skipSongCount, _syncPacketCount;
 }
@@ -59,6 +58,7 @@ ServerState;
 @property (nonatomic, strong) NSMutableDictionary *players;
 @property (nonatomic, strong) NSMutableArray *playlist;
 @property (nonatomic, strong) GKSession *session;
+@property (nonatomic, strong) AVAudioPlayer *audioPlayer;
 
 - (void)startClientGameWithSession:(GKSession *)session playerName:(NSString *)name server:(NSString *)peerID;
 - (void)startServerGameWithSession:(GKSession *)session playerName:(NSString *)name clients:(NSArray *)clients;

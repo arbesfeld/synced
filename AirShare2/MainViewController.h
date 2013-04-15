@@ -15,4 +15,5 @@
 @property (strong, nonatomic) IBOutlet UILabel *sessionsLabel;
 
 - (IBAction)hostGameAction:(id)sender;
+
 @end
