@@ -13,12 +13,6 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     [UIApplication sharedApplication].idleTimerDisabled = YES;
-    
-    [[AVAudioSession sharedInstance] setDelegate: self];
-    [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
-    [[AVAudioSession sharedInstance] setActive: YES error: nil];
-    
-    [[UIApplication sharedApplication] beginReceivingRemoteControlEvents];
     // Override point for customization after application launch.
     return YES;
 }
@@ -32,14 +26,14 @@
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
     NSLog(@"applicationDidEnterBackground");
-    __block UIBackgroundTaskIdentifier task = 0;
-    task=[application beginBackgroundTaskWithExpirationHandler:^{
-        NSLog(@"Expiration handler called %f",[application backgroundTimeRemaining]);
-        [application endBackgroundTask:task];
-        task=UIBackgroundTaskInvalid;
-    }];
-    
-    // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. 
+//    __block UIBackgroundTaskIdentifier task = 0;
+//    task=[application beginBackgroundTaskWithExpirationHandler:^{
+//        NSLog(@"Expiration handler called %f",[application backgroundTimeRemaining]);
+//        [application endBackgroundTask:task];
+//        task=UIBackgroundTaskInvalid;
+//    }];
+//    
+    // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
 }
 

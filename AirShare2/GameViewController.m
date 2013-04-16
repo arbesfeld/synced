@@ -58,7 +58,11 @@ const double epsilon = 0.02;
     self.songTitle.text = @"";
     [self.view addSubview:self.songTitle];
     
-
+    [[AVAudioSession sharedInstance] setDelegate: self];
+    [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
+    [[AVAudioSession sharedInstance] setActive: YES error: nil];
+    
+    [[UIApplication sharedApplication] beginReceivingRemoteControlEvents];
 }
 - (void)viewWillDisappear:(BOOL)animated
 {

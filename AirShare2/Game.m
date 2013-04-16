@@ -19,8 +19,8 @@
 const double DELAY_TIME = 2.00000; // wait DELAY_TIME seconds until songs play
 const int WAIT_TIME_UPLOAD = 25; // server wait time for others to download music after uploading
 const int WAIT_TIME_DOWNLOAD = 20; // server wait time for others to download music after downloading
-const double SYNC_PACKET_COUNT = 100.0;
-
+const int SYNC_PACKET_COUNT = 100;
+const double BACKGROUND_TIME = -0.2; // the additional time it takes when app is in background
 @implementation Game
 {
 	NSString *_serverPeerID;
@@ -209,7 +209,12 @@ const double SYNC_PACKET_COUNT = 100.0;
             
             NSTimeInterval delay = [time timeIntervalSinceNow];
             
-            _playMusicTimer = [NSTimer scheduledTimerWithTimeInterval:delay
+            double compensate = 0.0;
+            if([[UIApplication sharedApplication] applicationState] != UIApplicationStateActive) {
+                compensate += BACKGROUND_TIME;
+                NSLog(@"Application in background.. compensating");
+            }
+            _playMusicTimer = [NSTimer scheduledTimerWithTimeInterval:delay+compensate
                                                                target:self
                                                              selector:@selector(playLoadedMediaItem:)
                                                              userInfo:mediaItem
@@ -590,7 +595,13 @@ const double SYNC_PACKET_COUNT = 100.0;
     
     [self prepareToPlayMediaItem:mediaItem];
     NSLog(@"my play time = %f", [playTime timeIntervalSinceNow]);
-    _playMusicTimer = [NSTimer scheduledTimerWithTimeInterval:[playTime timeIntervalSinceNow]
+    
+    double compensate = 0.0;
+    if([[UIApplication sharedApplication] applicationState] != UIApplicationStateActive) {
+        NSLog(@"Application in background... compensating");
+        compensate += BACKGROUND_TIME;
+    }
+    _playMusicTimer = [NSTimer scheduledTimerWithTimeInterval:[playTime timeIntervalSinceNow]+compensate
                                                        target:self
                                                      selector:@selector(playLoadedMediaItem:)
                                                      userInfo:mediaItem
@@ -670,7 +681,7 @@ const double SYNC_PACKET_COUNT = 100.0;
     
     NSString *emptyPath = [[NSBundle mainBundle] pathForResource:@"empty" ofType:@"mp3"];
     self.audioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL fileURLWithPath:emptyPath] error:nil];
-    
+    [self.audioPlayer play];
     if(self.isServer) {
         // try to play the next item on the list that is not loading
         for(PlaylistItem *playlistItem in _playlist) {
