@@ -210,7 +210,7 @@ const double BACKGROUND_TIME = -0.2; // the additional time it takes when app is
             NSTimeInterval delay = [time timeIntervalSinceNow];
             
             double compensate = 0.0;
-            if([[UIApplication sharedApplication] applicationState] != UIApplicationStateActive) {
+            if([[UIApplication sharedApplication] applicationState] == UIApplicationStateInactive) {
                 compensate += BACKGROUND_TIME;
                 NSLog(@"Application in background.. compensating");
             }
@@ -429,7 +429,7 @@ const double BACKGROUND_TIME = -0.2; // the additional time it takes when app is
     [self sendPacket:packet toClientWithPeerID:player.peerID];
 }
 
-- (void)uploadMusicWithMediaItem:(MPMediaItem *)song
+- (void)uploadMusicWithMediaItem:(MPMediaItem *)song video:(BOOL)isVideo
 {
    // NSLog(@"Game: playMusicWithName: %@", [song valueForProperty:MPMediaItemPropertyTitle]);
     NSString *songName = [song valueForProperty:MPMediaItemPropertyTitle];
@@ -438,7 +438,7 @@ const double BACKGROUND_TIME = -0.2; // the additional time it takes when app is
     
     MediaItem *mediaItem = [MediaItem mediaItemWithName:songName andSubtitle:artistName andID:ID andDate:[NSDate date]];
     [mediaItem setBelongsToUser:YES];
-    
+    mediaItem.isVideo = isVideo;
     [self addItemToPlaylist:mediaItem];
     
     PacketPlaylistItem *packet = [PacketPlaylistItem packetWithPlaylistItem:mediaItem];
@@ -597,7 +597,7 @@ const double BACKGROUND_TIME = -0.2; // the additional time it takes when app is
     NSLog(@"my play time = %f", [playTime timeIntervalSinceNow]);
     
     double compensate = 0.0;
-    if([[UIApplication sharedApplication] applicationState] != UIApplicationStateActive) {
+    if([[UIApplication sharedApplication] applicationState] == UIApplicationStateInactive) {
         NSLog(@"Application in background... compensating");
         compensate += BACKGROUND_TIME;
     }

@@ -38,6 +38,8 @@
 		5592DE83170BAA9F00C766B0 /* UIImage+ImageWithUIView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5592DE81170BAA9F00C766B0 /* UIImage+ImageWithUIView.m */; };
 		5592DE87170BABAE00C766B0 /* SlidingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5592DE86170BABAE00C766B0 /* SlidingViewController.m */; };
 		5592FEFD1700D65B0038ED40 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5592FEFC1700D65B0038ED40 /* CoreAudio.framework */; };
+		5595E4EB171D2C46006782DE /* MoviePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5595E4EA171D2C45006782DE /* MoviePickerViewController.m */; };
+		5595E4EE171D3995006782DE /* MovieItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5595E4ED171D3995006782DE /* MovieItemCell.m */; };
 		5596E08C16F62FB600511D3E /* PacketOtherClientQuit.m in Sources */ = {isa = PBXBuildFile; fileRef = 5596E08B16F62FB600511D3E /* PacketOtherClientQuit.m */; };
 		5596E0C916F6746900511D3E /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5596E0C816F6746900511D3E /* MediaPlayer.framework */; };
 		5596E0D716F692CE00511D3E /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5596E0D616F692CE00511D3E /* AudioToolbox.framework */; };
@@ -142,6 +144,10 @@
 		5592DE85170BABAE00C766B0 /* SlidingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SlidingViewController.h; sourceTree = "<group>"; };
 		5592DE86170BABAE00C766B0 /* SlidingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SlidingViewController.m; sourceTree = "<group>"; };
 		5592FEFC1700D65B0038ED40 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
+		5595E4E9171D2C45006782DE /* MoviePickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoviePickerViewController.h; sourceTree = "<group>"; };
+		5595E4EA171D2C45006782DE /* MoviePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MoviePickerViewController.m; sourceTree = "<group>"; };
+		5595E4EC171D3995006782DE /* MovieItemCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MovieItemCell.h; sourceTree = "<group>"; };
+		5595E4ED171D3995006782DE /* MovieItemCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MovieItemCell.m; sourceTree = "<group>"; };
 		5596E08A16F62FB600511D3E /* PacketOtherClientQuit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PacketOtherClientQuit.h; sourceTree = "<group>"; };
 		5596E08B16F62FB600511D3E /* PacketOtherClientQuit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PacketOtherClientQuit.m; sourceTree = "<group>"; };
 		5596E0C816F6746900511D3E /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
@@ -242,6 +248,8 @@
 				559D6B9B17120A2900C591D8 /* UIImage+animatedGIF.m */,
 				558E0D621704DE3100BF230D /* PlaylistItemCell.h */,
 				558E0D631704DE3100BF230D /* PlaylistItemCell.m */,
+				5595E4EC171D3995006782DE /* MovieItemCell.h */,
+				5595E4ED171D3995006782DE /* MovieItemCell.m */,
 			);
 			name = UI;
 			sourceTree = "<group>";
@@ -379,6 +387,8 @@
 			children = (
 				55FCC5B916ED60460000BCBD /* GameViewController.h */,
 				55FCC5BA16ED60460000BCBD /* GameViewController.m */,
+				5595E4E9171D2C45006782DE /* MoviePickerViewController.h */,
+				5595E4EA171D2C45006782DE /* MoviePickerViewController.m */,
 				55FCC57616ED3DA20000BCBD /* MainViewController.h */,
 				55FCC57716ED3DA20000BCBD /* MainViewController.m */,
 				5592DE85170BABAE00C766B0 /* SlidingViewController.h */,
@@ -594,6 +604,8 @@
 				55453437171124EB00B4704F /* PacketSyncResponse.m in Sources */,
 				EAB726371711EFDC0084D2CC /* PacketCancelMusic.m in Sources */,
 				559D6B9C17120A2900C591D8 /* UIImage+animatedGIF.m in Sources */,
+				5595E4EB171D2C46006782DE /* MoviePickerViewController.m in Sources */,
+				5595E4EE171D3995006782DE /* MovieItemCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

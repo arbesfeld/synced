@@ -33,5 +33,6 @@
 @property (nonatomic, strong) UIView *loadProgress;
 @property (nonatomic, strong) PlaylistItem *playlistItem;
 @property (nonatomic, assign) int position;
+
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier playlistItem:(PlaylistItem *)playlistItem voteValue:(int)voteValue position:(int)position;
 @end

@@ -69,7 +69,7 @@ ServerState;
 
 - (NSString *)displayNameForPeerID:(NSString *)peerID;
 
-- (void)uploadMusicWithMediaItem:(MPMediaItem *)song;
+- (void)uploadMusicWithMediaItem:(MPMediaItem *)song video:(BOOL)isVideo;
 - (void)skipButtonPressed;
 - (void)cancelMusic:(PlaylistItem *)selectedItem;
 - (int)indexForPlaylistItem:(PlaylistItem *)playlistItem;

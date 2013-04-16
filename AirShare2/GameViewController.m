@@ -2,6 +2,7 @@
 #import "PlaylistItemCell.h"
 #import "ECSlidingViewController.h"
 #import "MarqueeLabel.h"
+#import "MoviePickerViewController.h"
 #import <QuartzCore/QuartzCore.h>
 
 const double epsilon = 0.02;
@@ -46,7 +47,7 @@ const double epsilon = 0.02;
 
     self.artistLabel.hidden = YES;
     self.waitingLabel.hidden = NO;
-    
+    self.waitingLabel.font = [UIFont fontWithName:@"Century Gothic" size:17.0f];
     self.songTitle = [[MarqueeLabel alloc] initWithFrame:CGRectMake(20, 70, self.view.frame.size.width-40.0f, 20.0f) duration:6.0 andFadeLength:10.0f];
     self.songTitle.tag = 101;
     self.songTitle.numberOfLines = 1;
@@ -57,7 +58,7 @@ const double epsilon = 0.02;
     self.songTitle.font = [UIFont systemFontOfSize:17];
     self.songTitle.text = @"";
     [self.view addSubview:self.songTitle];
-    
+    self.skipSongLabel.font = [UIFont fontWithName:@"Century Gothic" size:17.0f];
     [[AVAudioSession sharedInstance] setDelegate: self];
     [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
     [[AVAudioSession sharedInstance] setActive: YES error: nil];
@@ -270,7 +271,6 @@ const double epsilon = 0.02;
 
 - (void)setHeaderWithSongName:(NSString *)songName andArtistName:(NSString *)artistName
 {
-
     _artistLabel.hidden = NO;
     _playbackProgressBar.hidden = NO;
     
@@ -282,6 +282,12 @@ const double epsilon = 0.02;
     
 }
 #pragma mark - UITableViewDelegate
+
+#pragma mark - MoviePickerDelegate
+
+- (void)addMovie:(MPMediaItem *)movieItem {
+    [_game uploadMusicWithMediaItem:movieItem video:YES];
+}
 
 #pragma mark - PlaylistItemDelegate
 
@@ -327,11 +333,12 @@ const double epsilon = 0.02;
 
 #pragma mark - playMusic____
 - (IBAction)playMusic:(id)sender {
-    MPMediaPickerController *mediaPicker = [[MPMediaPickerController alloc] initWithMediaTypes: MPMediaTypeAny];
+    MPMediaPickerController *mediaPicker = [[MPMediaPickerController alloc] initWithMediaTypes: MPMediaTypeMusic];
+    
     mediaPicker.delegate = self;
     mediaPicker.allowsPickingMultipleItems = NO;
-    mediaPicker.prompt = @"Select song to play";
-    
+    //mediaPicker.prompt = @"Music";
+    mediaPicker.navigationItem.rightBarButtonItem.title = @"Cancel";
     [self presentViewController:mediaPicker animated:YES completion:nil];
 }
     
@@ -340,22 +347,13 @@ const double epsilon = 0.02;
 }
 
 - (IBAction)playMovie:(id)sender {
-    MPMediaPropertyPredicate *predicate1 = [MPMediaPropertyPredicate predicateWithValue:[NSNumber numberWithInteger:MPMediaTypeAnyVideo] forProperty:MPMediaItemPropertyMediaType];
-    MPMediaQuery *query = [[MPMediaQuery alloc] init];
-    [query addFilterPredicate:predicate1];
-    
-    NSArray *items = [query items];
-    
-    for (MPMediaItem* item in items)
-    {
-        NSString* title = [item valueForProperty:MPMediaItemPropertyTitle];
-        
-        NSURL *url = [item valueForProperty:MPMediaItemPropertyAssetURL];
-        NSLog(@"Title = %@, URL = %@", title, url);
-    }
+	MoviePickerViewController *moviePickerViewController = [[MoviePickerViewController alloc] initWithStyle:UITableViewStylePlain];
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:moviePickerViewController];
+    [self presentViewController:navController animated:YES completion:nil];
+	moviePickerViewController.delegate = self;
 }
 
-- (void) mediaPicker: (MPMediaPickerController *)mediaPicker didPickMediaItems: (MPMediaItemCollection *) mediaItemCollection
+- (void)mediaPicker: (MPMediaPickerController *)mediaPicker didPickMediaItems:(MPMediaItemCollection *)mediaItemCollection
 {
     [mediaPicker dismissViewControllerAnimated:YES completion:nil];
     
@@ -363,9 +361,7 @@ const double epsilon = 0.02;
         
         MPMediaItem *chosenItem = mediaItemCollection.items[0];
         
-        NSURL *songURL = [chosenItem valueForProperty: MPMediaItemPropertyAssetURL];
-        NSLog(@"url = %@", songURL);
-        [_game uploadMusicWithMediaItem:chosenItem];
+        [_game uploadMusicWithMediaItem:chosenItem video:NO];
     }
 }
 

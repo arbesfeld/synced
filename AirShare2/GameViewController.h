@@ -3,6 +3,7 @@
 #import "MatchmakingServer.h"
 #import "PlaylistItem.h"
 #import "PlaylistItemCell.h"
+#import "MoviePickerViewController.h"
 #import <MediaPlayer/MediaPlayer.h>
 
 
@@ -16,7 +17,7 @@
 
 @end
 
-@interface GameViewController : UIViewController <UIAlertViewDelegate, UIApplicationDelegate, UITableViewDataSource, UITableViewDelegate, MPMediaPickerControllerDelegate, GameDelegate, PlaylistItemDelegate> {
+@interface GameViewController : UIViewController <UIAlertViewDelegate, UIApplicationDelegate, UITableViewDataSource, UITableViewDelegate, MPMediaPickerControllerDelegate, GameDelegate, PlaylistItemDelegate, MoviePickerDelegate> {
     PlaylistItem *_currentPlaylistItem;
     NSMutableDictionary *_voteAmount; // key is songID, value is vote amount
 }

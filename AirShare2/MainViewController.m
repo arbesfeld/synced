@@ -315,14 +315,14 @@
     self.tableView.layer.masksToBounds = YES;
     
     //Global UI
-    [[UILabel appearance] setFont:[UIFont fontWithName:@"Century Gothic" size:17.0]];
-    [[UILabel appearance] setTextColor:[UIColor colorWithHue:0.0 saturation:0.0 brightness:.2 alpha:1.0]];
-    [[UIButton appearance] setFont:[UIFont fontWithName:@"Century Gothic" size:17.0]];
-    [[UIButton appearance] setTitleColor:[UIColor colorWithHue:0.0 saturation:0.0 brightness:0.2 alpha:1.0] forState:UIControlStateNormal];
+//    [[UILabel appearance] setFont:[UIFont fontWithName:@"Century Gothic" size:17.0]];
+//    [[UILabel appearance] setTextColor:[UIColor colorWithHue:0.0 saturation:0.0 brightness:.2 alpha:1.0]];
+//    [[UIButton appearance] setFont:[UIFont fontWithName:@"Century Gothic" size:17.0]];
+//    [[UIButton appearance] setTitleColor:[UIColor colorWithHue:0.0 saturation:0.0 brightness:0.2 alpha:1.0] forState:UIControlStateNormal];
     
     self.sessionsLabel.font = [UIFont fontWithName:@"Century Gothic" size:20.0f];
     [_hostGameButton setTitle:@"Host Session" forState:UIControlStateNormal];
-    
+    _hostGameButton.titleLabel.font = [UIFont fontWithName:@"gothic" size:17.0f];
     NSURL *url = [[NSBundle mainBundle] URLForResource:@"loading" withExtension:@"gif"];
     _waitingView.image = [UIImage animatedImageWithAnimatedGIFData:[NSData dataWithContentsOfURL:url]];
     _waitingView.hidden = YES;
