@@ -21,35 +21,43 @@
         self.title = @"Videos";
         [self.navigationItem setHidesBackButton:YES animated:YES];
         UIBarButtonItem* backButton = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStyleBordered target:self action:@selector(cancel)];
-
         self.navigationItem.rightBarButtonItem = backButton;
         
-        MPMediaPropertyPredicate *movies = [MPMediaPropertyPredicate predicateWithValue:[NSNumber numberWithInteger:MPMediaTypeMovie] forProperty:MPMediaItemPropertyMediaType];
+        MPMediaPropertyPredicate *moviePredicate = [MPMediaPropertyPredicate predicateWithValue:[NSNumber numberWithInteger:MPMediaTypeMovie] forProperty:MPMediaItemPropertyMediaType];
         MPMediaQuery *query = [[MPMediaQuery alloc] init];
-        [query addFilterPredicate:movies];
-        _movies = [query items];
+        [query addFilterPredicate:moviePredicate];
+        NSArray *movies = [query items];
         
-        MPMediaPropertyPredicate *musicVideos = [MPMediaPropertyPredicate predicateWithValue:[NSNumber numberWithInteger:MPMediaTypeMusicVideo] forProperty:MPMediaItemPropertyMediaType];
+        MPMediaPropertyPredicate *musicVideoPredicate = [MPMediaPropertyPredicate predicateWithValue:[NSNumber numberWithInteger:MPMediaTypeMusicVideo] forProperty:MPMediaItemPropertyMediaType];
         MPMediaQuery *query2 = [[MPMediaQuery alloc] init];
-        [query2 addFilterPredicate:musicVideos];
-        _musicVideos = [query2 items];
+        [query2 addFilterPredicate:musicVideoPredicate];
+        NSArray *musicVideos = [query2 items];
         
-        MPMediaPropertyPredicate *tvShows = [MPMediaPropertyPredicate predicateWithValue:[NSNumber numberWithInteger:MPMediaTypeTVShow] forProperty:MPMediaItemPropertyMediaType];
+        MPMediaPropertyPredicate *tvShowPredicate = [MPMediaPropertyPredicate predicateWithValue:[NSNumber numberWithInteger:MPMediaTypeTVShow] forProperty:MPMediaItemPropertyMediaType];
         MPMediaQuery *query3 = [[MPMediaQuery alloc] init];
-        [query3 addFilterPredicate:tvShows];
-        _tvShows = [query3 items];
+        [query3 addFilterPredicate:tvShowPredicate];
+        NSArray *tvShows = [query3 items];
         
-        MPMediaPropertyPredicate *podcasts = [MPMediaPropertyPredicate predicateWithValue:[NSNumber numberWithInteger:MPMediaTypeVideoPodcast] forProperty:MPMediaItemPropertyMediaType];
+        MPMediaPropertyPredicate *podcastPredicate = [MPMediaPropertyPredicate predicateWithValue:[NSNumber numberWithInteger:MPMediaTypeVideoPodcast] forProperty:MPMediaItemPropertyMediaType];
         MPMediaQuery *query4 = [[MPMediaQuery alloc] init];
-        [query4 addFilterPredicate:podcasts];
-        _podcasts = [query4 items];
+        [query4 addFilterPredicate:podcastPredicate];
+        NSArray *podcasts = [query4 items];
         
-        MPMediaPropertyPredicate *iTunesU = [MPMediaPropertyPredicate predicateWithValue:[NSNumber numberWithInteger:MPMediaTypeVideoITunesU] forProperty:MPMediaItemPropertyMediaType];
+        MPMediaPropertyPredicate *iTunesUPredicate = [MPMediaPropertyPredicate predicateWithValue:[NSNumber numberWithInteger:MPMediaTypeVideoITunesU] forProperty:MPMediaItemPropertyMediaType];
         MPMediaQuery *query5 = [[MPMediaQuery alloc] init];
-        [query5 addFilterPredicate:iTunesU];
-        _iTunesU = [query5 items];
+        [query5 addFilterPredicate:iTunesUPredicate];
+        NSArray *iTunesU = [query5 items];
         
+        UISearchBar *tempSearchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 0)];
+        self.searchBar = tempSearchBar;
+        self.searchBar.delegate = self;
+        [self.searchBar sizeToFit];
+        self.tableView.tableHeaderView = self.searchBar;
+        
+        NSArray *empty = [[NSArray alloc] init];
+        _allData = [[NSArray alloc] initWithObjects:empty, movies, musicVideos, tvShows, podcasts, iTunesU, nil];
         [self initCells];
+        _searchData = [[NSMutableArray alloc] init];
     }
     return self;
 }
@@ -60,12 +68,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
-    
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    searchDisplayController = [[UISearchDisplayController alloc] initWithSearchBar:_searchBar contentsController:self];
+    searchDisplayController.delegate = self;
+    searchDisplayController.searchResultsDataSource = self;
 }
 
 - (void)didReceiveMemoryWarning
@@ -76,46 +81,23 @@
 - (void)initCells
 {
     static NSString *CellIdentifier = @"VideoCell";
-    _movieCells = [NSMutableArray arrayWithCapacity:_movies.count];
-    for(MPMediaItem *item in _movies) {
-        MovieItemCell *cell = [[MovieItemCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-        cell.movieItem = item;
-        [cell addContent];
-        [_movieCells addObject:cell];
-    }
-    _musicVideoCells = [NSMutableArray arrayWithCapacity:_musicVideos.count];
-    for(MPMediaItem *item in _musicVideos) {
-        MovieItemCell *cell = [[MovieItemCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-        cell.movieItem = item;
-        [cell addContent];
-        [_musicVideoCells addObject:cell];
-    }
-    _tvShowCells = [NSMutableArray arrayWithCapacity:_tvShows.count];
-    for(MPMediaItem *item in _tvShows) {
-        MovieItemCell *cell = [[MovieItemCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-        cell.movieItem = item;
-        [cell addContent];
-        [_tvShowCells addObject:cell];
-    }
-    _podcastCells = [NSMutableArray arrayWithCapacity:_podcasts.count];
-    for(MPMediaItem *item in _podcasts) {
-        MovieItemCell *cell = [[MovieItemCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-        cell.movieItem = item;
-        [cell addContent];
-        [_podcastCells addObject:cell];
-    }
-    _iTunesUCells = [NSMutableArray arrayWithCapacity:_iTunesU.count];
-    for(MPMediaItem *item in _iTunesU) {
-        MovieItemCell *cell = [[MovieItemCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-        cell.movieItem = item;
-        [cell addContent];
-        [_iTunesUCells addObject:cell];
+    _allCells = [[NSMutableArray alloc] initWithCapacity:6];
+    _allCells[0] = [[NSMutableArray alloc] initWithObjects:
+                    [[MovieItemCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier], nil];
+    for(int i = 1; i < 6; i++) {
+        _allCells[i] = [[NSMutableArray alloc] initWithCapacity:((NSArray *)_allData[i]).count];
+        for(MPMediaItem *item in _allData[i]) {
+            MovieItemCell *cell = [[MovieItemCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+            cell.movieItem = item;
+            [cell addContent];
+            [_allCells[i] addObject:cell];
+        }
     }
 }
 #pragma mark - Table view data source
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 6;
+    return ((NSArray *)_allData).count;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -127,24 +109,27 @@
 }
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
+    if(((NSArray *)_allData[section]).count == 0) {
+        return @"";
+    }
     switch (section) {
         case 0:
             return @"";
             break;
         case 1:
-            return _movies.count == 0 ? @"" : @"Movies";
+            return @"Movies";
             break;
         case 2:
-            return _musicVideos.count == 0 ? @"": @"Music Videos";
+            return @"Music Videos";
             break;
         case 3:
-            return _tvShows.count == 0 ? @"": @"TV Shows";
+            return @"TV Shows";
             break;
         case 4:
-            return _podcasts.count == 0 ? @"" : @"Video Podcasts";
+            return @"Video Podcasts";
             break;
         case 5:
-            return _iTunesU.count == 0 ? @"" : @"iTunesU";
+            return @"iTunesU";
             break;
         default:
             return nil;
@@ -153,29 +138,7 @@
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    switch (section) {
-        case 0:
-            return 1;
-            break;
-        case 1:
-            return _movies.count;
-            break;
-        case 2:
-            return _musicVideos.count;
-            break;
-        case 3:
-            return _tvShows.count;
-            break;
-        case 4:
-            return _podcasts.count;
-            break;
-        case 5:
-            return _iTunesU.count;
-            break;
-        default:
-            return 0;
-            break;
-    }
+    return ((NSArray *)_allData[section]).count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -185,28 +148,10 @@
     
     // Configure the cell...
     if(cell == nil) {
-        switch (indexPath.section) {
-            case 0:
-                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-                break;
-            case 1:
-                cell = _movieCells[indexPath.row];
-                break;
-            case 2:
-                cell = _musicVideoCells[indexPath.row];
-                break;
-            case 3:
-                cell = _tvShowCells[indexPath.row];
-                break;
-            case 4:
-                cell = _podcastCells[indexPath.row];
-                break;
-            case 5:
-                cell = _iTunesUCells[indexPath.row];
-                break;
-            default:
-                cell = nil;
-                break;
+        if(indexPath.section == 0) {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        } else {
+            cell = (UITableViewCell *)(_allCells[indexPath.section][indexPath.row]);
         }
     }
     return cell;
@@ -217,31 +162,53 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     MPMediaItem *selected = nil;
-    switch (indexPath.section) {
-        case 0:
-            selected = nil;
-            break;
-        case 1:
-            selected = _movies[indexPath.row];
-            break;
-        case 2:
-            selected = _musicVideos[indexPath.row];
-            break;
-        case 3:
-            selected = _tvShows[indexPath.row];
-            break;
-        case 4:
-            selected = _podcasts[indexPath.row];
-            break;
-        case 5:
-            selected = _iTunesU[indexPath.row];
-            break;
-        default:
-            selected = nil;
-            break;
+    if(indexPath.section == 0) {
+        //
+    } else {
+        selected = _allData[indexPath.section][indexPath.row];
     }
+    
     [self.delegate addMovie:selected];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
+#pragma mark - SearchDisplayControllerDelegate
+- (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString
+{
+    [_searchData removeAllObjects];
+    /*before starting the search is necessary to remove all elements from the
+     array that will contain found items */
+    
+    NSArray *group;
+    
+    /* in this loop I search through every element (group) (see the code on top) in
+     the "originalData" array, if the string match, the element will be added in a
+     new array called newGroup. Then, if newGroup has 1 or more elements, it will be
+     added in the "searchData" array. shortly, I recreated the structure of the
+     original array "originalData". */
+    
+    for(group in _allData) //take the n group (eg. group1, group2, group3)
+        //in the original data
+    {
+        NSMutableArray *newGroup = [[NSMutableArray alloc] init];
+        NSString *element;
+        
+        for(element in group) //take the n element in the group
+        {                    //(eg. @"Napoli, @"Milan" etc.)
+            NSRange range = [element rangeOfString:searchString
+                                           options:NSCaseInsensitiveSearch];
+            
+            if (range.length > 0) { //if the substring match
+                [newGroup addObject:element]; //add the element to group
+            }
+        }
+        
+        if ([newGroup count] > 0) {
+            [_searchData addObject:newGroup];
+        }
+    
+    }
+    
+    return YES;
+}
 @end

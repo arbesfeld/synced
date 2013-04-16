@@ -19,11 +19,16 @@
 
 @end
 
-@interface MoviePickerViewController : UITableViewController {
-    NSArray *_movies, *_musicVideos, *_tvShows, *_podcasts, *_iTunesU;
-    NSMutableArray *_movieCells, *_musicVideoCells, *_tvShowCells, *_podcastCells, *_iTunesUCells;
+@interface MoviePickerViewController : UITableViewController <UISearchBarDelegate, UISearchDisplayDelegate> {
+    NSArray *_allData;
+    NSMutableArray *_allCells;
+    
+    NSMutableArray *_searchData;
+    
+    UISearchDisplayController *searchDisplayController;
 }
 
 @property (nonatomic, weak) id <MoviePickerDelegate> delegate;
 
+@property (nonatomic, strong) UISearchBar *searchBar;
 @end
