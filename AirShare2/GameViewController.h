@@ -35,5 +35,6 @@
 - (IBAction)exitAction:(id)sender;
 - (IBAction)playMusic:(id)sender;
 - (IBAction)skipMusic:(id)sender;
+- (IBAction)playMovie:(id)sender;
 
 @end

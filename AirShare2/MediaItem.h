@@ -1,5 +1,5 @@
 //
-//  MusicItem.h
+//  MediaItem.h
 //  AirShare2
 //
 //  Created by mata on 3/25/13.
@@ -8,14 +8,14 @@
 
 #import "PlaylistItem.h"
 
-@interface MusicItem : PlaylistItem
+@interface MediaItem : PlaylistItem
 
 @property (nonatomic, retain) NSURL *songURL;
 @property (nonatomic, assign) NSInteger beatPos;
 @property (nonatomic, retain) NSMutableArray *beats;
-@property (nonatomic, assign) BOOL partyMode;
+@property (nonatomic, assign) BOOL partyMode, isVideo;
 
-+ (id)musicItemWithName:(NSString *)name andSubtitle:(NSString *)subtitle andID:(NSString *)ID andDate:(NSDate *)date;
++ (id)mediaItemWithName:(NSString *)name andSubtitle:(NSString *)subtitle andID:(NSString *)ID andDate:(NSDate *)date;
 
 - (void)loadBeats;
 - (void)nextBeat;

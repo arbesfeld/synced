@@ -32,7 +32,7 @@
 		559096C716FFB3DE004149A0 /* UIImageView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 559096BE16FFB3DE004149A0 /* UIImageView+AFNetworking.m */; };
 		559096CA16FFE28A004149A0 /* MusicDownload.m in Sources */ = {isa = PBXBuildFile; fileRef = 559096C916FFE28A004149A0 /* MusicDownload.m */; };
 		559096D01700038F004149A0 /* PlaylistItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 559096CF1700038F004149A0 /* PlaylistItem.m */; };
-		559096D3170006AB004149A0 /* MusicItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 559096D2170006AB004149A0 /* MusicItem.m */; };
+		559096D3170006AB004149A0 /* MediaItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 559096D2170006AB004149A0 /* MediaItem.m */; };
 		5591DC7D1703669A0086BC99 /* PacketVote.m in Sources */ = {isa = PBXBuildFile; fileRef = 5591DC7C1703669A0086BC99 /* PacketVote.m */; };
 		5592DE82170BAA9F00C766B0 /* ECSlidingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5592DE7F170BAA9F00C766B0 /* ECSlidingViewController.m */; };
 		5592DE83170BAA9F00C766B0 /* UIImage+ImageWithUIView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5592DE81170BAA9F00C766B0 /* UIImage+ImageWithUIView.m */; };
@@ -131,8 +131,8 @@
 		559096C916FFE28A004149A0 /* MusicDownload.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MusicDownload.m; path = AirShare2/MusicDownload.m; sourceTree = "<group>"; };
 		559096CE1700038F004149A0 /* PlaylistItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlaylistItem.h; sourceTree = "<group>"; };
 		559096CF1700038F004149A0 /* PlaylistItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlaylistItem.m; sourceTree = "<group>"; };
-		559096D1170006AB004149A0 /* MusicItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MusicItem.h; sourceTree = "<group>"; };
-		559096D2170006AB004149A0 /* MusicItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MusicItem.m; sourceTree = "<group>"; };
+		559096D1170006AB004149A0 /* MediaItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaItem.h; sourceTree = "<group>"; };
+		559096D2170006AB004149A0 /* MediaItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaItem.m; sourceTree = "<group>"; };
 		5591DC7B1703669A0086BC99 /* PacketVote.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PacketVote.h; sourceTree = "<group>"; };
 		5591DC7C1703669A0086BC99 /* PacketVote.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PacketVote.m; sourceTree = "<group>"; };
 		5592DE7E170BAA9F00C766B0 /* ECSlidingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ECSlidingViewController.h; sourceTree = "<group>"; };
@@ -190,7 +190,7 @@
 		55FCC5B916ED60460000BCBD /* GameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameViewController.h; sourceTree = "<group>"; };
 		55FCC5BA16ED60460000BCBD /* GameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameViewController.m; sourceTree = "<group>"; };
 		55FCC5BC16ED62640000BCBD /* Game.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Game.h; sourceTree = "<group>"; };
-		55FCC5BD16ED62640000BCBD /* Game.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Game.m; sourceTree = "<group>"; };
+		55FCC5BD16ED62640000BCBD /* Game.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = Game.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		55FCC5C016ED78E80000BCBD /* Player.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Player.h; sourceTree = "<group>"; };
 		55FCC5C116ED78E80000BCBD /* Player.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Player.m; sourceTree = "<group>"; };
 		55FCC5C316ED79C70000BCBD /* Packet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Packet.h; sourceTree = "<group>"; };
@@ -430,8 +430,8 @@
 			children = (
 				559096CE1700038F004149A0 /* PlaylistItem.h */,
 				559096CF1700038F004149A0 /* PlaylistItem.m */,
-				559096D1170006AB004149A0 /* MusicItem.h */,
-				559096D2170006AB004149A0 /* MusicItem.m */,
+				559096D1170006AB004149A0 /* MediaItem.h */,
+				559096D2170006AB004149A0 /* MediaItem.m */,
 				55FCC5C016ED78E80000BCBD /* Player.h */,
 				55FCC5C116ED78E80000BCBD /* Player.m */,
 				55FCC5BC16ED62640000BCBD /* Game.h */,
@@ -580,7 +580,7 @@
 				559096C716FFB3DE004149A0 /* UIImageView+AFNetworking.m in Sources */,
 				559096CA16FFE28A004149A0 /* MusicDownload.m in Sources */,
 				559096D01700038F004149A0 /* PlaylistItem.m in Sources */,
-				559096D3170006AB004149A0 /* MusicItem.m in Sources */,
+				559096D3170006AB004149A0 /* MediaItem.m in Sources */,
 				55A31C0417017B6F00A1FFC8 /* PacketPlayMusicNow.m in Sources */,
 				552CDD1F17026493003CA4EB /* PacketMusicResponse.m in Sources */,
 				552CDD22170279BF003CA4EB /* PacketGameState.m in Sources */,

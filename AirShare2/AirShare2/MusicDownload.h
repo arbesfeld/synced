@@ -7,12 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "MusicItem.h"
+#import "MediaItem.h"
 
 @interface MusicDownload : NSObject
 
-- (void)downloadFileWithMusicItem:(MusicItem *)musicItem andSessionID:(NSString *)sessionID progress:(void (^)(void))progress completion:(void (^)(void))completionBlock;
+- (void)downloadFileWithMediaItem:(MediaItem *)mediaItem andSessionID:(NSString *)sessionID progress:(void (^)(void))progress completion:(void (^)(void))completionBlock;
 
-- (void)downloadBeatsWithMusicItem:(MusicItem *)musicItem andSessionID:(NSString *)sessionID completion:(void (^)(void))completionBlock;
+- (void)downloadBeatsWithMediaItem:(MediaItem *)mediaItem andSessionID:(NSString *)sessionID completion:(void (^)(void))completionBlock;
 
 @end

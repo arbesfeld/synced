@@ -10,7 +10,7 @@
 #import <AudioToolbox/AudioToolbox.h> // for the core audio constants
 #import "AFNetworking.h"
 #import "PacketMusicDownload.h"
-#import "MusicItem.h"
+#import "MediaItem.h"
 #import "Game.h"
 
 @implementation MusicUpload
@@ -19,7 +19,7 @@
     [super dealloc];
 }
 
-- (void)convertAndUpload:(MusicItem *)musicItem withAssetURL:(NSURL *)assetURL andSessionID:(NSString *)sessionID progress:(void (^)())progress completion:(void (^)())completionBlock{
+- (void)convertAndUpload:(MediaItem *)mediaItem withAssetURL:(NSURL *)assetURL andSessionID:(NSString *)sessionID progress:(void (^)())progress completion:(void (^)())completionBlock{
 	// set up an AVAssetReader to read from the iPod Library
 	AVURLAsset *songAsset = [AVURLAsset URLAssetWithURL:assetURL options:nil];
     
@@ -30,8 +30,9 @@
 		NSLog (@"error: %@", assetError);
 		return;
 	}
+    NSArray *audioTracks = [songAsset tracksWithMediaType:AVMediaTypeAudio];
 	AVAssetReaderOutput *assetReaderOutput = [[AVAssetReaderAudioMixOutput
-											  assetReaderAudioMixOutputWithAudioTracks:songAsset.tracks
+											  assetReaderAudioMixOutputWithAudioTracks:audioTracks
                                               audioSettings: nil] retain];
 	if (! [assetReader canAddOutput: assetReaderOutput]) {
 		NSLog (@"can't add reader output... die!");
@@ -41,7 +42,7 @@
     
     // export path is where it is saved locally
     NSString *tempPath = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-    NSString *fileName = [NSString stringWithFormat:@"%@.m4a", musicItem.ID];
+    NSString *fileName = [NSString stringWithFormat:@"%@.m4a", mediaItem.ID];
 	NSString *exportPath = [[tempPath stringByAppendingPathComponent:fileName] retain];
 	if ([[NSFileManager defaultManager] fileExistsAtPath:exportPath]) {
 		[[NSFileManager defaultManager] removeItemAtPath:exportPath error:nil];
@@ -92,7 +93,7 @@
 	 {
          //NSLog (@"top of block");
 		 while (assetWriterInput.readyForMoreMediaData) {
-             if ([musicItem isCancelled]) {
+             if ([mediaItem isCancelled]) {
                  // early cancellation---should quit now
                  return;
              }
@@ -128,11 +129,11 @@
                      NSData *songData = [NSData dataWithContentsOfFile:exportPath];
                      
                      NSURL *url = [NSURL URLWithString:BASE_URL];
-                     NSLog(@"Uploading with id = %@ and sessionid = %@", musicItem.ID, sessionID);
+                     NSLog(@"Uploading with id = %@ and sessionid = %@", mediaItem.ID, sessionID);
                      AFHTTPClient *httpClient = [[AFHTTPClient alloc] initWithBaseURL:url];
                      NSMutableURLRequest *request = [httpClient multipartFormRequestWithMethod:@"POST" path:@"/airshare-upload.php" parameters:nil constructingBodyWithBlock: ^(id <AFMultipartFormData>formData) {
-                         [formData appendPartWithFileData:songData name:@"musicfile" fileName:musicItem.ID mimeType:@"audio/x-m4a"];
-                         [formData appendPartWithFormData:[musicItem.ID dataUsingEncoding:NSUTF8StringEncoding]
+                         [formData appendPartWithFileData:songData name:@"musicfile" fileName:mediaItem.ID mimeType:@"audio/x-m4a"];
+                         [formData appendPartWithFormData:[mediaItem.ID dataUsingEncoding:NSUTF8StringEncoding]
                                                      name:@"id"];
                          [formData appendPartWithFormData:[sessionID dataUsingEncoding:NSUTF8StringEncoding]
                                                      name:@"sessionid"];
@@ -145,11 +146,11 @@
                              progress();
                          }
                          it++;
-                         musicItem.loadProgress = (double)totalBytesWritten / totalBytesExpectedToWrite;
+                         mediaItem.loadProgress = (double)totalBytesWritten / totalBytesExpectedToWrite;
                      }];
                      [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
                          NSLog(@"Upload Success: %@", operation.responseString);
-                         musicItem.loadProgress = 1.0;
+                         mediaItem.loadProgress = 1.0;
                          // now tell others that you have uploaded
                          completionBlock();
                      }
@@ -161,12 +162,12 @@
                           }
                           ntimes--;
                       }];
-                     if ([musicItem isCancelled]) {
+                     if ([mediaItem isCancelled]) {
                          // check again for early cancellation
                          return;
                      }
                      [httpClient enqueueHTTPRequestOperation:operation];
-                     musicItem.uploadOperation = operation;
+                     mediaItem.uploadOperation = operation;
                  }];
                  [assetReader release];
                  [assetReaderOutput release];

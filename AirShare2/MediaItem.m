@@ -1,27 +1,27 @@
 //
-//  MusicItem.m
+//  MediaItem.m
 //  AirShare2
 //
 //  Created by mata on 3/25/13.
 //  Copyright (c) 2013 Matthew Arbesfeld. All rights reserved.
 //
 
-#import "MusicItem.h"
+#import "MediaItem.h"
 #import <AVFoundation/AVFoundation.h>
 
-@implementation MusicItem
+@implementation MediaItem
 
 @synthesize songURL = _songURL;
 @synthesize beatPos = _beatPos;
 @synthesize partyMode = _partyMode;
 @synthesize beats = _beats;
 
-+ (id)musicItemWithName:(NSString *)name andSubtitle:(NSString *)subtitle andID:(NSString *)ID andDate:(NSDate *)date;
++ (id)mediaItemWithName:(NSString *)name andSubtitle:(NSString *)subtitle andID:(NSString *)ID andDate:(NSDate *)date;
 {
-	return [[[self class] alloc] initMusicItemWithName:name andSubtitle:subtitle andID:ID andDate:date];
+	return [[[self class] alloc] initMediaItemWithName:name andSubtitle:subtitle andID:ID andDate:date];
 }
 
-- (id)initMusicItemWithName:(NSString *)name andSubtitle:(NSString *)subtitle andID:(NSString *)ID andDate:(NSDate *)date
+- (id)initMediaItemWithName:(NSString *)name andSubtitle:(NSString *)subtitle andID:(NSString *)ID andDate:(NSDate *)date
 {
 	if ((self = [super initPlaylistItemWithName:name andSubtitle:subtitle andID:ID andDate:date andPlaylistItemType:PlaylistItemTypeSong]))
 	{
@@ -32,6 +32,7 @@
         self.beats = [[NSMutableArray alloc] init];
         self.beatPos = -1;
         self.partyMode = NO;
+        self.isVideo = NO;
 	}
 	return self;
 }

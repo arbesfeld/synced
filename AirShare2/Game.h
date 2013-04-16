@@ -3,7 +3,7 @@
 #import <AVFoundation/AVFoundation.h>
 
 #import "MatchmakingServer.h"
-#import "MusicItem.h"
+#import "MediaItem.h"
 #import "Player.h"
 #import "MusicUpload.h"
 #import "MusicDownload.h"

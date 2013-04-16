@@ -11,9 +11,9 @@
 
 @implementation MusicDownload
 
--(void)downloadFileWithMusicItem:(MusicItem *)musicItem andSessionID:(NSString *)sessionID progress:(void (^)(void))progress completion:(void (^)(void))completionBlock{
+-(void)downloadFileWithMediaItem:(MediaItem *)mediaItem andSessionID:(NSString *)sessionID progress:(void (^)(void))progress completion:(void (^)(void))completionBlock{
     // make the GET request URL
-    NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:sessionID, @"sessionid", musicItem.ID, @"id", nil];
+    NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:sessionID, @"sessionid", mediaItem.ID, @"id", nil];
     NSMutableString *prams = [[NSMutableString alloc] init];
     for (id keys in dict) {
         [prams appendFormat:@"%@=%@&",keys,[dict objectForKey:keys]];
@@ -25,7 +25,7 @@
     
     // the name of the locally saved file
     NSString *tempPath = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-    NSString *fileName = [NSString stringWithFormat:@"%@.m4a", musicItem.ID];
+    NSString *fileName = [NSString stringWithFormat:@"%@.m4a", mediaItem.ID];
     NSString *songPath = [tempPath stringByAppendingPathComponent:fileName];
 
     // asynchronous download
@@ -38,7 +38,7 @@
     [httpClient registerHTTPOperationClass:[AFHTTPRequestOperation class]];
     operation.outputStream = [NSOutputStream outputStreamToFileAtPath:songPath append:NO];
     [operation setDownloadProgressBlock:^(NSUInteger bytesDownloaded, long long totalBytesDownloaded, long long totalBytesExpectedToDownload) {
-        musicItem.loadProgress = (double)totalBytesDownloaded / totalBytesExpectedToDownload;
+        mediaItem.loadProgress = (double)totalBytesDownloaded / totalBytesExpectedToDownload;
         if(it % 300 == 0) {
             progress();
         }
@@ -47,7 +47,7 @@
     }];
     [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"Download Success");
-        musicItem.loadProgress = 1.0;
+        mediaItem.loadProgress = 1.0;
         completionBlock();
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -60,10 +60,10 @@
     [operation start];
 }
 
-- (void)downloadBeatsWithMusicItem:(MusicItem *)musicItem andSessionID:(NSString *)sessionID completion:(void (^)(void))completionBlock
+- (void)downloadBeatsWithMediaItem:(MediaItem *)mediaItem andSessionID:(NSString *)sessionID completion:(void (^)(void))completionBlock
 {
     // make the GET request URL
-    NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:sessionID, @"sessionid", musicItem.ID, @"id", nil];
+    NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:sessionID, @"sessionid", mediaItem.ID, @"id", nil];
     NSMutableString *prams = [[NSMutableString alloc] init];
     for (id keys in dict) {
         [prams appendFormat:@"%@=%@&",keys,[dict objectForKey:keys]];
@@ -74,7 +74,7 @@
     NSLog(@"GET Request = %@",urlString);
     
     // the name of the locally saved file
-    NSString *saveName = [NSString stringWithFormat:@"%@-beats.txt", musicItem.ID];
+    NSString *saveName = [NSString stringWithFormat:@"%@-beats.txt", mediaItem.ID];
     saveName = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:saveName];
     NSLog(@"saving beats to %@", saveName);
     

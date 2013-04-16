@@ -134,6 +134,7 @@
 
 - (void)startGameWithBlock:(void (^)(Game *))block
 {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil];
 	GameViewController *gameViewController = [storyboard instantiateViewControllerWithIdentifier:@"GameViewController"];
     [self presentViewController:gameViewController animated:YES completion:nil];

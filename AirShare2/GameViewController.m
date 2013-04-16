@@ -335,6 +335,22 @@ const double epsilon = 0.02;
     [_game skipButtonPressed];
 }
 
+- (IBAction)playMovie:(id)sender {
+    MPMediaPropertyPredicate *predicate1 = [MPMediaPropertyPredicate predicateWithValue:[NSNumber numberWithInteger:MPMediaTypeAnyVideo] forProperty:MPMediaItemPropertyMediaType];
+    MPMediaQuery *query = [[MPMediaQuery alloc] init];
+    [query addFilterPredicate:predicate1];
+    
+    NSArray *items = [query items];
+    
+    for (MPMediaItem* item in items)
+    {
+        NSString* title = [item valueForProperty:MPMediaItemPropertyTitle];
+        
+        NSURL *url = [item valueForProperty:MPMediaItemPropertyAssetURL];
+        NSLog(@"Title = %@, URL = %@", title, url);
+    }
+}
+
 - (void) mediaPicker: (MPMediaPickerController *)mediaPicker didPickMediaItems: (MPMediaItemCollection *) mediaItemCollection
 {
     [mediaPicker dismissViewControllerAnimated:YES completion:nil];
