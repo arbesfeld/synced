@@ -12,7 +12,7 @@
 @interface MovieItemCell : UITableViewCell
 
 @property (nonatomic, strong) MPMediaItem *movieItem;
-
+@property (nonatomic, strong) NSString *title, *artist;
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier;
 
 - (void)addContent;

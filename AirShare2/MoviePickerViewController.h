@@ -20,10 +20,8 @@
 @end
 
 @interface MoviePickerViewController : UITableViewController <UISearchBarDelegate, UISearchDisplayDelegate> {
-    NSArray *_allData;
-    NSMutableArray *_allCells;
-    
-    NSMutableArray *_searchData;
+    NSArray *_labels, *_allData;
+    NSMutableArray *_allCells, *_searchCells;
     
     UISearchDisplayController *searchDisplayController;
 }

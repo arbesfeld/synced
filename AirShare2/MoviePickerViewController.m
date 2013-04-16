@@ -18,6 +18,8 @@
 {
     self = [super initWithStyle:style];
     if (self) {
+        _labels = [[NSArray alloc] initWithObjects:@"", @"Movies", @"Music Videos", @"TV Shows", @"Podcasts", @"iTunesU", nil];
+        
         self.title = @"Videos";
         [self.navigationItem setHidesBackButton:YES animated:YES];
         UIBarButtonItem* backButton = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStyleBordered target:self action:@selector(cancel)];
@@ -57,7 +59,11 @@
         NSArray *empty = [[NSArray alloc] init];
         _allData = [[NSArray alloc] initWithObjects:empty, movies, musicVideos, tvShows, podcasts, iTunesU, nil];
         [self initCells];
-        _searchData = [[NSMutableArray alloc] init];
+        
+        searchDisplayController = [[UISearchDisplayController alloc] initWithSearchBar:_searchBar contentsController:self];
+        searchDisplayController.delegate = self;
+        searchDisplayController.searchResultsDataSource = self;
+        searchDisplayController.searchResultsDelegate = self;
     }
     return self;
 }
@@ -68,9 +74,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    searchDisplayController = [[UISearchDisplayController alloc] initWithSearchBar:_searchBar contentsController:self];
-    searchDisplayController.delegate = self;
-    searchDisplayController.searchResultsDataSource = self;
 }
 
 - (void)didReceiveMemoryWarning
@@ -93,52 +96,27 @@
             [_allCells[i] addObject:cell];
         }
     }
+    _searchCells = [[NSMutableArray alloc] initWithArray:_allCells copyItems:YES];
 }
 #pragma mark - Table view data source
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return ((NSArray *)_allData).count;
+    return ((NSArray *)_searchCells).count;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if(indexPath.section == 0) {
-        return 44;
-    } else {
-        return 80;
-    }
+    return 80;
 }
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
     if(((NSArray *)_allData[section]).count == 0) {
-        return @"";
+        return nil;
     }
-    switch (section) {
-        case 0:
-            return @"";
-            break;
-        case 1:
-            return @"Movies";
-            break;
-        case 2:
-            return @"Music Videos";
-            break;
-        case 3:
-            return @"TV Shows";
-            break;
-        case 4:
-            return @"Video Podcasts";
-            break;
-        case 5:
-            return @"iTunesU";
-            break;
-        default:
-            return nil;
-            break;
-    }
+    return _labels[section];
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return ((NSArray *)_allData[section]).count;
+    return ((NSArray *)_searchCells[section]).count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -151,7 +129,7 @@
         if(indexPath.section == 0) {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
         } else {
-            cell = (UITableViewCell *)(_allCells[indexPath.section][indexPath.row]);
+            cell = (UITableViewCell *)(_searchCells[indexPath.section][indexPath.row]);
         }
     }
     return cell;
@@ -161,54 +139,50 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    NSLog(@"Selcted = %@", [indexPath description]);
     MPMediaItem *selected = nil;
     if(indexPath.section == 0) {
         //
     } else {
-        selected = _allData[indexPath.section][indexPath.row];
+        selected = ((MovieItemCell *)_searchCells[indexPath.section][indexPath.row]).movieItem;
     }
     
     [self.delegate addMovie:selected];
+    [searchDisplayController setActive:NO animated:YES];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - SearchDisplayControllerDelegate
 - (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString
 {
-    [_searchData removeAllObjects];
-    /*before starting the search is necessary to remove all elements from the
-     array that will contain found items */
-    
-    NSArray *group;
-    
-    /* in this loop I search through every element (group) (see the code on top) in
-     the "originalData" array, if the string match, the element will be added in a
-     new array called newGroup. Then, if newGroup has 1 or more elements, it will be
-     added in the "searchData" array. shortly, I recreated the structure of the
-     original array "originalData". */
-    
-    for(group in _allData) //take the n group (eg. group1, group2, group3)
-        //in the original data
+    [_searchCells removeAllObjects];
+    if([searchString isEqualToString:@""]) {
+        _searchCells = [[NSMutableArray alloc] initWithArray:_allCells copyItems:YES];
+        NSLog(@"Cleared");
+        return YES;
+    }
+    for(int i = 0; i < _allCells.count; i++)
     {
-        NSMutableArray *newGroup = [[NSMutableArray alloc] init];
-        NSString *element;
+        NSArray *group = _allCells[i];
+        NSMutableArray *newGroup = [[NSMutableArray alloc] initWithCapacity:((NSArray *)_allCells[i]).count];
         
-        for(element in group) //take the n element in the group
-        {                    //(eg. @"Napoli, @"Milan" etc.)
-            NSRange range = [element rangeOfString:searchString
-                                           options:NSCaseInsensitiveSearch];
+        for(MovieItemCell *element in group)
+        {
+            NSRange rangeTitle = [element.title rangeOfString:searchString
+                                                      options:NSCaseInsensitiveSearch];
+            NSRange rangeArtist = [element.artist rangeOfString:searchString
+                                                        options:NSCaseInsensitiveSearch];
             
-            if (range.length > 0) { //if the substring match
-                [newGroup addObject:element]; //add the element to group
+            if (rangeTitle.length > 0 || rangeArtist.length > 0) {
+                [newGroup addObject:element];
             }
         }
-        
-        if ([newGroup count] > 0) {
-            [_searchData addObject:newGroup];
-        }
-    
+        [_searchCells addObject:newGroup];
     }
-    
     return YES;
+}
+- (void)searchDisplayController:(UISearchDisplayController *)controller didLoadSearchResultsTableView:(UITableView *)tableView
+{
+    tableView.rowHeight = 80;
 }
 @end
