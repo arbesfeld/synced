@@ -32,7 +32,7 @@
         self.localURL = localURL;
         self.beats = [[NSMutableArray alloc] init];
         self.beatPos = -1;
-        self.partyMode = YES;
+        self.partyMode = NO;
         self.isVideo = NO;
 	}
 	return self;
@@ -106,6 +106,15 @@
     [device setFlashMode:AVCaptureFlashModeOff];
     
     [device unlockForConfiguration];
+}
+
+- (void)togglePartyMode
+{
+    if (self.partyMode == YES) {
+        self.partyMode = NO;
+    } else {
+        self.partyMode = YES;
+    }
 }
 
 @end

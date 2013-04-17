@@ -384,4 +384,17 @@ const double epsilon = 0.02;
 {
     [mediaPicker dismissViewControllerAnimated:YES completion:nil];
 }
+
+- (IBAction)togglePartyMode:(UISwitch *)sender {
+    NSLog(@"Toggling party mode");
+    if ([_currentPlaylistItem isKindOfClass:[MediaItem class]]) {
+        [(MediaItem *)_currentPlaylistItem togglePartyMode];
+    }
+    for (int i = 0; i < [_game.playlist count]; i++) {
+        if ([[_game.playlist objectAtIndex:i] isKindOfClass:[MediaItem class]]) {
+            [(MediaItem *)[_game.playlist objectAtIndex:i] togglePartyMode];
+        }
+    }
+}
+
 @end
