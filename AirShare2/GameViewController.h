@@ -37,5 +37,6 @@
 - (IBAction)playMusic:(id)sender;
 - (IBAction)skipMusic:(id)sender;
 - (IBAction)playMovie:(id)sender;
+- (IBAction)togglePartyMode:(UISwitch *)sender;
 
 @end

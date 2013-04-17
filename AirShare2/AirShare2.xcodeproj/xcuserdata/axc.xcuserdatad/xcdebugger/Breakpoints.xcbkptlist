@@ -55,5 +55,16 @@
          landmarkName = "-genRandStringLength:"
          landmarkType = "5">
       </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "GameViewController.m"
+         timestampString = "387865806.067974"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "388"
+         endingLineNumber = "388">
+      </FileBreakpoint>
    </FileBreakpoints>
 </Bucket>

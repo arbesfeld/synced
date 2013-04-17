@@ -108,4 +108,13 @@
     [device unlockForConfiguration];
 }
 
+- (void)togglePartyMode
+{
+    if (self.partyMode == YES) {
+        self.partyMode = NO;
+    } else {
+        self.partyMode = YES;
+    }
+}
+
 @end

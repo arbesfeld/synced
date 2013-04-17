@@ -19,5 +19,6 @@
 
 - (void)loadBeats;
 - (void)nextBeat;
+- (void)togglePartyMode;
 
 @end
