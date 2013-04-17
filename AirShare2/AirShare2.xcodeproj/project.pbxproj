@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		551CC94D171CBC9100BB884B /* empty.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 551CC94C171CBC9100BB884B /* empty.mp3 */; };
 		552CDD1F17026493003CA4EB /* PacketMusicResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 552CDD1E17026493003CA4EB /* PacketMusicResponse.m */; };
 		552CDD22170279BF003CA4EB /* PacketGameState.m in Sources */ = {isa = PBXBuildFile; fileRef = 552CDD21170279BF003CA4EB /* PacketGameState.m */; };
 		55453437171124EB00B4704F /* PacketSyncResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 55453436171124EB00B4704F /* PacketSyncResponse.m */; };
@@ -31,16 +32,19 @@
 		559096C716FFB3DE004149A0 /* UIImageView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 559096BE16FFB3DE004149A0 /* UIImageView+AFNetworking.m */; };
 		559096CA16FFE28A004149A0 /* MusicDownload.m in Sources */ = {isa = PBXBuildFile; fileRef = 559096C916FFE28A004149A0 /* MusicDownload.m */; };
 		559096D01700038F004149A0 /* PlaylistItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 559096CF1700038F004149A0 /* PlaylistItem.m */; };
-		559096D3170006AB004149A0 /* MusicItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 559096D2170006AB004149A0 /* MusicItem.m */; };
+		559096D3170006AB004149A0 /* MediaItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 559096D2170006AB004149A0 /* MediaItem.m */; };
 		5591DC7D1703669A0086BC99 /* PacketVote.m in Sources */ = {isa = PBXBuildFile; fileRef = 5591DC7C1703669A0086BC99 /* PacketVote.m */; };
 		5592DE82170BAA9F00C766B0 /* ECSlidingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5592DE7F170BAA9F00C766B0 /* ECSlidingViewController.m */; };
 		5592DE83170BAA9F00C766B0 /* UIImage+ImageWithUIView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5592DE81170BAA9F00C766B0 /* UIImage+ImageWithUIView.m */; };
 		5592DE87170BABAE00C766B0 /* SlidingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5592DE86170BABAE00C766B0 /* SlidingViewController.m */; };
 		5592FEFD1700D65B0038ED40 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5592FEFC1700D65B0038ED40 /* CoreAudio.framework */; };
+		5595E4EB171D2C46006782DE /* MoviePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5595E4EA171D2C45006782DE /* MoviePickerViewController.m */; };
+		5595E4EE171D3995006782DE /* MovieItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5595E4ED171D3995006782DE /* MovieItemCell.m */; };
 		5596E08C16F62FB600511D3E /* PacketOtherClientQuit.m in Sources */ = {isa = PBXBuildFile; fileRef = 5596E08B16F62FB600511D3E /* PacketOtherClientQuit.m */; };
 		5596E0C916F6746900511D3E /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5596E0C816F6746900511D3E /* MediaPlayer.framework */; };
 		5596E0D716F692CE00511D3E /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5596E0D616F692CE00511D3E /* AudioToolbox.framework */; };
 		5596E0DB16F6930700511D3E /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5596E0DA16F6930600511D3E /* CoreMedia.framework */; };
+		5596EDE91717355D00F069FE /* gothic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5596EDE81717355D00F069FE /* gothic.ttf */; };
 		559D6B8E1711EC2000C591D8 /* airshare.png in Resources */ = {isa = PBXBuildFile; fileRef = 559D6B841711EC2000C591D8 /* airshare.png */; };
 		559D6B8F1711EC2000C591D8 /* bgGreyImg.png in Resources */ = {isa = PBXBuildFile; fileRef = 559D6B851711EC2000C591D8 /* bgGreyImg.png */; };
 		559D6B901711EC2000C591D8 /* cancel.png in Resources */ = {isa = PBXBuildFile; fileRef = 559D6B861711EC2000C591D8 /* cancel.png */; };
@@ -85,6 +89,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		551CC94C171CBC9100BB884B /* empty.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = empty.mp3; sourceTree = "<group>"; };
 		552CDD1D17026493003CA4EB /* PacketMusicResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PacketMusicResponse.h; sourceTree = "<group>"; };
 		552CDD1E17026493003CA4EB /* PacketMusicResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PacketMusicResponse.m; sourceTree = "<group>"; };
 		552CDD20170279BF003CA4EB /* PacketGameState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PacketGameState.h; sourceTree = "<group>"; };
@@ -128,8 +133,8 @@
 		559096C916FFE28A004149A0 /* MusicDownload.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MusicDownload.m; path = AirShare2/MusicDownload.m; sourceTree = "<group>"; };
 		559096CE1700038F004149A0 /* PlaylistItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlaylistItem.h; sourceTree = "<group>"; };
 		559096CF1700038F004149A0 /* PlaylistItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlaylistItem.m; sourceTree = "<group>"; };
-		559096D1170006AB004149A0 /* MusicItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MusicItem.h; sourceTree = "<group>"; };
-		559096D2170006AB004149A0 /* MusicItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MusicItem.m; sourceTree = "<group>"; };
+		559096D1170006AB004149A0 /* MediaItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaItem.h; sourceTree = "<group>"; };
+		559096D2170006AB004149A0 /* MediaItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaItem.m; sourceTree = "<group>"; };
 		5591DC7B1703669A0086BC99 /* PacketVote.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PacketVote.h; sourceTree = "<group>"; };
 		5591DC7C1703669A0086BC99 /* PacketVote.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PacketVote.m; sourceTree = "<group>"; };
 		5592DE7E170BAA9F00C766B0 /* ECSlidingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ECSlidingViewController.h; sourceTree = "<group>"; };
@@ -139,12 +144,17 @@
 		5592DE85170BABAE00C766B0 /* SlidingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SlidingViewController.h; sourceTree = "<group>"; };
 		5592DE86170BABAE00C766B0 /* SlidingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SlidingViewController.m; sourceTree = "<group>"; };
 		5592FEFC1700D65B0038ED40 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
+		5595E4E9171D2C45006782DE /* MoviePickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoviePickerViewController.h; sourceTree = "<group>"; };
+		5595E4EA171D2C45006782DE /* MoviePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MoviePickerViewController.m; sourceTree = "<group>"; };
+		5595E4EC171D3995006782DE /* MovieItemCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MovieItemCell.h; sourceTree = "<group>"; };
+		5595E4ED171D3995006782DE /* MovieItemCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MovieItemCell.m; sourceTree = "<group>"; };
 		5596E08A16F62FB600511D3E /* PacketOtherClientQuit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PacketOtherClientQuit.h; sourceTree = "<group>"; };
 		5596E08B16F62FB600511D3E /* PacketOtherClientQuit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PacketOtherClientQuit.m; sourceTree = "<group>"; };
 		5596E0C816F6746900511D3E /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		5596E0D616F692CE00511D3E /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		5596E0D816F692D300511D3E /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		5596E0DA16F6930600511D3E /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		5596EDE81717355D00F069FE /* gothic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = gothic.ttf; sourceTree = "<group>"; };
 		559D6B841711EC2000C591D8 /* airshare.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = airshare.png; path = Graphics/airshare.png; sourceTree = "<group>"; };
 		559D6B851711EC2000C591D8 /* bgGreyImg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = bgGreyImg.png; path = Graphics/bgGreyImg.png; sourceTree = "<group>"; };
 		559D6B861711EC2000C591D8 /* cancel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = cancel.png; path = Graphics/cancel.png; sourceTree = "<group>"; };
@@ -186,7 +196,7 @@
 		55FCC5B916ED60460000BCBD /* GameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameViewController.h; sourceTree = "<group>"; };
 		55FCC5BA16ED60460000BCBD /* GameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameViewController.m; sourceTree = "<group>"; };
 		55FCC5BC16ED62640000BCBD /* Game.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Game.h; sourceTree = "<group>"; };
-		55FCC5BD16ED62640000BCBD /* Game.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Game.m; sourceTree = "<group>"; };
+		55FCC5BD16ED62640000BCBD /* Game.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = Game.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		55FCC5C016ED78E80000BCBD /* Player.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Player.h; sourceTree = "<group>"; };
 		55FCC5C116ED78E80000BCBD /* Player.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Player.m; sourceTree = "<group>"; };
 		55FCC5C316ED79C70000BCBD /* Packet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Packet.h; sourceTree = "<group>"; };
@@ -194,7 +204,6 @@
 		55FCC5C616ED7A5E0000BCBD /* NSData+AirShareAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+AirShareAdditions.h"; sourceTree = "<group>"; };
 		55FCC5C716ED7A5E0000BCBD /* NSData+AirShareAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+AirShareAdditions.m"; sourceTree = "<group>"; };
 		89307B7617138BAC0008B488 /* upvote.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = upvote.png; path = Graphics/upvote.png; sourceTree = "<group>"; };
-		89AC5B50170FA81500FB7975 /* gothic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = gothic.ttf; sourceTree = "<group>"; };
 		89B257DE16F140D30018695A /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		89C016AE1714B545003F0B26 /* MarqueeLabel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MarqueeLabel.h; sourceTree = "<group>"; };
 		89C016AF1714B545003F0B26 /* MarqueeLabel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MarqueeLabel.m; sourceTree = "<group>"; };
@@ -239,6 +248,8 @@
 				559D6B9B17120A2900C591D8 /* UIImage+animatedGIF.m */,
 				558E0D621704DE3100BF230D /* PlaylistItemCell.h */,
 				558E0D631704DE3100BF230D /* PlaylistItemCell.m */,
+				5595E4EC171D3995006782DE /* MovieItemCell.h */,
+				5595E4ED171D3995006782DE /* MovieItemCell.m */,
 			);
 			name = UI;
 			sourceTree = "<group>";
@@ -246,7 +257,7 @@
 		558E14B816F185780076F6FC /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
-				89AC5B50170FA81500FB7975 /* gothic.ttf */,
+				5596EDE81717355D00F069FE /* gothic.ttf */,
 				558E14B316F185600076F6FC /* CenturyGothicStd-Bold.otf */,
 				558E14B416F185600076F6FC /* CenturyGothicStd.otf */,
 			);
@@ -363,6 +374,7 @@
 				55FCC55516ED3D4C0000BCBD /* InfoPlist.strings */,
 				55FCC55816ED3D4C0000BCBD /* main.m */,
 				55FCC55A16ED3D4C0000BCBD /* AirShare2-Prefix.pch */,
+				551CC94C171CBC9100BB884B /* empty.mp3 */,
 				55FCC55E16ED3D4C0000BCBD /* Default.png */,
 				55FCC56016ED3D4C0000BCBD /* Default@2x.png */,
 				55FCC56216ED3D4C0000BCBD /* Default-568h@2x.png */,
@@ -375,6 +387,8 @@
 			children = (
 				55FCC5B916ED60460000BCBD /* GameViewController.h */,
 				55FCC5BA16ED60460000BCBD /* GameViewController.m */,
+				5595E4E9171D2C45006782DE /* MoviePickerViewController.h */,
+				5595E4EA171D2C45006782DE /* MoviePickerViewController.m */,
 				55FCC57616ED3DA20000BCBD /* MainViewController.h */,
 				55FCC57716ED3DA20000BCBD /* MainViewController.m */,
 				5592DE85170BABAE00C766B0 /* SlidingViewController.h */,
@@ -426,8 +440,8 @@
 			children = (
 				559096CE1700038F004149A0 /* PlaylistItem.h */,
 				559096CF1700038F004149A0 /* PlaylistItem.m */,
-				559096D1170006AB004149A0 /* MusicItem.h */,
-				559096D2170006AB004149A0 /* MusicItem.m */,
+				559096D1170006AB004149A0 /* MediaItem.h */,
+				559096D2170006AB004149A0 /* MediaItem.m */,
 				55FCC5C016ED78E80000BCBD /* Player.h */,
 				55FCC5C116ED78E80000BCBD /* Player.m */,
 				55FCC5BC16ED62640000BCBD /* Game.h */,
@@ -539,6 +553,8 @@
 				89E4772A1712869A00DE9ECE /* exit-01.png in Resources */,
 				89E4772E17128F9700DE9ECE /* movies-01.png in Resources */,
 				89307B7717138BAC0008B488 /* upvote.png in Resources */,
+				5596EDE91717355D00F069FE /* gothic.ttf in Resources */,
+				551CC94D171CBC9100BB884B /* empty.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -574,7 +590,7 @@
 				559096C716FFB3DE004149A0 /* UIImageView+AFNetworking.m in Sources */,
 				559096CA16FFE28A004149A0 /* MusicDownload.m in Sources */,
 				559096D01700038F004149A0 /* PlaylistItem.m in Sources */,
-				559096D3170006AB004149A0 /* MusicItem.m in Sources */,
+				559096D3170006AB004149A0 /* MediaItem.m in Sources */,
 				55A31C0417017B6F00A1FFC8 /* PacketPlayMusicNow.m in Sources */,
 				552CDD1F17026493003CA4EB /* PacketMusicResponse.m in Sources */,
 				552CDD22170279BF003CA4EB /* PacketGameState.m in Sources */,
@@ -588,6 +604,8 @@
 				55453437171124EB00B4704F /* PacketSyncResponse.m in Sources */,
 				EAB726371711EFDC0084D2CC /* PacketCancelMusic.m in Sources */,
 				559D6B9C17120A2900C591D8 /* UIImage+animatedGIF.m in Sources */,
+				5595E4EB171D2C46006782DE /* MoviePickerViewController.m in Sources */,
+				5595E4EE171D3995006782DE /* MovieItemCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

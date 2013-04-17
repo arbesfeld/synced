@@ -1,38 +1,39 @@
 //
-//  MusicItem.m
+//  MediaItem.m
 //  AirShare2
 //
 //  Created by mata on 3/25/13.
 //  Copyright (c) 2013 Matthew Arbesfeld. All rights reserved.
 //
 
-#import "MusicItem.h"
+#import "MediaItem.h"
 #import <AVFoundation/AVFoundation.h>
 
-@implementation MusicItem
+@implementation MediaItem
 
 @synthesize songURL = _songURL;
 @synthesize beatPos = _beatPos;
 @synthesize partyMode = _partyMode;
 @synthesize beats = _beats;
 
-+ (id)musicItemWithName:(NSString *)name andSubtitle:(NSString *)subtitle andID:(NSString *)ID andDate:(NSDate *)date;
++ (id)mediaItemWithName:(NSString *)name andSubtitle:(NSString *)subtitle andID:(NSString *)ID andDate:(NSDate *)date andLocalURL:(NSURL *)localURL;
 {
-	return [[[self class] alloc] initMusicItemWithName:name andSubtitle:subtitle andID:ID andDate:date];
+	return [[[self class] alloc] initMediaItemWithName:name andSubtitle:subtitle andID:ID andDate:date andLocalURL:localURL];
 }
 
-- (id)initMusicItemWithName:(NSString *)name andSubtitle:(NSString *)subtitle andID:(NSString *)ID andDate:(NSDate *)date
+- (id)initMediaItemWithName:(NSString *)name andSubtitle:(NSString *)subtitle andID:(NSString *)ID andDate:(NSDate *)date andLocalURL:(NSURL *)localURL
 {
 	if ((self = [super initPlaylistItemWithName:name andSubtitle:subtitle andID:ID andDate:date andPlaylistItemType:PlaylistItemTypeSong]))
 	{
-        NSArray *dirs = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-        NSString *documentsDirectoryPath = [dirs objectAtIndex:0];
+        NSString *tempPath = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
         NSString *fileName = [NSString stringWithFormat:@"%@.m4a", ID];
-        NSString *songPath = [documentsDirectoryPath stringByAppendingPathComponent:fileName];
+        NSString *songPath = [tempPath stringByAppendingPathComponent:fileName];
 		self.songURL = [[NSURL alloc] initWithString:songPath];
+        self.localURL = localURL;
         self.beats = [[NSMutableArray alloc] init];
         self.beatPos = -1;
         self.partyMode = YES;
+        self.isVideo = NO;
 	}
 	return self;
 }

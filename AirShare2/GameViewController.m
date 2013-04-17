@@ -2,6 +2,7 @@
 #import "PlaylistItemCell.h"
 #import "ECSlidingViewController.h"
 #import "MarqueeLabel.h"
+#import "MoviePickerViewController.h"
 #import <QuartzCore/QuartzCore.h>
 
 const double epsilon = 0.02;
@@ -46,8 +47,8 @@ const double epsilon = 0.02;
 
     self.artistLabel.hidden = YES;
     self.waitingLabel.hidden = NO;
-    
-    self.songTitle = [[MarqueeLabel alloc] initWithFrame:CGRectMake(30, 75, self.view.frame.size.width-60.0f, 20.0f) duration:8.0 andFadeLength:10.0f];
+    self.waitingLabel.font = [UIFont fontWithName:@"Century Gothic" size:17.0f];
+    self.songTitle = [[MarqueeLabel alloc] initWithFrame:CGRectMake(20, 70, self.view.frame.size.width-40.0f, 20.0f) duration:6.0 andFadeLength:10.0f];
     self.songTitle.tag = 101;
     self.songTitle.numberOfLines = 1;
     self.songTitle.shadowOffset = CGSizeMake(0.0, -1.0);
@@ -55,15 +56,18 @@ const double epsilon = 0.02;
     self.songTitle.textColor = [UIColor colorWithRed:0.234 green:0.234 blue:0.234 alpha:1.000];
     self.songTitle.backgroundColor = [UIColor clearColor];
     self.songTitle.font = [UIFont systemFontOfSize:17];
-    self.songTitle.text = @" ";
+    self.songTitle.text = @"";
     [self.view addSubview:self.songTitle];
-
+    self.skipSongLabel.font = [UIFont fontWithName:@"Century Gothic" size:17.0f];
+    [[AVAudioSession sharedInstance] setDelegate: self];
+    [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
+    [[AVAudioSession sharedInstance] setActive: YES error: nil];
+    
+    [[UIApplication sharedApplication] beginReceivingRemoteControlEvents];
 }
-
 - (void)viewWillDisappear:(BOOL)animated
 {
 	[super viewWillDisappear:animated];
-    
 	[_alertView dismissWithClickedButtonIndex:_alertView.cancelButtonIndex animated:NO];
 }
 
@@ -159,13 +163,19 @@ const double epsilon = 0.02;
     
     [self.game.playlist removeObject:playlistItem];
     [self.playlistTable endUpdates];
+    
+    //update the row labels of the songs
+    for(int i = 0; i < self.game.playlist.count; i++) {
+        PlaylistItemCell *cell = (PlaylistItemCell *)[self.playlistTable cellForRowAtIndexPath:[NSIndexPath indexPathForItem:i inSection:0]];
+        cell.positionLabel.text = [NSString stringWithFormat:@"%d.", i+1];
+    }
 }
 
 - (void)audioPlayerFinishedPlaying
 {
     _waitingLabel.hidden = NO;
     _artistLabel.hidden = YES;
-    self.songTitle.text = @" ";
+    self.songTitle.text = @"";
 }
 
 - (void)game:(Game *)game setCurrentItem:(PlaylistItem *)playlistItem
@@ -204,6 +214,20 @@ const double epsilon = 0.02;
     } else {
         self.playbackProgressBar.hidden = NO;
     }
+}
+
+- (void)setMoviePlayer:(MPMoviePlayerController *)moviePlayer
+{
+    //[moviePlayer.view setFrame:self.view.bounds];
+    //[moviePlayer setFullscreen:YES animated:YES];
+    
+    [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationLandscapeRight animated:NO];
+    
+    [moviePlayer.view setBounds:CGRectMake(0, 0, UIScreen.mainScreen.bounds.size.height, UIScreen.mainScreen.bounds.size.width)];
+    [moviePlayer.view setCenter:CGPointMake(UIScreen.mainScreen.bounds.size.width / 2, UIScreen.mainScreen.bounds.size.height/2)];
+    [moviePlayer.view setTransform:CGAffineTransformMakeRotation(M_PI / 2)];
+    moviePlayer.controlStyle = MPMovieControlStyleNone;
+    [self.view addSubview:moviePlayer.view];
 }
 #pragma mark - UITableViewDataSource
 
@@ -252,7 +276,7 @@ const double epsilon = 0.02;
         
          
         if (cell == nil) {
-            cell = [[PlaylistItemCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:nil playlistItem:selectedItem voteValue:[[_voteAmount objectForKey:selectedItem.ID] intValue]];
+            cell = [[PlaylistItemCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:nil playlistItem:selectedItem voteValue:[[_voteAmount objectForKey:selectedItem.ID] intValue] position:indexPath.row];
             cell.delegate = self;
         }
         return cell;
@@ -261,18 +285,23 @@ const double epsilon = 0.02;
 
 - (void)setHeaderWithSongName:(NSString *)songName andArtistName:(NSString *)artistName
 {
-
     _artistLabel.hidden = NO;
     _playbackProgressBar.hidden = NO;
     
     self.songTitle.text = songName;
-
+    self.songTitle.font = [UIFont fontWithName:@"Century Gothic" size:18.0f];
     self.artistLabel.text = artistName;
-    self.artistLabel.font = [UIFont systemFontOfSize:13];
-    self.artistLabel.textColor = [UIColor grayColor];
+    self.artistLabel.font = [UIFont fontWithName:@"Century Gothic" size:14.0f];
+    self.artistLabel.textColor = [UIColor darkGrayColor];
     
 }
 #pragma mark - UITableViewDelegate
+
+#pragma mark - MoviePickerDelegate
+
+- (void)addMovie:(MPMediaItem *)movieItem {
+    [_game uploadMusicWithMediaItem:movieItem video:YES];
+}
 
 #pragma mark - PlaylistItemDelegate
 
@@ -318,11 +347,12 @@ const double epsilon = 0.02;
 
 #pragma mark - playMusic____
 - (IBAction)playMusic:(id)sender {
-    MPMediaPickerController *mediaPicker = [[MPMediaPickerController alloc] initWithMediaTypes: MPMediaTypeAny];
+    MPMediaPickerController *mediaPicker = [[MPMediaPickerController alloc] initWithMediaTypes: MPMediaTypeMusic];
+    
     mediaPicker.delegate = self;
     mediaPicker.allowsPickingMultipleItems = NO;
-    mediaPicker.prompt = @"Select song to play";
-    
+    //mediaPicker.prompt = @"Music";
+    mediaPicker.navigationItem.rightBarButtonItem.title = @"Cancel";
     [self presentViewController:mediaPicker animated:YES completion:nil];
 }
     
@@ -330,7 +360,14 @@ const double epsilon = 0.02;
     [_game skipButtonPressed];
 }
 
-- (void) mediaPicker: (MPMediaPickerController *)mediaPicker didPickMediaItems: (MPMediaItemCollection *) mediaItemCollection
+- (IBAction)playMovie:(id)sender {
+	MoviePickerViewController *moviePickerViewController = [[MoviePickerViewController alloc] initWithStyle:UITableViewStylePlain];
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:moviePickerViewController];
+    [self presentViewController:navController animated:YES completion:nil];
+	moviePickerViewController.delegate = self;
+}
+
+- (void)mediaPicker: (MPMediaPickerController *)mediaPicker didPickMediaItems:(MPMediaItemCollection *)mediaItemCollection
 {
     [mediaPicker dismissViewControllerAnimated:YES completion:nil];
     
@@ -338,9 +375,7 @@ const double epsilon = 0.02;
         
         MPMediaItem *chosenItem = mediaItemCollection.items[0];
         
-        NSURL *songURL = [chosenItem valueForProperty: MPMediaItemPropertyAssetURL];
-        NSLog(@"url = %@", songURL);
-        [_game uploadMusicWithMediaItem:chosenItem];
+        [_game uploadMusicWithMediaItem:chosenItem video:NO];
     }
 }
 

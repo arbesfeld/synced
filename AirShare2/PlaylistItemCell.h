@@ -21,18 +21,18 @@
 
 @end
 
-@interface PlaylistItemCell : UITableViewCell
+@interface PlaylistItemCell : UITableViewCell {
+    NSTimer *_updateLoadProgress;
+}
 
 @property (nonatomic, weak) id <PlaylistItemDelegate> delegate;
 
-@property (nonatomic, weak) UIButton *upvoteButton;
-@property (nonatomic, weak) UIButton *downvoteButton;
-@property (nonatomic, strong) UILabel *upvoteLabel;
-@property (nonatomic, strong) UILabel *downvoteLabel;
-@property (nonatomic, weak) UIButton *cancelButton;
+@property (nonatomic, weak) UIButton *upvoteButton, *downvoteButton, *cancelButton;
+@property (nonatomic, strong) UILabel *upvoteLabel, *downvoteLabel, *positionLabel;
 @property (nonatomic, strong) UIImageView *waitingView;
 @property (nonatomic, strong) UIView *loadProgress;
 @property (nonatomic, strong) PlaylistItem *playlistItem;
+@property (nonatomic, assign) int position;
 
-- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier playlistItem:(PlaylistItem *)playlistItem voteValue:(int)voteValue;
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier playlistItem:(PlaylistItem *)playlistItem voteValue:(int)voteValue position:(int)position;
 @end

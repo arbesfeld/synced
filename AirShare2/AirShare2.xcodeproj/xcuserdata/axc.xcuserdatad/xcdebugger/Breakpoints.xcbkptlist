@@ -7,19 +7,6 @@
          shouldBeEnabled = "Yes"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "Game.m"
-         timestampString = "387232924.155534"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "496"
-         endingLineNumber = "496"
-         landmarkName = "-downloadMusicWithID:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "Yes"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
          filePath = "AirShare2/MusicDownload.h"
          timestampString = "387222861.444993"
          startingColumnNumber = "9223372036854775807"
@@ -65,7 +52,7 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "837"
          endingLineNumber = "837"
-         landmarkName = "-updatePlaybackProgress:"
+         landmarkName = "-genRandStringLength:"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

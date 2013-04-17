@@ -10,7 +10,7 @@
 #import "NSData+AirShareAdditions.h"
 #import "Player.h"
 #import "PlaylistItem.h"
-#import "MusicItem.h"
+#import "MediaItem.h"
 
 @implementation PacketPlaylistItem
 
@@ -51,7 +51,7 @@
             // music item
         case PlaylistItemTypeSong:
         {
-            playlistItem = [MusicItem musicItemWithName:name andSubtitle:subtitle andID:ID andDate:date];
+            playlistItem = [MediaItem mediaItemWithName:name andSubtitle:subtitle andID:ID andDate:date andLocalURL:nil];
             [playlistItem setUpvoteCount:upvoteCount andDownvoteCount:downvoteCount];
             
             break;
