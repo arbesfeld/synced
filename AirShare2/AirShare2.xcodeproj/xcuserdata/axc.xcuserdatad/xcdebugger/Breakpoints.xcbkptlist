@@ -4,7 +4,7 @@
    version = "1.0">
    <FileBreakpoints>
       <FileBreakpoint
-         shouldBeEnabled = "Yes"
+         shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "AirShare2/MusicDownload.h"
@@ -13,7 +13,7 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "16"
          endingLineNumber = "16"
-         landmarkName = "-downloadBeatsWithMusicItem:andSessionID:completion:"
+         landmarkName = "-downloadBeatsWithMediaItem:andSessionID:completion:"
          landmarkType = "4">
       </FileBreakpoint>
       <FileBreakpoint

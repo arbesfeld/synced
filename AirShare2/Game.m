@@ -467,13 +467,13 @@ const double MOVIE_TIME = -0.08; // the additional time it takes for movies
         PacketMusicDownload *packet = [PacketMusicDownload packetWithID:ID];
         [self sendPacketToAllClients:packet];
         
-        // grab beats
+        // grab beats: PARTY MODE
         NSLog(@"Getting beats for music item with name = %@", mediaItem.name);
-//        [_downloader downloadBeatsWithMediaItem:mediaItem andSessionID:_serverPeerID completion:^{
-//            NSLog(@"Found beats for music item with description: %@", [mediaItem description]);
-//            // update mediaItem
-//            [mediaItem loadBeats];
-//        }];
+        [_downloader downloadBeatsWithMediaItem:mediaItem andSessionID:_serverPeerID completion:^{
+            NSLog(@"Found beats for music item with description: %@", [mediaItem description]);
+            // update mediaItem
+            [mediaItem loadBeats];
+        }];
     }];
 }
 
@@ -522,11 +522,11 @@ const double MOVIE_TIME = -0.08; // the additional time it takes for movies
     
     // PARTY MODE (add a way to turn this off)
     NSLog(@"Getting beats for music item with name = %@", mediaItem.name);
-//    [_downloader downloadBeatsWithMediaItem:mediaItem andSessionID:_serverPeerID completion:^{
-//        NSLog(@"Found beats for music item with description: %@", [mediaItem description]);
-//        // update mediaItem
-//        [mediaItem loadBeats];
-//    }];
+    [_downloader downloadBeatsWithMediaItem:mediaItem andSessionID:_serverPeerID completion:^{
+        NSLog(@"Found beats for music item with description: %@", [mediaItem description]);
+        // update mediaItem
+        [mediaItem loadBeats];
+    }];
 }
 
 - (void)hasDownloadedMusic:(MediaItem *)mediaItem

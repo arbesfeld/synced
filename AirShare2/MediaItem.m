@@ -61,10 +61,10 @@
         NSString* cur = [allLinedStrings objectAtIndex:i];
     
         NSArray* singleStrs = [cur componentsSeparatedByCharactersInSet: [NSCharacterSet characterSetWithCharactersInString:@" "]];
+        singleStrs = [singleStrs filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"length > 0"]];
         if ([singleStrs count] > 1 && [[singleStrs objectAtIndex:1] length] > 0) {
             // add it!
             NSString *beat = [[singleStrs objectAtIndex:0] substringToIndex:[[singleStrs objectAtIndex:0] length] - 1];
-            //NSLog(@"Beat: %@", beat);
             [self.beats addObject:[NSNumber numberWithDouble:[beat doubleValue]]];
         }
     }
@@ -77,7 +77,7 @@
 - (void)nextBeat
 {
     self.beatPos++;
-    NSLog(@"BEAT!!");
+    //NSLog(@"BEAT!!");
     
     if (self.partyMode == YES) {
         Class captureDeviceClass = NSClassFromString(@"AVCaptureDevice");
