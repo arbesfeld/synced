@@ -171,7 +171,7 @@ const double epsilon = 0.02;
     }
 }
 
-- (void)audioPlayerFinishedPlaying
+- (void)mediaFinishedPlaying
 {
     _waitingLabel.hidden = NO;
     _artistLabel.hidden = YES;

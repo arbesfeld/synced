@@ -659,6 +659,9 @@ typedef enum
     
     if(mediaItem.isVideo) {
         _moviePlayer = [[CustomMovieController alloc] initWithContentURL:mediaItem.localURL];
+        
+        _moviePlayer.delegate = self;
+        
         if(_moviePlayer == nil) {
             NSLog(@"ERROR loading moviePlayer!");
         }
@@ -739,7 +742,7 @@ typedef enum
         _gameState = GameStateIdle;
         
         [self.delegate setPlaybackProgress:0.0];
-        [self.delegate audioPlayerFinishedPlaying];
+        [self.delegate mediaFinishedPlaying];
         [_audioPlayerTimer invalidate];
         _audioPlayerTimer = nil;
         _audioPlayer = nil;
@@ -763,6 +766,9 @@ typedef enum
     [_moviePlayer.view removeFromSuperview];
     _moviePlayer = nil;
     [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
+    
+    [self.delegate setPlaybackProgress:0.0];
+    [self.delegate mediaFinishedPlaying];
     
     [self tryPlayingNextItem];
     

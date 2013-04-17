@@ -29,7 +29,7 @@ ServerState;
 - (void)addPlaylistItem:(PlaylistItem *)playlistItem;
 - (void)removePlaylistItem:(PlaylistItem *)playlistItem animation:(UITableViewRowAnimation)animation;
 
-- (void)audioPlayerFinishedPlaying;
+- (void)mediaFinishedPlaying;
 
 - (void)game:(Game *)game setCurrentItem:(PlaylistItem *)playlistItem;
 - (void)game:(Game *)game setSkipItemCount:(int)skipItemCount;
@@ -46,7 +46,7 @@ ServerState;
 - (void)addView:(UIView *)view;
 @end
 
-@interface Game : NSObject <GKSessionDelegate, AVAudioPlayerDelegate> {
+@interface Game : NSObject <GKSessionDelegate, AVAudioPlayerDelegate, CustomMovieControllerDelegate> {
 }
 
 @property (nonatomic, weak) id <GameDelegate> delegate;

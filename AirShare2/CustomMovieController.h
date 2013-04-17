@@ -8,7 +8,18 @@
 
 #import <MediaPlayer/MediaPlayer.h>
 
+@class CustomMovieController;
+
+@protocol CustomMovieControllerDelegate <NSObject>
+
+- (void)skipButtonPressed;
+
+@end
+
 @interface CustomMovieController : MPMoviePlayerController
 
+@property (nonatomic, weak) id <CustomMovieControllerDelegate> delegate;
+
 - (id)initWithContentURL:(NSURL *)url;
+
 @end
