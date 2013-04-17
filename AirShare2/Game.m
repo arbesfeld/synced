@@ -21,6 +21,8 @@ const int WAIT_TIME_UPLOAD = 25; // server wait time for others to download musi
 const int WAIT_TIME_DOWNLOAD = 20; // server wait time for others to download music after downloading
 const int SYNC_PACKET_COUNT = 100;
 const double BACKGROUND_TIME = -0.2; // the additional time it takes when app is in background
+const double MOVIE_TIME = -0.08; // the additional time it takes for movies
+
 @implementation Game
 {
 	NSString *_serverPeerID;
@@ -63,12 +65,12 @@ const double BACKGROUND_TIME = -0.2; // the additional time it takes when app is
         
         NSString *emptyPath = [[NSBundle mainBundle] pathForResource:@"empty" ofType:@"mp3"];
         NSError *error;
-        _audioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL fileURLWithPath:emptyPath] error:&error];
-        _audioPlayer.delegate = self;
-        if (_audioPlayer == nil) {
-            NSLog(@"AudioPlayer did not load properly: %@", [error description]);
+        _silentPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL fileURLWithPath:emptyPath] error:&error];
+        _silentPlayer.delegate = self;
+        if (_silentPlayer == nil) {
+            NSLog(@"SilentPlayer did not load properly: %@", [error description]);
         } else {
-            [_audioPlayer play];
+            [_silentPlayer play];
         }
 	}
 	return self;
@@ -213,6 +215,10 @@ const double BACKGROUND_TIME = -0.2; // the additional time it takes when app is
             if([[UIApplication sharedApplication] applicationState] == UIApplicationStateInactive) {
                 compensate += BACKGROUND_TIME;
                 NSLog(@"Application in background.. compensating");
+            }
+            if(mediaItem.isVideo) {
+                NSLog(@"Is video");
+                compensate += MOVIE_TIME;
             }
             _playMusicTimer = [NSTimer scheduledTimerWithTimeInterval:delay+compensate
                                                                target:self
@@ -434,9 +440,10 @@ const double BACKGROUND_TIME = -0.2; // the additional time it takes when app is
    // NSLog(@"Game: playMusicWithName: %@", [song valueForProperty:MPMediaItemPropertyTitle]);
     NSString *songName = [song valueForProperty:MPMediaItemPropertyTitle];
     NSString *artistName = [song valueForProperty:MPMediaItemPropertyArtist];
+    NSURL *songURL = [song valueForProperty:MPMediaItemPropertyAssetURL];
     NSString *ID = [self genRandStringLength:6];
     
-    MediaItem *mediaItem = [MediaItem mediaItemWithName:songName andSubtitle:artistName andID:ID andDate:[NSDate date]];
+    MediaItem *mediaItem = [MediaItem mediaItemWithName:songName andSubtitle:artistName andID:ID andDate:[NSDate date] andLocalURL:songURL];
     [mediaItem setBelongsToUser:YES];
     mediaItem.isVideo = isVideo;
     [self addItemToPlaylist:mediaItem];
@@ -486,9 +493,13 @@ const double BACKGROUND_TIME = -0.2; // the additional time it takes when app is
 - (void)trySkippingSong
 {
     // if we exceed half the player count, stop the audio and let the next song play
-    if(_audioPlaying && _audioPlayer != nil &&  _players.count / 2 < _skipSongCount) {
-        [_audioPlayer stop];
-        [self audioPlayerDidFinishPlaying:_audioPlayer successfully:YES];
+    if(_audioPlaying && (_audioPlayer != nil || _moviePlayer != nil) &&  _players.count / 2 < _skipSongCount) {
+        if(_audioPlayer) {
+            [self audioPlayerDidFinishPlaying:_audioPlayer successfully:YES];
+        }
+        if(_moviePlayer) {
+            [self moviePlayerDidFinishPlaying:_moviePlayer];
+        }
     }
 }
 - (void)downloadMusicWithID:(NSString *)ID
@@ -586,13 +597,12 @@ const double BACKGROUND_TIME = -0.2; // the additional time it takes when app is
         }
 		Player *player = [self playerWithPeerID:peerID];
 		
-        NSDate *theirPlayTime = [playTime dateByAddingTimeInterval:player.timeOffset/player.syncPacketsReceived];
-        NSLog(@"Player with timeOffset = %f has playTime = %@", player.timeOffset/player.syncPacketsReceived, theirPlayTime);
+        NSDate *theirPlayTime = [playTime dateByAddingTimeInterval:player.timeOffset / player.syncPacketsReceived];
+        NSLog(@"Player with timeOffset = %f has playTime = %@", player.timeOffset / player.syncPacketsReceived, theirPlayTime);
         PacketPlayMusicNow *packet = [PacketPlayMusicNow packetWithSongID:mediaItem.ID andTime:theirPlayTime];
         //packet.sendReliably = false;
         [self sendPacket:packet toClientWithPeerID:player.peerID];
     }
-    
     [self prepareToPlayMediaItem:mediaItem];
     NSLog(@"my play time = %f", [playTime timeIntervalSinceNow]);
     
@@ -601,7 +611,11 @@ const double BACKGROUND_TIME = -0.2; // the additional time it takes when app is
         NSLog(@"Application in background... compensating");
         compensate += BACKGROUND_TIME;
     }
-    _playMusicTimer = [NSTimer scheduledTimerWithTimeInterval:[playTime timeIntervalSinceNow]+compensate
+    if(mediaItem.isVideo) {
+        NSLog(@"Is video");
+        compensate += MOVIE_TIME;
+    }
+    _playMusicTimer = [NSTimer scheduledTimerWithTimeInterval:[playTime timeIntervalSinceNow] + compensate
                                                        target:self
                                                      selector:@selector(playLoadedMediaItem:)
                                                      userInfo:mediaItem
@@ -614,23 +628,36 @@ const double BACKGROUND_TIME = -0.2; // the additional time it takes when app is
 {
     NSString *tempPath = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
     NSString *fileName = [NSString stringWithFormat:@"%@.m4a", mediaItem.ID];
-    NSString *songPath = [tempPath stringByAppendingPathComponent:fileName];
-    NSURL *songURL = [[NSURL alloc] initWithString:songPath];
-    
-    NSError *error;
-    _audioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:songURL error:&error];
-    _audioPlayer.delegate = self;
-    if (_audioPlayer == nil) {
-        _audioPlaying = NO;
-        NSLog(@"AudioPlayer did not load properly: %@", [error description]);
+    NSString *mediaPath = [tempPath stringByAppendingPathComponent:fileName];
+    NSURL *mediaURL = [[NSURL alloc] initWithString:mediaPath];
+    _audioPlaying = YES;
+    if(mediaItem.isVideo) {
+        _moviePlayer = [[MPMoviePlayerController alloc] initWithContentURL:mediaItem.localURL];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(moviePlayerDidFinishPlaying:)
+                                                     name:MPMoviePlayerPlaybackDidFinishNotification
+                                                   object:_moviePlayer];
+        _moviePlayer.movieSourceType = MPMovieSourceTypeFile;
+        [_moviePlayer prepareToPlay];
+        [_moviePlayer pause];
+        [_moviePlayer setCurrentPlaybackTime:0];
+        NSLog(@"loading");
     } else {
-        _audioPlaying = YES;
-        
-        [_audioPlayer prepareToPlay];
-        
-        // prime the audio player
-        [_audioPlayer play];
-        [_audioPlayer stop];
+        NSError *error;
+        _audioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:mediaURL error:&error];
+        _audioPlayer.delegate = self;
+        if (_audioPlayer == nil) {
+            _audioPlaying = NO;
+            NSLog(@"AudioPlayer did not load properly: %@", [error description]);
+        } else {
+            _audioPlaying = YES;
+            
+            [_audioPlayer prepareToPlay];
+            
+            // prime the audio player
+            [_audioPlayer play];
+            [_audioPlayer stop];
+        }
     }
 }
 
@@ -639,14 +666,19 @@ const double BACKGROUND_TIME = -0.2; // the additional time it takes when app is
     MediaItem *mediaItem = (MediaItem *)[timer userInfo];
     NSLog(@"Playing music item, name = %@", mediaItem.name);
     
-    if(_audioPlayer != nil) {
-        _audioPlaying = YES;
-        [_audioPlayer play];
-        _audioPlayerTimer = [NSTimer scheduledTimerWithTimeInterval:0.01
-                                                             target:self
-                                                           selector:@selector(updatePlaybackProgress:)
-                                                           userInfo:mediaItem
-                                                            repeats:YES];
+    _audioPlaying = YES;
+    if(mediaItem.isVideo) {
+        [self.delegate setMoviePlayer:_moviePlayer];
+        [_moviePlayer play];
+    } else {
+        if(_audioPlayer != nil) {
+            [_audioPlayer play];
+            _audioPlayerTimer = [NSTimer scheduledTimerWithTimeInterval:0.01
+                                                                 target:self
+                                                               selector:@selector(updatePlaybackProgress:)
+                                                               userInfo:mediaItem
+                                                                repeats:YES];
+        }
     }
     [self removeItemFromPlaylist:mediaItem];
     
@@ -672,25 +704,39 @@ const double BACKGROUND_TIME = -0.2; // the additional time it takes when app is
 
 - (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag
 {
-    NSLog(@"AudioPlayer finished playing, success? %@", flag ? @"YES" : @"NO");
-    [self.delegate setPlaybackProgress:0.0];
-    [self.delegate audioPlayerFinishedPlaying];
-    [_audioPlayerTimer invalidate];
-    _audioPlayerTimer = nil;
-    _audioPlaying = NO;
+    NSLog(@"AudioPlayer %@ finished playing, success? %@", player == _audioPlayer ? @"audioPlayer" : @"silentPlayer", flag ? @"YES" : @"NO");
     
-    NSString *emptyPath = [[NSBundle mainBundle] pathForResource:@"empty" ofType:@"mp3"];
-    self.audioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL fileURLWithPath:emptyPath] error:nil];
-    [self.audioPlayer play];
-    if(self.isServer) {
-        // try to play the next item on the list that is not loading
-        for(PlaylistItem *playlistItem in _playlist) {
-            if(playlistItem.loadProgress == 1.0) {
-                [self serverTryPlayingMusic:(MediaItem *)playlistItem waitTime:WAIT_TIME_UPLOAD];
-                break;
+    if(player == _audioPlayer) {
+        [self.delegate setPlaybackProgress:0.0];
+        [self.delegate audioPlayerFinishedPlaying];
+        [_audioPlayerTimer invalidate];
+        _audioPlayerTimer = nil;
+        _audioPlaying = NO;
+        _audioPlayer = nil;
+        if(self.isServer) {
+            // try to play the next item on the list that is not loading
+            for(PlaylistItem *playlistItem in _playlist) {
+                if(playlistItem.loadProgress == 1.0) {
+                    [self serverTryPlayingMusic:(MediaItem *)playlistItem waitTime:WAIT_TIME_UPLOAD];
+                    break;
+                }
             }
         }
-    }
+        
+    } 
+    NSString *emptyPath = [[NSBundle mainBundle] pathForResource:@"empty" ofType:@"mp3"];
+    _silentPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL fileURLWithPath:emptyPath] error:nil];
+    [_silentPlayer play];
+}
+
+- (void)moviePlayerDidFinishPlaying:(MPMoviePlayerController *)player
+{
+    [_moviePlayer stop];
+    _moviePlayer = nil;
+    
+    NSString *emptyPath = [[NSBundle mainBundle] pathForResource:@"empty" ofType:@"mp3"];
+    _silentPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL fileURLWithPath:emptyPath] error:nil];
+    [_silentPlayer play];
 }
 #pragma mark - Networking
 
@@ -959,6 +1005,7 @@ const double BACKGROUND_TIME = -0.2; // the additional time it takes when app is
     _playlist = nil;
     
     [_audioPlayer stop];
+    [_moviePlayer stop];
 	[_session disconnectFromAllPeers];
     
 	[self.delegate gameSessionDidEnd:self];
@@ -988,8 +1035,9 @@ const double BACKGROUND_TIME = -0.2; // the additional time it takes when app is
 	_session.delegate = nil;
 	_session = nil;
     [_audioPlayer stop];
+    [_moviePlayer stop];
     _audioPlayer = nil;
-    
+    _moviePlayer = nil;
 	[self.delegate game:self didQuitWithReason:reason];
 }
 @end

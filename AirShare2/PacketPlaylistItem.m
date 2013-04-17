@@ -51,7 +51,7 @@
             // music item
         case PlaylistItemTypeSong:
         {
-            playlistItem = [MediaItem mediaItemWithName:name andSubtitle:subtitle andID:ID andDate:date];
+            playlistItem = [MediaItem mediaItemWithName:name andSubtitle:subtitle andID:ID andDate:date andLocalURL:nil];
             [playlistItem setUpvoteCount:upvoteCount andDownvoteCount:downvoteCount];
             
             break;

@@ -79,7 +79,7 @@
             // music item
             case PlaylistItemTypeSong:
             {
-                MediaItem *mediaItem = [MediaItem mediaItemWithName:name andSubtitle:subtitle andID:ID andDate:date];
+                MediaItem *mediaItem = [MediaItem mediaItemWithName:name andSubtitle:subtitle andID:ID andDate:date andLocalURL:nil];
                 [mediaItem setUpvoteCount:upvoteCount andDownvoteCount:downvoteCount];
                 [playlist addObject:mediaItem];
                 

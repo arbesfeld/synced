@@ -215,6 +215,20 @@ const double epsilon = 0.02;
         self.playbackProgressBar.hidden = NO;
     }
 }
+
+- (void)setMoviePlayer:(MPMoviePlayerController *)moviePlayer
+{
+    //[moviePlayer.view setFrame:self.view.bounds];
+    //[moviePlayer setFullscreen:YES animated:YES];
+    
+    [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationLandscapeRight animated:NO];
+    
+    [moviePlayer.view setBounds:CGRectMake(0, 0, UIScreen.mainScreen.bounds.size.height, UIScreen.mainScreen.bounds.size.width)];
+    [moviePlayer.view setCenter:CGPointMake(UIScreen.mainScreen.bounds.size.width / 2, UIScreen.mainScreen.bounds.size.height/2)];
+    [moviePlayer.view setTransform:CGAffineTransformMakeRotation(M_PI / 2)];
+    moviePlayer.controlStyle = MPMovieControlStyleNone;
+    [self.view addSubview:moviePlayer.view];
+}
 #pragma mark - UITableViewDataSource
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section

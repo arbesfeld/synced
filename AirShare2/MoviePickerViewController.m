@@ -139,7 +139,6 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"Selcted = %@", [indexPath description]);
     MPMediaItem *selected = nil;
     if(indexPath.section == 0) {
         //
@@ -158,7 +157,6 @@
     [_searchCells removeAllObjects];
     if([searchString isEqualToString:@""]) {
         _searchCells = [[NSMutableArray alloc] initWithArray:_allCells copyItems:YES];
-        NSLog(@"Cleared");
         return YES;
     }
     for(int i = 0; i < _allCells.count; i++)
