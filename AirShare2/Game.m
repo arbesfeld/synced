@@ -23,6 +23,15 @@ const int SYNC_PACKET_COUNT = 100;
 const double BACKGROUND_TIME = -0.2; // the additional time it takes when app is in background
 const double MOVIE_TIME = -0.05; // the additional time it takes for movies
 
+typedef enum
+{
+    GameStateIdle,
+    GameStatePreparingToPlayMedia,
+    GameStatePlayingMusic,
+    GameStatePlayingMovie,
+    GameStateQuitting,
+} GameState;
+
 @implementation Game
 {
 	NSString *_serverPeerID;
@@ -31,6 +40,14 @@ const double MOVIE_TIME = -0.05; // the additional time it takes for movies
     NSDateFormatter *_dateFormatter;
     
     ServerState _serverState;
+    GameState _gameState;
+    
+    MusicUpload *_uploader;
+    MusicDownload *_downloader;
+    
+    NSTimer *_audioPlayerTimer, *_waitTimer, *_playMusicTimer;
+    BOOL _haveSkippedThisItem;
+    int _skipItemCount, _syncPacketCount;
 }
 
 @synthesize delegate = _delegate;
@@ -46,47 +63,43 @@ const double MOVIE_TIME = -0.05; // the additional time it takes for movies
     #endif
 }
 
-- (id)init
-{
-	if ((self = [super init]))
-	{
-		_players = [NSMutableDictionary dictionaryWithCapacity:4];
-        _playlist = [[NSMutableArray alloc] initWithCapacity:10];
-                          
-        _uploader = [[MusicUpload alloc] init];
-        _downloader = [[MusicDownload alloc] init];
-        _audioPlayer =  nil;
-        _audioPlaying = NO;
-        _dateFormatter = [[NSDateFormatter alloc] init];
-        _haveSkippedThisSong = NO;
-        [_dateFormatter setDateFormat:DATE_FORMAT];
-        
-        
-        
-        NSString *emptyPath = [[NSBundle mainBundle] pathForResource:@"empty" ofType:@"mp3"];
-        NSError *error;
-        _silentPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL fileURLWithPath:emptyPath] error:&error];
-        _silentPlayer.delegate = self;
-        if (_silentPlayer == nil) {
-            NSLog(@"SilentPlayer did not load properly: %@", [error description]);
-        } else {
-            [_silentPlayer play];
-        }
-	}
-	return self;
-}
-
 #pragma mark - Game Logic
+- (void)startGame
+{
+    _players = [NSMutableDictionary dictionaryWithCapacity:4];
+    _playlist = [[NSMutableArray alloc] initWithCapacity:10];
+    
+    _uploader = [[MusicUpload alloc] init];
+    _downloader = [[MusicDownload alloc] init];
+    _audioPlayer =  nil;
+    _dateFormatter = [[NSDateFormatter alloc] init];
+    _haveSkippedThisItem = NO;
+    [_dateFormatter setDateFormat:DATE_FORMAT];
+    
+    _gameState = GameStateIdle;
+    
+    NSString *emptyPath = [[NSBundle mainBundle] pathForResource:@"empty" ofType:@"mp3"];
+    NSError *error;
+    _silentPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL fileURLWithPath:emptyPath] error:&error];
+    _silentPlayer.delegate = self;
+    if (_silentPlayer == nil) {
+        NSLog(@"SilentPlayer did not load properly: %@", [error description]);
+    } else {
+        [_silentPlayer play];
+    }
+    self.maxClients = 4;
+}
 
 - (void)startClientGameWithSession:(GKSession *)session playerName:(NSString *)name server:(NSString *)peerID
 {
+    [self startGame];
+    
 	self.isServer = NO;
     
 	_session = session;
 	_session.available = NO;
 	_session.delegate = self;
     
-    self.maxClients = 4;
     
 	[_session setDataReceiveHandler:self withContext:nil];
     
@@ -96,11 +109,13 @@ const double MOVIE_TIME = -0.05; // the additional time it takes for movies
     Packet *packet = [PacketSignIn packetWithPlayerName:_localPlayerName];
 	[self sendPacketToServer:packet];
     
-    [self.delegate game:self setSkipSongCount:0];
+    [self.delegate game:self setSkipItemCount:0];
 }
 
 - (void)startServerGameWithSession:(GKSession *)session playerName:(NSString *)name clients:(NSArray *)clients
 {
+    [self startGame];
+    
 	self.isServer = YES;
     
 	_session = session;
@@ -120,7 +135,7 @@ const double MOVIE_TIME = -0.05; // the additional time it takes for movies
 	player.peerID = _session.peerID;
     
 	[_players setObject:player forKey:player.peerID];
-    [self.delegate game:self setSkipSongCount:0];
+    [self.delegate game:self setSkipItemCount:0];
 }
 
 #pragma mark - GKSession Data Receive Handler
@@ -171,8 +186,8 @@ const double MOVIE_TIME = -0.05; // the additional time it takes for movies
             PlaylistItem *currentItem = ((PacketGameState *)packet).currentPlaylistItem;
             [self.delegate game:self setCurrentItem:currentItem];
             
-            _skipSongCount = ((PacketGameState *)packet).skipCount;
-            [self.delegate game:self setSkipSongCount:_skipSongCount];
+            _skipItemCount = ((PacketGameState *)packet).skipCount;
+            [self.delegate game:self setSkipItemCount:_skipItemCount];
             
             [self.delegate reloadTable];
             
@@ -183,7 +198,7 @@ const double MOVIE_TIME = -0.05; // the additional time it takes for movies
             // respond with your time
             PacketSyncResponse *packetResponse = [PacketSyncResponse packetWithTime:[NSDate date]];
             packetResponse.packetNumber = packet.packetNumber;
-            //packetResponse.sendReliably = NO;
+        
             [self sendPacketToServer:packetResponse];
             
             break;
@@ -226,6 +241,7 @@ const double MOVIE_TIME = -0.05; // the additional time it takes for movies
                                                               repeats:NO];
             
             NSLog(@"Client to play music item, id = %@ with delay = %f", ID, delay);
+            _gameState = GameStatePreparingToPlayMedia;
             [self prepareToPlayMediaItem:mediaItem];
             
             break;
@@ -252,8 +268,8 @@ const double MOVIE_TIME = -0.05; // the additional time it takes for movies
         case PacketTypeSkipMusic:
         {
             NSLog(@"Client received PacketTypeSkipMusic");
-            _skipSongCount++;
-            [self.delegate game:self setSkipSongCount:_skipSongCount];
+            _skipItemCount++;
+            [self.delegate game:self setSkipItemCount:_skipItemCount];
             [self trySkippingSong];
             break;
         }
@@ -321,7 +337,7 @@ const double MOVIE_TIME = -0.05; // the additional time it takes for movies
             if(packet.packetNumber < SYNC_PACKET_COUNT - 1) {
                 Packet *sendPacket = [Packet packetWithType:PacketTypeSync];
                 sendPacket.packetNumber = packet.packetNumber + 1;
-                //packet.sendReliably = NO;
+                
                 //mark when you sent this packet
                 player.packetSendTime[sendPacket.packetNumber] = [NSDate date];
                 [self sendPacket:sendPacket toClientWithPeerID:player.peerID];
@@ -355,7 +371,7 @@ const double MOVIE_TIME = -0.05; // the additional time it takes for movies
             
             [player.hasMusicList setObject:@YES forKey:ID];
             MediaItem *mediaItem = (MediaItem *)[self playlistItemWithID:ID];
-            [self serverTryPlayingMusic:mediaItem waitTime:WAIT_TIME_DOWNLOAD];
+            [self serverTryPlayingMedia:mediaItem waitTime:WAIT_TIME_DOWNLOAD];
             
             break;
         }
@@ -381,8 +397,8 @@ const double MOVIE_TIME = -0.05; // the additional time it takes for movies
         case PacketTypeSkipMusic:
         {
             NSLog(@"Server received PacketTypeSkipMusic");
-            _skipSongCount++;
-            [self.delegate game:self setSkipSongCount:_skipSongCount];
+            _skipItemCount++;
+            [self.delegate game:self setSkipItemCount:_skipItemCount];
             [self trySkippingSong];
             
             break;
@@ -436,7 +452,6 @@ const double MOVIE_TIME = -0.05; // the additional time it takes for movies
 
 - (void)uploadMusicWithMediaItem:(MPMediaItem *)song video:(BOOL)isVideo
 {
-   // NSLog(@"Game: playMusicWithName: %@", [song valueForProperty:MPMediaItemPropertyTitle]);
     NSString *songName = [song valueForProperty:MPMediaItemPropertyTitle];
     NSString *artistName = [song valueForProperty:MPMediaItemPropertyArtist];
     NSURL *songURL = [song valueForProperty:MPMediaItemPropertyAssetURL];
@@ -478,10 +493,13 @@ const double MOVIE_TIME = -0.05; // the additional time it takes for movies
 
 - (void)skipButtonPressed
 {
-    if(!_haveSkippedThisSong) {
-        _haveSkippedThisSong = YES;
-        _skipSongCount++;
-        [self.delegate game:self setSkipSongCount:_skipSongCount];
+    if(_gameState != GameStatePlayingMusic && _gameState != GameStatePlayingMovie) {
+        NSLog(@"Pressed skip button when nothing is playing"); // this should be ok - because someone can skip when not joined
+    }
+    if(!_haveSkippedThisItem) {
+        _haveSkippedThisItem = YES;
+        _skipItemCount++;
+        [self.delegate game:self setSkipItemCount:_skipItemCount];
         
         Packet *packet = [Packet packetWithType:PacketTypeSkipMusic];
         [self sendPacketToAllClients:packet];
@@ -492,17 +510,20 @@ const double MOVIE_TIME = -0.05; // the additional time it takes for movies
 - (void)trySkippingSong
 {
     // if we exceed half the player count, stop the audio and let the next song play
-    //if(_audioPlaying && (_audioPlayer != nil || _moviePlayer != nil) &&  _players.count / 2 < _skipSongCount) {
-    if( _players.count / 2 < _skipSongCount) {
+    if( _players.count / 2 < _skipItemCount) {
         NSLog(@"Skipping song!");
-        [self audioPlayerDidFinishPlaying:_audioPlayer successfully:YES];
-        [self moviePlayerDidFinishPlaying:_moviePlayer];
-
+        if(_gameState == GameStatePlayingMusic) {
+            [self audioPlayerDidFinishPlaying:_audioPlayer successfully:YES];
+        } else if(_gameState == GameStatePlayingMovie) {
+            [self moviePlayerDidFinishPlaying:_moviePlayer];
+        } else {
+            [self tryPlayingNextItem];
+        }
     }
 }
 - (void)downloadMusicWithID:(NSString *)ID
 {
-    NSLog(@"Recieved music download packet with ID: %@", ID);
+    //NSLog(@"Recieved music download packet with ID: %@", ID);
     
     // to do: in case you receive this before "PacketTypePlaylistItem"
     MediaItem *mediaItem = (MediaItem *)[self playlistItemWithID:ID];
@@ -519,9 +540,9 @@ const double MOVIE_TIME = -0.05; // the additional time it takes for movies
     }];
     
     // PARTY MODE (add a way to turn this off)
-    NSLog(@"Getting beats for music item with name = %@", mediaItem.name);
+    //NSLog(@"Getting beats for music item with name = %@", mediaItem.name);
     [_downloader downloadBeatsWithMediaItem:mediaItem andSessionID:_serverPeerID completion:^{
-        NSLog(@"Found beats for music item with description: %@", [mediaItem description]);
+        //NSLog(@"Found beats for music item with description: %@", [mediaItem description]);
         // update mediaItem
         [mediaItem loadBeats];
     }];
@@ -537,9 +558,9 @@ const double MOVIE_TIME = -0.05; // the additional time it takes for movies
         [((Player *)[_players objectForKey:_session.peerID]).hasMusicList setObject:@YES forKey:mediaItem.ID];
         //NSLog(@"Belonds to user? %@", mediaItem.belongsToUser ? @"YES" : @"NO");
         if(mediaItem.belongsToUser) {
-            [self serverTryPlayingMusic:mediaItem waitTime:WAIT_TIME_UPLOAD];
+            [self serverTryPlayingMedia:mediaItem waitTime:WAIT_TIME_UPLOAD];
         } else {
-            [self serverTryPlayingMusic:mediaItem waitTime:WAIT_TIME_DOWNLOAD];
+            [self serverTryPlayingMedia:mediaItem waitTime:WAIT_TIME_DOWNLOAD];
         }
     }
     else {
@@ -556,23 +577,30 @@ const double MOVIE_TIME = -0.05; // the additional time it takes for movies
     [self.delegate addPlaylistItem:playlistItem];
 }
 
+- (void)cancelMusic:(PlaylistItem *)selectedItem
+{
+    _gameState = GameStateIdle;
+    [self.delegate removePlaylistItem:selectedItem animation:UITableViewRowAnimationRight];
+}
+
 - (void)removeItemFromPlaylist:(PlaylistItem *)playlistItem
 {
     [self.delegate game:self setCurrentItem:playlistItem];
     [self.delegate removePlaylistItem:playlistItem animation:UITableViewRowAnimationTop];
 }
 
-- (void)serverTryPlayingMusic:(MediaItem *)mediaItem waitTime:(int)waitTime
+- (void)serverTryPlayingMedia:(MediaItem *)mediaItem waitTime:(int)waitTime
 {
-    NSAssert(self.isServer, @"Client in serverTryPlayingMusic:");
+    NSAssert(self.isServer, @"Client in serverTryPlayingMedia:");
+    // this is called on the server whenever someone new downloads the music
     
-    if( !_audioPlaying && [self allPlayersHaveMusic:mediaItem]) {
-        _audioPlaying = YES;
+    if( _gameState == GameStateIdle && [self allPlayersHaveMusic:mediaItem]) {
+        _gameState = GameStatePreparingToPlayMedia;
         [_waitTimer invalidate];
         _waitTimer = nil;
-        [self serverStartPlayingMusic:mediaItem];
-    } else if(!_audioPlaying) {
-        NSLog(@"created wait timer");
+        [self serverStartPlayingMedia:mediaItem];
+    } else if(_gameState == GameStateIdle) {
+        NSLog(@"Created wait timer");
         // create a timer to start playing unless you receive another PacketMusicResponse
         _waitTimer = [NSTimer scheduledTimerWithTimeInterval:waitTime
                                                       target:self
@@ -582,10 +610,9 @@ const double MOVIE_TIME = -0.05; // the additional time it takes for movies
     }
 }
 
-- (void)serverStartPlayingMusic:(MediaItem *)mediaItem {
-    NSAssert(self.isServer, @"Client in serverStartPlayingMusic:");
-    _audioPlaying = YES;
-    
+- (void)serverStartPlayingMedia:(MediaItem *)mediaItem {
+    NSAssert(self.isServer, @"Client in serverStartPlayingMedia:");
+    NSAssert(_gameState == GameStatePreparingToPlayMedia, @"Not correct state in serverStartPlayingMedia:");
     
     NSDate *playTime = [[NSDate date] dateByAddingTimeInterval:DELAY_TIME];
     for (NSString *peerID in _players)
@@ -598,11 +625,11 @@ const double MOVIE_TIME = -0.05; // the additional time it takes for movies
         NSDate *theirPlayTime = [playTime dateByAddingTimeInterval:player.timeOffset / player.syncPacketsReceived];
         NSLog(@"Player with timeOffset = %f has playTime = %@", player.timeOffset / player.syncPacketsReceived, theirPlayTime);
         PacketPlayMusicNow *packet = [PacketPlayMusicNow packetWithSongID:mediaItem.ID andTime:theirPlayTime];
-        //packet.sendReliably = false;
+        
         [self sendPacket:packet toClientWithPeerID:player.peerID];
     }
     [self prepareToPlayMediaItem:mediaItem];
-    NSLog(@"my play time = %f", [playTime timeIntervalSinceNow]);
+    //NSLog(@"My play time = %f", [playTime timeIntervalSinceNow]);
     
     double compensate = 0.0;
     if([[UIApplication sharedApplication] applicationState] == UIApplicationStateInactive) {
@@ -623,17 +650,18 @@ const double MOVIE_TIME = -0.05; // the additional time it takes for movies
 
 - (void)prepareToPlayMediaItem:(MediaItem *)mediaItem
 {
+    NSAssert(_gameState == GameStatePreparingToPlayMedia, @"Not correct state in prepareToPlayMediaItem:");
+    
     NSString *tempPath = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
     NSString *fileName = [NSString stringWithFormat:@"%@.m4a", mediaItem.ID];
     NSString *mediaPath = [tempPath stringByAppendingPathComponent:fileName];
     NSURL *mediaURL = [[NSURL alloc] initWithString:mediaPath];
-    _audioPlaying = YES;
+    
     if(mediaItem.isVideo) {
-        _moviePlayer = [[MPMoviePlayerController alloc] initWithContentURL:mediaItem.localURL];
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(moviePlayerDidFinishPlaying:)
-                                                     name:MPMoviePlayerPlaybackDidFinishNotification
-                                                   object:_moviePlayer];
+        _moviePlayer = [[CustomMovieController alloc] initWithContentURL:mediaItem.localURL];
+        if(_moviePlayer == nil) {
+            NSLog(@"ERROR loading moviePlayer!");
+        }
         _moviePlayer.movieSourceType = MPMovieSourceTypeFile;
         [_moviePlayer prepareToPlay];
         [_moviePlayer pause];
@@ -643,11 +671,9 @@ const double MOVIE_TIME = -0.05; // the additional time it takes for movies
         _audioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:mediaURL error:&error];
         _audioPlayer.delegate = self;
         if (_audioPlayer == nil) {
-            _audioPlaying = NO;
+            _gameState = GameStateIdle;
             NSLog(@"AudioPlayer did not load properly: %@", [error description]);
         } else {
-            _audioPlaying = YES;
-            
             [_audioPlayer prepareToPlay];
             
             // prime the audio player
@@ -659,68 +685,67 @@ const double MOVIE_TIME = -0.05; // the additional time it takes for movies
 
 - (void)playLoadedMediaItem:(NSTimer *)timer
 {
+    if(_gameState != GameStatePreparingToPlayMedia) {
+        NSLog(@"Error trying to play item in playLoadedMediaItem:");
+        return;
+    }
+    
     MediaItem *mediaItem = (MediaItem *)[timer userInfo];
     NSLog(@"Playing item, name = %@", mediaItem.name);
     
-    _audioPlaying = YES;
     if(mediaItem.isVideo) {
-        [self.delegate setMoviePlayer:_moviePlayer];
+        _gameState = GameStatePlayingMovie;
+        [self.delegate addView:_moviePlayer.view];
         [_moviePlayer play];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(moviePlayerDidFinishPlaying:)
+                                                     name:MPMoviePlayerPlaybackDidFinishNotification
+                                                   object:_moviePlayer];
     } else {
-        if(_audioPlayer != nil) {
-            [_audioPlayer play];
-            _audioPlayerTimer = [NSTimer scheduledTimerWithTimeInterval:0.01
-                                                                 target:self
-                                                               selector:@selector(updatePlaybackProgress:)
-                                                               userInfo:mediaItem
-                                                                repeats:YES];
-        }
+        _gameState = GameStatePlayingMusic;
+        [_audioPlayer play];
+        _audioPlayerTimer = [NSTimer scheduledTimerWithTimeInterval:0.01
+                                                             target:self
+                                                           selector:@selector(updatePlaybackProgress:)
+                                                           userInfo:mediaItem
+                                                            repeats:YES];
     }
+    
     [self removeItemFromPlaylist:mediaItem];
     
-    _haveSkippedThisSong = NO;
-    _skipSongCount = 0;
-    [self.delegate game:self setSkipSongCount:_skipSongCount];
+    _haveSkippedThisItem = NO;
+    _skipItemCount = 0;
+    [self.delegate game:self setSkipItemCount:_skipItemCount];
 }
 
 - (BOOL)allPlayersHaveMusic:(MediaItem *)mediaItem
 {
-    for (NSString *peerID in _players)
-	{
+    for (NSString *peerID in _players) {
 		Player *player = [self playerWithPeerID:peerID];
 		if (![player.hasMusicList objectForKey:mediaItem.ID]) {
-            //NSLog(@"Player %@ does not have music %@", player.name, mediaItem.name);
 			return NO;
         }
 	}
     return YES;
 }
 
-#pragma mark - AVAudioPlayerDelegate
-
 - (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag
 {
     NSLog(@"AudioPlayer %@ finished playing, success? %@", player == _audioPlayer ? @"audioPlayer" : @"silentPlayer", flag ? @"YES" : @"NO");
     
-    if(player == _audioPlayer || player == nil) {
-        // player == nil if there was an error in downloading
+    if(player == _audioPlayer) {
+        NSAssert(!flag || _gameState == GameStatePlayingMusic, @"In audioPlayerDidFinishPlaying:");
+        _gameState = GameStateIdle;
+        
         [self.delegate setPlaybackProgress:0.0];
         [self.delegate audioPlayerFinishedPlaying];
         [_audioPlayerTimer invalidate];
         _audioPlayerTimer = nil;
-        _audioPlaying = NO;
         _audioPlayer = nil;
-        if(self.isServer) {
-            // try to play the next item on the list that is not loading
-            for(PlaylistItem *playlistItem in _playlist) {
-                if(playlistItem.loadProgress == 1.0) {
-                    [self serverTryPlayingMusic:(MediaItem *)playlistItem waitTime:WAIT_TIME_UPLOAD];
-                    break;
-                }
-            }
-        }
-        
-    } 
+        [self tryPlayingNextItem];
+    }
+    
     NSString *emptyPath = [[NSBundle mainBundle] pathForResource:@"empty" ofType:@"mp3"];
     _silentPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL fileURLWithPath:emptyPath] error:nil];
     [_silentPlayer play];
@@ -728,13 +753,38 @@ const double MOVIE_TIME = -0.05; // the additional time it takes for movies
 
 - (void)moviePlayerDidFinishPlaying:(MPMoviePlayerController *)player
 {
+    NSAssert(_gameState == GameStatePlayingMovie, @"In moviePlayerDidFinishPlaying:");
+    _gameState = GameStateIdle;
+    
+    NSLog(@"MoviePlayerDidFinishPlaying");
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     [_moviePlayer stop];
     [_moviePlayer.view removeFromSuperview];
     _moviePlayer = nil;
+    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
+    
+    [self tryPlayingNextItem];
     
     NSString *emptyPath = [[NSBundle mainBundle] pathForResource:@"empty" ofType:@"mp3"];
     _silentPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL fileURLWithPath:emptyPath] error:nil];
     [_silentPlayer play];
+}
+
+- (void)tryPlayingNextItem
+{
+    NSAssert(_gameState == GameStateIdle, @"In tryPlayingNextItem:");
+    
+    NSLog(@"Trying to play next item");
+    if(self.isServer) {
+        // try to play the next item on the list that is not loading
+        for(PlaylistItem *playlistItem in _playlist) {
+            if(playlistItem.loadProgress == 1.0) {
+                [self serverTryPlayingMedia:(MediaItem *)playlistItem waitTime:WAIT_TIME_UPLOAD];
+                break;
+            }
+        }
+    }
 }
 #pragma mark - Networking
 
@@ -775,7 +825,7 @@ const double MOVIE_TIME = -0.05; // the additional time it takes for movies
 - (void)sendGameStatePacket {
     NSAssert(self.isServer, @"Client in sendGameStatePacket:");
     
-    Packet *packet = [PacketGameState packetWithPlayers:_players andPlaylist:_playlist andCurrentItem:[self.delegate getCurrentPlaylistItem] andSkipCount:_skipSongCount];
+    Packet *packet = [PacketGameState packetWithPlayers:_players andPlaylist:_playlist andCurrentItem:[self.delegate getCurrentPlaylistItem] andSkipCount:_skipItemCount];
     [self sendPacketToAllClients:packet];
 }
 
@@ -790,10 +840,6 @@ const double MOVIE_TIME = -0.05; // the additional time it takes for movies
     [self sendPacketToAllClients:packet];
 }
 
-- (void)cancelMusic:(PlaylistItem *)selectedItem
-{
-    [self.delegate removePlaylistItem:selectedItem animation:UITableViewRowAnimationRight];
-}
 
 #pragma mark - Utility
 
@@ -836,34 +882,6 @@ const double MOVIE_TIME = -0.05; // the additional time it takes for movies
     return randomString;
 }
 
-- (void)clientDidConnect:(NSString *)peerID
-{
-    if([_players objectForKey:peerID] == nil) {
-        Player *player = [[Player alloc] init];
-        player.peerID = peerID;
-        [_players setObject:player forKey:player.peerID];
-        [self.delegate game:self clientDidConnect:player];
-        [self.delegate game:self setSkipSongCount:_skipSongCount];
-    }
-}
-
-- (void)clientDidDisconnect:(NSString *)peerID
-{
-    Player *player = [self playerWithPeerID:peerID];
-    if (player != nil)
-    {
-        [_players removeObjectForKey:peerID];
-        
-        // Tell the other clients that this one is now disconnected.
-        if (self.isServer)
-        {
-            PacketOtherClientQuit *packet = [PacketOtherClientQuit packetWithPeerID:peerID];
-            [self sendPacketToAllClients:packet];
-        }
-        [self.delegate game:self clientDidDisconnect:player];
-        [self.delegate game:self setSkipSongCount:_skipSongCount];
-    }
-}
 
 #pragma mark - Time Utilities
 
@@ -884,100 +902,17 @@ const double MOVIE_TIME = -0.05; // the additional time it takes for movies
 
 - (void)handleWaitTimer:(NSTimer *)timer {
     NSLog(@"Wait timer called! Playing music");
-    if(_audioPlaying) {
+    if(_gameState != GameStateIdle) {
         return;
     }
+    _gameState = GameStatePreparingToPlayMedia;
     
-    _audioPlaying = YES;
     // means you should start playing MediaItem
     MediaItem *mediaItem = (MediaItem *)[timer userInfo];
-    [self serverStartPlayingMusic:mediaItem];
+    [self serverStartPlayingMedia:mediaItem];
 }
 
-#pragma mark - GKSessionDelegate
-
-- (void)session:(GKSession *)session peer:(NSString *)peerID didChangeState:(GKPeerConnectionState)state
-{
-    #ifdef DEBUG
-	NSLog(@"Game: peer %@ changed state %d", peerID, state);
-    #endif
-    
-    switch (state)
-    {
-        case GKPeerStateAvailable:
-            break;
-            
-        case GKPeerStateUnavailable:
-            break;
-            
-            // A new client has connected to the server.
-        case GKPeerStateConnected:
-            if (self.isServer)
-            {
-                [self clientDidConnect:peerID];
-            }
-            break;
-            
-            // A client has disconnected from the server.
-        case GKPeerStateDisconnected:
-            if (self.isServer)
-            {
-                [self clientDidDisconnect:peerID];
-            }
-            else if ([peerID isEqualToString:_serverPeerID])
-            {
-                [self quitGameWithReason:QuitReasonConnectionDropped];
-            }
-            break;
-            
-        case GKPeerStateConnecting:
-            break;
-    }
-    
-}
-
-- (void)session:(GKSession *)session didReceiveConnectionRequestFromPeer:(NSString *)peerID
-{
-    #ifdef DEBUG
-	NSLog(@"Game: connection request from peer %@", peerID);
-    #endif
-    
-	if (_isServer && _serverState == ServerStateAcceptingConnections && [_players count] < self.maxClients)
-	{
-		NSError *error;
-		if ([session acceptConnectionFromPeer:peerID error:&error])
-			NSLog(@"Game: Connection accepted from peer %@", peerID);
-		else
-			NSLog(@"Game: Error accepting connection from peer %@, %@", peerID, error);
-	}
-	else  // not accepting connections or too many clients
-	{
-		[session denyConnectionFromPeer:peerID];
-	}
-}
-
-- (void)session:(GKSession *)session connectionWithPeerFailed:(NSString *)peerID withError:(NSError *)error
-{
-    #ifdef DEBUG
-	NSLog(@"Game: connection with peer %@ failed %@", peerID, error);
-    #endif
-    
-	// Not used.
-}
-
-- (void)session:(GKSession *)session didFailWithError:(NSError *)error
-{
-    #ifdef DEBUG
-	NSLog(@"Game: session failed %@", error);
-    #endif
-    
-	if ([[error domain] isEqualToString:GKSessionErrorDomain])
-	{
-        [self quitGameWithReason:QuitReasonConnectionDropped];
-	}
-}
-
-# pragma mark - End Session Handling
+#pragma mark - End Session Handling
 
 - (void)destroyFilesWithSessionID:(NSString *)sessionID
 {
@@ -1038,4 +973,118 @@ const double MOVIE_TIME = -0.05; // the additional time it takes for movies
     _moviePlayer = nil;
 	[self.delegate game:self didQuitWithReason:reason];
 }
+
+#pragma mark - GKSessionDelegate
+
+- (void)session:(GKSession *)session peer:(NSString *)peerID didChangeState:(GKPeerConnectionState)state
+{
+#ifdef DEBUG
+	NSLog(@"Game: peer %@ changed state %d", peerID, state);
+#endif
+    
+    switch (state)
+    {
+        case GKPeerStateAvailable:
+            break;
+            
+        case GKPeerStateUnavailable:
+            break;
+            
+            // A new client has connected to the server.
+        case GKPeerStateConnected:
+            if (self.isServer)
+            {
+                [self clientDidConnect:peerID];
+            }
+            break;
+            
+            // A client has disconnected from the server.
+        case GKPeerStateDisconnected:
+            if (self.isServer)
+            {
+                [self clientDidDisconnect:peerID];
+            }
+            else if ([peerID isEqualToString:_serverPeerID])
+            {
+                [self quitGameWithReason:QuitReasonConnectionDropped];
+            }
+            break;
+            
+        case GKPeerStateConnecting:
+            break;
+    }
+    
+}
+
+- (void)session:(GKSession *)session didReceiveConnectionRequestFromPeer:(NSString *)peerID
+{
+#ifdef DEBUG
+	NSLog(@"Game: connection request from peer %@", peerID);
+#endif
+    
+	if (_isServer && _serverState == ServerStateAcceptingConnections && [_players count] < self.maxClients)
+	{
+		NSError *error;
+		if ([session acceptConnectionFromPeer:peerID error:&error])
+			NSLog(@"Game: Connection accepted from peer %@", peerID);
+		else
+			NSLog(@"Game: Error accepting connection from peer %@, %@", peerID, error);
+	}
+	else  // not accepting connections or too many clients
+	{
+		[session denyConnectionFromPeer:peerID];
+	}
+}
+
+- (void)session:(GKSession *)session connectionWithPeerFailed:(NSString *)peerID withError:(NSError *)error
+{
+#ifdef DEBUG
+	NSLog(@"Game: connection with peer %@ failed %@", peerID, error);
+#endif
+    
+	// Not used.
+}
+
+- (void)session:(GKSession *)session didFailWithError:(NSError *)error
+{
+#ifdef DEBUG
+	NSLog(@"Game: session failed %@", error);
+#endif
+    
+	if ([[error domain] isEqualToString:GKSessionErrorDomain])
+	{
+        [self quitGameWithReason:QuitReasonConnectionDropped];
+	}
+}
+
+- (void)clientDidConnect:(NSString *)peerID
+{
+    if([_players objectForKey:peerID] == nil) {
+        Player *player = [[Player alloc] init];
+        player.peerID = peerID;
+        [_players setObject:player forKey:player.peerID];
+        [self.delegate game:self clientDidConnect:player];
+        [self.delegate game:self setSkipItemCount:_skipItemCount];
+    }
+}
+
+- (void)clientDidDisconnect:(NSString *)peerID
+{
+    Player *player = [self playerWithPeerID:peerID];
+    if (player != nil)
+    {
+        [_players removeObjectForKey:peerID];
+        
+        // Tell the other clients that this one is now disconnected.
+        if (self.isServer)
+        {
+            PacketOtherClientQuit *packet = [PacketOtherClientQuit packetWithPeerID:peerID];
+            [self sendPacketToAllClients:packet];
+        }
+        [self.delegate game:self clientDidDisconnect:player];
+        [self.delegate game:self setSkipItemCount:_skipItemCount];
+    }
+}
+
+
 @end

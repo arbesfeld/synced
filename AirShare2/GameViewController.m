@@ -189,9 +189,9 @@ const double epsilon = 0.02;
     [self setHeaderWithSongName:playlistItem.name andArtistName:playlistItem.subtitle];
 }
 
-- (void)game:(Game *)game setSkipSongCount:(int)skipSongCount
+- (void)game:(Game *)game setSkipItemCount:(int)skipItemCount
 {
-    self.skipSongLabel.text = [NSString stringWithFormat:@"%d/%d", skipSongCount, game.players.count];
+    self.skipSongLabel.text = [NSString stringWithFormat:@"%d/%d", skipItemCount, game.players.count];
 }
 
 - (void)gameSessionDidEnd:(Game *)server;
@@ -216,18 +216,9 @@ const double epsilon = 0.02;
     }
 }
 
-- (void)setMoviePlayer:(MPMoviePlayerController *)moviePlayer
+- (void)addView:(UIView *)view
 {
-    //[moviePlayer.view setFrame:self.view.bounds];
-    //[moviePlayer setFullscreen:YES animated:YES];
-    
-    [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationLandscapeRight animated:NO];
-    
-    [moviePlayer.view setBounds:CGRectMake(0, 0, UIScreen.mainScreen.bounds.size.height, UIScreen.mainScreen.bounds.size.width)];
-    [moviePlayer.view setCenter:CGPointMake(UIScreen.mainScreen.bounds.size.width / 2, UIScreen.mainScreen.bounds.size.height/2)];
-    [moviePlayer.view setTransform:CGAffineTransformMakeRotation(M_PI / 2)];
-    moviePlayer.controlStyle = MPMovieControlStyleNone;
-    [self.view addSubview:moviePlayer.view];
+    [self.view addSubview:view];
 }
 
 #pragma mark - UITableViewDataSource

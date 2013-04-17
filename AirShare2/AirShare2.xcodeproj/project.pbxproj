@@ -57,6 +57,7 @@
 		559D6B9C17120A2900C591D8 /* UIImage+animatedGIF.m in Sources */ = {isa = PBXBuildFile; fileRef = 559D6B9B17120A2900C591D8 /* UIImage+animatedGIF.m */; };
 		559D6B9E17120A5100C591D8 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 559D6B9D17120A5100C591D8 /* ImageIO.framework */; };
 		559D6BA017120BBA00C591D8 /* loading.gif in Resources */ = {isa = PBXBuildFile; fileRef = 559D6B9F17120BBA00C591D8 /* loading.gif */; };
+		55A28DB6171E5C60001E757E /* CustomMovieController.m in Sources */ = {isa = PBXBuildFile; fileRef = 55A28DB5171E5C60001E757E /* CustomMovieController.m */; };
 		55A31C0417017B6F00A1FFC8 /* PacketPlayMusicNow.m in Sources */ = {isa = PBXBuildFile; fileRef = 55A31C0317017B6F00A1FFC8 /* PacketPlayMusicNow.m */; };
 		55FCC54D16ED3D4C0000BCBD /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55FCC54C16ED3D4C0000BCBD /* UIKit.framework */; };
 		55FCC54F16ED3D4C0000BCBD /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55FCC54E16ED3D4C0000BCBD /* Foundation.framework */; };
@@ -168,6 +169,8 @@
 		559D6B9B17120A2900C591D8 /* UIImage+animatedGIF.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+animatedGIF.m"; sourceTree = "<group>"; };
 		559D6B9D17120A5100C591D8 /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		559D6B9F17120BBA00C591D8 /* loading.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = loading.gif; sourceTree = "<group>"; };
+		55A28DB4171E5C60001E757E /* CustomMovieController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomMovieController.h; sourceTree = "<group>"; };
+		55A28DB5171E5C60001E757E /* CustomMovieController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomMovieController.m; sourceTree = "<group>"; };
 		55A31C0217017B6F00A1FFC8 /* PacketPlayMusicNow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PacketPlayMusicNow.h; sourceTree = "<group>"; };
 		55A31C0317017B6F00A1FFC8 /* PacketPlayMusicNow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PacketPlayMusicNow.m; sourceTree = "<group>"; };
 		55FCC54916ED3D4C0000BCBD /* AirShare2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AirShare2.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -387,12 +390,14 @@
 			children = (
 				55FCC5B916ED60460000BCBD /* GameViewController.h */,
 				55FCC5BA16ED60460000BCBD /* GameViewController.m */,
-				5595E4E9171D2C45006782DE /* MoviePickerViewController.h */,
-				5595E4EA171D2C45006782DE /* MoviePickerViewController.m */,
 				55FCC57616ED3DA20000BCBD /* MainViewController.h */,
 				55FCC57716ED3DA20000BCBD /* MainViewController.m */,
 				5592DE85170BABAE00C766B0 /* SlidingViewController.h */,
 				5592DE86170BABAE00C766B0 /* SlidingViewController.m */,
+				5595E4E9171D2C45006782DE /* MoviePickerViewController.h */,
+				5595E4EA171D2C45006782DE /* MoviePickerViewController.m */,
+				55A28DB4171E5C60001E757E /* CustomMovieController.h */,
+				55A28DB5171E5C60001E757E /* CustomMovieController.m */,
 				558E0D651704DE3800BF230D /* UI */,
 			);
 			name = ViewControllers;
@@ -606,6 +611,7 @@
 				559D6B9C17120A2900C591D8 /* UIImage+animatedGIF.m in Sources */,
 				5595E4EB171D2C46006782DE /* MoviePickerViewController.m in Sources */,
 				5595E4EE171D3995006782DE /* MovieItemCell.m in Sources */,
+				55A28DB6171E5C60001E757E /* CustomMovieController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
