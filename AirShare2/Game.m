@@ -21,7 +21,7 @@ const int WAIT_TIME_UPLOAD = 25; // server wait time for others to download musi
 const int WAIT_TIME_DOWNLOAD = 20; // server wait time for others to download music after downloading
 const int SYNC_PACKET_COUNT = 100;
 const double BACKGROUND_TIME = -0.2; // the additional time it takes when app is in background
-const double MOVIE_TIME = -0.08; // the additional time it takes for movies
+const double MOVIE_TIME = -0.05; // the additional time it takes for movies
 
 @implementation Game
 {
@@ -217,7 +217,6 @@ const double MOVIE_TIME = -0.08; // the additional time it takes for movies
                 NSLog(@"Application in background.. compensating");
             }
             if(mediaItem.isVideo) {
-                NSLog(@"Is video");
                 compensate += MOVIE_TIME;
             }
             _playMusicTimer = [NSTimer scheduledTimerWithTimeInterval:delay+compensate
@@ -493,13 +492,12 @@ const double MOVIE_TIME = -0.08; // the additional time it takes for movies
 - (void)trySkippingSong
 {
     // if we exceed half the player count, stop the audio and let the next song play
-    if(_audioPlaying && (_audioPlayer != nil || _moviePlayer != nil) &&  _players.count / 2 < _skipSongCount) {
-        if(_audioPlayer) {
-            [self audioPlayerDidFinishPlaying:_audioPlayer successfully:YES];
-        }
-        if(_moviePlayer) {
-            [self moviePlayerDidFinishPlaying:_moviePlayer];
-        }
+    //if(_audioPlaying && (_audioPlayer != nil || _moviePlayer != nil) &&  _players.count / 2 < _skipSongCount) {
+    if( _players.count / 2 < _skipSongCount) {
+        NSLog(@"Skipping song!");
+        [self audioPlayerDidFinishPlaying:_audioPlayer successfully:YES];
+        [self moviePlayerDidFinishPlaying:_moviePlayer];
+
     }
 }
 - (void)downloadMusicWithID:(NSString *)ID
@@ -612,7 +610,6 @@ const double MOVIE_TIME = -0.08; // the additional time it takes for movies
         compensate += BACKGROUND_TIME;
     }
     if(mediaItem.isVideo) {
-        NSLog(@"Is video");
         compensate += MOVIE_TIME;
     }
     _playMusicTimer = [NSTimer scheduledTimerWithTimeInterval:[playTime timeIntervalSinceNow] + compensate
@@ -641,7 +638,6 @@ const double MOVIE_TIME = -0.08; // the additional time it takes for movies
         [_moviePlayer prepareToPlay];
         [_moviePlayer pause];
         [_moviePlayer setCurrentPlaybackTime:0];
-        NSLog(@"loading");
     } else {
         NSError *error;
         _audioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:mediaURL error:&error];
@@ -664,7 +660,7 @@ const double MOVIE_TIME = -0.08; // the additional time it takes for movies
 - (void)playLoadedMediaItem:(NSTimer *)timer
 {
     MediaItem *mediaItem = (MediaItem *)[timer userInfo];
-    NSLog(@"Playing music item, name = %@", mediaItem.name);
+    NSLog(@"Playing item, name = %@", mediaItem.name);
     
     _audioPlaying = YES;
     if(mediaItem.isVideo) {
@@ -706,7 +702,8 @@ const double MOVIE_TIME = -0.08; // the additional time it takes for movies
 {
     NSLog(@"AudioPlayer %@ finished playing, success? %@", player == _audioPlayer ? @"audioPlayer" : @"silentPlayer", flag ? @"YES" : @"NO");
     
-    if(player == _audioPlayer) {
+    if(player == _audioPlayer || player == nil) {
+        // player == nil if there was an error in downloading
         [self.delegate setPlaybackProgress:0.0];
         [self.delegate audioPlayerFinishedPlaying];
         [_audioPlayerTimer invalidate];
@@ -732,6 +729,7 @@ const double MOVIE_TIME = -0.08; // the additional time it takes for movies
 - (void)moviePlayerDidFinishPlaying:(MPMoviePlayerController *)player
 {
     [_moviePlayer stop];
+    [_moviePlayer.view removeFromSuperview];
     _moviePlayer = nil;
     
     NSString *emptyPath = [[NSBundle mainBundle] pathForResource:@"empty" ofType:@"mp3"];

@@ -62,7 +62,6 @@ ServerState;
 @property (nonatomic, strong) GKSession *session;
 @property (nonatomic, strong) AVAudioPlayer *audioPlayer, *silentPlayer;
 @property (nonatomic, strong) MPMoviePlayerController *moviePlayer;
-@property (nonatomic, strong) MPMoviePlayerViewController *moviePlayerView;
 
 - (void)startClientGameWithSession:(GKSession *)session playerName:(NSString *)name server:(NSString *)peerID;
 - (void)startServerGameWithSession:(GKSession *)session playerName:(NSString *)name clients:(NSArray *)clients;
