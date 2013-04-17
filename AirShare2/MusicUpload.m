@@ -139,7 +139,7 @@
                                                      name:@"sessionid"];
                      }];
                      AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
-                     __block int ntimes = 5;
+                     
                      [operation setUploadProgressBlock:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
                          //NSLog(@"Sent %lld of %lld bytes", totalBytesWritten, totalBytesExpectedToWrite);
                          if(it % 600 == 0) {
@@ -156,11 +156,7 @@
                      }
                       failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                           NSLog(@"Upload Error: %@",  operation.responseString);
-                          if(ntimes > 0) {
-                              // retry upload
-                          //    [httpClient enqueueHTTPRequestOperation:operation];
-                          }
-                          ntimes--;
+                          [mediaItem cancel];
                       }];
                      if ([mediaItem isCancelled]) {
                          // check again for early cancellation

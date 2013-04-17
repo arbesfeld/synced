@@ -688,31 +688,30 @@ typedef enum
 
 - (void)playLoadedMediaItem:(NSTimer *)timer
 {
-    if(_gameState != GameStatePreparingToPlayMedia) {
-        NSLog(@"Error trying to play item in playLoadedMediaItem:");
-        return;
-    }
     
     MediaItem *mediaItem = (MediaItem *)[timer userInfo];
     NSLog(@"Playing item, name = %@", mediaItem.name);
     
-    if(mediaItem.isVideo) {
-        _gameState = GameStatePlayingMovie;
-        [self.delegate addView:_moviePlayer.view];
-        [_moviePlayer play];
-        
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(moviePlayerDidFinishPlaying:)
-                                                     name:MPMoviePlayerPlaybackDidFinishNotification
-                                                   object:_moviePlayer];
-    } else {
-        _gameState = GameStatePlayingMusic;
-        [_audioPlayer play];
-        _audioPlayerTimer = [NSTimer scheduledTimerWithTimeInterval:0.01
-                                                             target:self
-                                                           selector:@selector(updatePlaybackProgress:)
-                                                           userInfo:mediaItem
-                                                            repeats:YES];
+    if(_gameState == GameStatePreparingToPlayMedia) {
+        // if we're not here, we didn't load the content correctly
+        if(mediaItem.isVideo) {
+            _gameState = GameStatePlayingMovie;
+            [self.delegate addView:_moviePlayer.view];
+            [_moviePlayer play];
+            
+            [[NSNotificationCenter defaultCenter] addObserver:self
+                                                     selector:@selector(moviePlayerDidFinishPlaying:)
+                                                         name:MPMoviePlayerPlaybackDidFinishNotification
+                                                       object:_moviePlayer];
+        } else {
+            _gameState = GameStatePlayingMusic;
+            [_audioPlayer play];
+            _audioPlayerTimer = [NSTimer scheduledTimerWithTimeInterval:0.01
+                                                                 target:self
+                                                               selector:@selector(updatePlaybackProgress:)
+                                                               userInfo:mediaItem
+                                                                repeats:YES];
+        }				
     }
     
     [self removeItemFromPlaylist:mediaItem];
