@@ -12,8 +12,8 @@
 
 @property (nonatomic, strong) NSString *ID;
 @property (nonatomic, strong) NSDate *time;
+@property (nonatomic, assign) int songTime;
 
-
-+ (id)packetWithSongID:(NSString *)ID andTime:(NSDate *)time;
++ (id)packetWithSongID:(NSString *)ID andTime:(NSDate *)time atSongTime:(int)songTime;
 
 @end

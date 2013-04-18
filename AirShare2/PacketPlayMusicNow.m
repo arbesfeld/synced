@@ -17,6 +17,9 @@
 	size_t offset = PACKET_HEADER_SIZE;
 	size_t count;
     
+    int songTime = [data rw_int16AtOffset:offset];
+    offset += 2;
+    
     NSString *ID = [data rw_stringAtOffset:offset bytesRead:&count];
     offset += count;
     
@@ -27,27 +30,30 @@
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:DATE_FORMAT];
     NSDate *time = [dateFormatter dateFromString:dateString];
-
-	return [[self class] packetWithSongID:ID andTime:time];
+    
+	return [[self class] packetWithSongID:ID andTime:time atSongTime:songTime];
 }
 
-+ (id)packetWithSongID:(NSString *)ID andTime:(NSDate *)time
++ (id)packetWithSongID:(NSString *)ID andTime:(NSDate *)time atSongTime:(int)songTime
 {
-	return [[[self class] alloc] initWithSongID:ID andTime:time];
+	return [[[self class] alloc] initWithSongID:ID andTime:time atSongTime:songTime];
 }
 
-- (id)initWithSongID:(NSString *)ID andTime:(NSDate *)time
+- (id)initWithSongID:(NSString *)ID andTime:(NSDate *)time atSongTime:(int)songTime
 {
 	if ((self = [super initWithType:PacketTypePlayMusicNow]))
 	{
 		self.ID = ID;
         self.time = time;
+        self.songTime = songTime;
 	}
 	return self;
 }
 
 - (void)addPayloadToData:(NSMutableData *)data
 {
+    [data rw_appendInt16:self.songTime];
+    
     [data rw_appendString:self.ID];
     
     // convert NSDate to dateString
@@ -55,6 +61,7 @@
     [dateFormatter setDateFormat:DATE_FORMAT];
     NSString *dateString = [dateFormatter stringFromDate:self.time];
     [data rw_appendString:dateString];
+    
 }
 
 @end
