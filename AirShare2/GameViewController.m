@@ -136,7 +136,9 @@ const double epsilon = 0.02;
 {
     [self.playlistTable beginUpdates];
     int loc = [self.game indexForPlaylistItem:playlistItem];
-    [self.playlistTable reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:loc inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+    if(loc != -1) {
+        [self.playlistTable reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:loc inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+    }
     [self.playlistTable endUpdates];
 }
 
@@ -145,8 +147,10 @@ const double epsilon = 0.02;
     [self.playlistTable beginUpdates];
     int loc = [self.game indexForPlaylistItem:playlistItem];
     //NSLog(@"inserting at loc %d", loc);
+    if(loc != -1) {
     [self.playlistTable insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:loc inSection:0]] withRowAnimation:UITableViewRowAnimationLeft];
-        
+    }
+    
     [self.playlistTable endUpdates];
 }
 
@@ -155,13 +159,15 @@ const double epsilon = 0.02;
     [self.playlistTable beginUpdates];
     int loc = [self.game indexForPlaylistItem:playlistItem];
     // if it will be played but not at the top, don't show an animation
-    if(animation == UITableViewRowAnimationTop && loc != 0) {
-        [self.playlistTable deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:loc inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
-    } else {
-        [self.playlistTable deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:loc inSection:0]] withRowAnimation:animation];
+    if(loc != -1) {
+        if(animation == UITableViewRowAnimationTop && loc != 0) {
+            [self.playlistTable deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:loc inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+        } else {
+            [self.playlistTable deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:loc inSection:0]] withRowAnimation:animation];
+        }
+        
+        [self.game.playlist removeObject:playlistItem];
     }
-    
-    [self.game.playlist removeObject:playlistItem];
     [self.playlistTable endUpdates];
     
     //update the row labels of the songs

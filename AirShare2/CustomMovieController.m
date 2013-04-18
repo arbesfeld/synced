@@ -10,10 +10,18 @@
 
 @implementation CustomMovieController
 
+- (void)dealloc
+{
+    NSLog(@"dealloc: %@", [self description]);
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
 - (id)initWithContentURL:(NSURL *)url
 {
     self = [super initWithContentURL:url];
+    
     if(self) {
+        //self.shouldAutoplay = NO;
+        
         [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationLandscapeRight animated:NO];
         [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
         CGRect frame = [UIScreen mainScreen].applicationFrame;
@@ -43,10 +51,14 @@
                            name:UIApplicationDidChangeStatusBarOrientationNotification
                          object:nil];
         } else {
-            [self.view setBounds:CGRectMake(20, 0, UIScreen.mainScreen.bounds.size.height, UIScreen.mainScreen.bounds.size.width+20)];
-            [self.view setCenter:CGPointMake(UIScreen.mainScreen.bounds.size.width / 2, UIScreen.mainScreen.bounds.size.height/2)];
+            float width = UIScreen.mainScreen.bounds.size.width;
+            float height = UIScreen.mainScreen.bounds.size.height;
+            skipButton = [[UIButton alloc] initWithFrame:CGRectMake(480, 280, 50, 45.59f)];
+            skipButton.clipsToBounds = YES;
+            [self.view setBounds:CGRectMake(20, 0, height, width + 20)];
+            [self.view setCenter:CGPointMake(width / 2, height / 2)];
             [self.view setTransform:CGAffineTransformMakeRotation(M_PI / 2)];
-            skipButton = [[UIButton alloc] initWithFrame:CGRectMake(self.view.frame.size.height - 50, self.view.frame.size.width - 60, 34, 31)];
+            NSLog(@"width = %f, height = %f", width, height);
         }
         self.controlStyle = MPMovieControlStyleNone;
         
@@ -64,14 +76,9 @@
 
 - (void)skipButtonPressed:(id)sender
 {
-    NSLog(@"pressed");
     [self.delegate skipButtonPressed];
 }
 
-- (void)play
-{
-    [super play];
-}
 - (void)didRotate:(NSNotification *)notification {
     CGRect frame = [UIScreen mainScreen].applicationFrame;
     UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;

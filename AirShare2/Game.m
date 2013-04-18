@@ -20,8 +20,9 @@ const double DELAY_TIME = 2.00000; // wait DELAY_TIME seconds until songs play
 const int WAIT_TIME_UPLOAD = 25; // server wait time for others to download music after uploading
 const int WAIT_TIME_DOWNLOAD = 20; // server wait time for others to download music after downloading
 const int SYNC_PACKET_COUNT = 100;
+const int PLAY_ITERATIONS = 5; // how many times we test our players to find playStartTime
 const double BACKGROUND_TIME = -0.2; // the additional time it takes when app is in background
-const double MOVIE_TIME = -0.05; // the additional time it takes for movies
+const double MOVIE_TIME = -0.1; // the additional time it takes for movies
 
 typedef enum
 {
@@ -58,9 +59,7 @@ typedef enum
 
 - (void)dealloc
 {
-    #ifdef DEBUG
 	NSLog(@"dealloc %@", self);
-    #endif
 }
 
 #pragma mark - Game Logic
@@ -78,15 +77,6 @@ typedef enum
     
     _gameState = GameStateIdle;
     
-    NSString *emptyPath = [[NSBundle mainBundle] pathForResource:@"empty" ofType:@"mp3"];
-    NSError *error;
-    _silentPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL fileURLWithPath:emptyPath] error:&error];
-    _silentPlayer.delegate = self;
-    if (_silentPlayer == nil) {
-        NSLog(@"SilentPlayer did not load properly: %@", [error description]);
-    } else {
-        [_silentPlayer play];
-    }
     self.maxClients = 4;
 }
 
@@ -224,25 +214,8 @@ typedef enum
             
             MediaItem *mediaItem = (MediaItem *)[self playlistItemWithID:ID];
             
-            NSTimeInterval delay = [time timeIntervalSinceNow];
-            
-            double compensate = 0.0;
-            if([[UIApplication sharedApplication] applicationState] == UIApplicationStateInactive) {
-                compensate += BACKGROUND_TIME;
-                NSLog(@"Application in background.. compensating");
-            }
-            if(mediaItem.isVideo) {
-                compensate += MOVIE_TIME;
-            }
-            _playMusicTimer = [NSTimer scheduledTimerWithTimeInterval:delay+compensate
-                                                               target:self
-                                                             selector:@selector(playLoadedMediaItem:)
-                                                             userInfo:mediaItem
-                                                              repeats:NO];
-            
-            NSLog(@"Client to play music item, id = %@ with delay = %f", ID, delay);
             _gameState = GameStatePreparingToPlayMedia;
-            [self prepareToPlayMediaItem:mediaItem];
+            [self playMediaItem:mediaItem withStartTime:time];
             
             break;
         }
@@ -458,7 +431,7 @@ typedef enum
     NSString *ID = [self genRandStringLength:6];
     
     MediaItem *mediaItem = [MediaItem mediaItemWithName:songName andSubtitle:artistName andID:ID andDate:[NSDate date] andLocalURL:songURL];
-    [mediaItem setBelongsToUser:YES];
+    mediaItem.uploadedByUser = YES;
     mediaItem.isVideo = isVideo;
     [self addItemToPlaylist:mediaItem];
     
@@ -489,37 +462,6 @@ typedef enum
             [mediaItem loadBeats];
         }];
     }];
-}
-
-- (void)skipButtonPressed
-{
-    if(_gameState != GameStatePlayingMusic && _gameState != GameStatePlayingMovie) {
-        NSLog(@"Pressed skip button when nothing is playing"); // this should be ok - because someone can skip when not joined
-    }
-    if(!_haveSkippedThisItem) {
-        _haveSkippedThisItem = YES;
-        _skipItemCount++;
-        [self.delegate game:self setSkipItemCount:_skipItemCount];
-        
-        Packet *packet = [Packet packetWithType:PacketTypeSkipMusic];
-        [self sendPacketToAllClients:packet];
-        
-        [self trySkippingSong];
-    }
-}
-- (void)trySkippingSong
-{
-    // if we exceed half the player count, stop the audio and let the next song play
-    if( _players.count / 2 < _skipItemCount) {
-        NSLog(@"Skipping song!");
-        if(_gameState == GameStatePlayingMusic) {
-            [self audioPlayerDidFinishPlaying:_audioPlayer successfully:YES];
-        } else if(_gameState == GameStatePlayingMovie) {
-            [self moviePlayerDidFinishPlaying:_moviePlayer];
-        } else {
-            [self tryPlayingNextItem];
-        }
-    }
 }
 - (void)downloadMusicWithID:(NSString *)ID
 {
@@ -556,8 +498,8 @@ typedef enum
     if(self.isServer) {
         // mark that you have item
         [((Player *)[_players objectForKey:_session.peerID]).hasMusicList setObject:@YES forKey:mediaItem.ID];
-        //NSLog(@"Belonds to user? %@", mediaItem.belongsToUser ? @"YES" : @"NO");
-        if(mediaItem.belongsToUser) {
+        //NSLog(@"Belonds to user? %@", mediaItem.uploadedByUser ? @"YES" : @"NO");
+        if(mediaItem.uploadedByUser) {
             [self serverTryPlayingMedia:mediaItem waitTime:WAIT_TIME_UPLOAD];
         } else {
             [self serverTryPlayingMedia:mediaItem waitTime:WAIT_TIME_DOWNLOAD];
@@ -577,16 +519,16 @@ typedef enum
     [self.delegate addPlaylistItem:playlistItem];
 }
 
-- (void)cancelMusic:(PlaylistItem *)selectedItem
-{
-    _gameState = GameStateIdle;
-    [self.delegate removePlaylistItem:selectedItem animation:UITableViewRowAnimationRight];
-}
-
 - (void)removeItemFromPlaylist:(PlaylistItem *)playlistItem
 {
     [self.delegate game:self setCurrentItem:playlistItem];
     [self.delegate removePlaylistItem:playlistItem animation:UITableViewRowAnimationTop];
+}
+
+- (void)cancelMusic:(PlaylistItem *)selectedItem
+{
+    _gameState = GameStateIdle;
+    [self.delegate removePlaylistItem:selectedItem animation:UITableViewRowAnimationRight];
 }
 
 - (void)serverTryPlayingMedia:(MediaItem *)mediaItem waitTime:(int)waitTime
@@ -628,27 +570,10 @@ typedef enum
         
         [self sendPacket:packet toClientWithPeerID:player.peerID];
     }
-    [self prepareToPlayMediaItem:mediaItem];
-    //NSLog(@"My play time = %f", [playTime timeIntervalSinceNow]);
-    
-    double compensate = 0.0;
-    if([[UIApplication sharedApplication] applicationState] == UIApplicationStateInactive) {
-        NSLog(@"Application in background... compensating");
-        compensate += BACKGROUND_TIME;
-    }
-    if(mediaItem.isVideo) {
-        compensate += MOVIE_TIME;
-    }
-    _playMusicTimer = [NSTimer scheduledTimerWithTimeInterval:[playTime timeIntervalSinceNow] + compensate
-                                                       target:self
-                                                     selector:@selector(playLoadedMediaItem:)
-                                                     userInfo:mediaItem
-                                                      repeats:NO];
-    
-    NSLog(@"Server preparing to play music item with name = %@", mediaItem.name);
+    [self playMediaItem:mediaItem withStartTime:playTime];
 }
 
-- (void)prepareToPlayMediaItem:(MediaItem *)mediaItem
+- (void)playMediaItem:(MediaItem *)mediaItem withStartTime:(NSDate *)startTime
 {
     NSAssert(_gameState == GameStatePreparingToPlayMedia, @"Not correct state in prepareToPlayMediaItem:");
     
@@ -657,11 +582,24 @@ typedef enum
     NSString *mediaPath = [tempPath stringByAppendingPathComponent:fileName];
     NSURL *mediaURL = [[NSURL alloc] initWithString:mediaPath];
     
+    NSError *error;
+    _audioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:mediaURL error:&error];
+    _audioPlayer.delegate = self;
+    if (_audioPlayer == nil) {
+        _gameState = GameStateIdle;
+        NSLog(@"AudioPlayer did not load properly: %@", [error description]);
+    } else {
+        [_audioPlayer prepareToPlay];
+        [_audioPlayer play];
+        [_audioPlayer stop];
+    }
+    
+    // prime the players many times to see more accurately what our play start time will be
     if(mediaItem.isVideo) {
         _moviePlayer = [[CustomMovieController alloc] initWithContentURL:mediaItem.localURL];
-        
         _moviePlayer.delegate = self;
         
+        _audioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:mediaURL error:&error];
         if(_moviePlayer == nil) {
             NSLog(@"ERROR loading moviePlayer!");
         }
@@ -669,33 +607,38 @@ typedef enum
         [_moviePlayer prepareToPlay];
         [_moviePlayer pause];
         [_moviePlayer setCurrentPlaybackTime:0];
-    } else {
-        NSError *error;
-        _audioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:mediaURL error:&error];
-        _audioPlayer.delegate = self;
-        if (_audioPlayer == nil) {
-            _gameState = GameStateIdle;
-            NSLog(@"AudioPlayer did not load properly: %@", [error description]);
-        } else {
-            [_audioPlayer prepareToPlay];
-            
-            // prime the audio player
-            [_audioPlayer play];
-            [_audioPlayer stop];
-        }
     }
+    
+    float compensate = 0.0; // _playStartTime; // _playStartTime is a negative number
+    if([[UIApplication sharedApplication] applicationState] == UIApplicationStateInactive) {
+        compensate += BACKGROUND_TIME;
+        NSLog(@"Application in background.. compensating");
+    }
+    if(mediaItem.isVideo) {
+        compensate += MOVIE_TIME;
+    }
+    _playMusicTimer = [NSTimer scheduledTimerWithTimeInterval:[startTime timeIntervalSinceNow]+compensate
+                                                       target:self
+                                                     selector:@selector(playLoadedMediaItem:)
+                                                     userInfo:mediaItem
+                                                      repeats:NO];
+    
+    NSLog(@"Playing item, id = %@ with delay = %f", mediaItem.name, [startTime timeIntervalSinceNow]+compensate);
 }
 
 - (void)playLoadedMediaItem:(NSTimer *)timer
 {
-    
     MediaItem *mediaItem = (MediaItem *)[timer userInfo];
     NSLog(@"Playing item, name = %@", mediaItem.name);
     
     if(_gameState == GameStatePreparingToPlayMedia) {
         // if we're not here, we didn't load the content correctly
         if(mediaItem.isVideo) {
-            _gameState = GameStatePlayingMovie;
+            // call _audioPlayer play, stop to compensate for 
+            [_audioPlayer play];
+            [_audioPlayer stop];
+            _audioPlayer = nil;
+            
             [self.delegate addView:_moviePlayer.view];
             [_moviePlayer play];
             
@@ -703,14 +646,16 @@ typedef enum
                                                      selector:@selector(moviePlayerDidFinishPlaying:)
                                                          name:MPMoviePlayerPlaybackDidFinishNotification
                                                        object:_moviePlayer];
+            _gameState = GameStatePlayingMovie;
         } else {
-            _gameState = GameStatePlayingMusic;
             [_audioPlayer play];
             _audioPlayerTimer = [NSTimer scheduledTimerWithTimeInterval:0.01
                                                                  target:self
                                                                selector:@selector(updatePlaybackProgress:)
                                                                userInfo:mediaItem
                                                                 repeats:YES];
+            
+            _gameState = GameStatePlayingMusic;
         }				
     }
     
@@ -719,17 +664,6 @@ typedef enum
     _haveSkippedThisItem = NO;
     _skipItemCount = 0;
     [self.delegate game:self setSkipItemCount:_skipItemCount];
-}
-
-- (BOOL)allPlayersHaveMusic:(MediaItem *)mediaItem
-{
-    for (NSString *peerID in _players) {
-		Player *player = [self playerWithPeerID:peerID];
-		if (![player.hasMusicList objectForKey:mediaItem.ID]) {
-			return NO;
-        }
-	}
-    return YES;
 }
 
 - (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag
@@ -747,10 +681,6 @@ typedef enum
         _audioPlayer = nil;
         [self tryPlayingNextItem];
     }
-    
-    NSString *emptyPath = [[NSBundle mainBundle] pathForResource:@"empty" ofType:@"mp3"];
-    _silentPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL fileURLWithPath:emptyPath] error:nil];
-    [_silentPlayer play];
 }
 
 - (void)moviePlayerDidFinishPlaying:(MPMoviePlayerController *)player
@@ -770,10 +700,38 @@ typedef enum
     [self.delegate mediaFinishedPlaying];
     
     [self tryPlayingNextItem];
-    
-    NSString *emptyPath = [[NSBundle mainBundle] pathForResource:@"empty" ofType:@"mp3"];
-    _silentPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL fileURLWithPath:emptyPath] error:nil];
-    [_silentPlayer play];
+}
+
+- (void)skipButtonPressed
+{
+    if(_gameState != GameStatePlayingMusic && _gameState != GameStatePlayingMovie) {
+        NSLog(@"Pressed skip button when nothing is playing"); // this should be ok - because someone can skip when not joined
+    }
+    if(!_haveSkippedThisItem) {
+        _haveSkippedThisItem = YES;
+        _skipItemCount++;
+        [self.delegate game:self setSkipItemCount:_skipItemCount];
+        
+        Packet *packet = [Packet packetWithType:PacketTypeSkipMusic];
+        [self sendPacketToAllClients:packet];
+        
+        [self trySkippingSong];
+    }
+}
+
+- (void)trySkippingSong
+{
+    // if we exceed half the player count, stop the audio and let the next song play
+    if( _players.count / 2 < _skipItemCount) {
+        NSLog(@"Skipping song!");
+        if(_gameState == GameStatePlayingMusic) {
+            [self audioPlayerDidFinishPlaying:_audioPlayer successfully:YES];
+        } else if(_gameState == GameStatePlayingMovie) {
+            [self moviePlayerDidFinishPlaying:_moviePlayer];
+        } else {
+            [self tryPlayingNextItem];
+        }
+    }
 }
 
 - (void)tryPlayingNextItem
@@ -867,6 +825,17 @@ typedef enum
 	return [_players objectForKey:peerID];
 }
 
+
+- (BOOL)allPlayersHaveMusic:(MediaItem *)mediaItem
+{
+    for (NSString *peerID in _players) {
+		Player *player = [self playerWithPeerID:peerID];
+		if (![player.hasMusicList objectForKey:mediaItem.ID]) {
+			return NO;
+        }
+	}
+    return YES;
+}
 - (PlaylistItem *)playlistItemWithID:(NSString *)ID
 {
     for(int i = 0; i < _playlist.count; i++) {
@@ -906,6 +875,8 @@ typedef enum
 }
 
 - (void)handleWaitTimer:(NSTimer *)timer {
+    NSAssert(self.isServer, @"Client in handleWaitTimer");
+    
     NSLog(@"Wait timer called! Playing music");
     if(_gameState != GameStateIdle) {
         return;
@@ -914,7 +885,12 @@ typedef enum
     
     // means you should start playing MediaItem
     MediaItem *mediaItem = (MediaItem *)[timer userInfo];
+    
     [self serverStartPlayingMedia:mediaItem];
+    
+    if(!mediaItem.uploadedByUser) {
+        [mediaItem cancel];
+    }
 }
 
 #pragma mark - End Session Handling
@@ -1011,6 +987,7 @@ typedef enum
             }
             else if ([peerID isEqualToString:_serverPeerID])
             {
+                NSLog(@"Quitting game because server disconnected");
                 [self quitGameWithReason:QuitReasonConnectionDropped];
             }
             break;

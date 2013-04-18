@@ -55,6 +55,7 @@
         [mediaItem cancel];
     }];
     [operation start];
+    mediaItem.operation = operation;
 }
 
 - (void)downloadBeatsWithMediaItem:(MediaItem *)mediaItem andSessionID:(NSString *)sessionID completion:(void (^)(void))completionBlock

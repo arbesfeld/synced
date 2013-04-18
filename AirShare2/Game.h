@@ -55,7 +55,7 @@ ServerState;
 @property (nonatomic, strong) NSMutableDictionary *players;
 @property (nonatomic, strong) NSMutableArray *playlist;
 @property (nonatomic, strong) GKSession *session;
-@property (nonatomic, strong) AVAudioPlayer *audioPlayer, *silentPlayer;
+@property (nonatomic, strong) AVAudioPlayer *audioPlayer;
 @property (nonatomic, strong) CustomMovieController *moviePlayer;
 
 - (void)startClientGameWithSession:(GKSession *)session playerName:(NSString *)name server:(NSString *)peerID;

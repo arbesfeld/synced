@@ -14,7 +14,7 @@
 @synthesize subtitle = _subtitle;
 @synthesize playlistItemType = _playlistItemType;
 @synthesize loadProgress = _loadProgress;
-@synthesize belongsToUser = _belongsToUser;
+@synthesize uploadedByUser = _uploadedByUser;
 
 - (void)dealloc
 {
@@ -36,8 +36,8 @@
         _loadProgress = 0.0;
         _previousLoadProgress = 0.0;
         _cancelled = NO;
-        _uploadOperation = nil;
-        _belongsToUser = NO;
+        _operation = nil;
+        _uploadedByUser = NO;
         _justVoted = NO;
     }
     return self;
@@ -88,8 +88,8 @@
 
 - (void)cancel
 {
-    if (_uploadOperation != nil) {
-        [_uploadOperation cancel];
+    if (_operation != nil) {
+        [_operation cancel];
     }
     _cancelled = YES;
 }

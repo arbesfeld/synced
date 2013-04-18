@@ -32,11 +32,11 @@ PlaylistItemType;
 @property (nonatomic, assign) PlaylistItemType playlistItemType;
 @property (nonatomic, assign) double loadProgress;
 @property (nonatomic, assign) double previousLoadProgress; // used for UI loading animation 
-@property (nonatomic, assign) BOOL belongsToUser; // whether the user uploaded a given song
+@property (nonatomic, assign) BOOL uploadedByUser; // whether the user uploaded a given song
 @property (nonatomic, assign) BOOL cancelled;
 @property (nonatomic, assign) BOOL justVoted;
 
-@property (nonatomic, assign) AFHTTPRequestOperation *uploadOperation;
+@property (nonatomic, assign) AFHTTPRequestOperation *operation;
 
 - (id)initPlaylistItemWithName:(NSString *)name andSubtitle:(NSString *)subtitle andID:(NSString *)ID andDate:(NSDate *)date andPlaylistItemType:(PlaylistItemType)playListItemType;
 

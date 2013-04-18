@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		551CC94D171CBC9100BB884B /* empty.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 551CC94C171CBC9100BB884B /* empty.mp3 */; };
 		552CDD1F17026493003CA4EB /* PacketMusicResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 552CDD1E17026493003CA4EB /* PacketMusicResponse.m */; };
 		552CDD22170279BF003CA4EB /* PacketGameState.m in Sources */ = {isa = PBXBuildFile; fileRef = 552CDD21170279BF003CA4EB /* PacketGameState.m */; };
 		55453437171124EB00B4704F /* PacketSyncResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 55453436171124EB00B4704F /* PacketSyncResponse.m */; };
@@ -90,7 +89,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		551CC94C171CBC9100BB884B /* empty.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = empty.mp3; sourceTree = "<group>"; };
 		552CDD1D17026493003CA4EB /* PacketMusicResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PacketMusicResponse.h; sourceTree = "<group>"; };
 		552CDD1E17026493003CA4EB /* PacketMusicResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PacketMusicResponse.m; sourceTree = "<group>"; };
 		552CDD20170279BF003CA4EB /* PacketGameState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PacketGameState.h; sourceTree = "<group>"; };
@@ -377,7 +375,6 @@
 				55FCC55516ED3D4C0000BCBD /* InfoPlist.strings */,
 				55FCC55816ED3D4C0000BCBD /* main.m */,
 				55FCC55A16ED3D4C0000BCBD /* AirShare2-Prefix.pch */,
-				551CC94C171CBC9100BB884B /* empty.mp3 */,
 				55FCC55E16ED3D4C0000BCBD /* Default.png */,
 				55FCC56016ED3D4C0000BCBD /* Default@2x.png */,
 				55FCC56216ED3D4C0000BCBD /* Default-568h@2x.png */,
@@ -559,7 +556,6 @@
 				89E4772E17128F9700DE9ECE /* movies-01.png in Resources */,
 				89307B7717138BAC0008B488 /* upvote.png in Resources */,
 				5596EDE91717355D00F069FE /* gothic.ttf in Resources */,
-				551CC94D171CBC9100BB884B /* empty.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

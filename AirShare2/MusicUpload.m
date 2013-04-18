@@ -163,7 +163,7 @@
                          return;
                      }
                      [httpClient enqueueHTTPRequestOperation:operation];
-                     mediaItem.uploadOperation = operation;
+                     mediaItem.operation = operation;
                  }];
                  [assetReader release];
                  [assetReaderOutput release];
