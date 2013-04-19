@@ -222,9 +222,9 @@ const double epsilon = 0.02;
     }
 }
 
-- (void)addView:(UIView *)view
+- (void)showViewController:(UIViewController *)viewController
 {
-    [self.view addSubview:view];
+    [self presentViewController:viewController animated:YES completion:nil];
 }
 
 #pragma mark - UITableViewDataSource

@@ -7,6 +7,7 @@
 //
 
 #import <MediaPlayer/MediaPlayer.h>
+#import "PlayerView.h"
 
 @class CustomMovieController;
 
@@ -16,10 +17,12 @@
 
 @end
 
-@interface CustomMovieController : MPMoviePlayerController
+@interface CustomMovieController : UIViewController
 
 @property (nonatomic, weak) id <CustomMovieControllerDelegate> delegate;
-
+@property (nonatomic, strong) PlayerView *moviePlayer;
+@property (nonatomic, strong) UIButton *skipButton;
+@property (nonatomic, strong) UIImage *skipImage;
 - (id)initWithContentURL:(NSURL *)url;
-
+- (void)stop;
 @end

@@ -43,7 +43,7 @@ ServerState;
 - (PlaylistItem *)getCurrentPlaylistItem;
 - (void)setPlaybackProgress:(double)f;
 
-- (void)addView:(UIView *)view;
+- (void)showViewController:(UIViewController *)viewController;
 @end
 
 @interface Game : NSObject <GKSessionDelegate, AVAudioPlayerDelegate, CustomMovieControllerDelegate> {
@@ -56,7 +56,7 @@ ServerState;
 @property (nonatomic, strong) NSMutableArray *playlist;
 @property (nonatomic, strong) GKSession *session;
 @property (nonatomic, strong) AVAudioPlayer *audioPlayer;
-@property (nonatomic, strong) CustomMovieController *moviePlayer;
+@property (nonatomic, strong) CustomMovieController *moviePlayerController;
 
 - (void)startClientGameWithSession:(GKSession *)session playerName:(NSString *)name server:(NSString *)peerID;
 - (void)startServerGameWithSession:(GKSession *)session playerName:(NSString *)name clients:(NSArray *)clients;

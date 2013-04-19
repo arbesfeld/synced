@@ -90,9 +90,7 @@
     for(int i = 1; i < 6; i++) {
         _allCells[i] = [[NSMutableArray alloc] initWithCapacity:((NSArray *)_allData[i]).count];
         for(MPMediaItem *item in _allData[i]) {
-            MovieItemCell *cell = [[MovieItemCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-            cell.movieItem = item;
-            [cell addContent];
+            MovieItemCell *cell = [[MovieItemCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier movieItem:item];
             [_allCells[i] addObject:cell];
         }
     }

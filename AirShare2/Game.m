@@ -20,7 +20,8 @@ const double DELAY_TIME = 2.00000;   // wait DELAY_TIME seconds until songs play
 const int WAIT_TIME_UPLOAD = 25;     // server wait time for others to download music after uploading
 const int WAIT_TIME_DOWNLOAD = 20;   // server wait time for others to download music after downloading
 const int SYNC_PACKET_COUNT = 100;   // how many sync packets to send
-const int UPDATE_TIME = 10;          // how often to update playback
+const int UPDATE_TIME = 30;          // how often to update playback (after first update)
+const int UPDATE_TIME_FIRST = 1;     // how often to update playback (first update)
 const double BACKGROUND_TIME = -0.2; // the additional time it takes when app is in background
 const double MOVIE_TIME = -0.1;      // the additional time it takes for movies
 
@@ -435,6 +436,15 @@ typedef enum
     NSString *songName = [song valueForProperty:MPMediaItemPropertyTitle];
     NSString *artistName = [song valueForProperty:MPMediaItemPropertyArtist];
     NSURL *songURL = [song valueForProperty:MPMediaItemPropertyAssetURL];
+    if(!songName) {
+        songName = @"";
+    }
+    if(!artistName) {
+        artistName = @"";
+    }
+    if(!songURL) {
+        return;
+    }
     NSString *ID = [self genRandStringLength:6];
     
     MediaItem *mediaItem = [MediaItem mediaItemWithName:songName andSubtitle:artistName andID:ID andDate:[NSDate date] andLocalURL:songURL];
@@ -595,17 +605,18 @@ typedef enum
         
         // if you are starting the song for the first time
         if(mediaItem.isVideo) {
-            _moviePlayer = [[CustomMovieController alloc] initWithContentURL:mediaItem.localURL];
-            _moviePlayer.delegate = self;
+            _moviePlayerController = [[CustomMovieController alloc] initWithContentURL:mediaItem.localURL];
+            _moviePlayerController.delegate = self;
             
-            if(_moviePlayer == nil) {
+            if(_moviePlayerController.moviePlayer == nil) {
                 _gameState = GameStateIdle;
                 NSLog(@"ERROR loading moviePlayer!");
             }
-            _moviePlayer.movieSourceType = MPMovieSourceTypeFile;
-            [_moviePlayer prepareToPlay];
-            [_moviePlayer pause];
-            [_moviePlayer setCurrentPlaybackTime:0];
+            _moviePlayerController.moviePlayer.movieSourceType = MPMovieSourceTypeFile;
+            [_moviePlayerController.moviePlayer prepareToPlay];
+            [_moviePlayerController.moviePlayer pause];
+            [_moviePlayerController.moviePlayer setCurrentPlaybackTime:0];
+        
         } else {
             NSString *tempPath = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
             NSString *fileName = [NSString stringWithFormat:@"%@.m4a", mediaItem.ID];
@@ -623,6 +634,9 @@ typedef enum
                 // prime the player
                 [_audioPlayer play];
                 [_audioPlayer stop];
+                if(!self.isServer) {
+                    [_audioPlayer setVolume:0.0]; // only turn on the volume when we know we are synced
+                }
                 //[_audioPlayer setCurrentTime:0];
             }
         }
@@ -632,8 +646,7 @@ typedef enum
                                                          userInfo:mediaItem
                                                           repeats:NO];
     } else {
-    // only sync if you did not upload it
-        _updateMusicTimer = [NSTimer scheduledTimerWithTimeInterval:[startTime timeIntervalSinceNow]// + compensate
+        _updateMusicTimer = [NSTimer scheduledTimerWithTimeInterval:[startTime timeIntervalSinceNow]
                                                              target:self
                                                            selector:@selector(handleUpdateMusicTimer:)
                                                            userInfo:[NSNumber numberWithInt:songTime]
@@ -685,10 +698,10 @@ typedef enum
     }
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    [_moviePlayer stop];
-    [_moviePlayer.view removeFromSuperview];
-    _moviePlayer = nil;
-    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
+    [_moviePlayerController stop];
+    [_moviePlayerController dismissViewControllerAnimated:YES completion:^ {
+        [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
+    }];
     
     [self.delegate setPlaybackProgress:0.0];
     [self.delegate mediaFinishedPlaying];
@@ -725,7 +738,7 @@ typedef enum
         if(_gameState == GameStatePlayingMusic) {
             [self audioPlayerDidFinishPlaying:_audioPlayer successfully:YES];
         } else if(_gameState == GameStatePlayingMovie) {
-            [self moviePlayerDidFinishPlaying:_moviePlayer];
+            [self moviePlayerDidFinishPlaying:_moviePlayerController.moviePlayer];
         } else {
             [self tryPlayingNextItem];
         }
@@ -757,13 +770,13 @@ typedef enum
     if(_gameState == GameStatePreparingToPlayMedia) {
         // if we're here, we loaded the content correctly
         if(mediaItem.isVideo) {
-            [self.delegate addView:_moviePlayer.view];
-            [_moviePlayer play];
+            [self.delegate showViewController:_moviePlayerController];
+            [_moviePlayerController.moviePlayer play];
             
             [[NSNotificationCenter defaultCenter] addObserver:self
                                                      selector:@selector(moviePlayerDidFinishPlaying:)
                                                          name:MPMoviePlayerPlaybackDidFinishNotification
-                                                       object:_moviePlayer];
+                                                       object:_moviePlayerController.moviePlayer];
             _gameState = GameStatePlayingMovie;
         } else {
             [_audioPlayer play];
@@ -777,11 +790,12 @@ typedef enum
             
         }
         if(self.isServer) {
-            _playbackSyncingTimer = [NSTimer scheduledTimerWithTimeInterval:UPDATE_TIME
+            _playbackSyncingTimer = [NSTimer scheduledTimerWithTimeInterval:UPDATE_TIME_FIRST
                                                                      target:self
                                                                    selector:@selector(handlePlaybackSyncingTimer:)
                                                                    userInfo:mediaItem
-                                                                    repeats:YES];
+                                                                    repeats:NO];
+            
         }
     }
     
@@ -797,31 +811,34 @@ typedef enum
 - (void)handleUpdateMusicTimer:(NSTimer *)timer
 {
     int songTime = [[timer userInfo] intValue];
+    NSLog(@"Updating with song time = %d", songTime);
     if(_gameState == GameStatePlayingMusic) {
-        NSDate *date = [NSDate date];
+        //NSDate *date = [NSDate date];
         [_audioPlayer setCurrentTime:songTime];
-        NSLog(@"setting current time %f", [date timeIntervalSinceNow]);
+        [_audioPlayer setVolume:1.0]; // turn on the volume when we know we are synced
+        //NSLog(@"setting current time %f", [date timeIntervalSinceNow]);
     }
 }
 
 - (void)handlePlaybackSyncingTimer:(NSTimer *)timer
 {
-    NSAssert(self.isServer, @"CLient in handlePlaybackSyncingTimer");
+    NSAssert(self.isServer, @"Client in handlePlaybackSyncingTimer");
+    
     MediaItem *mediaItem = (MediaItem *)[timer userInfo];
     
     float delay = 0.0;
     int songTime = 0;
     if(_gameState == GameStatePlayingMovie) {
-        songTime = (int)[_moviePlayer currentPlaybackTime] + 5;
-        if(songTime > [_moviePlayer duration] - UPDATE_TIME - 10) {
+        songTime = (int)[_moviePlayerController.moviePlayer currentPlaybackTime] + DELAY_TIME;
+        if(songTime > [_moviePlayerController.moviePlayer duration] - UPDATE_TIME - DELAY_TIME) {
             // the song is almost over
             return;
         }
-        delay = (float)songTime - [_moviePlayer currentPlaybackTime];
+        delay = (float)songTime - [_moviePlayerController.moviePlayer currentPlaybackTime];
     } else if(_gameState == GameStatePlayingMusic) {
-        songTime = (int)[_audioPlayer currentTime] + 5;
-        if(songTime > [_audioPlayer duration] - UPDATE_TIME - 10) {
-            // the song is almost over
+        songTime = (int)[_audioPlayer currentTime] + DELAY_TIME;
+        if(songTime > [_audioPlayer duration] - UPDATE_TIME - DELAY_TIME) {
+            // the movie is almost over
             return;
         }
         delay = (float)songTime - [_audioPlayer currentTime];
@@ -847,6 +864,12 @@ typedef enum
 //                                                           selector:@selector(handleUpdateMusicTimer:)
 //                                                           userInfo:[NSNumber numberWithInt:songTime]
 //                                                            repeats:NO];
+        
+        _playbackSyncingTimer = [NSTimer scheduledTimerWithTimeInterval:UPDATE_TIME
+                                                                 target:self
+                                                               selector:@selector(handlePlaybackSyncingTimer:)
+                                                               userInfo:mediaItem
+                                                                repeats:NO];
     }
 }
 
@@ -1019,7 +1042,7 @@ typedef enum
     _playlist = nil;
     
     [_audioPlayer stop];
-    [_moviePlayer stop];
+    [_moviePlayerController.moviePlayer stop];
 	[_session disconnectFromAllPeers];
     
 	[self.delegate gameSessionDidEnd:self];
@@ -1049,9 +1072,9 @@ typedef enum
 	_session.delegate = nil;
 	_session = nil;
     [_audioPlayer stop];
-    [_moviePlayer stop];
+    [_moviePlayerController.moviePlayer stop];
     _audioPlayer = nil;
-    _moviePlayer = nil;
+    _moviePlayerController = nil;
 	[self.delegate game:self didQuitWithReason:reason];
 }
 

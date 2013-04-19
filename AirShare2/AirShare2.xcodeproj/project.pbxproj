@@ -16,6 +16,8 @@
 		558E14AB16F182480076F6FC /* PacketSignIn.m in Sources */ = {isa = PBXBuildFile; fileRef = 558E14AA16F182480076F6FC /* PacketSignIn.m */; };
 		558E14B616F185600076F6FC /* CenturyGothicStd-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 558E14B316F185600076F6FC /* CenturyGothicStd-Bold.otf */; };
 		558E14B716F185600076F6FC /* CenturyGothicStd.otf in Resources */ = {isa = PBXBuildFile; fileRef = 558E14B416F185600076F6FC /* CenturyGothicStd.otf */; };
+		558F735E1720C6B50048F78F /* PlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 558F735D1720C6B50048F78F /* PlayerView.m */; };
+		558F73601720CFC00048F78F /* skip-01-rotated.png in Resources */ = {isa = PBXBuildFile; fileRef = 558F735F1720CFC00048F78F /* skip-01-rotated.png */; };
 		5590968B16FF5ED4004149A0 /* MusicUpload.m in Sources */ = {isa = PBXBuildFile; fileRef = 5590968A16FF5ED4004149A0 /* MusicUpload.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		5590968D16FF63C5004149A0 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5590968C16FF63C5004149A0 /* CFNetwork.framework */; };
 		5590968E16FF64A5004149A0 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5596E0D816F692D300511D3E /* MobileCoreServices.framework */; };
@@ -105,6 +107,9 @@
 		558E14AA16F182480076F6FC /* PacketSignIn.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PacketSignIn.m; sourceTree = "<group>"; };
 		558E14B316F185600076F6FC /* CenturyGothicStd-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "CenturyGothicStd-Bold.otf"; sourceTree = "<group>"; };
 		558E14B416F185600076F6FC /* CenturyGothicStd.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = CenturyGothicStd.otf; sourceTree = "<group>"; };
+		558F735C1720C6B40048F78F /* PlayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayerView.h; sourceTree = "<group>"; };
+		558F735D1720C6B50048F78F /* PlayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlayerView.m; sourceTree = "<group>"; };
+		558F735F1720CFC00048F78F /* skip-01-rotated.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "skip-01-rotated.png"; path = "Graphics/skip-01-rotated.png"; sourceTree = "<group>"; };
 		5590968916FF5ED4004149A0 /* MusicUpload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MusicUpload.h; sourceTree = "<group>"; };
 		5590968A16FF5ED4004149A0 /* MusicUpload.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MusicUpload.m; sourceTree = "<group>"; };
 		5590968C16FF63C5004149A0 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
@@ -389,12 +394,14 @@
 				55FCC5BA16ED60460000BCBD /* GameViewController.m */,
 				55FCC57616ED3DA20000BCBD /* MainViewController.h */,
 				55FCC57716ED3DA20000BCBD /* MainViewController.m */,
-				5592DE85170BABAE00C766B0 /* SlidingViewController.h */,
-				5592DE86170BABAE00C766B0 /* SlidingViewController.m */,
 				5595E4E9171D2C45006782DE /* MoviePickerViewController.h */,
 				5595E4EA171D2C45006782DE /* MoviePickerViewController.m */,
+				558F735C1720C6B40048F78F /* PlayerView.h */,
+				558F735D1720C6B50048F78F /* PlayerView.m */,
 				55A28DB4171E5C60001E757E /* CustomMovieController.h */,
 				55A28DB5171E5C60001E757E /* CustomMovieController.m */,
+				5592DE85170BABAE00C766B0 /* SlidingViewController.h */,
+				5592DE86170BABAE00C766B0 /* SlidingViewController.m */,
 				558E0D651704DE3800BF230D /* UI */,
 			);
 			name = ViewControllers;
@@ -464,6 +471,7 @@
 		EA18C2001707E1A4008F5DAF /* Graphics */ = {
 			isa = PBXGroup;
 			children = (
+				558F735F1720CFC00048F78F /* skip-01-rotated.png */,
 				89307B7617138BAC0008B488 /* upvote.png */,
 				89E4772D17128F9700DE9ECE /* movies-01.png */,
 				89E477291712869900DE9ECE /* exit-01.png */,
@@ -556,6 +564,7 @@
 				89E4772E17128F9700DE9ECE /* movies-01.png in Resources */,
 				89307B7717138BAC0008B488 /* upvote.png in Resources */,
 				5596EDE91717355D00F069FE /* gothic.ttf in Resources */,
+				558F73601720CFC00048F78F /* skip-01-rotated.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -608,6 +617,7 @@
 				5595E4EB171D2C46006782DE /* MoviePickerViewController.m in Sources */,
 				5595E4EE171D3995006782DE /* MovieItemCell.m in Sources */,
 				55A28DB6171E5C60001E757E /* CustomMovieController.m in Sources */,
+				558F735E1720C6B50048F78F /* PlayerView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
