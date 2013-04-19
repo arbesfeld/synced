@@ -99,6 +99,11 @@
 		 while (assetWriterInput.readyForMoreMediaData) {
              if ([mediaItem isCancelled]) {
                  // early cancellation---should quit now
+                 [assetReader release];
+                 [assetReaderOutput release];
+                 [assetWriter release];
+                 [assetWriterInput release];
+                 [exportPath release];
                  return;
              }
              
@@ -164,10 +169,15 @@
                       }];
                      if ([mediaItem isCancelled]) {
                          // check again for early cancellation
+                         [assetReader release];
+                         [assetReaderOutput release];
+                         [assetWriter release];
+                         [assetWriterInput release];
+                         [exportPath release];
                          return;
                      }
-                     [httpClient enqueueHTTPRequestOperation:operation];
                      mediaItem.operation = operation;
+                     [httpClient enqueueHTTPRequestOperation:operation];
                  }];
                  [assetReader release];
                  [assetReaderOutput release];

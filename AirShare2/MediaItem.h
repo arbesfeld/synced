@@ -13,9 +13,9 @@
 @property (nonatomic, retain) NSURL *songURL, *localURL;
 @property (nonatomic, assign) NSInteger beatPos;
 @property (nonatomic, retain) NSMutableArray *beats;
-@property (nonatomic, assign) BOOL partyMode, isVideo;
+@property (nonatomic, assign) BOOL partyMode;
 
-+ (id)mediaItemWithName:(NSString *)name andSubtitle:(NSString *)subtitle andID:(NSString *)ID andDate:(NSDate *)date andLocalURL:(NSURL *)localURL;
++ (id)mediaItemWithName:(NSString *)name andSubtitle:(NSString *)subtitle andID:(NSString *)ID andDate:(NSDate *)date andLocalURL:(NSURL *)localURL andPlayListItemType:(PlaylistItemType)playlistItemType;
 
 - (void)loadBeats;
 - (void)nextBeat;

@@ -17,13 +17,15 @@
 #import "PacketCancelMusic.h"
 
 const double DELAY_TIME = 2.00000;   // wait DELAY_TIME seconds until songs play
-const int WAIT_TIME_UPLOAD = 25;     // server wait time for others to download music after uploading
-const int WAIT_TIME_DOWNLOAD = 20;   // server wait time for others to download music after downloading
+const int WAIT_TIME_UPLOAD = 60;     // server wait time for others to download music after uploading
+const int WAIT_TIME_DOWNLOAD = 60;   // server wait time for others to download music after downloading
 const int SYNC_PACKET_COUNT = 100;   // how many sync packets to send
-const int UPDATE_TIME = 30;          // how often to update playback (after first update)
-const int UPDATE_TIME_FIRST = 0;     // how often to update playback (first update)
+const int UPDATE_TIME = 10;          // how often to update playback (after first update)
+const int UPDATE_TIME_FIRST = 1;     // how often to update playback (first update)
 const double BACKGROUND_TIME = -0.2; // the additional time it takes when app is in background
 const double MOVIE_TIME = -0.1;      // the additional time it takes for movies
+const double AUDIO_SEEK_TIME = 0.12; // time for audioplayer to seek
+const double MOVIE_SEEK_TIME = 0.23; // time for movie player to seek
 
 typedef enum
 {
@@ -200,7 +202,7 @@ typedef enum
         case PacketTypePlaylistItem:
         {
             PlaylistItem *playlistItem = ((PacketPlaylistItem *)packet).playlistItem;
-            NSLog(@"Client received playlistItemPacket with song %@", playlistItem.name);
+            NSLog(@"Client received PlaylistItemPacket with song %@", playlistItem.name);
             [self addItemToPlaylist:playlistItem];
             break;
         }
@@ -417,7 +419,9 @@ typedef enum
         NSLog(@"Updating player = %@ with item = %@", player.name, [playlistItem description]);
         
         // only update if you have fully loaded the song
-        if(playlistItem.playlistItemType == PlaylistItemTypeSong && playlistItem.loadProgress == 1.0) {
+        if((playlistItem.playlistItemType == PlaylistItemTypeSong ||
+            playlistItem.playlistItemType == PlaylistItemTypeMovie) &&
+            playlistItem.loadProgress == 1.0) {
             PacketMusicDownload *packet = [PacketMusicDownload packetWithID:playlistItem.ID];
             [self sendPacket:packet toClientWithPeerID:player.peerID];
         }
@@ -447,9 +451,10 @@ typedef enum
     }
     NSString *ID = [self genRandStringLength:6];
     
-    MediaItem *mediaItem = [MediaItem mediaItemWithName:songName andSubtitle:artistName andID:ID andDate:[NSDate date] andLocalURL:songURL];
+    PlaylistItemType type = isVideo ? PlaylistItemTypeMovie : PlaylistItemTypeSong;
+    MediaItem *mediaItem = [MediaItem mediaItemWithName:songName andSubtitle:artistName andID:ID andDate:[NSDate date] andLocalURL:songURL andPlayListItemType:type];
     mediaItem.uploadedByUser = YES;
-    mediaItem.isVideo = isVideo;
+    
     [self addItemToPlaylist:mediaItem];
     
     PacketPlaylistItem *packet = [PacketPlaylistItem packetWithPlaylistItem:mediaItem];
@@ -544,7 +549,7 @@ typedef enum
 
 - (void)cancelMusic:(PlaylistItem *)selectedItem
 {
-    _gameState = GameStateIdle;
+    //_gameState = GameStateIdle;
     [self.delegate removePlaylistItem:selectedItem animation:UITableViewRowAnimationRight];
 }
 
@@ -561,11 +566,13 @@ typedef enum
     } else if(_gameState == GameStateIdle) {
         NSLog(@"Created wait timer");
         // create a timer to start playing unless you receive another PacketMusicResponse
-        _loadTimeoutTimer = [NSTimer scheduledTimerWithTimeInterval:waitTime
-                                                      target:self
-                                                    selector:@selector(handleLoadTimeoutTimer:)
-                                                    userInfo:mediaItem
-                                                     repeats:NO];
+        if(!_loadTimeoutTimer) {
+            _loadTimeoutTimer = [NSTimer scheduledTimerWithTimeInterval:waitTime
+                                                          target:self
+                                                        selector:@selector(handleLoadTimeoutTimer:)
+                                                        userInfo:mediaItem
+                                                         repeats:NO];
+        }
     }
 }
 
@@ -596,7 +603,7 @@ typedef enum
         compensate += BACKGROUND_TIME;
         NSLog(@"Application inactive.. compensating");
     }
-    if(mediaItem.isVideo) {
+    if(mediaItem.playlistItemType == PlaylistItemTypeMovie && mediaItem.uploadedByUser) {
         compensate += MOVIE_TIME;
     }
     
@@ -604,7 +611,7 @@ typedef enum
         NSAssert(_gameState == GameStatePreparingToPlayMedia, @"Not correct state in prepareToPlayMediaItem:");
         
         // if you are starting the song for the first time
-        if(mediaItem.isVideo) {
+        if(mediaItem.playlistItemType == PlaylistItemTypeMovie && mediaItem.uploadedByUser) {
             if(_audioPlayer) {
                 // if the audiioPlayer is playing, stop it
                 [_audioPlayer stop];
@@ -618,10 +625,7 @@ typedef enum
                 _gameState = GameStateIdle;
                 NSLog(@"ERROR loading moviePlayer!");
             }
-//            _moviePlayerController.moviePlayer.movieSourceType = MPMovieSourceTypeFile;
-//            [_moviePlayerController.moviePlayer prepareToPlay];
-//            [_moviePlayerController.moviePlayer pause];
-//            [_moviePlayerController.moviePlayer setCurrentPlaybackTime:0];
+            
         
         } else {
             if([_moviePlayerController isBeingPresented]) {
@@ -650,6 +654,10 @@ typedef enum
                                                          userInfo:mediaItem
                                                           repeats:NO];
     } else {
+        if([[UIApplication sharedApplication] applicationState] == UIApplicationStateInactive) {
+            return;
+            // not accurate updating when app inactive
+        }
         _updateMusicTimer = [NSTimer scheduledTimerWithTimeInterval:[startTime timeIntervalSinceNow]
                                                              target:self
                                                            selector:@selector(handleUpdateMusicTimer:)
@@ -776,7 +784,7 @@ typedef enum
     
     if(_gameState == GameStatePreparingToPlayMedia) {
         // if we're here, we loaded the content correctly
-        if(mediaItem.isVideo) {
+        if(mediaItem.playlistItemType == PlaylistItemTypeMovie && mediaItem.uploadedByUser) {
             [self.delegate showViewController:_moviePlayerController];
             [_moviePlayerController.moviePlayer play];
             
@@ -821,11 +829,11 @@ typedef enum
     NSLog(@"Updating with song time = %d", songTime);
     if(_gameState == GameStatePlayingMusic) {
         //NSDate *date = [NSDate date];
-        [_audioPlayer setCurrentTime:songTime+0.12];
+        [_audioPlayer setCurrentTime:songTime + AUDIO_SEEK_TIME];
         [_audioPlayer setVolume:1.0]; // turn on the volume when we know we are synced
         //NSLog(@"setting current time %f", [date timeIntervalSinceNow]);
     } else if(_gameState == GameStatePlayingMovie) {
-        CMTime npt = CMTimeMakeWithSeconds(songTime+0.23, 600);
+        CMTime npt = CMTimeMakeWithSeconds(songTime + MOVIE_SEEK_TIME, 600);
         [_moviePlayerController.moviePlayer.player seekToTime:npt toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero];
     }
 }
@@ -902,6 +910,9 @@ typedef enum
 - (void)handleLoadTimeoutTimer:(NSTimer *)timer
 {
     NSAssert(self.isServer, @"Client in handleLoadTimeoutTimer");
+    
+    [_loadTimeoutTimer invalidate];
+    _loadTimeoutTimer = nil;
     
     NSLog(@"LoadTimeoutTimer called! Playing music");
     if(_gameState != GameStateIdle) {
@@ -1050,6 +1061,8 @@ typedef enum
 	_session = nil;
     _players = nil;
     _playlist = nil;
+    _uploader = nil;
+    _downloader = nil;
     
     [_audioPlayer stop];
     [_moviePlayerController.moviePlayer stop];

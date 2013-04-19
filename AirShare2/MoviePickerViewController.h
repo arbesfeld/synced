@@ -19,11 +19,13 @@
 
 @end
 
-@interface MoviePickerViewController : UITableViewController <UISearchBarDelegate, UISearchDisplayDelegate> {
-    NSArray *_labels, *_allData;
-    NSMutableArray *_allCells, *_searchCells;
+@interface MoviePickerViewController : UITableViewController <UISearchBarDelegate, UISearchDisplayDelegate, UIScrollViewDelegate> {
+    NSArray *_labels;
+    NSMutableArray *_searchData, *_allData;
     
     UISearchDisplayController *searchDisplayController;
+    
+    BOOL _shouldLoadImages;
 }
 
 @property (nonatomic, weak) id <MoviePickerDelegate> delegate;

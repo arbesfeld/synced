@@ -19,6 +19,7 @@
     self = [super initWithStyle:style];
     if (self) {
         _labels = [[NSArray alloc] initWithObjects:@"", @"Movies", @"Music Videos", @"TV Shows", @"Podcasts", @"iTunesU", nil];
+        _shouldLoadImages = YES;
         
         self.title = @"Videos";
         [self.navigationItem setHidesBackButton:YES animated:YES];
@@ -62,9 +63,8 @@
         self.tableView.tableHeaderView = self.searchBar;
         
         NSArray *empty = [[NSArray alloc] init];
-        _allData = [[NSArray alloc] initWithObjects:empty, movies, musicVideos, tvShows, podcasts, iTunesU, nil];
-        [self initCells];
-        
+        _allData = [[NSMutableArray alloc] initWithObjects:empty, movies, musicVideos, tvShows, podcasts, iTunesU, nil];
+        _searchData = [[NSMutableArray alloc] initWithArray:_allData copyItems:YES];
         searchDisplayController = [[UISearchDisplayController alloc] initWithSearchBar:_searchBar contentsController:self];
         searchDisplayController.delegate = self;
         searchDisplayController.searchResultsDataSource = self;
@@ -86,25 +86,12 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-- (void)initCells
-{
-    static NSString *CellIdentifier = @"VideoCell";
-    _allCells = [[NSMutableArray alloc] initWithCapacity:6];
-    _allCells[0] = [[NSMutableArray alloc] initWithObjects:
-                    [[MovieItemCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier], nil];
-    for(int i = 1; i < 6; i++) {
-        _allCells[i] = [[NSMutableArray alloc] initWithCapacity:((NSArray *)_allData[i]).count];
-        for(MPMediaItem *item in _allData[i]) {
-            MovieItemCell *cell = [[MovieItemCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier movieItem:item];
-            [_allCells[i] addObject:cell];
-        }
-    }
-    _searchCells = [[NSMutableArray alloc] initWithArray:_allCells copyItems:YES];
-}
+
+
 #pragma mark - Table view data source
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return ((NSArray *)_searchCells).count;
+    return ((NSArray *)_searchData).count;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -112,27 +99,29 @@
 }
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    if(((NSArray *)_allData[section]).count == 0) {
+    if(((NSArray *)_searchData[section]).count == 0) {
         return nil;
     }
     return _labels[section];
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return ((NSArray *)_searchCells[section]).count;
+    return ((NSArray *)_searchData[section]).count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"VideoCell";
-    UITableViewCell *cell = nil;//[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    UITableViewCell *cell = nil; //[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     
     // Configure the cell...
     if(cell == nil) {
         if(indexPath.section == 0) {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
         } else {
-            cell = (UITableViewCell *)(_searchCells[indexPath.section][indexPath.row]);
+            cell = (UITableViewCell *)[[MovieItemCell alloc] initWithStyle:UITableViewCellStyleDefault
+                                                           reuseIdentifier:CellIdentifier
+                                                                 movieItem:_searchData[indexPath.section][indexPath.row]];
         }
     }
     return cell;
@@ -146,7 +135,7 @@
     if(indexPath.section == 0) {
         //
     } else {
-        selected = ((MovieItemCell *)_searchCells[indexPath.section][indexPath.row]).movieItem;
+        selected = _searchData[indexPath.section][indexPath.row];
     }
     
     [self.delegate addMovie:selected];
@@ -157,15 +146,15 @@
 #pragma mark - SearchDisplayControllerDelegate
 - (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString
 {
-    [_searchCells removeAllObjects];
+    [_searchData removeAllObjects];
     if([searchString isEqualToString:@""]) {
-        _searchCells = [[NSMutableArray alloc] initWithArray:_allCells copyItems:YES];
+        _searchData = [[NSMutableArray alloc] initWithArray:_allData copyItems:YES];
         return YES;
     }
-    for(int i = 0; i < _allCells.count; i++)
+    for(int i = 0; i < _allData.count; i++)
     {
-        NSArray *group = _allCells[i];
-        NSMutableArray *newGroup = [[NSMutableArray alloc] initWithCapacity:((NSArray *)_allCells[i]).count];
+        NSArray *group = _allData[i];
+        NSMutableArray *newGroup = [[NSMutableArray alloc] initWithCapacity:((NSArray *)_allData[i]).count];
         
         for(MovieItemCell *element in group)
         {
@@ -178,7 +167,7 @@
                 [newGroup addObject:element];
             }
         }
-        [_searchCells addObject:newGroup];
+        [_searchData addObject:newGroup];
     }
     return YES;
 }
@@ -186,4 +175,41 @@
 {
     tableView.rowHeight = 80;
 }
+
+#pragma mark - UIScrollViewDelegate
+//- (void)scrollViewDidScroll
+//{
+//    NSLog(@"Will begin scrolling");
+//    _shouldLoadImages = NO;
+//}
+//- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+//{
+//    NSLog(@"Will begin dragging");
+//    _shouldLoadImages = NO;
+//}
+//- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
+//{
+//    NSLog(@"Did end dragging");
+//    NSLog(@"Velocity = %f %f", velocity.x, velocity.y);
+//    if(velocity.y < 1.0) {
+//        _shouldLoadImages = YES;
+//        [self.tableView reloadData];
+//    }
+//}
+//- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+//{
+//    NSLog(@"Did end ecelerating");
+//    if(!_shouldLoadImages) {
+//        [self.tableView reloadData];
+//        _shouldLoadImages = YES;
+//    }
+//}
+//- (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView
+//{
+//    NSLog(@"Did end scrolling");
+//    if(!_shouldLoadImages) {
+//        [self.tableView reloadData];
+//        _shouldLoadImages = YES;
+//    }
+//}
 @end

@@ -174,7 +174,7 @@
 {
 	UIAlertView *alertView = [[UIAlertView alloc]
                               initWithTitle:NSLocalizedString(@"Disconnected", @"Client disconnected alert title")
-                              message:NSLocalizedString(@"You were disconnected from the game.", @"Client disconnected alert message")
+                              message:NSLocalizedString(@"You were disconnected from the session.", @"Client disconnected alert message")
                               delegate:nil
                               cancelButtonTitle:NSLocalizedString(@"OK", @"Button: OK")
                               otherButtonTitles:nil];

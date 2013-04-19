@@ -83,8 +83,8 @@ const double epsilon = 0.02;
 	if (self.game.isServer)
 	{
 		_alertView = [[UIAlertView alloc]
-                      initWithTitle:NSLocalizedString(@"End Game?", @"Alert title (user is host)")
-                      message:NSLocalizedString(@"This will terminate the game for all other players.", @"Alert message (user is host)")
+                      initWithTitle:NSLocalizedString(@"End Session?", @"Alert title (user is host)")
+                      message:NSLocalizedString(@"This will terminate the session for all other players.", @"Alert message (user is host)")
                       delegate:self
                       cancelButtonTitle:NSLocalizedString(@"No", @"Button: No")
                       otherButtonTitles:NSLocalizedString(@"Yes", @"Button: Yes"),
@@ -95,7 +95,7 @@ const double epsilon = 0.02;
 	else
 	{
 		_alertView = [[UIAlertView alloc]
-                      initWithTitle: NSLocalizedString(@"Leave Game?", @"Alert title (user is not host)")
+                      initWithTitle: NSLocalizedString(@"Leave Session?", @"Alert title (user is not host)")
                       message:nil
                       delegate:self
                       cancelButtonTitle:NSLocalizedString(@"No", @"Button: No")

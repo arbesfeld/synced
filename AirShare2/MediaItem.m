@@ -16,14 +16,14 @@
 @synthesize partyMode = _partyMode;
 @synthesize beats = _beats;
 
-+ (id)mediaItemWithName:(NSString *)name andSubtitle:(NSString *)subtitle andID:(NSString *)ID andDate:(NSDate *)date andLocalURL:(NSURL *)localURL;
++ (id)mediaItemWithName:(NSString *)name andSubtitle:(NSString *)subtitle andID:(NSString *)ID andDate:(NSDate *)date andLocalURL:(NSURL *)localURL andPlayListItemType:(PlaylistItemType)playlistItemType
 {
-	return [[[self class] alloc] initMediaItemWithName:name andSubtitle:subtitle andID:ID andDate:date andLocalURL:localURL];
+	return [[[self class] alloc] initMediaItemWithName:name andSubtitle:subtitle andID:ID andDate:date andLocalURL:localURL andPlayListItemType:playlistItemType];
 }
 
-- (id)initMediaItemWithName:(NSString *)name andSubtitle:(NSString *)subtitle andID:(NSString *)ID andDate:(NSDate *)date andLocalURL:(NSURL *)localURL
+- (id)initMediaItemWithName:(NSString *)name andSubtitle:(NSString *)subtitle andID:(NSString *)ID andDate:(NSDate *)date andLocalURL:(NSURL *)localURL andPlayListItemType:(PlaylistItemType)playlistItemType
 {
-	if ((self = [super initPlaylistItemWithName:name andSubtitle:subtitle andID:ID andDate:date andPlaylistItemType:PlaylistItemTypeSong]))
+	if ((self = [super initPlaylistItemWithName:name andSubtitle:subtitle andID:ID andDate:date andPlaylistItemType:playlistItemType]))
 	{
         NSString *tempPath = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
         NSString *fileName = [NSString stringWithFormat:@"%@.m4a", ID];
@@ -33,7 +33,6 @@
         self.beats = [[NSMutableArray alloc] init];
         self.beatPos = -1;
         self.partyMode = NO;
-        self.isVideo = NO;
 	}
 	return self;
 }

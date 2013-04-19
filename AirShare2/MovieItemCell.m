@@ -16,25 +16,7 @@
     if (self) {
         self.movieItem = movieItem;
         
-        dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH,  0ul);
-        
-        dispatch_async(queue, ^{
-            NSURL *url = [self.movieItem valueForProperty:MPMediaItemPropertyAssetURL];
-            AVURLAsset *asset= [[AVURLAsset alloc] initWithURL:url options:nil];
-            AVAssetImageGenerator *imageGenerator = [[AVAssetImageGenerator alloc]initWithAsset:asset];
-            CMTime time = CMTimeMake(30, 1);
-            CGImageRef imageRef = [imageGenerator copyCGImageAtTime:time actualTime:NULL error:NULL];
-            UIImage *thumbImg = [UIImage imageWithCGImage:imageRef];
-            UIImageView *thumbImgView = [[UIImageView alloc] initWithImage:thumbImg];
-            thumbImgView.contentMode = UIViewContentModeScaleAspectFit;
-            thumbImgView.frame = CGRectMake(0, 0, 80, 80);
-            thumbImgView.backgroundColor = [UIColor blackColor];
-            [self.contentView addSubview:thumbImgView];
-            CGImageRelease(imageRef);  // CGImageRef won't be released by ARC
-            [self.contentView setNeedsLayout];
-            [thumbImgView setNeedsLayout];
-        });
-        //[self.contentView addSubview:thumbImgView];
+        [self performSelector:@selector(loadImage:) withObject:@YES afterDelay:0];
         
         _title = [self.movieItem valueForProperty:MPMediaItemPropertyTitle];
         _artist = [self.movieItem valueForProperty:MPMediaItemPropertyArtist];
@@ -64,6 +46,27 @@
         [self.contentView addSubview:durationLabel];
     }
     return self;
+}
+
+- (void)loadImage:(BOOL)load
+{
+    if(!load) {
+        return;
+    }
+    NSURL *url = [self.movieItem valueForProperty:MPMediaItemPropertyAssetURL];
+    AVURLAsset *asset= [[AVURLAsset alloc] initWithURL:url options:nil];
+    AVAssetImageGenerator *imageGenerator = [[AVAssetImageGenerator alloc]initWithAsset:asset];
+    CMTime time = CMTimeMake(30, 1);
+    CGImageRef imageRef = [imageGenerator copyCGImageAtTime:time actualTime:NULL error:NULL];
+    UIImage *thumbImg = [UIImage imageWithCGImage:imageRef];
+    UIImageView *thumbImgView = [[UIImageView alloc] initWithImage:thumbImg];
+    thumbImgView.contentMode = UIViewContentModeScaleAspectFit;
+    thumbImgView.frame = CGRectMake(0, 0, 80, 80);
+    thumbImgView.backgroundColor = [UIColor blackColor];
+    [self.contentView addSubview:thumbImgView];
+    CGImageRelease(imageRef);  // CGImageRef won't be released by ARC
+    [self.contentView setNeedsLayout];
+    [thumbImgView setNeedsLayout];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated

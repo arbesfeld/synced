@@ -12,7 +12,6 @@ typedef enum
     PlaylistItemTypeGame,
     PlaylistItemTypeMovie,
     PlaylistItemTypeNone,
-    PlaylistItemLoading, // show uploading animation
 }
 PlaylistItemType;
 

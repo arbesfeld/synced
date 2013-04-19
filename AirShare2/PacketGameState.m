@@ -76,10 +76,10 @@
         
         
         switch(playlistItemType) {
-            // music item
             case PlaylistItemTypeSong:
+            case PlaylistItemTypeMovie:
             {
-                MediaItem *mediaItem = [MediaItem mediaItemWithName:name andSubtitle:subtitle andID:ID andDate:date andLocalURL:nil];
+                MediaItem *mediaItem = [MediaItem mediaItemWithName:name andSubtitle:subtitle andID:ID andDate:date andLocalURL:nil andPlayListItemType:playlistItemType];
                 [mediaItem setUpvoteCount:upvoteCount andDownvoteCount:downvoteCount];
                 [playlist addObject:mediaItem];
                 

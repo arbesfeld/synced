@@ -50,8 +50,9 @@
     switch(playlistItemType) {
             // music item
         case PlaylistItemTypeSong:
+        case PlaylistItemTypeMovie:
         {
-            playlistItem = [MediaItem mediaItemWithName:name andSubtitle:subtitle andID:ID andDate:date andLocalURL:nil];
+            playlistItem = [MediaItem mediaItemWithName:name andSubtitle:subtitle andID:ID andDate:date andLocalURL:nil andPlayListItemType:playlistItemType];
             [playlistItem setUpvoteCount:upvoteCount andDownvoteCount:downvoteCount];
             
             break;
