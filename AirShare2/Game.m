@@ -169,7 +169,7 @@ typedef enum
             NSLog(@"Client received GameStatePacket");
             [self.players removeAllObjects];
             self.players = ((PacketGameState *)packet).players;
-            NSMutableArray *removedObjects = [[NSMutableArray alloc] initWithCapacity:5];
+            
             for(PlaylistItem *playlistItem in ((PacketGameState *)packet).playlist) {
                 PlaylistItem *inMyPlaylist = [self playlistItemWithID:playlistItem.ID];
                 if(inMyPlaylist) {
@@ -180,10 +180,16 @@ typedef enum
                     [self.playlist addObject:playlistItem];
                 }
             }
-            [_playlist removeObjectsInArray:removedObjects];
             
             PlaylistItem *currentItem = ((PacketGameState *)packet).currentPlaylistItem;
-            [self.delegate game:self setCurrentItem:currentItem];
+            if(currentItem.playlistItemType == PlaylistItemTypeSong ||
+               currentItem.playlistItemType == PlaylistItemTypeMovie) {
+                // need to make sure the current item is of the correct type
+                MediaItem *mediaCurrentItem = [[MediaItem alloc] initPlaylistItemWithName:currentItem.name andSubtitle:currentItem.subtitle andID:currentItem.ID andDate:nil andPlaylistItemType:currentItem.playlistItemType];
+                [self.delegate game:self setCurrentItem:mediaCurrentItem];
+            } else {
+                [self.delegate game:self setCurrentItem:currentItem];
+            }
             
             _skipItemCount = ((PacketGameState *)packet).skipCount;
             [self.delegate game:self setSkipItemCount:_skipItemCount];
@@ -225,9 +231,25 @@ typedef enum
             NSLog(@"Client received PacketTypePlayMusicNow. id = %@, time = %@, songTime = %d", ID, time, songTime);
             MediaItem *mediaItem = (MediaItem *)[self playlistItemWithID:ID];
             
-            if(mediaItem == nil) {
+            if(mediaItem == _currentItem) {
                 // it is likely the current item
-                //mediaItem =
+                if(songTime != 0 && _gameState == GameStateIdle) {
+                    NSLog(@"Joined in the middle of a song!");
+                    // we joined during the middle of a song
+                    if(mediaItem.loadProgress == 1.0) {
+                        _gameState = GameStatePreparingToPlayMedia;
+                        [self loadAudioPlayer:mediaItem];
+                        
+                        // this is a bit hacky: act like you're playing the song from the beginning
+                        // but set the volume to 0 because it will clearly be off
+                        _playMusicTimer = [NSTimer scheduledTimerWithTimeInterval:0.1
+                                                                           target:self
+                                                                         selector:@selector(handlePlayMusicTimer:)
+                                                                         userInfo:mediaItem
+                                                                          repeats:NO];
+                        [_audioPlayer setVolume:0.0];
+                    }
+                }
             }
             if(songTime == 0) {
                 _gameState = GameStatePreparingToPlayMedia;
@@ -433,6 +455,15 @@ typedef enum
             [self sendPacket:packet toClientWithPeerID:player.peerID];
         }
     }
+    // maybe send the currentItem
+    if((_currentItem.playlistItemType == PlaylistItemTypeSong ||
+        _currentItem.playlistItemType == PlaylistItemTypeMovie) &&
+        _currentItem.loadProgress == 1.0) {
+        NSLog(@"Sending current item that has ID = %@", _currentItem.ID);
+        PacketMusicDownload *packet = [PacketMusicDownload packetWithID:_currentItem.ID];
+        [self sendPacket:packet toClientWithPeerID:player.peerID];
+    }
+    
     // send packets to sync with the player
     Packet *packet = [Packet packetWithType:PacketTypeSync];
     packet.packetNumber = 0;
@@ -504,7 +535,7 @@ typedef enum
     
     [_downloader downloadFileWithMediaItem:mediaItem andSessionID:_serverPeerID progress:^ {
         [self.delegate reloadPlaylistItem:mediaItem];
-    } completion:^{
+    } completion:^ {
         NSLog(@"Added music item with description: %@", [mediaItem description]);
         // reload table last time to make sure progress bar is full
         [self.delegate reloadTable];
@@ -521,7 +552,8 @@ typedef enum
     [_downloader downloadBeatsWithMediaItem:mediaItem andSessionID:_serverPeerID completion:^{
         //NSLog(@"Found beats for music item with description: %@", [mediaItem description]);
         // update mediaItem
-        [mediaItem loadBeats];
+        int a;
+        //[mediaItem loadBeats];
     }];
 }
 
@@ -641,25 +673,7 @@ typedef enum
             
         
         } else {
-            if([_moviePlayerController isBeingPresented]) {
-                [self moviePlayerDidFinishPlaying:nil];
-            }
-            NSString *tempPath = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-            NSString *fileName = [NSString stringWithFormat:@"%@.m4a", mediaItem.ID];
-            NSString *mediaPath = [tempPath stringByAppendingPathComponent:fileName];
-            NSURL *mediaURL = [[NSURL alloc] initWithString:mediaPath];
-            
-            NSError *error;
-            _audioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:mediaURL error:&error];
-            _audioPlayer.delegate = self;
-            if (_audioPlayer == nil) {
-                _gameState = GameStateIdle;
-                NSLog(@"AudioPlayer did not load properly: %@", [error description]);
-            } else {
-                if(!self.isServer) {
-                    //[_audioPlayer setVolume:0.0]; // only turn on the volume when we know we are synced
-                }
-            }
+            [self loadAudioPlayer:mediaItem];
         }
         _playMusicTimer = [NSTimer scheduledTimerWithTimeInterval:[startTime timeIntervalSinceNow] + compensate
                                                            target:self
@@ -682,7 +696,23 @@ typedef enum
     NSLog(@"Will play item, name = %@ with delay = %f at song time = %d", mediaItem.name, [startTime timeIntervalSinceNow] + compensate, songTime);
 }
 
-
+- (void)loadAudioPlayer:(MediaItem *)mediaItem {
+    if([_moviePlayerController isBeingPresented]) {
+        [self moviePlayerDidFinishPlaying:nil];
+    }
+    NSString *tempPath = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    NSString *fileName = [NSString stringWithFormat:@"%@.m4a", mediaItem.ID];
+    NSString *mediaPath = [tempPath stringByAppendingPathComponent:fileName];
+    NSURL *mediaURL = [[NSURL alloc] initWithString:mediaPath];
+    
+    NSError *error;
+    _audioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:mediaURL error:&error];
+    _audioPlayer.delegate = self;
+    if (_audioPlayer == nil) {
+        _gameState = GameStateIdle;
+        NSLog(@"AudioPlayer did not load properly: %@", [error description]);
+    }
+}
 #pragma mark - AVAudioPlayerDelegate
 
 - (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag
@@ -807,6 +837,7 @@ typedef enum
                                                        object:_moviePlayerController.moviePlayer.playerItem];
             _gameState = GameStatePlayingMovie;
         } else {
+            NSLog(@"playing audio");
             [_audioPlayer play];
             _updatePlaybackProgressTimer = [NSTimer scheduledTimerWithTimeInterval:0.01
                                                                             target:self
@@ -1034,6 +1065,9 @@ typedef enum
         if([((PlaylistItem *)_playlist[i]).ID isEqualToString:ID]) {
             return _playlist[i];
         }
+    }
+    if([_currentItem.ID isEqualToString:ID]) {
+        return _currentItem;
     }
     return nil;
 }
