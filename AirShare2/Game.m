@@ -605,6 +605,10 @@ typedef enum
         
         // if you are starting the song for the first time
         if(mediaItem.isVideo) {
+            if(_audioPlayer) {
+                [_audioPlayer stop];
+            }
+            
             _moviePlayerController = [[CustomMovieController alloc] initWithContentURL:mediaItem.localURL];
             _moviePlayerController.delegate = self;
             
@@ -618,6 +622,9 @@ typedef enum
             [_moviePlayerController.moviePlayer setCurrentPlaybackTime:0];
         
         } else {
+            if([_moviePlayerController isBeingPresented]) {
+                [self moviePlayerDidFinishPlaying];
+            }
             NSString *tempPath = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
             NSString *fileName = [NSString stringWithFormat:@"%@.m4a", mediaItem.ID];
             NSString *mediaPath = [tempPath stringByAppendingPathComponent:fileName];
@@ -685,7 +692,7 @@ typedef enum
     }
 }
 
-- (void)moviePlayerDidFinishPlaying:(MPMoviePlayerController *)player
+- (void)moviePlayerDidFinishPlaying
 {
     NSAssert(_gameState == GameStatePlayingMovie, @"In moviePlayerDidFinishPlaying:");
     _gameState = GameStateIdle;
@@ -738,7 +745,7 @@ typedef enum
         if(_gameState == GameStatePlayingMusic) {
             [self audioPlayerDidFinishPlaying:_audioPlayer successfully:YES];
         } else if(_gameState == GameStatePlayingMovie) {
-            [self moviePlayerDidFinishPlaying:_moviePlayerController.moviePlayer];
+            [self moviePlayerDidFinishPlaying];
         } else {
             [self tryPlayingNextItem];
         }
