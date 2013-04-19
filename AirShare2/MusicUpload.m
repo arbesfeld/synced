@@ -19,11 +19,12 @@
     [super dealloc];
 }
 
-- (void)convertAndUpload:(MediaItem *)mediaItem withAssetURL:(NSURL *)assetURL andSessionID:(NSString *)sessionID progress:(void (^)())progress completion:(void (^)())completionBlock{
+- (void)convertAndUpload:(MediaItem *)mediaItem withAssetURL:(NSURL *)assetURL andSessionID:(NSString *)sessionID progress:(void (^)())progress completion:(void (^)())completion failure:(void (^)())failure {
 	// set up an AVAssetReader to read from the iPod Library
 	AVURLAsset *songAsset = [AVURLAsset URLAssetWithURL:assetURL options:nil];
     if ([songAsset hasProtectedContent]) {
         NSLog(@"%@ is protected.",mediaItem.name);
+        return;
     } else {
         NSLog(@"%@ is NOT protected.",mediaItem.name);
     }
@@ -161,11 +162,12 @@
                          NSLog(@"Upload Success: %@", operation.responseString);
                          mediaItem.loadProgress = 1.0;
                          // now tell others that you have uploaded
-                         completionBlock();
+                         completion();
                      }
                       failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                           NSLog(@"Upload Error: %@",  operation.responseString);
-                          [mediaItem cancel];
+                          failure();
+                          return;
                       }];
                      if ([mediaItem isCancelled]) {
                          // check again for early cancellation

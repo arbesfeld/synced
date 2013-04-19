@@ -11,7 +11,7 @@
 
 @implementation MusicDownload
 
--(void)downloadFileWithMediaItem:(MediaItem *)mediaItem andSessionID:(NSString *)sessionID progress:(void (^)(void))progress completion:(void (^)(void))completionBlock{
+-(void)downloadFileWithMediaItem:(MediaItem *)mediaItem andSessionID:(NSString *)sessionID progress:(void (^)(void))progress completion:(void (^)(void))completion failure:(void (^)(void))failure {
     // make the GET request URL
     NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:sessionID, @"sessionid", mediaItem.ID, @"id", nil];
     NSMutableString *prams = [[NSMutableString alloc] init];
@@ -48,11 +48,12 @@
     [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"Download Success");
         mediaItem.loadProgress = 1.0;
-        completionBlock();
+        completion();
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Download Error: %@", error);
-        [mediaItem cancel];
+        failure();
+        return;
     }];
     [operation start];
     mediaItem.operation = operation;

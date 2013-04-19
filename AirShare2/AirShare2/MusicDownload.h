@@ -11,7 +11,7 @@
 
 @interface MusicDownload : NSObject
 
-- (void)downloadFileWithMediaItem:(MediaItem *)mediaItem andSessionID:(NSString *)sessionID progress:(void (^)(void))progress completion:(void (^)(void))completionBlock;
+- (void)downloadFileWithMediaItem:(MediaItem *)mediaItem andSessionID:(NSString *)sessionID progress:(void (^)(void))progress completion:(void (^)(void))completion failure:(void (^)(void))failure;
 
 - (void)downloadBeatsWithMediaItem:(MediaItem *)mediaItem andSessionID:(NSString *)sessionID completion:(void (^)(void))completionBlock;
 

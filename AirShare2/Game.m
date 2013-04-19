@@ -16,7 +16,7 @@
 #import "PacketSyncResponse.h"
 #import "PacketCancelMusic.h"
 
-const double DELAY_TIME = 2.00000;   // wait DELAY_TIME seconds until songs play
+const double DELAY_TIME = 3.00000;   // wait DELAY_TIME seconds until songs play
 const int WAIT_TIME_UPLOAD = 60;     // server wait time for others to download music after uploading
 const int WAIT_TIME_DOWNLOAD = 60;   // server wait time for others to download music after downloading
 const int SYNC_PACKET_COUNT = 100;   // how many sync packets to send
@@ -219,7 +219,7 @@ typedef enum
             NSDate *time = ((PacketPlayMusicNow *)packet).time;
             int songTime = ((PacketPlayMusicNow *)packet).songTime;
             
-            NSLog(@"Client recieved PacketTypePlayMusicNow. id = %@, time = %@, songTime = %d", ID, time, songTime);
+            NSLog(@"Client received PacketTypePlayMusicNow. id = %@, time = %@, songTime = %d", ID, time, songTime);
             MediaItem *mediaItem = (MediaItem *)[self playlistItemWithID:ID];
             
             if(songTime == 0) {
@@ -235,7 +235,7 @@ typedef enum
             NSString *ID  = ((PacketVote *)packet).ID;
             int amount  = [((PacketVote *)packet) getAmount];
             BOOL upvote  = [((PacketVote *)packet) getUpvote];
-            NSLog(@"Client recieved vote, ID = %@, amount = %d, upvote = %@", ID, amount, upvote == YES ? @"YES" : @"NO");
+            NSLog(@"Client received vote, ID = %@, amount = %d, upvote = %@", ID, amount, upvote == YES ? @"YES" : @"NO");
             
             PlaylistItem *playlistItem = [self playlistItemWithID:ID];
             if(upvote) {
@@ -483,6 +483,8 @@ typedef enum
             // update mediaItem
             [mediaItem loadBeats];
         }];
+    } failure:^ {
+        [self.delegate cancelMusicAndUpdateAll:mediaItem];
     }];
 }
 - (void)downloadMusicWithID:(NSString *)ID
@@ -501,6 +503,10 @@ typedef enum
         [self.delegate reloadTable];
         
         [self hasDownloadedMusic:mediaItem];
+    } failure:^ {
+        if(self.isServer) {
+            [self.delegate cancelMusicAndUpdateAll:mediaItem];
+        }
     }];
     
     // PARTY MODE
@@ -644,7 +650,7 @@ typedef enum
                 NSLog(@"AudioPlayer did not load properly: %@", [error description]);
             } else {
                 if(!self.isServer) {
-                    [_audioPlayer setVolume:0.0]; // only turn on the volume when we know we are synced
+                    //[_audioPlayer setVolume:0.0]; // only turn on the volume when we know we are synced
                 }
             }
         }
@@ -877,11 +883,6 @@ typedef enum
             
             NSLog(@"Updating player with id = %@ has delay = %f for songTime = %d", mediaItem.ID, delay, songTime);
         }
-//        _updateMusicTimer = [NSTimer scheduledTimerWithTimeInterval:delay // + compensate
-//                                                             target:self
-//                                                           selector:@selector(handleUpdateMusicTimer:)
-//                                                           userInfo:[NSNumber numberWithInt:songTime]
-//                                                            repeats:NO];
         
         _playbackSyncingTimer = [NSTimer scheduledTimerWithTimeInterval:UPDATE_TIME
                                                                  target:self

@@ -137,6 +137,13 @@
     } else {
         selected = _searchData[indexPath.section][indexPath.row];
     }
+    NSURL *assetURL = [selected valueForProperty:MPMediaItemPropertyAssetURL];
+	AVURLAsset *songAsset = [AVURLAsset URLAssetWithURL:assetURL options:nil];
+    
+    if([songAsset hasProtectedContent]) {
+        // can't play something with protected content
+        return;
+    }
     
     [self.delegate addMovie:selected];
     [searchDisplayController setActive:NO animated:YES];

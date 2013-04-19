@@ -28,6 +28,7 @@ ServerState;
 - (void)reloadPlaylistItem:(PlaylistItem *)playlistItem;
 - (void)addPlaylistItem:(PlaylistItem *)playlistItem;
 - (void)removePlaylistItem:(PlaylistItem *)playlistItem animation:(UITableViewRowAnimation)animation;
+- (void)cancelMusicAndUpdateAll:(PlaylistItem *)playlistItem;
 
 - (void)mediaFinishedPlaying;
 
@@ -44,6 +45,7 @@ ServerState;
 - (void)setPlaybackProgress:(double)f;
 
 - (void)showViewController:(UIViewController *)viewController;
+
 @end
 
 @interface Game : NSObject <GKSessionDelegate, AVAudioPlayerDelegate, CustomMovieControllerDelegate> {

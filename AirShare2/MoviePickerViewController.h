@@ -10,6 +10,7 @@
 
 #import <MediaPlayer/MediaPlayer.h>
 #import <UIKit/UIKit.h>
+#import <AVFoundation/AVFoundation.h>
 
 @class MoviePickerViewController;
 
