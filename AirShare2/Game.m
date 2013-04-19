@@ -606,7 +606,9 @@ typedef enum
         // if you are starting the song for the first time
         if(mediaItem.isVideo) {
             if(_audioPlayer) {
+                // if the audiioPlayer is playing, stop it
                 [_audioPlayer stop];
+                [self audioPlayerDidFinishPlaying:_audioPlayer successfully:YES];
             }
             
             _moviePlayerController = [[CustomMovieController alloc] initWithContentURL:mediaItem.localURL];
@@ -637,10 +639,10 @@ typedef enum
                 _gameState = GameStateIdle;
                 NSLog(@"AudioPlayer did not load properly: %@", [error description]);
             } else {
-                [_audioPlayer prepareToPlay];
-                // prime the player
-                [_audioPlayer play];
-                [_audioPlayer stop];
+//                [_audioPlayer prepareToPlay];
+//                // prime the player
+//                [_audioPlayer play];
+//                [_audioPlayer stop];
                 if(!self.isServer) {
                     [_audioPlayer setVolume:0.0]; // only turn on the volume when we know we are synced
                 }
