@@ -84,6 +84,9 @@ typedef enum
     
     _gameState = GameStateIdle;
     
+    _currentItem = [[PlaylistItem alloc] initPlaylistItemWithName:@"" andSubtitle:@"" andID:@"" andDate:nil andPlaylistItemType:PlaylistItemTypeNone];
+    _currentItem.loadProgress = 0.0;
+    
     self.maxClients = 4;
 }
 
@@ -222,6 +225,10 @@ typedef enum
             NSLog(@"Client received PacketTypePlayMusicNow. id = %@, time = %@, songTime = %d", ID, time, songTime);
             MediaItem *mediaItem = (MediaItem *)[self playlistItemWithID:ID];
             
+            if(mediaItem == nil) {
+                // it is likely the current item
+                //mediaItem =
+            }
             if(songTime == 0) {
                 _gameState = GameStatePreparingToPlayMedia;
             }
@@ -970,7 +977,10 @@ typedef enum
 - (void)sendGameStatePacket {
     NSAssert(self.isServer, @"Client in sendGameStatePacket:");
     
-    Packet *packet = [PacketGameState packetWithPlayers:_players andPlaylist:_playlist andCurrentItem:[self.delegate getCurrentPlaylistItem] andSkipCount:_skipItemCount];
+    Packet *packet = [PacketGameState packetWithPlayers:_players
+                                            andPlaylist:_playlist
+                                         andCurrentItem:_currentItem
+                                           andSkipCount:_skipItemCount];
     [self sendPacketToAllClients:packet];
 }
 

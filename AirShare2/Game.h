@@ -41,7 +41,6 @@ ServerState;
 - (void)gameSessionDidEnd:(Game *)server;
 - (void)gameNoNetwork:(Game *)server;
 
-- (PlaylistItem *)getCurrentPlaylistItem;
 - (void)setPlaybackProgress:(double)f;
 
 - (void)showViewController:(UIViewController *)viewController;
@@ -55,8 +54,11 @@ ServerState;
 @property (nonatomic, assign) BOOL isServer;
 @property (nonatomic, assign) int maxClients;
 @property (nonatomic, strong) NSMutableDictionary *players;
-@property (nonatomic, strong) NSMutableArray *playlist;
 @property (nonatomic, strong) GKSession *session;
+
+@property (nonatomic, strong) PlaylistItem *currentItem;
+@property (nonatomic, strong) NSMutableArray *playlist;
+
 @property (nonatomic, strong) AVAudioPlayer *audioPlayer;
 @property (nonatomic, strong) CustomMovieController *moviePlayerController;
 

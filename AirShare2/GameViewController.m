@@ -34,8 +34,6 @@ const double epsilon = 0.02;
 {
 	[super viewDidLoad];
     // visual placeholder
-    _currentPlaylistItem = [[PlaylistItem alloc] initPlaylistItemWithName:@"" andSubtitle:@"" andID:@"" andDate:nil andPlaylistItemType:PlaylistItemTypeNone];
-    _currentPlaylistItem.loadProgress = 0.0;
     _voteAmount = [[NSMutableDictionary alloc] initWithCapacity:10];
     
     self.view.backgroundColor = [[UIColor alloc] initWithPatternImage:[UIImage imageNamed:@"bgGreyImg.png"]];
@@ -186,8 +184,9 @@ const double epsilon = 0.02;
 
 - (void)game:(Game *)game setCurrentItem:(PlaylistItem *)playlistItem
 {
-    _currentPlaylistItem = playlistItem;
-    if([_currentPlaylistItem.name isEqualToString:@""] && [_currentPlaylistItem.subtitle isEqualToString:@""] && [_currentPlaylistItem.ID isEqualToString:@""]) {
+    _game.currentItem = playlistItem;
+    if([_game.currentItem.name isEqualToString:@""] && [_game.currentItem.subtitle isEqualToString:@""] && [_game.currentItem.ID isEqualToString:@""]) {
+        // if it is the first item
         return;
     }
     
@@ -207,10 +206,6 @@ const double epsilon = 0.02;
 
 - (void)gameNoNetwork:(Game *)server;
 {
-}
-
-- (PlaylistItem *)getCurrentPlaylistItem {
-    return _currentPlaylistItem;
 }
 
 - (void)setPlaybackProgress:(double)f {
@@ -400,8 +395,9 @@ const double epsilon = 0.02;
 
 - (IBAction)togglePartyMode:(UISwitch *)sender {
     NSLog(@"Toggling party mode");
-    if ([_currentPlaylistItem isKindOfClass:[MediaItem class]]) {
-        [(MediaItem *)_currentPlaylistItem togglePartyMode];
+    if (_game.currentItem.playlistItemType == PlaylistItemTypeMovie ||
+        _game.currentItem.playlistItemType == PlaylistItemTypeSong) {
+        [(MediaItem *)_game.currentItem togglePartyMode];
     }
     for (int i = 0; i < [_game.playlist count]; i++) {
         if ([[_game.playlist objectAtIndex:i] isKindOfClass:[MediaItem class]]) {
