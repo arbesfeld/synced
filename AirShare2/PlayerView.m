@@ -18,9 +18,13 @@
 
 - (id)initWithContentURL:(NSURL *)url
 {
-    self = [super initWithContentURL:url];
-    
+    self = [super init];
     if(self) {
+        
+        _playerItem = [AVPlayerItem playerItemWithURL:url];
+        _player = [AVPlayer playerWithPlayerItem:_playerItem];
+        _playerLayer = [AVPlayerLayer playerLayerWithPlayer:_player];
+        
         //self.shouldAutoplay = NO;
         [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationLandscapeRight animated:NO];
         [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
@@ -28,12 +32,12 @@
         if ( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad )
         {
             // Device is iPad
-            [self setFullscreen:YES animated:YES];
+            //[self setFullscreen:YES animated:YES];
             //self.view.frame = [self.view superview].frame;
             UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
             
             if(orientation == 0 || orientation == UIInterfaceOrientationPortrait) {
-                self.view.frame = frame;
+                self.frame = frame;
             } else if (orientation == UIInterfaceOrientationLandscapeLeft ||
                        orientation == UIInterfaceOrientationLandscapeRight) {
                 float height = frame.size.height;
@@ -41,44 +45,46 @@
                 frame.size.width = height;
             }
             
-            self.view.frame = frame;
+            self.frame = frame;
             id center = [NSNotificationCenter defaultCenter];
             [center addObserver:self
                        selector:@selector(didRotate:)
                            name:UIApplicationDidChangeStatusBarOrientationNotification
                          object:nil];
         } else {
-            float width = UIScreen.mainScreen.bounds.size.width;
-            float height = UIScreen.mainScreen.bounds.size.height;
-            [self.view setBounds:CGRectMake(0, 0, height, width)];
-            [self.view setCenter:CGPointMake(width / 2, height / 2)];
-            [self.view setTransform:CGAffineTransformMakeRotation(M_PI / 2)];
+            float width = frame.size.width;
+            float height = frame.size.height;
+            self.bounds = CGRectMake(0, 0, height*2, width*2);
+            self.center = CGPointMake(width + 10, height - 80);
+            self.transform = CGAffineTransformMakeRotation(M_PI / 2);
             //NSLog(@"width = %f, height = %f", width, height);
         }
-        self.controlStyle = MPMovieControlStyleNone;
+        _playerLayer.frame = self.frame;
+        [self.layer addSublayer:_playerLayer];
+        //self.controlStyle = MPMovieControlStyleNone;
     }
     return self;
 }
 - (void)play {
-    [super play];
+    [_player play];
     [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
 }
 - (void)didRotate:(NSNotification *)notification {
     CGRect frame = [UIScreen mainScreen].applicationFrame;
     UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
     if(orientation == 0 || orientation == UIInterfaceOrientationPortrait) {
-        self.view.frame = frame;
+        self.frame = frame;
     } else if (orientation == UIInterfaceOrientationLandscapeLeft ||
                orientation == UIInterfaceOrientationLandscapeRight) {
         float height = frame.size.height;
         frame.size.height = frame.size.width;
         frame.size.width = height;
     }
-    self.view.frame = frame;
+    self.frame = frame;
 }
 - (void)stop
 {
-    [super stop];
+    [_player pause];
     [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
 }
 

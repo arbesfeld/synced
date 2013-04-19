@@ -7,9 +7,15 @@
 //
 
 #import <MediaPlayer/MediaPlayer.h>
+#import <AVFoundation/AVFoundation.h>
 
-@interface PlayerView : MPMoviePlayerController
+@interface PlayerView : UIView
+
+@property (nonatomic, strong) AVPlayerLayer *playerLayer;
+@property (nonatomic, strong) AVPlayerItem *playerItem;
+@property (nonatomic, strong) AVPlayer *player;
 
 - (id)initWithContentURL:(NSURL *)url;
-
+- (void)play;
+- (void)stop;
 @end

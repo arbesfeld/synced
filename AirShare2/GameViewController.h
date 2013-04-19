@@ -20,6 +20,7 @@
 @interface GameViewController : UIViewController <UIAlertViewDelegate, UIApplicationDelegate, UITableViewDataSource, UITableViewDelegate, MPMediaPickerControllerDelegate, GameDelegate, PlaylistItemDelegate, MoviePickerDelegate> {
     PlaylistItem *_currentPlaylistItem;
     NSMutableDictionary *_voteAmount; // key is songID, value is vote amount
+    BOOL _canLoadView; // for when animations are occuring
 }
 @property (nonatomic, weak) IBOutlet UILabel *skipSongLabel;
 @property (nonatomic, weak) IBOutlet UILabel *artistLabel;
@@ -29,7 +30,8 @@
 @property (nonatomic, weak) IBOutlet UITableView *userTable;
 @property (nonatomic, weak) IBOutlet UITableView *playlistTable;
 @property (nonatomic, weak) IBOutlet UIProgressView *playbackProgressBar;
-
+@property (nonatomic, strong) UINavigationController *navController;
+@property (nonatomic, strong) MPMediaPickerController *mediaPicker;
 @property (nonatomic, weak) id <GameViewControllerDelegate> delegate;
 @property (nonatomic, strong) Game *game;
 

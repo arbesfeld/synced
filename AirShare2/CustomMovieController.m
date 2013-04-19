@@ -23,7 +23,7 @@
         self.view.frame = frame;
         
         _moviePlayer = [[PlayerView alloc] initWithContentURL:url];
-        [self.view addSubview:_moviePlayer.view];
+        [self.view addSubview:_moviePlayer];
         if ( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad )
         {
             UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;

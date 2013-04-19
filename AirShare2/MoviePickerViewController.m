@@ -25,27 +25,32 @@
         UIBarButtonItem* backButton = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStyleBordered target:self action:@selector(cancel)];
         self.navigationItem.rightBarButtonItem = backButton;
         
-        MPMediaPropertyPredicate *moviePredicate = [MPMediaPropertyPredicate predicateWithValue:[NSNumber numberWithInteger:MPMediaTypeMovie] forProperty:MPMediaItemPropertyMediaType];
+        MPMediaPropertyPredicate *moviePredicate = [MPMediaPropertyPredicate predicateWithValue:[NSNumber numberWithInteger:MPMediaTypeMovie]
+                                                                                    forProperty:MPMediaItemPropertyMediaType];
         MPMediaQuery *query = [[MPMediaQuery alloc] init];
         [query addFilterPredicate:moviePredicate];
         NSArray *movies = [query items];
         
-        MPMediaPropertyPredicate *musicVideoPredicate = [MPMediaPropertyPredicate predicateWithValue:[NSNumber numberWithInteger:MPMediaTypeMusicVideo] forProperty:MPMediaItemPropertyMediaType];
+        MPMediaPropertyPredicate *musicVideoPredicate = [MPMediaPropertyPredicate predicateWithValue:[NSNumber numberWithInteger:MPMediaTypeMusicVideo]
+                                                                                         forProperty:MPMediaItemPropertyMediaType];
         MPMediaQuery *query2 = [[MPMediaQuery alloc] init];
         [query2 addFilterPredicate:musicVideoPredicate];
         NSArray *musicVideos = [query2 items];
         
-        MPMediaPropertyPredicate *tvShowPredicate = [MPMediaPropertyPredicate predicateWithValue:[NSNumber numberWithInteger:MPMediaTypeTVShow] forProperty:MPMediaItemPropertyMediaType];
+        MPMediaPropertyPredicate *tvShowPredicate = [MPMediaPropertyPredicate predicateWithValue:[NSNumber numberWithInteger:MPMediaTypeTVShow]
+                                                                                     forProperty:MPMediaItemPropertyMediaType];
         MPMediaQuery *query3 = [[MPMediaQuery alloc] init];
         [query3 addFilterPredicate:tvShowPredicate];
         NSArray *tvShows = [query3 items];
         
-        MPMediaPropertyPredicate *podcastPredicate = [MPMediaPropertyPredicate predicateWithValue:[NSNumber numberWithInteger:MPMediaTypeVideoPodcast] forProperty:MPMediaItemPropertyMediaType];
+        MPMediaPropertyPredicate *podcastPredicate = [MPMediaPropertyPredicate predicateWithValue:[NSNumber numberWithInteger:MPMediaTypeVideoPodcast]
+                                                                                      forProperty:MPMediaItemPropertyMediaType];
         MPMediaQuery *query4 = [[MPMediaQuery alloc] init];
         [query4 addFilterPredicate:podcastPredicate];
         NSArray *podcasts = [query4 items];
         
-        MPMediaPropertyPredicate *iTunesUPredicate = [MPMediaPropertyPredicate predicateWithValue:[NSNumber numberWithInteger:MPMediaTypeVideoITunesU] forProperty:MPMediaItemPropertyMediaType];
+        MPMediaPropertyPredicate *iTunesUPredicate = [MPMediaPropertyPredicate predicateWithValue:[NSNumber numberWithInteger:MPMediaTypeVideoITunesU]
+                                                                                      forProperty:MPMediaItemPropertyMediaType];
         MPMediaQuery *query5 = [[MPMediaQuery alloc] init];
         [query5 addFilterPredicate:iTunesUPredicate];
         NSArray *iTunesU = [query5 items];

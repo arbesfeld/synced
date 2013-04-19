@@ -21,7 +21,7 @@ const int WAIT_TIME_UPLOAD = 25;     // server wait time for others to download 
 const int WAIT_TIME_DOWNLOAD = 20;   // server wait time for others to download music after downloading
 const int SYNC_PACKET_COUNT = 100;   // how many sync packets to send
 const int UPDATE_TIME = 30;          // how often to update playback (after first update)
-const int UPDATE_TIME_FIRST = 1;     // how often to update playback (first update)
+const int UPDATE_TIME_FIRST = 0;     // how often to update playback (first update)
 const double BACKGROUND_TIME = -0.2; // the additional time it takes when app is in background
 const double MOVIE_TIME = -0.1;      // the additional time it takes for movies
 
@@ -613,19 +613,19 @@ typedef enum
             
             _moviePlayerController = [[CustomMovieController alloc] initWithContentURL:mediaItem.localURL];
             _moviePlayerController.delegate = self;
-            
+    
             if(_moviePlayerController.moviePlayer == nil) {
                 _gameState = GameStateIdle;
                 NSLog(@"ERROR loading moviePlayer!");
             }
-            _moviePlayerController.moviePlayer.movieSourceType = MPMovieSourceTypeFile;
-            [_moviePlayerController.moviePlayer prepareToPlay];
-            [_moviePlayerController.moviePlayer pause];
-            [_moviePlayerController.moviePlayer setCurrentPlaybackTime:0];
+//            _moviePlayerController.moviePlayer.movieSourceType = MPMovieSourceTypeFile;
+//            [_moviePlayerController.moviePlayer prepareToPlay];
+//            [_moviePlayerController.moviePlayer pause];
+//            [_moviePlayerController.moviePlayer setCurrentPlaybackTime:0];
         
         } else {
             if([_moviePlayerController isBeingPresented]) {
-                [self moviePlayerDidFinishPlaying];
+                [self moviePlayerDidFinishPlaying:nil];
             }
             NSString *tempPath = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
             NSString *fileName = [NSString stringWithFormat:@"%@.m4a", mediaItem.ID];
@@ -639,14 +639,9 @@ typedef enum
                 _gameState = GameStateIdle;
                 NSLog(@"AudioPlayer did not load properly: %@", [error description]);
             } else {
-//                [_audioPlayer prepareToPlay];
-//                // prime the player
-//                [_audioPlayer play];
-//                [_audioPlayer stop];
                 if(!self.isServer) {
                     [_audioPlayer setVolume:0.0]; // only turn on the volume when we know we are synced
                 }
-                //[_audioPlayer setCurrentTime:0];
             }
         }
         _playMusicTimer = [NSTimer scheduledTimerWithTimeInterval:[startTime timeIntervalSinceNow] + compensate
@@ -694,7 +689,7 @@ typedef enum
     }
 }
 
-- (void)moviePlayerDidFinishPlaying
+- (void)moviePlayerDidFinishPlaying:(AVPlayerItem *)playerItem
 {
     NSAssert(_gameState == GameStatePlayingMovie, @"In moviePlayerDidFinishPlaying:");
     _gameState = GameStateIdle;
@@ -744,10 +739,13 @@ typedef enum
     // if we exceed half the player count, stop the audio and let the next song play
     if( _players.count / 2 < _skipItemCount) {
         NSLog(@"Skipping song!");
+        [self.delegate game:self setSkipItemCount:0];
+        [self.delegate mediaFinishedPlaying];
+        
         if(_gameState == GameStatePlayingMusic) {
             [self audioPlayerDidFinishPlaying:_audioPlayer successfully:YES];
         } else if(_gameState == GameStatePlayingMovie) {
-            [self moviePlayerDidFinishPlaying];
+            [self moviePlayerDidFinishPlaying:nil];
         } else {
             [self tryPlayingNextItem];
         }
@@ -784,8 +782,8 @@ typedef enum
             
             [[NSNotificationCenter defaultCenter] addObserver:self
                                                      selector:@selector(moviePlayerDidFinishPlaying:)
-                                                         name:MPMoviePlayerPlaybackDidFinishNotification
-                                                       object:_moviePlayerController.moviePlayer];
+                                                         name:AVPlayerItemDidPlayToEndTimeNotification
+                                                       object:_moviePlayerController.moviePlayer.playerItem];
             _gameState = GameStatePlayingMovie;
         } else {
             [_audioPlayer play];
@@ -823,9 +821,12 @@ typedef enum
     NSLog(@"Updating with song time = %d", songTime);
     if(_gameState == GameStatePlayingMusic) {
         //NSDate *date = [NSDate date];
-        [_audioPlayer setCurrentTime:songTime];
+        [_audioPlayer setCurrentTime:songTime+0.12];
         [_audioPlayer setVolume:1.0]; // turn on the volume when we know we are synced
         //NSLog(@"setting current time %f", [date timeIntervalSinceNow]);
+    } else if(_gameState == GameStatePlayingMovie) {
+        CMTime npt = CMTimeMakeWithSeconds(songTime+0.23, 600);
+        [_moviePlayerController.moviePlayer.player seekToTime:npt toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero];
     }
 }
 
@@ -838,12 +839,12 @@ typedef enum
     float delay = 0.0;
     int songTime = 0;
     if(_gameState == GameStatePlayingMovie) {
-        songTime = (int)[_moviePlayerController.moviePlayer currentPlaybackTime] + DELAY_TIME;
-        if(songTime > [_moviePlayerController.moviePlayer duration] - UPDATE_TIME - DELAY_TIME) {
+        songTime = (int)CMTimeGetSeconds([_moviePlayerController.moviePlayer.player currentTime]) + DELAY_TIME;
+        if(songTime > CMTimeGetSeconds(_moviePlayerController.moviePlayer.player.currentItem.asset.duration) - UPDATE_TIME - DELAY_TIME) {
             // the song is almost over
             return;
         }
-        delay = (float)songTime - [_moviePlayerController.moviePlayer currentPlaybackTime];
+        delay = (float)songTime - CMTimeGetSeconds([_moviePlayerController.moviePlayer.player currentTime]);
     } else if(_gameState == GameStatePlayingMusic) {
         songTime = (int)[_audioPlayer currentTime] + DELAY_TIME;
         if(songTime > [_audioPlayer duration] - UPDATE_TIME - DELAY_TIME) {
@@ -861,7 +862,7 @@ typedef enum
             }
             Player *player = [self playerWithPeerID:peerID];
             
-            NSDate *playTime = [[NSDate date] dateByAddingTimeInterval:delay-0.12];
+            NSDate *playTime = [[NSDate date] dateByAddingTimeInterval:delay];
             NSDate *theirPlayTime = [playTime dateByAddingTimeInterval:player.timeOffset / player.syncPacketsReceived];
             PacketPlayMusicNow *packet = [PacketPlayMusicNow packetWithSongID:mediaItem.ID andTime:theirPlayTime atSongTime:songTime];
             [self sendPacket:packet toClientWithPeerID:player.peerID];

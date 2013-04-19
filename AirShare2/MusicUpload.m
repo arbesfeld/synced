@@ -22,10 +22,14 @@
 - (void)convertAndUpload:(MediaItem *)mediaItem withAssetURL:(NSURL *)assetURL andSessionID:(NSString *)sessionID progress:(void (^)())progress completion:(void (^)())completionBlock{
 	// set up an AVAssetReader to read from the iPod Library
 	AVURLAsset *songAsset = [AVURLAsset URLAssetWithURL:assetURL options:nil];
-    
+    if ([songAsset hasProtectedContent]) {
+        NSLog(@"%@ is protected.",mediaItem.name);
+    } else {
+        NSLog(@"%@ is NOT protected.",mediaItem.name);
+    }
 	NSError *assetError = nil;
 	AVAssetReader *assetReader = [[AVAssetReader assetReaderWithAsset:songAsset
-															   error:&assetError] retain];
+														 	   error:&assetError] retain];
 	if (assetError) {
 		NSLog (@"error: %@", assetError);
 		return;

@@ -224,7 +224,17 @@ const double epsilon = 0.02;
 
 - (void)showViewController:(UIViewController *)viewController
 {
-    [self presentViewController:viewController animated:YES completion:nil];
+    // dismiss the other view controllers if they are being presented
+    while(!_canLoadView) {
+        // wait until you can load
+    }
+    if(_navController && _navController.isViewLoaded && _navController.view.window) {
+        [_navController presentViewController:viewController animated:YES completion:nil];
+    } else if(_mediaPicker && _mediaPicker.isViewLoaded && _mediaPicker.view.window) {
+        [_mediaPicker presentViewController:viewController animated:YES completion:nil];
+    } else {
+        [self presentViewController:viewController animated:YES completion:nil];
+    }
 }
 
 #pragma mark - UITableViewDataSource
@@ -345,13 +355,16 @@ const double epsilon = 0.02;
 
 #pragma mark - playMusic____
 - (IBAction)playMusic:(id)sender {
-    MPMediaPickerController *mediaPicker = [[MPMediaPickerController alloc] initWithMediaTypes: MPMediaTypeMusic];
+    _mediaPicker = [[MPMediaPickerController alloc] initWithMediaTypes: MPMediaTypeMusic];
     
-    mediaPicker.delegate = self;
-    mediaPicker.allowsPickingMultipleItems = NO;
+    _mediaPicker.delegate = self;
+    _mediaPicker.allowsPickingMultipleItems = NO;
     //mediaPicker.prompt = @"Music";
-    mediaPicker.navigationItem.rightBarButtonItem.title = @"Cancel";
-    [self presentViewController:mediaPicker animated:YES completion:nil];
+    _mediaPicker.navigationItem.rightBarButtonItem.title = @"Cancel";
+    _canLoadView = NO;
+    [self presentViewController:_mediaPicker animated:YES completion:^{
+        _canLoadView = YES;
+    }];
 }
     
 - (IBAction)skipMusic:(id)sender {
@@ -360,8 +373,11 @@ const double epsilon = 0.02;
 
 - (IBAction)playMovie:(id)sender {
 	MoviePickerViewController *moviePickerViewController = [[MoviePickerViewController alloc] initWithStyle:UITableViewStylePlain];
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:moviePickerViewController];
-    [self presentViewController:navController animated:YES completion:nil];
+    _navController = [[UINavigationController alloc] initWithRootViewController:moviePickerViewController];
+    _canLoadView = NO;
+    [self presentViewController:_navController animated:YES completion:^{
+        _canLoadView = YES;
+    }];
 	moviePickerViewController.delegate = self;
 }
 
