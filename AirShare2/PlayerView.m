@@ -67,7 +67,6 @@
 }
 - (void)play {
     [_player play];
-    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
 }
 - (void)didRotate:(NSNotification *)notification {
     CGRect frame = [UIScreen mainScreen].applicationFrame;
@@ -85,7 +84,6 @@
 - (void)stop
 {
     [_player pause];
-    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
 }
 
 @end

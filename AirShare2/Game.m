@@ -16,11 +16,11 @@
 #import "PacketSyncResponse.h"
 #import "PacketCancelMusic.h"
 
-const double DELAY_TIME = 3.00000;   // wait DELAY_TIME seconds until songs play
+const double DELAY_TIME = 2.50000;   // wait DELAY_TIME seconds until songs play
 const int WAIT_TIME_UPLOAD = 60;     // server wait time for others to download music after uploading
 const int WAIT_TIME_DOWNLOAD = 60;   // server wait time for others to download music after downloading
 const int SYNC_PACKET_COUNT = 100;   // how many sync packets to send
-const int UPDATE_TIME = 10;          // how often to update playback (after first update)
+const int UPDATE_TIME = 30;          // how often to update playback (after first update)
 const int UPDATE_TIME_FIRST = 1;     // how often to update playback (first update)
 const double BACKGROUND_TIME = -0.2; // the additional time it takes when app is in background
 const double MOVIE_TIME = -0.1;      // the additional time it takes for movies
@@ -552,8 +552,7 @@ typedef enum
     [_downloader downloadBeatsWithMediaItem:mediaItem andSessionID:_serverPeerID completion:^{
         //NSLog(@"Found beats for music item with description: %@", [mediaItem description]);
         // update mediaItem
-        int a;
-        //[mediaItem loadBeats];
+        [mediaItem loadBeats];
     }];
 }
 
@@ -837,7 +836,6 @@ typedef enum
                                                        object:_moviePlayerController.moviePlayer.playerItem];
             _gameState = GameStatePlayingMovie;
         } else {
-            NSLog(@"playing audio");
             [_audioPlayer play];
             _updatePlaybackProgressTimer = [NSTimer scheduledTimerWithTimeInterval:0.01
                                                                             target:self
@@ -949,10 +947,7 @@ typedef enum
 - (void)handleLoadTimeoutTimer:(NSTimer *)timer
 {
     NSAssert(self.isServer, @"Client in handleLoadTimeoutTimer");
-    
-    [_loadTimeoutTimer invalidate];
-    _loadTimeoutTimer = nil;
-    
+
     NSLog(@"LoadTimeoutTimer called! Playing music");
     if(_gameState != GameStateIdle) {
         return;

@@ -57,16 +57,21 @@ const double epsilon = 0.02;
     self.songTitle.text = @"";
     [self.view addSubview:self.songTitle];
     self.skipSongLabel.font = [UIFont fontWithName:@"Century Gothic" size:17.0f];
-    [[AVAudioSession sharedInstance] setDelegate: self];
-    [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
-    [[AVAudioSession sharedInstance] setActive: YES error: nil];
     
     [[UIApplication sharedApplication] beginReceivingRemoteControlEvents];
+}
+
+-(void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+    [[UIApplication sharedApplication] beginReceivingRemoteControlEvents];
+    [self becomeFirstResponder];
 }
 - (void)viewWillDisappear:(BOOL)animated
 {
 	[super viewWillDisappear:animated];
 	[_alertView dismissWithClickedButtonIndex:_alertView.cancelButtonIndex animated:NO];
+    [[UIApplication sharedApplication] endReceivingRemoteControlEvents];
+    [self resignFirstResponder];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation

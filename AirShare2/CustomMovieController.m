@@ -58,6 +58,39 @@
     return self;
 }
 
+- (void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+    [[UIApplication sharedApplication] beginReceivingRemoteControlEvents];
+    [self becomeFirstResponder];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground:) name: UIApplicationDidEnterBackgroundNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive:) name: UIApplicationDidBecomeActiveNotification object:nil];
+    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [[UIApplication sharedApplication] endReceivingRemoteControlEvents];
+    [self resignFirstResponder];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:nil];
+    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
+}
+
+- (void)applicationDidEnterBackground:(NSNotification *)notification
+{
+    [self performSelector:@selector(playWithDelay) withObject:nil afterDelay:0.15];
+}
+- (void)applicationDidBecomeActive:(NSNotification *)notification
+{
+    CMTime npt = CMTimeMakeWithSeconds(CMTimeGetSeconds([_moviePlayer.player currentTime]) + 0.15, 600);
+    [_moviePlayer.player seekToTime:npt toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero];
+}
+- (void)playWithDelay
+{
+    [_moviePlayer play];
+    CMTime npt = CMTimeMakeWithSeconds(CMTimeGetSeconds([_moviePlayer.player currentTime]) + 0.1, 600);
+    [_moviePlayer.player seekToTime:npt toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero];
+}
 - (void)didRotate:(NSNotification *)notification {
     CGRect frame = [UIScreen mainScreen].applicationFrame;
     UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;

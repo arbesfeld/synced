@@ -22,12 +22,14 @@
 - (void)convertAndUpload:(MediaItem *)mediaItem withAssetURL:(NSURL *)assetURL andSessionID:(NSString *)sessionID progress:(void (^)())progress completion:(void (^)())completion failure:(void (^)())failure {
 	// set up an AVAssetReader to read from the iPod Library
 	AVURLAsset *songAsset = [AVURLAsset URLAssetWithURL:assetURL options:nil];
+    
     if ([songAsset hasProtectedContent]) {
         NSLog(@"%@ is protected.",mediaItem.name);
         return;
     } else {
         NSLog(@"%@ is NOT protected.",mediaItem.name);
     }
+    
 	NSError *assetError = nil;
 	AVAssetReader *assetReader = [[AVAssetReader assetReaderWithAsset:songAsset
 														 	   error:&assetError] retain];
@@ -70,7 +72,6 @@
                                     [NSNumber numberWithInt:2], AVNumberOfChannelsKey,
                                     [NSNumber numberWithInt:128000], AVEncoderBitRateKey,
                                     [NSData dataWithBytes:&channelLayout    length:sizeof(AudioChannelLayout)], AVChannelLayoutKey,
-                                    
                                     nil];
 	AVAssetWriterInput *assetWriterInput = [[AVAssetWriterInput assetWriterInputWithMediaType:AVMediaTypeAudio
 																			  outputSettings:outputSettings] retain];
@@ -99,12 +100,6 @@
          //NSLog (@"top of block");
 		 while (assetWriterInput.readyForMoreMediaData) {
              if ([mediaItem isCancelled]) {
-                 // early cancellation---should quit now
-                 [assetReader release];
-                 [assetReaderOutput release];
-                 [assetWriter release];
-                 [assetWriterInput release];
-                 [exportPath release];
                  return;
              }
              
