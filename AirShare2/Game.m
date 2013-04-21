@@ -1074,6 +1074,7 @@ typedef enum
 	}
     return YES;
 }
+
 - (PlaylistItem *)playlistItemWithID:(NSString *)ID
 {
     for(int i = 0; i < _playlist.count; i++) {
@@ -1086,6 +1087,7 @@ typedef enum
     }
     return nil;
 }
+
 - (NSString *)genRandStringLength:(int)len {
     NSString *letters = @"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     NSMutableString *randomString = [NSMutableString stringWithCapacity: len];

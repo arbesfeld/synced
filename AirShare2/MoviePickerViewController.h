@@ -7,6 +7,7 @@
 //
 
 #import "MovieItemCell.h"
+#import "YouTubeTableViewController.h"
 
 #import <MediaPlayer/MediaPlayer.h>
 #import <UIKit/UIKit.h>
@@ -17,10 +18,11 @@
 @protocol MoviePickerDelegate <NSObject>
 
 - (void)addMovie:(MPMediaItem *)movieItem;
+- (void)addYoutubeVideo:(YoutubeItem *)youtubeItem;
 
 @end
 
-@interface MoviePickerViewController : UITableViewController <UISearchBarDelegate, UISearchDisplayDelegate, UIScrollViewDelegate> {
+@interface MoviePickerViewController : UITableViewController <UISearchBarDelegate, UISearchDisplayDelegate, UIScrollViewDelegate, YouTubeDelegate> {
     NSArray *_labels;
     NSMutableArray *_searchData, *_allData;
     

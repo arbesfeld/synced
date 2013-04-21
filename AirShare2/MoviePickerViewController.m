@@ -72,21 +72,11 @@
     }
     return self;
 }
+
 - (void)cancel
 {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
 
 #pragma mark - Table view data source
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -106,7 +96,12 @@
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return ((NSArray *)_searchData[section]).count;
+    if(section == 0) {
+        return 1;
+    } else {
+        return ((NSArray *)_searchData[section]).count;
+
+    }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -118,6 +113,7 @@
     if(cell == nil) {
         if(indexPath.section == 0) {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+            cell.textLabel.text = @"YouTube";
         } else {
             cell = (UITableViewCell *)[[MovieItemCell alloc] initWithStyle:UITableViewCellStyleDefault
                                                            reuseIdentifier:CellIdentifier
@@ -133,21 +129,24 @@
 {
     MPMediaItem *selected = nil;
     if(indexPath.section == 0) {
-        //
+        YouTubeTableViewController *youtubeTableViewController = [[YouTubeTableViewController alloc] initWithStyle:UITableViewStylePlain];
+        youtubeTableViewController.delegate = self;
+        [self.navigationController pushViewController:youtubeTableViewController animated:YES];
     } else {
         selected = _searchData[indexPath.section][indexPath.row];
-    }
-    NSURL *assetURL = [selected valueForProperty:MPMediaItemPropertyAssetURL];
-	AVURLAsset *songAsset = [AVURLAsset URLAssetWithURL:assetURL options:nil];
     
-    if([songAsset hasProtectedContent]) {
-        // can't play something with protected content
-        return;
+        NSURL *assetURL = [selected valueForProperty:MPMediaItemPropertyAssetURL];
+        AVURLAsset *songAsset = [AVURLAsset URLAssetWithURL:assetURL options:nil];
+        
+        if([songAsset hasProtectedContent]) {
+            // can't play something with protected content
+            return;
+        }
+        
+        [self.delegate addMovie:selected];
+        [searchDisplayController setActive:NO animated:YES];
+        [self dismissViewControllerAnimated:YES completion:nil];
     }
-    
-    [self.delegate addMovie:selected];
-    [searchDisplayController setActive:NO animated:YES];
-    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - SearchDisplayControllerDelegate
@@ -219,4 +218,11 @@
 //        _shouldLoadImages = YES;
 //    }
 //}
+
+#pragma mark - YoutubeDelegate
+- (void)addYoutubeVideo:(YoutubeItem *)youtubeItem
+{
+    [self.delegate addYoutubeVideo:youtubeItem];
+    
+}
 @end

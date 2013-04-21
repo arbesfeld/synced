@@ -9,13 +9,16 @@
 #import <MediaPlayer/MediaPlayer.h>
 #import <UIKit/UIKit.h>
 
-@interface MovieItemCell : UITableViewCell
+#import "UIImageView+WebCache.h"
+
+@interface MovieItemCell : UITableViewCell 
 
 @property (nonatomic, strong) MPMediaItem *movieItem;
-@property (nonatomic, strong) NSString *title, *artist;
+@property (nonatomic, strong) NSString *title, *artist, *duration;
+@property (nonatomic, strong) NSURL *imageURL;
+@property (nonatomic, strong) UIImageView *thumbImgView;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier movieItem:(MPMediaItem *)movieItem;
-
-
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier title:(NSString *)title artist:(NSString *)artist duration:(NSString *)duration imageURL:(NSURL *)url;
 
 @end

@@ -11,6 +11,7 @@ typedef enum
 	PlaylistItemTypeSong,
     PlaylistItemTypeGame,
     PlaylistItemTypeMovie,
+    PlaylistItemTypeYoutube,
     PlaylistItemTypeNone,
 }
 PlaylistItemType;

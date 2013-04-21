@@ -45,6 +45,27 @@
 		5596E0D716F692CE00511D3E /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5596E0D616F692CE00511D3E /* AudioToolbox.framework */; };
 		5596E0DB16F6930700511D3E /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5596E0DA16F6930600511D3E /* CoreMedia.framework */; };
 		5596EDE91717355D00F069FE /* gothic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5596EDE81717355D00F069FE /* gothic.ttf */; };
+		5597F0651723CDFF00C91952 /* YouTubeTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5597F0641723CDFF00C91952 /* YouTubeTableViewController.m */; };
+		5597F07B1723D12400C91952 /* SBJsonParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 5597F0681723D12200C91952 /* SBJsonParser.m */; };
+		5597F07C1723D12400C91952 /* SBJsonStreamParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 5597F06A1723D12300C91952 /* SBJsonStreamParser.m */; };
+		5597F07D1723D12400C91952 /* SBJsonStreamParserAccumulator.m in Sources */ = {isa = PBXBuildFile; fileRef = 5597F06C1723D12300C91952 /* SBJsonStreamParserAccumulator.m */; };
+		5597F07E1723D12400C91952 /* SBJsonStreamParserAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 5597F06E1723D12300C91952 /* SBJsonStreamParserAdapter.m */; };
+		5597F07F1723D12400C91952 /* SBJsonStreamParserState.m in Sources */ = {isa = PBXBuildFile; fileRef = 5597F0701723D12300C91952 /* SBJsonStreamParserState.m */; };
+		5597F0801723D12400C91952 /* SBJsonStreamTokeniser.m in Sources */ = {isa = PBXBuildFile; fileRef = 5597F0721723D12300C91952 /* SBJsonStreamTokeniser.m */; };
+		5597F0811723D12400C91952 /* SBJsonStreamWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 5597F0741723D12300C91952 /* SBJsonStreamWriter.m */; };
+		5597F0821723D12400C91952 /* SBJsonStreamWriterAccumulator.m in Sources */ = {isa = PBXBuildFile; fileRef = 5597F0761723D12400C91952 /* SBJsonStreamWriterAccumulator.m */; };
+		5597F0831723D12400C91952 /* SBJsonStreamWriterState.m in Sources */ = {isa = PBXBuildFile; fileRef = 5597F0781723D12400C91952 /* SBJsonStreamWriterState.m */; };
+		5597F0841723D12400C91952 /* SBJsonWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 5597F07A1723D12400C91952 /* SBJsonWriter.m */; };
+		5597F0881723DAA600C91952 /* UIImageView+WebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 5597F0871723DAA600C91952 /* UIImageView+WebCache.m */; };
+		5597F09E1723DAC400C91952 /* SDImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 5597F08D1723DAC300C91952 /* SDImageCache.m */; };
+		5597F09F1723DAC400C91952 /* SDWebImageCompat.m in Sources */ = {isa = PBXBuildFile; fileRef = 5597F08F1723DAC300C91952 /* SDWebImageCompat.m */; };
+		5597F0A01723DAC400C91952 /* SDWebImageDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 5597F0911723DAC300C91952 /* SDWebImageDecoder.m */; };
+		5597F0A11723DAC400C91952 /* SDWebImageDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = 5597F0931723DAC300C91952 /* SDWebImageDownloader.m */; };
+		5597F0A21723DAC400C91952 /* SDWebImageDownloaderOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5597F0951723DAC300C91952 /* SDWebImageDownloaderOperation.m */; };
+		5597F0A31723DAC400C91952 /* SDWebImageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5597F0971723DAC300C91952 /* SDWebImageManager.m */; };
+		5597F0A41723DAC400C91952 /* SDWebImagePrefetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 5597F09A1723DAC300C91952 /* SDWebImagePrefetcher.m */; };
+		5597F0A51723DAC400C91952 /* UIButton+WebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 5597F09C1723DAC400C91952 /* UIButton+WebCache.m */; };
+		5597F0A91723E43E00C91952 /* YoutubeItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 5597F0A81723E43E00C91952 /* YoutubeItem.m */; };
 		559ADC79172369B200F5EBE5 /* PacketPlayMusic.m in Sources */ = {isa = PBXBuildFile; fileRef = 559ADC78172369B200F5EBE5 /* PacketPlayMusic.m */; };
 		559D6B8E1711EC2000C591D8 /* airshare.png in Resources */ = {isa = PBXBuildFile; fileRef = 559D6B841711EC2000C591D8 /* airshare.png */; };
 		559D6B8F1711EC2000C591D8 /* bgGreyImg.png in Resources */ = {isa = PBXBuildFile; fileRef = 559D6B851711EC2000C591D8 /* bgGreyImg.png */; };
@@ -156,6 +177,50 @@
 		5596E0D816F692D300511D3E /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		5596E0DA16F6930600511D3E /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		5596EDE81717355D00F069FE /* gothic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = gothic.ttf; sourceTree = "<group>"; };
+		5597F0631723CDFF00C91952 /* YouTubeTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YouTubeTableViewController.h; sourceTree = "<group>"; };
+		5597F0641723CDFF00C91952 /* YouTubeTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YouTubeTableViewController.m; sourceTree = "<group>"; };
+		5597F0661723D12200C91952 /* SBJson.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJson.h; sourceTree = "<group>"; };
+		5597F0671723D12200C91952 /* SBJsonParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonParser.h; sourceTree = "<group>"; };
+		5597F0681723D12200C91952 /* SBJsonParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonParser.m; sourceTree = "<group>"; };
+		5597F0691723D12300C91952 /* SBJsonStreamParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonStreamParser.h; sourceTree = "<group>"; };
+		5597F06A1723D12300C91952 /* SBJsonStreamParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonStreamParser.m; sourceTree = "<group>"; };
+		5597F06B1723D12300C91952 /* SBJsonStreamParserAccumulator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonStreamParserAccumulator.h; sourceTree = "<group>"; };
+		5597F06C1723D12300C91952 /* SBJsonStreamParserAccumulator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonStreamParserAccumulator.m; sourceTree = "<group>"; };
+		5597F06D1723D12300C91952 /* SBJsonStreamParserAdapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonStreamParserAdapter.h; sourceTree = "<group>"; };
+		5597F06E1723D12300C91952 /* SBJsonStreamParserAdapter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonStreamParserAdapter.m; sourceTree = "<group>"; };
+		5597F06F1723D12300C91952 /* SBJsonStreamParserState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonStreamParserState.h; sourceTree = "<group>"; };
+		5597F0701723D12300C91952 /* SBJsonStreamParserState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonStreamParserState.m; sourceTree = "<group>"; };
+		5597F0711723D12300C91952 /* SBJsonStreamTokeniser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonStreamTokeniser.h; sourceTree = "<group>"; };
+		5597F0721723D12300C91952 /* SBJsonStreamTokeniser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonStreamTokeniser.m; sourceTree = "<group>"; };
+		5597F0731723D12300C91952 /* SBJsonStreamWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonStreamWriter.h; sourceTree = "<group>"; };
+		5597F0741723D12300C91952 /* SBJsonStreamWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonStreamWriter.m; sourceTree = "<group>"; };
+		5597F0751723D12400C91952 /* SBJsonStreamWriterAccumulator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonStreamWriterAccumulator.h; sourceTree = "<group>"; };
+		5597F0761723D12400C91952 /* SBJsonStreamWriterAccumulator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonStreamWriterAccumulator.m; sourceTree = "<group>"; };
+		5597F0771723D12400C91952 /* SBJsonStreamWriterState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonStreamWriterState.h; sourceTree = "<group>"; };
+		5597F0781723D12400C91952 /* SBJsonStreamWriterState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonStreamWriterState.m; sourceTree = "<group>"; };
+		5597F0791723D12400C91952 /* SBJsonWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonWriter.h; sourceTree = "<group>"; };
+		5597F07A1723D12400C91952 /* SBJsonWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonWriter.m; sourceTree = "<group>"; };
+		5597F0861723DAA500C91952 /* UIImageView+WebCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+WebCache.h"; sourceTree = "<group>"; };
+		5597F0871723DAA600C91952 /* UIImageView+WebCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+WebCache.m"; sourceTree = "<group>"; };
+		5597F08C1723DAC300C91952 /* SDImageCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDImageCache.h; sourceTree = "<group>"; };
+		5597F08D1723DAC300C91952 /* SDImageCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDImageCache.m; sourceTree = "<group>"; };
+		5597F08E1723DAC300C91952 /* SDWebImageCompat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDWebImageCompat.h; sourceTree = "<group>"; };
+		5597F08F1723DAC300C91952 /* SDWebImageCompat.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDWebImageCompat.m; sourceTree = "<group>"; };
+		5597F0901723DAC300C91952 /* SDWebImageDecoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDWebImageDecoder.h; sourceTree = "<group>"; };
+		5597F0911723DAC300C91952 /* SDWebImageDecoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDWebImageDecoder.m; sourceTree = "<group>"; };
+		5597F0921723DAC300C91952 /* SDWebImageDownloader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDWebImageDownloader.h; sourceTree = "<group>"; };
+		5597F0931723DAC300C91952 /* SDWebImageDownloader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDWebImageDownloader.m; sourceTree = "<group>"; };
+		5597F0941723DAC300C91952 /* SDWebImageDownloaderOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDWebImageDownloaderOperation.h; sourceTree = "<group>"; };
+		5597F0951723DAC300C91952 /* SDWebImageDownloaderOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDWebImageDownloaderOperation.m; sourceTree = "<group>"; };
+		5597F0961723DAC300C91952 /* SDWebImageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDWebImageManager.h; sourceTree = "<group>"; };
+		5597F0971723DAC300C91952 /* SDWebImageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDWebImageManager.m; sourceTree = "<group>"; };
+		5597F0981723DAC300C91952 /* SDWebImageOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDWebImageOperation.h; sourceTree = "<group>"; };
+		5597F0991723DAC300C91952 /* SDWebImagePrefetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDWebImagePrefetcher.h; sourceTree = "<group>"; };
+		5597F09A1723DAC300C91952 /* SDWebImagePrefetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDWebImagePrefetcher.m; sourceTree = "<group>"; };
+		5597F09B1723DAC300C91952 /* UIButton+WebCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIButton+WebCache.h"; sourceTree = "<group>"; };
+		5597F09C1723DAC400C91952 /* UIButton+WebCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIButton+WebCache.m"; sourceTree = "<group>"; };
+		5597F0A71723E43D00C91952 /* YoutubeItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YoutubeItem.h; sourceTree = "<group>"; };
+		5597F0A81723E43E00C91952 /* YoutubeItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YoutubeItem.m; sourceTree = "<group>"; };
 		559ADC77172369B200F5EBE5 /* PacketPlayMusic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PacketPlayMusic.h; sourceTree = "<group>"; };
 		559ADC78172369B200F5EBE5 /* PacketPlayMusic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PacketPlayMusic.m; sourceTree = "<group>"; };
 		559D6B841711EC2000C591D8 /* airshare.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = airshare.png; path = Graphics/airshare.png; sourceTree = "<group>"; };
@@ -311,11 +376,75 @@
 			name = ECSlidingViewController;
 			sourceTree = "<group>";
 		};
+		5597F0851723D12A00C91952 /* SBJson */ = {
+			isa = PBXGroup;
+			children = (
+				5597F0661723D12200C91952 /* SBJson.h */,
+				5597F0671723D12200C91952 /* SBJsonParser.h */,
+				5597F0681723D12200C91952 /* SBJsonParser.m */,
+				5597F0691723D12300C91952 /* SBJsonStreamParser.h */,
+				5597F06A1723D12300C91952 /* SBJsonStreamParser.m */,
+				5597F06B1723D12300C91952 /* SBJsonStreamParserAccumulator.h */,
+				5597F06C1723D12300C91952 /* SBJsonStreamParserAccumulator.m */,
+				5597F06D1723D12300C91952 /* SBJsonStreamParserAdapter.h */,
+				5597F06E1723D12300C91952 /* SBJsonStreamParserAdapter.m */,
+				5597F06F1723D12300C91952 /* SBJsonStreamParserState.h */,
+				5597F0701723D12300C91952 /* SBJsonStreamParserState.m */,
+				5597F0711723D12300C91952 /* SBJsonStreamTokeniser.h */,
+				5597F0721723D12300C91952 /* SBJsonStreamTokeniser.m */,
+				5597F0731723D12300C91952 /* SBJsonStreamWriter.h */,
+				5597F0741723D12300C91952 /* SBJsonStreamWriter.m */,
+				5597F0751723D12400C91952 /* SBJsonStreamWriterAccumulator.h */,
+				5597F0761723D12400C91952 /* SBJsonStreamWriterAccumulator.m */,
+				5597F0771723D12400C91952 /* SBJsonStreamWriterState.h */,
+				5597F0781723D12400C91952 /* SBJsonStreamWriterState.m */,
+				5597F0791723D12400C91952 /* SBJsonWriter.h */,
+				5597F07A1723D12400C91952 /* SBJsonWriter.m */,
+			);
+			name = SBJson;
+			sourceTree = "<group>";
+		};
+		5597F0891723DAAB00C91952 /* SDImageCache */ = {
+			isa = PBXGroup;
+			children = (
+				5597F08C1723DAC300C91952 /* SDImageCache.h */,
+				5597F08D1723DAC300C91952 /* SDImageCache.m */,
+				5597F08E1723DAC300C91952 /* SDWebImageCompat.h */,
+				5597F08F1723DAC300C91952 /* SDWebImageCompat.m */,
+				5597F0901723DAC300C91952 /* SDWebImageDecoder.h */,
+				5597F0911723DAC300C91952 /* SDWebImageDecoder.m */,
+				5597F0921723DAC300C91952 /* SDWebImageDownloader.h */,
+				5597F0931723DAC300C91952 /* SDWebImageDownloader.m */,
+				5597F0941723DAC300C91952 /* SDWebImageDownloaderOperation.h */,
+				5597F0951723DAC300C91952 /* SDWebImageDownloaderOperation.m */,
+				5597F0961723DAC300C91952 /* SDWebImageManager.h */,
+				5597F0971723DAC300C91952 /* SDWebImageManager.m */,
+				5597F0981723DAC300C91952 /* SDWebImageOperation.h */,
+				5597F0991723DAC300C91952 /* SDWebImagePrefetcher.h */,
+				5597F09A1723DAC300C91952 /* SDWebImagePrefetcher.m */,
+				5597F09B1723DAC300C91952 /* UIButton+WebCache.h */,
+				5597F09C1723DAC400C91952 /* UIButton+WebCache.m */,
+				5597F0861723DAA500C91952 /* UIImageView+WebCache.h */,
+				5597F0871723DAA600C91952 /* UIImageView+WebCache.m */,
+			);
+			name = SDImageCache;
+			sourceTree = "<group>";
+		};
+		5597F0A61723DCC600C91952 /* Libraries */ = {
+			isa = PBXGroup;
+			children = (
+				5597F0891723DAAB00C91952 /* SDImageCache */,
+				5597F0851723D12A00C91952 /* SBJson */,
+				5590968816FF5E9B004149A0 /* AFNetworking */,
+			);
+			name = Libraries;
+			sourceTree = "<group>";
+		};
 		55FCC54016ED3D4C0000BCBD = {
 			isa = PBXGroup;
 			children = (
 				EA18C2001707E1A4008F5DAF /* Graphics */,
-				5590968816FF5E9B004149A0 /* AFNetworking */,
+				5597F0A61723DCC600C91952 /* Libraries */,
 				55FCC5C916ED7A620000BCBD /* AirShareAdditions */,
 				55FCC5BF16ED62680000BCBD /* DataModel */,
 				55FCC5B816ED3E6E0000BCBD /* Networking */,
@@ -391,12 +520,14 @@
 				55FCC5BA16ED60460000BCBD /* GameViewController.m */,
 				55FCC57616ED3DA20000BCBD /* MainViewController.h */,
 				55FCC57716ED3DA20000BCBD /* MainViewController.m */,
-				5595E4E9171D2C45006782DE /* MoviePickerViewController.h */,
-				5595E4EA171D2C45006782DE /* MoviePickerViewController.m */,
 				558F735C1720C6B40048F78F /* PlayerView.h */,
 				558F735D1720C6B50048F78F /* PlayerView.m */,
 				55A28DB4171E5C60001E757E /* CustomMovieController.h */,
 				55A28DB5171E5C60001E757E /* CustomMovieController.m */,
+				5595E4E9171D2C45006782DE /* MoviePickerViewController.h */,
+				5595E4EA171D2C45006782DE /* MoviePickerViewController.m */,
+				5597F0631723CDFF00C91952 /* YouTubeTableViewController.h */,
+				5597F0641723CDFF00C91952 /* YouTubeTableViewController.m */,
 				558E0D651704DE3800BF230D /* UI */,
 			);
 			name = ViewControllers;
@@ -446,6 +577,8 @@
 				559096CF1700038F004149A0 /* PlaylistItem.m */,
 				559096D1170006AB004149A0 /* MediaItem.h */,
 				559096D2170006AB004149A0 /* MediaItem.m */,
+				5597F0A71723E43D00C91952 /* YoutubeItem.h */,
+				5597F0A81723E43E00C91952 /* YoutubeItem.m */,
 				55FCC5C016ED78E80000BCBD /* Player.h */,
 				55FCC5C116ED78E80000BCBD /* Player.m */,
 				55FCC5BC16ED62640000BCBD /* Game.h */,
@@ -612,6 +745,27 @@
 				55A28DB6171E5C60001E757E /* CustomMovieController.m in Sources */,
 				558F735E1720C6B50048F78F /* PlayerView.m in Sources */,
 				559ADC79172369B200F5EBE5 /* PacketPlayMusic.m in Sources */,
+				5597F0651723CDFF00C91952 /* YouTubeTableViewController.m in Sources */,
+				5597F07B1723D12400C91952 /* SBJsonParser.m in Sources */,
+				5597F07C1723D12400C91952 /* SBJsonStreamParser.m in Sources */,
+				5597F07D1723D12400C91952 /* SBJsonStreamParserAccumulator.m in Sources */,
+				5597F07E1723D12400C91952 /* SBJsonStreamParserAdapter.m in Sources */,
+				5597F07F1723D12400C91952 /* SBJsonStreamParserState.m in Sources */,
+				5597F0801723D12400C91952 /* SBJsonStreamTokeniser.m in Sources */,
+				5597F0811723D12400C91952 /* SBJsonStreamWriter.m in Sources */,
+				5597F0821723D12400C91952 /* SBJsonStreamWriterAccumulator.m in Sources */,
+				5597F0831723D12400C91952 /* SBJsonStreamWriterState.m in Sources */,
+				5597F0841723D12400C91952 /* SBJsonWriter.m in Sources */,
+				5597F0881723DAA600C91952 /* UIImageView+WebCache.m in Sources */,
+				5597F09E1723DAC400C91952 /* SDImageCache.m in Sources */,
+				5597F09F1723DAC400C91952 /* SDWebImageCompat.m in Sources */,
+				5597F0A01723DAC400C91952 /* SDWebImageDecoder.m in Sources */,
+				5597F0A11723DAC400C91952 /* SDWebImageDownloader.m in Sources */,
+				5597F0A21723DAC400C91952 /* SDWebImageDownloaderOperation.m in Sources */,
+				5597F0A31723DAC400C91952 /* SDWebImageManager.m in Sources */,
+				5597F0A41723DAC400C91952 /* SDWebImagePrefetcher.m in Sources */,
+				5597F0A51723DAC400C91952 /* UIButton+WebCache.m in Sources */,
+				5597F0A91723E43E00C91952 /* YoutubeItem.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

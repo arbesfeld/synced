@@ -22,51 +22,69 @@
         _artist = [self.movieItem valueForProperty:MPMediaItemPropertyArtist];
         NSNumber *duration = [self.movieItem valueForProperty:MPMediaItemPropertyPlaybackDuration];
         
-        UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(91, 12, 220, 20)];
-        titleLabel.text = _title;
-        titleLabel.font = [UIFont boldSystemFontOfSize:17.0f];
-        UILabel *artistLabel = [[UILabel alloc] initWithFrame:CGRectMake(91, 33, 220, 20)];
-        artistLabel.text = _artist;
-        artistLabel.font = [UIFont boldSystemFontOfSize:14.0f];
-        
-        UILabel *durationLabel = [[UILabel alloc] initWithFrame:CGRectMake(91, 52, 220, 20)];
+        _imageURL = [self.movieItem valueForProperty:MPMediaItemPropertyAssetURL];
         int minutes = [duration intValue] / 60;
         int seconds = [duration intValue] % 60;
         
         if(seconds < 10) {
-            durationLabel.text = [NSString stringWithFormat:@"%d:0%d", minutes, seconds];
+            _duration = [NSString stringWithFormat:@"%d:0%d", minutes, seconds];
         } else {
-            durationLabel.text = [NSString stringWithFormat:@"%d:%d", minutes, seconds];
+            _duration = [NSString stringWithFormat:@"%d:%d", minutes, seconds];
         }
-        durationLabel.font = [UIFont boldSystemFontOfSize:14.0f];
-        durationLabel.textColor = [UIColor grayColor];
-        
-        [self.contentView addSubview:titleLabel];
-        [self.contentView addSubview:artistLabel];
-        [self.contentView addSubview:durationLabel];
+        [self loadContent];
     }
     return self;
 }
 
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier title:(NSString *)title artist:(NSString *)artist duration:(NSString *)duration imageURL:(NSURL *)url
+{
+    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+    if (self) {
+        _title = title;
+        _artist = artist;
+        _duration = duration;
+        _imageURL = url;
+        [self loadContent];
+        [_thumbImgView setImageWithURL:_imageURL placeholderImage:nil];
+    }
+    return self;
+}
+
+- (void)loadContent
+{
+    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(91, 12, 220, 20)];
+    titleLabel.text = _title;
+    titleLabel.font = [UIFont boldSystemFontOfSize:17.0f];
+    UILabel *artistLabel = [[UILabel alloc] initWithFrame:CGRectMake(91, 33, 220, 20)];
+    artistLabel.text = _artist;
+    artistLabel.font = [UIFont boldSystemFontOfSize:14.0f];
+    UILabel *durationLabel = [[UILabel alloc] initWithFrame:CGRectMake(91, 52, 220, 20)];
+    durationLabel.text = _duration;
+    durationLabel.font = [UIFont boldSystemFontOfSize:14.0f];
+    durationLabel.textColor = [UIColor grayColor];
+    
+    _thumbImgView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 80, 80)];
+    _thumbImgView.contentMode = UIViewContentModeScaleAspectFit;
+    _thumbImgView.backgroundColor = [UIColor blackColor];
+    
+    [self.contentView addSubview:_thumbImgView];
+    
+    [self.contentView addSubview:titleLabel];
+    [self.contentView addSubview:artistLabel];
+    [self.contentView addSubview:durationLabel];
+}
 - (void)loadImage:(BOOL)load
 {
     if(!load) {
         return;
     }
-    NSURL *url = [self.movieItem valueForProperty:MPMediaItemPropertyAssetURL];
-    AVURLAsset *asset= [[AVURLAsset alloc] initWithURL:url options:nil];
+    AVURLAsset *asset= [[AVURLAsset alloc] initWithURL:_imageURL options:nil];
     AVAssetImageGenerator *imageGenerator = [[AVAssetImageGenerator alloc]initWithAsset:asset];
     CMTime time = CMTimeMake(30, 1);
     CGImageRef imageRef = [imageGenerator copyCGImageAtTime:time actualTime:NULL error:NULL];
     UIImage *thumbImg = [UIImage imageWithCGImage:imageRef];
-    UIImageView *thumbImgView = [[UIImageView alloc] initWithImage:thumbImg];
-    thumbImgView.contentMode = UIViewContentModeScaleAspectFit;
-    thumbImgView.frame = CGRectMake(0, 0, 80, 80);
-    thumbImgView.backgroundColor = [UIColor blackColor];
-    [self.contentView addSubview:thumbImgView];
+    _thumbImgView.image = thumbImg;
     CGImageRelease(imageRef);  // CGImageRef won't be released by ARC
-    [self.contentView setNeedsLayout];
-    [thumbImgView setNeedsLayout];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated

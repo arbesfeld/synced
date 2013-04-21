@@ -311,6 +311,10 @@ const double epsilon = 0.02;
     [_game uploadMusicWithMediaItem:movieItem video:YES];
 }
 
+- (void)addYoutubeVideo:(YoutubeItem *)youtubeItem
+{
+    NSLog(@"Added youtube video with url = %@", youtubeItem.url);
+}
 #pragma mark - PlaylistItemDelegate
 
 // value is a int that represents the weight of the vote
