@@ -14,22 +14,23 @@
 {
     NSLog(@"dealloc: %@", [self description]);
 }
-- (id)initWithContentURL:(NSURL *)url
+
+- (id)initWithMediaItem:(MediaItem *)mediaItem
 {
     self = [super init];
     
     if(self) {
         CGRect frame = [UIScreen mainScreen].applicationFrame;
         self.view.frame = frame;
+        self.mediaItem = mediaItem;
         
-        _moviePlayer = [[PlayerView alloc] initWithContentURL:url];
+        _moviePlayer = [[PlayerView alloc] initWithContentURL:mediaItem.localURL];
         [self.view addSubview:_moviePlayer];
         if ( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad )
         {
             UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
-            if(orientation == 0 || orientation == UIInterfaceOrientationPortrait) {
-            } else if (orientation == UIInterfaceOrientationLandscapeLeft ||
-                       orientation == UIInterfaceOrientationLandscapeRight) {
+            if (orientation == UIInterfaceOrientationLandscapeLeft ||
+                orientation == UIInterfaceOrientationLandscapeRight) {
                 float height = frame.size.height;
                 frame.size.height = frame.size.width;
                 frame.size.width = height;
@@ -73,31 +74,34 @@
     [[UIApplication sharedApplication] endReceivingRemoteControlEvents];
     [self resignFirstResponder];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
     [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
 }
 
 - (void)applicationDidEnterBackground:(NSNotification *)notification
 {
-    [self performSelector:@selector(playWithDelay) withObject:nil afterDelay:0.15];
+    if([[UIApplication sharedApplication] applicationState] == UIApplicationStateBackground) {
+        [self performSelector:@selector(play) withObject:nil afterDelay:0.001];
+    }
 }
+
 - (void)applicationDidBecomeActive:(NSNotification *)notification
 {
-    CMTime npt = CMTimeMakeWithSeconds(CMTimeGetSeconds([_moviePlayer.player currentTime]) + 0.15, 600);
-    [_moviePlayer.player seekToTime:npt toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero];
+    [self.delegate sendSyncPacketsForItem:_mediaItem];
 }
-- (void)playWithDelay
+
+- (void)play
 {
     [_moviePlayer play];
-    CMTime npt = CMTimeMakeWithSeconds(CMTimeGetSeconds([_moviePlayer.player currentTime]) + 0.1, 600);
-    [_moviePlayer.player seekToTime:npt toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero];
+    
+    [self.delegate sendSyncPacketsForItem:_mediaItem];
 }
+
 - (void)didRotate:(NSNotification *)notification {
     CGRect frame = [UIScreen mainScreen].applicationFrame;
     UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
-    if(orientation == 0 || orientation == UIInterfaceOrientationPortrait) {
-        self.view.frame = frame;
-    } else if (orientation == UIInterfaceOrientationLandscapeLeft ||
-               orientation == UIInterfaceOrientationLandscapeRight) {
+    if (orientation == UIInterfaceOrientationLandscapeLeft ||
+        orientation == UIInterfaceOrientationLandscapeRight) {
         float height = frame.size.height;
         frame.size.height = frame.size.width;
         frame.size.width = height;
@@ -105,6 +109,7 @@
     self.view.frame = frame;
     _skipButton.frame = CGRectMake(frame.size.width - 80, frame.size.height - 50, 34, 31);
 }
+
 - (void)skipButtonPressed:(id)sender
 {
     [self.delegate skipButtonPressed];

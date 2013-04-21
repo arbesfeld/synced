@@ -366,10 +366,6 @@ const double epsilon = 0.02;
         _canLoadView = YES;
     }];
 }
-    
-- (IBAction)skipMusic:(id)sender {
-    [_game skipButtonPressed];
-}
 
 - (IBAction)playMovie:(id)sender {
 	MoviePickerViewController *moviePickerViewController = [[MoviePickerViewController alloc] initWithStyle:UITableViewStylePlain];
@@ -379,6 +375,10 @@ const double epsilon = 0.02;
         _canLoadView = YES;
     }];
 	moviePickerViewController.delegate = self;
+}
+    
+- (IBAction)skipMusic:(id)sender {
+    [_game skipButtonPressed];
 }
 
 - (void)mediaPicker: (MPMediaPickerController *)mediaPicker didPickMediaItems:(MPMediaItemCollection *)mediaItemCollection

@@ -78,4 +78,5 @@ ServerState;
 
 - (void)sendVotePacketForItem:(PlaylistItem *)selectedItem andAmount:(int)amount upvote:(BOOL)upvote;
 - (void)sendCancelMusicPacket:(PlaylistItem *)selectedItem;
+- (void)sendSyncPacketsForItem:(MediaItem *)mediaItem;
 @end

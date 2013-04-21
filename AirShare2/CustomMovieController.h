@@ -8,12 +8,14 @@
 
 #import <MediaPlayer/MediaPlayer.h>
 #import "PlayerView.h"
+#import "MediaItem.h"
 
 @class CustomMovieController;
 
 @protocol CustomMovieControllerDelegate <NSObject>
 
 - (void)skipButtonPressed;
+- (void)sendSyncPacketsForItem:(MediaItem *)mediaItem;
 
 @end
 
@@ -23,6 +25,8 @@
 @property (nonatomic, strong) PlayerView *moviePlayer;
 @property (nonatomic, strong) UIButton *skipButton;
 @property (nonatomic, strong) UIImage *skipImage;
-- (id)initWithContentURL:(NSURL *)url;
+@property (nonatomic, strong) MediaItem *mediaItem;
+
+- (id)initWithMediaItem:(MediaItem *)mediaItem;
 - (void)stop;
 @end

@@ -1,5 +1,5 @@
 //
-//  PacketTypePlayMusic.h
+//  PacketPlayMusic.h
 //  AirShare2
 //
 //  Created by mata on 3/26/13.
@@ -12,8 +12,8 @@
 
 @property (nonatomic, strong) NSString *ID;
 @property (nonatomic, strong) NSDate *time;
-@property (nonatomic, assign) int musicTime; // -1 if instruction to start playing music
+@property (nonatomic, assign) int songTime;
 
-+ (id)packetWithSongID:(NSString *)ID andTime:(NSDate *)time andMusicTime:(int)musicTime;
++ (id)packetWithSongID:(NSString *)ID andTime:(NSDate *)time atSongTime:(int)songTime;
 
 @end

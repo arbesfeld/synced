@@ -18,7 +18,8 @@ typedef enum
     PacketTypePlaylistItem,            // client to everyone
     PacketTypeMusicDownload,           // server to client and client to server
     PacketTypeMusicResponse,           // client to server
-    PacketTypePlayMusicNow,            // server to client
+    PacketTypePlayMusicRequest,
+    PacketTypePlayMusic,            // server to client
     PacketTypeVote,                    // client to server
     
     PacketTypeCancelMusic,             // everyone to everyone

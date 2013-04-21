@@ -23,12 +23,12 @@
 	// set up an AVAssetReader to read from the iPod Library
 	AVURLAsset *songAsset = [AVURLAsset URLAssetWithURL:assetURL options:nil];
     
-    if ([songAsset hasProtectedContent]) {
-        NSLog(@"%@ is protected.",mediaItem.name);
-        return;
-    } else {
-        NSLog(@"%@ is NOT protected.",mediaItem.name);
-    }
+//    if ([songAsset hasProtectedContent]) {
+//        NSLog(@"%@ is protected.",mediaItem.name);
+//        return;
+//    } else {
+//        NSLog(@"%@ is NOT protected.",mediaItem.name);
+//    }
     
 	NSError *assetError = nil;
 	AVAssetReader *assetReader = [[AVAssetReader assetReaderWithAsset:songAsset

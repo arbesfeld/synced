@@ -4,7 +4,7 @@
 #import "PacketGameState.h"
 #import "PacketOtherClientQuit.h"
 #import "PacketMusicDownload.h"
-#import "PacketPlayMusicNow.h"
+#import "PacketPlayMusic.h"
 #import "PacketMusicResponse.h"
 #import "PacketVote.h"
 #import "PacketPlaylistItem.h"
@@ -48,6 +48,7 @@ const size_t PACKET_HEADER_SIZE = 10;
         case PacketTypeClientQuit:
         case PacketTypeSkipMusic:
         case PacketTypeSync:
+        case PacketTypePlayMusicRequest:
 			packet = [Packet packetWithType:packetType];
 			break;
 		case PacketTypeSignIn:
@@ -71,8 +72,8 @@ const size_t PACKET_HEADER_SIZE = 10;
         case PacketTypeMusicResponse:
             packet = [PacketMusicResponse packetWithData:data];
             break;
-        case PacketTypePlayMusicNow:
-            packet = [PacketPlayMusicNow packetWithData:data];
+        case PacketTypePlayMusic:
+            packet = [PacketPlayMusic packetWithData:data];
             break;
         case PacketTypeVote:
             packet = [PacketVote packetWithData:data];

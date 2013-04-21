@@ -6,10 +6,7 @@
 #import "MoviePickerViewController.h"
 #import <MediaPlayer/MediaPlayer.h>
 
-
-
 @class GameViewController;
-
 
 @protocol GameViewControllerDelegate <NSObject>
 
@@ -21,13 +18,10 @@
     NSMutableDictionary *_voteAmount; // key is songID, value is vote amount
     BOOL _canLoadView; // for when animations are occuring
 }
-@property (nonatomic, weak) IBOutlet UILabel *skipSongLabel;
-@property (nonatomic, weak) IBOutlet UILabel *artistLabel;
-@property (weak, nonatomic) IBOutlet UILabel *waitingLabel;
-@property (nonatomic, weak) IBOutlet UIButton *exitButton;
-@property (weak, nonatomic) IBOutlet UIButton *skipSongButton;
-@property (nonatomic, weak) IBOutlet UITableView *userTable;
-@property (nonatomic, weak) IBOutlet UITableView *playlistTable;
+
+@property (nonatomic, weak) IBOutlet UILabel *skipSongLabel, *artistLabel, *waitingLabel;
+@property (nonatomic, weak) IBOutlet UIButton *exitButton, *skipSongButton;
+@property (nonatomic, weak) IBOutlet UITableView *userTable, *playlistTable;
 @property (nonatomic, weak) IBOutlet UIProgressView *playbackProgressBar;
 @property (nonatomic, strong) UINavigationController *navController;
 @property (nonatomic, strong) MPMediaPickerController *mediaPicker;

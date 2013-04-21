@@ -10,7 +10,7 @@
 #import "PacketOtherClientQuit.h"
 #import "PacketMusicDownload.h"
 #import "PacketMusicResponse.h"
-#import "PacketPlayMusicNow.h"
+#import "PacketPlayMusic.h"
 #import "PacketVote.h"
 #import "PacketPlaylistItem.h"
 #import "PacketSyncResponse.h"
@@ -20,7 +20,8 @@ const double DELAY_TIME = 2.50000;   // wait DELAY_TIME seconds until songs play
 const int WAIT_TIME_UPLOAD = 60;     // server wait time for others to download music after uploading
 const int WAIT_TIME_DOWNLOAD = 60;   // server wait time for others to download music after downloading
 const int SYNC_PACKET_COUNT = 100;   // how many sync packets to send
-const int UPDATE_TIME = 30;          // how often to update playback (after first update)
+const int UPDATE_TIME_AUDIO = 60;          // how often to update playback (after first update)
+const int UPDATE_TIME_VIDEO = 30;          // how often to update playback (after first update)
 const int UPDATE_TIME_FIRST = 1;     // how often to update playback (first update)
 const double BACKGROUND_TIME = -0.2; // the additional time it takes when app is in background
 const double MOVIE_TIME = -0.1;      // the additional time it takes for movies
@@ -221,14 +222,14 @@ typedef enum
             [self downloadMusicWithID:ID];
             break;
         }
-        case PacketTypePlayMusicNow:
+        case PacketTypePlayMusic:
         {
             // instruction to play music
-            NSString *ID = ((PacketPlayMusicNow *)packet).ID;
-            NSDate *time = ((PacketPlayMusicNow *)packet).time;
-            int songTime = ((PacketPlayMusicNow *)packet).songTime;
+            NSString *ID = ((PacketPlayMusic *)packet).ID;
+            NSDate *time = ((PacketPlayMusic *)packet).time;
+            int songTime = ((PacketPlayMusic *)packet).songTime;
             
-            NSLog(@"Client received PacketTypePlayMusicNow. id = %@, time = %@, songTime = %d", ID, time, songTime);
+            NSLog(@"Client received PacketTypePlayMusic. id = %@, time = %@, songTime = %d", ID, time, songTime);
             MediaItem *mediaItem = (MediaItem *)[self playlistItemWithID:ID];
             
             if(mediaItem == _currentItem) {
@@ -384,6 +385,15 @@ typedef enum
             [player.hasMusicList setObject:@YES forKey:ID];
             MediaItem *mediaItem = (MediaItem *)[self playlistItemWithID:ID];
             [self serverTryPlayingMedia:mediaItem waitTime:WAIT_TIME_DOWNLOAD];
+            
+            break;
+        }
+        case PacketTypePlayMusicRequest:
+        {
+            // someone wants you to send sync packets
+            if([_currentItem isKindOfClass:[MediaItem class]]) {
+                [self sendSyncPacketsForItem:(MediaItem *)_currentItem];
+            }
             
             break;
         }
@@ -634,7 +644,7 @@ typedef enum
 		
         NSDate *theirPlayTime = [playTime dateByAddingTimeInterval:player.timeOffset / player.syncPacketsReceived];
         NSLog(@"Player with timeOffset = %f has playTime = %@", player.timeOffset / player.syncPacketsReceived, theirPlayTime);
-        PacketPlayMusicNow *packet = [PacketPlayMusicNow packetWithSongID:mediaItem.ID andTime:theirPlayTime atSongTime:0];
+        PacketPlayMusic *packet = [PacketPlayMusic packetWithSongID:mediaItem.ID andTime:theirPlayTime atSongTime:0];
         [self sendPacket:packet toClientWithPeerID:player.peerID];
     }
     [self playMediaItem:mediaItem withStartTime:playTime atSongTime:0];
@@ -662,7 +672,7 @@ typedef enum
                 [self audioPlayerDidFinishPlaying:_audioPlayer successfully:YES];
             }
             
-            _moviePlayerController = [[CustomMovieController alloc] initWithContentURL:mediaItem.localURL];
+            _moviePlayerController = [[CustomMovieController alloc] initWithMediaItem:mediaItem];
             _moviePlayerController.delegate = self;
     
             if(_moviePlayerController.moviePlayer == nil) {
@@ -886,46 +896,14 @@ typedef enum
     
     MediaItem *mediaItem = (MediaItem *)[timer userInfo];
     
-    float delay = 0.0;
-    int songTime = 0;
-    if(_gameState == GameStatePlayingMovie) {
-        songTime = (int)CMTimeGetSeconds([_moviePlayerController.moviePlayer.player currentTime]) + DELAY_TIME;
-        if(songTime > CMTimeGetSeconds(_moviePlayerController.moviePlayer.player.currentItem.asset.duration) - UPDATE_TIME - DELAY_TIME) {
-            // the song is almost over
-            return;
-        }
-        delay = (float)songTime - CMTimeGetSeconds([_moviePlayerController.moviePlayer.player currentTime]);
-    } else if(_gameState == GameStatePlayingMusic) {
-        songTime = (int)[_audioPlayer currentTime] + DELAY_TIME;
-        if(songTime > [_audioPlayer duration] - UPDATE_TIME - DELAY_TIME) {
-            // the movie is almost over
-            return;
-        }
-        delay = (float)songTime - [_audioPlayer currentTime];
-    }
+    [self sendSyncPacketsForItem:mediaItem];
     
-    if((_gameState == GameStatePlayingMusic || _gameState == GameStatePlayingMovie) && delay != 0.0 && songTime != 0) {
-        for (NSString *peerID in _players)
-        {
-            if([peerID isEqualToString:_serverPeerID]) {
-                continue;
-            }
-            Player *player = [self playerWithPeerID:peerID];
-            
-            NSDate *playTime = [[NSDate date] dateByAddingTimeInterval:delay];
-            NSDate *theirPlayTime = [playTime dateByAddingTimeInterval:player.timeOffset / player.syncPacketsReceived];
-            PacketPlayMusicNow *packet = [PacketPlayMusicNow packetWithSongID:mediaItem.ID andTime:theirPlayTime atSongTime:songTime];
-            [self sendPacket:packet toClientWithPeerID:player.peerID];
-            
-            NSLog(@"Updating player with id = %@ has delay = %f for songTime = %d", mediaItem.ID, delay, songTime);
-        }
-        
-        _playbackSyncingTimer = [NSTimer scheduledTimerWithTimeInterval:UPDATE_TIME
-                                                                 target:self
-                                                               selector:@selector(handlePlaybackSyncingTimer:)
-                                                               userInfo:mediaItem
-                                                                repeats:NO];
-    }
+    _playbackSyncingTimer = [NSTimer scheduledTimerWithTimeInterval:mediaItem.playlistItemType == PlaylistItemTypeSong ? UPDATE_TIME_AUDIO : UPDATE_TIME_VIDEO
+                                                             target:self
+                                                           selector:@selector(handlePlaybackSyncingTimer:)
+                                                           userInfo:mediaItem
+                                                            repeats:NO];
+    
 }
 
 - (void)handleUpdatePlaybackProgressTimer:(NSTimer *)timer
@@ -964,7 +942,7 @@ typedef enum
     }
 }
 
-#pragma mark - Networking
+#pragma mark - Packet
 
 - (void)sendPacketToAllClients:(Packet *)packet
 {
@@ -1021,6 +999,48 @@ typedef enum
     [self sendPacketToAllClients:packet];
 }
 
+- (void)sendSyncPacketsForItem:(MediaItem *)mediaItem
+{
+    if(self.isServer) {
+        float delay = 0.0;
+        int songTime = 0;
+        if(_gameState == GameStatePlayingMovie) {
+            songTime = (int)CMTimeGetSeconds([_moviePlayerController.moviePlayer.player currentTime]) + DELAY_TIME;
+            if(songTime > CMTimeGetSeconds(_moviePlayerController.moviePlayer.player.currentItem.asset.duration) - 10 * DELAY_TIME) {
+                // the song is almost over
+                return;
+            }
+            delay = (float)songTime - CMTimeGetSeconds([_moviePlayerController.moviePlayer.player currentTime]);
+        } else if(_gameState == GameStatePlayingMusic) {
+            songTime = (int)[_audioPlayer currentTime] + DELAY_TIME;
+            if(songTime > [_audioPlayer duration] - 10 * DELAY_TIME) {
+                // the movie is almost over
+                return;
+            }
+            delay = (float)songTime - [_audioPlayer currentTime];
+        }
+        
+        if((_gameState == GameStatePlayingMusic || _gameState == GameStatePlayingMovie) && delay != 0.0 && songTime != 0) {
+            for (NSString *peerID in _players)
+            {
+                if([peerID isEqualToString:_serverPeerID]) {
+                    continue;
+                }
+                Player *player = [self playerWithPeerID:peerID];
+                
+                NSDate *playTime = [[NSDate date] dateByAddingTimeInterval:delay];
+                NSDate *theirPlayTime = [playTime dateByAddingTimeInterval:player.timeOffset / player.syncPacketsReceived];
+                PacketPlayMusic *packet = [PacketPlayMusic packetWithSongID:mediaItem.ID andTime:theirPlayTime atSongTime:songTime];
+                [self sendPacket:packet toClientWithPeerID:player.peerID];
+                
+                NSLog(@"Updating player with id = %@ has delay = %f for songTime = %d", mediaItem.ID, delay, songTime);
+            }
+        }
+    } else {
+        Packet *packet = [Packet packetWithType:PacketTypePlayMusicRequest];
+        [self sendPacketToServer:packet];
+    }
+}
 
 #pragma mark - Utility
 
