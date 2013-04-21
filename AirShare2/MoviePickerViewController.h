@@ -18,7 +18,7 @@
 @protocol MoviePickerDelegate <NSObject>
 
 - (void)addMovie:(MPMediaItem *)movieItem;
-- (void)addYoutubeVideo:(YoutubeItem *)youtubeItem;
+- (void)addYoutubeVideo:(MediaItem *)youtubeItem;
 
 @end
 

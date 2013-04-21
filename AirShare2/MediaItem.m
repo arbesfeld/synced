@@ -11,25 +11,28 @@
 
 @implementation MediaItem
 
-@synthesize songURL = _songURL;
 @synthesize beatPos = _beatPos;
 @synthesize partyMode = _partyMode;
 @synthesize beats = _beats;
 
-+ (id)mediaItemWithName:(NSString *)name andSubtitle:(NSString *)subtitle andID:(NSString *)ID andDate:(NSDate *)date andLocalURL:(NSURL *)localURL andPlayListItemType:(PlaylistItemType)playlistItemType
++ (id)mediaItemWithName:(NSString *)name andSubtitle:(NSString *)subtitle andID:(NSString *)ID andDate:(NSDate *)date andURL:(NSURL *)url andPlayListItemType:(PlaylistItemType)playlistItemType
 {
-	return [[[self class] alloc] initMediaItemWithName:name andSubtitle:subtitle andID:ID andDate:date andLocalURL:localURL andPlayListItemType:playlistItemType];
+	return [[[self class] alloc] initMediaItemWithName:name andSubtitle:subtitle andID:ID andDate:date andURL:url andPlayListItemType:playlistItemType];
 }
 
-- (id)initMediaItemWithName:(NSString *)name andSubtitle:(NSString *)subtitle andID:(NSString *)ID andDate:(NSDate *)date andLocalURL:(NSURL *)localURL andPlayListItemType:(PlaylistItemType)playlistItemType
+- (id)initMediaItemWithName:(NSString *)name andSubtitle:(NSString *)subtitle andID:(NSString *)ID andDate:(NSDate *)date andURL:(NSURL *)url andPlayListItemType:(PlaylistItemType)playlistItemType
 {
 	if ((self = [super initPlaylistItemWithName:name andSubtitle:subtitle andID:ID andDate:date andPlaylistItemType:playlistItemType]))
 	{
-        NSString *tempPath = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-        NSString *fileName = [NSString stringWithFormat:@"%@.m4a", ID];
-        NSString *songPath = [tempPath stringByAppendingPathComponent:fileName];
-		self.songURL = [[NSURL alloc] initWithString:songPath];
-        self.localURL = localURL;
+        if(playlistItemType == PlaylistItemTypeMovie ||
+           playlistItemType == PlaylistItemTypeSong) {
+            NSString *tempPath = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+            NSString *fileName = [NSString stringWithFormat:@"%@.m4a", ID];
+            NSString *songPath = [tempPath stringByAppendingPathComponent:fileName];
+            self.url = [[NSURL alloc] initWithString:songPath];
+        } else {
+            self.url = url;
+        }
         self.beats = [[NSMutableArray alloc] init];
         self.beatPos = -1;
         self.partyMode = NO;
@@ -37,9 +40,9 @@
 	return self;
 }
 
-- (NSString *)description
+- (NSString *)descriptions
 {
-	return [NSString stringWithFormat:@"%@, url = %@", [super description],[self.songURL absoluteString]];
+	return [NSString stringWithFormat:@"%@", [super description]];
 }
 
 - (void)loadBeats

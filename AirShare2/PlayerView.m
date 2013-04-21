@@ -16,16 +16,12 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (id)initWithContentURL:(NSURL *)url
+- (id)initWithMediaItem:(MediaItem *)mediaItem
 {
     self = [super init];
     if(self) {
+        self.mediaItem = mediaItem;
         
-        _playerItem = [AVPlayerItem playerItemWithURL:url];
-        _player = [AVPlayer playerWithPlayerItem:_playerItem];
-        _playerLayer = [AVPlayerLayer playerLayerWithPlayer:_player];
-        
-        //self.shouldAutoplay = NO;
         [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationLandscapeRight animated:NO];
         [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
         CGRect frame = [UIScreen mainScreen].applicationFrame;
@@ -46,11 +42,10 @@
             }
             
             self.frame = frame;
-            id center = [NSNotificationCenter defaultCenter];
-            [center addObserver:self
-                       selector:@selector(didRotate:)
-                           name:UIApplicationDidChangeStatusBarOrientationNotification
-                         object:nil];
+            [[NSNotificationCenter defaultCenter] addObserver:self
+                                                     selector:@selector(didRotate:)
+                                                         name:UIApplicationDidChangeStatusBarOrientationNotification
+                                                       object:nil];
         } else {
             float width = frame.size.width;
             float height = frame.size.height;
@@ -59,12 +54,17 @@
             self.transform = CGAffineTransformMakeRotation(M_PI / 2);
             //NSLog(@"width = %f, height = %f", width, height);
         }
+        _playerItem = [AVPlayerItem playerItemWithURL:mediaItem.url];
+        _player = [AVPlayer playerWithPlayerItem:_playerItem];
+        _playerLayer = [AVPlayerLayer playerLayerWithPlayer:_player];
+        
         _playerLayer.frame = self.frame;
         [self.layer addSublayer:_playerLayer];
-        //self.controlStyle = MPMovieControlStyleNone;
+        
     }
     return self;
 }
+
 - (void)play {
     [_player play];
 }

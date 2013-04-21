@@ -21,10 +21,8 @@
     
     if(self) {
         CGRect frame = [UIScreen mainScreen].applicationFrame;
-        self.view.frame = frame;
-        self.mediaItem = mediaItem;
         
-        _moviePlayer = [[PlayerView alloc] initWithContentURL:mediaItem.localURL];
+        _moviePlayer = [[PlayerView alloc] initWithMediaItem:mediaItem];
         [self.view addSubview:_moviePlayer];
         if ( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad )
         {

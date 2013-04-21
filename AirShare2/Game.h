@@ -9,6 +9,7 @@
 #import "MusicDownload.h"
 #import "Packet.h"
 #import "CustomMovieController.h"
+#import "LBYouTubeExtractor.h"
 
 typedef enum
 {
@@ -47,7 +48,7 @@ ServerState;
 
 @end
 
-@interface Game : NSObject <GKSessionDelegate, AVAudioPlayerDelegate, CustomMovieControllerDelegate> {
+@interface Game : NSObject <GKSessionDelegate, AVAudioPlayerDelegate, CustomMovieControllerDelegate, LBYouTubeExtractorDelegate> {
 }
 
 @property (nonatomic, weak) id <GameDelegate> delegate;
@@ -72,6 +73,7 @@ ServerState;
 - (NSString *)displayNameForPeerID:(NSString *)peerID;
 
 - (void)uploadMusicWithMediaItem:(MPMediaItem *)song video:(BOOL)isVideo;
+- (void)uploadYoutubeItem:(MediaItem *)youtubeItem;
 - (void)skipButtonPressed;
 - (void)cancelMusic:(PlaylistItem *)selectedItem;
 - (int)indexForPlaylistItem:(PlaylistItem *)playlistItem;

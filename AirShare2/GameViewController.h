@@ -25,6 +25,7 @@
 @property (nonatomic, weak) IBOutlet UIProgressView *playbackProgressBar;
 @property (nonatomic, strong) UINavigationController *navController;
 @property (nonatomic, strong) MPMediaPickerController *mediaPicker;
+@property (nonatomic, strong) UIWebView *youtube;
 @property (nonatomic, weak) id <GameViewControllerDelegate> delegate;
 @property (nonatomic, strong) Game *game;
 

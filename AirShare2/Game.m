@@ -487,20 +487,20 @@ typedef enum
 {
     NSString *songName = [song valueForProperty:MPMediaItemPropertyTitle];
     NSString *artistName = [song valueForProperty:MPMediaItemPropertyArtist];
-    NSURL *songURL = [song valueForProperty:MPMediaItemPropertyAssetURL];
+    NSURL *url = [song valueForProperty:MPMediaItemPropertyAssetURL];
     if(!songName) {
         songName = @"";
     }
     if(!artistName) {
         artistName = @"";
     }
-    if(!songURL) {
+    if(!url) {
         return;
     }
     NSString *ID = [self genRandStringLength:6];
     
     PlaylistItemType type = isVideo ? PlaylistItemTypeMovie : PlaylistItemTypeSong;
-    MediaItem *mediaItem = [MediaItem mediaItemWithName:songName andSubtitle:artistName andID:ID andDate:[NSDate date] andLocalURL:songURL andPlayListItemType:type];
+    MediaItem *mediaItem = [MediaItem mediaItemWithName:songName andSubtitle:artistName andID:ID andDate:[NSDate date] andURL:url andPlayListItemType:type];
     mediaItem.uploadedByUser = YES;
     
     [self addItemToPlaylist:mediaItem];
@@ -535,6 +535,45 @@ typedef enum
         [self.delegate cancelMusicAndUpdateAll:mediaItem];
     }];
 }
+
+- (void)uploadYoutubeItem:(MediaItem *)youtubeItem
+{
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@",youtubeItem.url]];
+    youtubeItem.url = url;
+    youtubeItem.uploadedByUser = YES;
+    LBYouTubeExtractor* extractor = [[LBYouTubeExtractor alloc] initWithURL:youtubeItem.url andID:youtubeItem.ID quality:LBYouTubeVideoQualityMedium];
+    extractor.delegate = self;
+    [extractor startExtracting];
+    
+    [self addItemToPlaylist:youtubeItem];
+    
+    [self.delegate reloadTable];
+}
+
+- (void)youTubeExtractor:(LBYouTubeExtractor *)extractor didSuccessfullyExtractYouTubeURL:(NSURL *)videoURL
+{
+    NSLog(@"loaded");
+    MediaItem *youtubeItem = (MediaItem *)[self playlistItemWithID:extractor.ID];
+    youtubeItem.loadProgress = 1.0;
+    [self.delegate reloadTable];
+    
+    if(youtubeItem.uploadedByUser) {
+        PacketPlaylistItem *packet = [PacketPlaylistItem packetWithPlaylistItem:youtubeItem];
+        [self sendPacketToAllClients:packet];
+        
+        NSLog(@"Sending music download packet with: %@", [youtubeItem description]);
+        PacketMusicDownload *downloadPacket = [PacketMusicDownload packetWithID:youtubeItem.ID];
+        [self sendPacketToAllClients:downloadPacket];
+    }
+    youtubeItem.url = videoURL;
+    [self hasDownloadedMusic:youtubeItem];
+}
+
+- (void)youTubeExtractor:(LBYouTubeExtractor *)extractor failedExtractingYouTubeURLWithError:(NSError *)error
+{
+    
+}
+
 - (void)downloadMusicWithID:(NSString *)ID
 {
     //NSLog(@"Recieved music download packet with ID: %@", ID);
@@ -542,6 +581,15 @@ typedef enum
     // to do: in case you receive this before "PacketTypePlaylistItem"
     MediaItem *mediaItem = (MediaItem *)[self playlistItemWithID:ID];
     NSLog(@"Downloading music item with name = %@", mediaItem.name);
+    
+    if(mediaItem.playlistItemType == PlaylistItemTypeYoutube) {
+        NSLog(@"loading item with url = %@", mediaItem.url);
+        LBYouTubeExtractor* extractor = [[LBYouTubeExtractor alloc] initWithURL:mediaItem.url andID:mediaItem.ID quality:LBYouTubeVideoQualityMedium];
+        extractor.delegate = self;
+        [extractor startExtracting];
+        
+        return;
+    }
     
     [_downloader downloadFileWithMediaItem:mediaItem andSessionID:_serverPeerID progress:^ {
         [self.delegate reloadPlaylistItem:mediaItem];
@@ -665,7 +713,8 @@ typedef enum
         NSAssert(_gameState == GameStatePreparingToPlayMedia, @"Not correct state in prepareToPlayMediaItem:");
         
         // if you are starting the song for the first time
-        if(mediaItem.playlistItemType == PlaylistItemTypeMovie && mediaItem.uploadedByUser) {
+        if((mediaItem.playlistItemType == PlaylistItemTypeMovie && mediaItem.uploadedByUser) ||
+            mediaItem.playlistItemType == PlaylistItemTypeYoutube) {
             if(_audioPlayer) {
                 // if the audiioPlayer is playing, stop it
                 [_audioPlayer stop];
@@ -674,7 +723,7 @@ typedef enum
             
             _moviePlayerController = [[CustomMovieController alloc] initWithMediaItem:mediaItem];
             _moviePlayerController.delegate = self;
-    
+            NSLog(@"loaded with url = %@", mediaItem.url);
             if(_moviePlayerController.moviePlayer == nil) {
                 _gameState = GameStateIdle;
                 NSLog(@"ERROR loading moviePlayer!");
@@ -775,14 +824,17 @@ typedef enum
 
 - (void)skipButtonPressed
 {
+    NSLog(@"Skip button pressed");
     if(_gameState != GameStatePlayingMusic && _gameState != GameStatePlayingMovie) {
         NSLog(@"Pressed skip button when nothing is playing"); // this should be ok - because someone can skip when not joined
     }
     if(_gameState == GameStatePreparingToPlayMedia) {
+        NSLog(@"Pressed skip button when preparing to play media!");
         // we don't want them to skip during this period
         return;
     }
     if(!_haveSkippedThisItem) {
+        NSLog(@"Haven't skipped this item");
         _haveSkippedThisItem = YES;
         _skipItemCount++;
         [self.delegate game:self setSkipItemCount:_skipItemCount];
@@ -836,14 +888,19 @@ typedef enum
     
     if(_gameState == GameStatePreparingToPlayMedia) {
         // if we're here, we loaded the content correctly
-        if(mediaItem.playlistItemType == PlaylistItemTypeMovie && mediaItem.uploadedByUser) {
+        if((mediaItem.playlistItemType == PlaylistItemTypeMovie && mediaItem.uploadedByUser) ||
+           mediaItem.playlistItemType == PlaylistItemTypeYoutube) {
+            NSLog(@"playing video");
             [self.delegate showViewController:_moviePlayerController];
+            NSLog(@"playing video 2");
             [_moviePlayerController.moviePlayer play];
             
+            NSLog(@"playing video 3");
             [[NSNotificationCenter defaultCenter] addObserver:self
                                                      selector:@selector(moviePlayerDidFinishPlaying:)
                                                          name:AVPlayerItemDidPlayToEndTimeNotification
                                                        object:_moviePlayerController.moviePlayer.playerItem];
+            NSLog(@"playing video 4");
             _gameState = GameStatePlayingMovie;
         } else {
             [_audioPlayer play];

@@ -108,7 +108,7 @@ const int ITEM_COUNT = 10;
         [_videoURL addObject:tempURL];
         //NSLog(@"JSONmedialPlayerSet array = %@", JSONmediaPlayerSet);
         //[_YTArrayVideoURL addObject:[JSONmediaPlayerSet objectAtIndex:0]];
-        //NSLog(@"_YTArrayURL array = %@", _videoURL);
+        NSLog(@"_YTArrayURL array = %@", _videoURL);
         
         
         //This entry creates an array for duration variable and add it to global IVAR _
@@ -213,19 +213,20 @@ const int ITEM_COUNT = 10;
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     int r = indexPath.row;
-    YoutubeItem *youtubeItem = [YoutubeItem youtubeItemWithName:_videoTitle[r]
-                                                    andSubtitle:@""
-                                                          andID:[self genRandStringLength:6]
-                                                        andDate:[NSDate date]
-                                                         andURL:_videoURL[r]];
-    [self.delegate addYoutubeVideo:youtubeItem];
-    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+    MediaItem *youtubeItem = [MediaItem mediaItemWithName:_videoTitle[r] andSubtitle:@""
+                                                    andID:[self genRandStringLength:6]
+                                                  andDate:[NSDate date]
+                                                   andURL:_videoURL[r]
+                                      andPlayListItemType:PlaylistItemTypeYoutube];
+    [self.navigationController dismissViewControllerAnimated:YES completion:^ {
+        [self.delegate addYoutubeVideo:youtubeItem];
+    }];
 }
 
 
 #pragma mark - SearchDisplayControllerDelegate
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
-    [self queryContent:searchBar.text];
+    [self performSelector:@selector(queryContent:) withObject:searchBar.text];
 }
 @end

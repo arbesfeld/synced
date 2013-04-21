@@ -42,6 +42,7 @@ const double epsilon = 0.02;
 
     //self.playlistTable.separatorStyle = UITableViewCellSeparatorStyleNone;
     
+    _canLoadView = YES;
 
     self.artistLabel.hidden = YES;
     self.waitingLabel.hidden = NO;
@@ -226,6 +227,7 @@ const double epsilon = 0.02;
 {
     // dismiss the other view controllers if they are being presented
     while(!_canLoadView) {
+        NSLog(@"Cant load view!");
         // wait until you can load
     }
     if(_navController && _navController.isViewLoaded && _navController.view.window) {
@@ -311,9 +313,11 @@ const double epsilon = 0.02;
     [_game uploadMusicWithMediaItem:movieItem video:YES];
 }
 
-- (void)addYoutubeVideo:(YoutubeItem *)youtubeItem
+- (void)addYoutubeVideo:(MediaItem *)youtubeItem
 {
     NSLog(@"Added youtube video with url = %@", youtubeItem.url);
+    [_game uploadYoutubeItem:youtubeItem];
+    
 }
 #pragma mark - PlaylistItemDelegate
 

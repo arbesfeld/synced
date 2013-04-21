@@ -40,6 +40,7 @@
 		5592FEFD1700D65B0038ED40 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5592FEFC1700D65B0038ED40 /* CoreAudio.framework */; };
 		5595E4EB171D2C46006782DE /* MoviePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5595E4EA171D2C45006782DE /* MoviePickerViewController.m */; };
 		5595E4EE171D3995006782DE /* MovieItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5595E4ED171D3995006782DE /* MovieItemCell.m */; };
+		559673C017246A3D000E0D52 /* LBYouTubeExtractor.m in Sources */ = {isa = PBXBuildFile; fileRef = 559673BF17246A3D000E0D52 /* LBYouTubeExtractor.m */; };
 		5596E08C16F62FB600511D3E /* PacketOtherClientQuit.m in Sources */ = {isa = PBXBuildFile; fileRef = 5596E08B16F62FB600511D3E /* PacketOtherClientQuit.m */; };
 		5596E0C916F6746900511D3E /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5596E0C816F6746900511D3E /* MediaPlayer.framework */; };
 		5596E0D716F692CE00511D3E /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5596E0D616F692CE00511D3E /* AudioToolbox.framework */; };
@@ -65,7 +66,6 @@
 		5597F0A31723DAC400C91952 /* SDWebImageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5597F0971723DAC300C91952 /* SDWebImageManager.m */; };
 		5597F0A41723DAC400C91952 /* SDWebImagePrefetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 5597F09A1723DAC300C91952 /* SDWebImagePrefetcher.m */; };
 		5597F0A51723DAC400C91952 /* UIButton+WebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 5597F09C1723DAC400C91952 /* UIButton+WebCache.m */; };
-		5597F0A91723E43E00C91952 /* YoutubeItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 5597F0A81723E43E00C91952 /* YoutubeItem.m */; };
 		559ADC79172369B200F5EBE5 /* PacketPlayMusic.m in Sources */ = {isa = PBXBuildFile; fileRef = 559ADC78172369B200F5EBE5 /* PacketPlayMusic.m */; };
 		559D6B8E1711EC2000C591D8 /* airshare.png in Resources */ = {isa = PBXBuildFile; fileRef = 559D6B841711EC2000C591D8 /* airshare.png */; };
 		559D6B8F1711EC2000C591D8 /* bgGreyImg.png in Resources */ = {isa = PBXBuildFile; fileRef = 559D6B851711EC2000C591D8 /* bgGreyImg.png */; };
@@ -170,6 +170,9 @@
 		5595E4EA171D2C45006782DE /* MoviePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MoviePickerViewController.m; sourceTree = "<group>"; };
 		5595E4EC171D3995006782DE /* MovieItemCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MovieItemCell.h; sourceTree = "<group>"; };
 		5595E4ED171D3995006782DE /* MovieItemCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MovieItemCell.m; sourceTree = "<group>"; };
+		559673BD17246A3D000E0D52 /* LBYouTube.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LBYouTube.h; sourceTree = "<group>"; };
+		559673BE17246A3D000E0D52 /* LBYouTubeExtractor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LBYouTubeExtractor.h; sourceTree = "<group>"; };
+		559673BF17246A3D000E0D52 /* LBYouTubeExtractor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LBYouTubeExtractor.m; sourceTree = "<group>"; };
 		5596E08A16F62FB600511D3E /* PacketOtherClientQuit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PacketOtherClientQuit.h; sourceTree = "<group>"; };
 		5596E08B16F62FB600511D3E /* PacketOtherClientQuit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PacketOtherClientQuit.m; sourceTree = "<group>"; };
 		5596E0C816F6746900511D3E /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
@@ -219,8 +222,6 @@
 		5597F09A1723DAC300C91952 /* SDWebImagePrefetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDWebImagePrefetcher.m; sourceTree = "<group>"; };
 		5597F09B1723DAC300C91952 /* UIButton+WebCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIButton+WebCache.h"; sourceTree = "<group>"; };
 		5597F09C1723DAC400C91952 /* UIButton+WebCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIButton+WebCache.m"; sourceTree = "<group>"; };
-		5597F0A71723E43D00C91952 /* YoutubeItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YoutubeItem.h; sourceTree = "<group>"; };
-		5597F0A81723E43E00C91952 /* YoutubeItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YoutubeItem.m; sourceTree = "<group>"; };
 		559ADC77172369B200F5EBE5 /* PacketPlayMusic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PacketPlayMusic.h; sourceTree = "<group>"; };
 		559ADC78172369B200F5EBE5 /* PacketPlayMusic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PacketPlayMusic.m; sourceTree = "<group>"; };
 		559D6B841711EC2000C591D8 /* airshare.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = airshare.png; path = Graphics/airshare.png; sourceTree = "<group>"; };
@@ -376,6 +377,16 @@
 			name = ECSlidingViewController;
 			sourceTree = "<group>";
 		};
+		559673C117246A51000E0D52 /* LBYouTube */ = {
+			isa = PBXGroup;
+			children = (
+				559673BD17246A3D000E0D52 /* LBYouTube.h */,
+				559673BE17246A3D000E0D52 /* LBYouTubeExtractor.h */,
+				559673BF17246A3D000E0D52 /* LBYouTubeExtractor.m */,
+			);
+			name = LBYouTube;
+			sourceTree = "<group>";
+		};
 		5597F0851723D12A00C91952 /* SBJson */ = {
 			isa = PBXGroup;
 			children = (
@@ -433,6 +444,7 @@
 		5597F0A61723DCC600C91952 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				559673C117246A51000E0D52 /* LBYouTube */,
 				5597F0891723DAAB00C91952 /* SDImageCache */,
 				5597F0851723D12A00C91952 /* SBJson */,
 				5590968816FF5E9B004149A0 /* AFNetworking */,
@@ -577,8 +589,6 @@
 				559096CF1700038F004149A0 /* PlaylistItem.m */,
 				559096D1170006AB004149A0 /* MediaItem.h */,
 				559096D2170006AB004149A0 /* MediaItem.m */,
-				5597F0A71723E43D00C91952 /* YoutubeItem.h */,
-				5597F0A81723E43E00C91952 /* YoutubeItem.m */,
 				55FCC5C016ED78E80000BCBD /* Player.h */,
 				55FCC5C116ED78E80000BCBD /* Player.m */,
 				55FCC5BC16ED62640000BCBD /* Game.h */,
@@ -765,7 +775,7 @@
 				5597F0A31723DAC400C91952 /* SDWebImageManager.m in Sources */,
 				5597F0A41723DAC400C91952 /* SDWebImagePrefetcher.m in Sources */,
 				5597F0A51723DAC400C91952 /* UIButton+WebCache.m in Sources */,
-				5597F0A91723E43E00C91952 /* YoutubeItem.m in Sources */,
+				559673C017246A3D000E0D52 /* LBYouTubeExtractor.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

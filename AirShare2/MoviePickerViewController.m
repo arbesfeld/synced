@@ -220,7 +220,7 @@
 //}
 
 #pragma mark - YoutubeDelegate
-- (void)addYoutubeVideo:(YoutubeItem *)youtubeItem
+- (void)addYoutubeVideo:(MediaItem *)youtubeItem
 {
     [self.delegate addYoutubeVideo:youtubeItem];
     

@@ -31,6 +31,7 @@
     NSString *dateString = [data rw_stringAtOffset:offset bytesRead:&count];
     offset += count;
     
+    
     // convert dateString to NSDate
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:DATE_FORMAT];
@@ -52,9 +53,18 @@
         case PlaylistItemTypeSong:
         case PlaylistItemTypeMovie:
         {
-            playlistItem = [MediaItem mediaItemWithName:name andSubtitle:subtitle andID:ID andDate:date andLocalURL:nil andPlayListItemType:playlistItemType];
+            playlistItem = [MediaItem mediaItemWithName:name andSubtitle:subtitle andID:ID andDate:date andURL:nil andPlayListItemType:playlistItemType];
             [playlistItem setUpvoteCount:upvoteCount andDownvoteCount:downvoteCount];
             
+            break;
+        }
+        case PlaylistItemTypeYoutube:
+        {
+            NSURL *url = [NSURL URLWithString:[data rw_stringAtOffset:offset bytesRead:&count]];
+            offset += count;
+            
+            playlistItem = [MediaItem mediaItemWithName:name andSubtitle:subtitle andID:ID andDate:date andURL:url andPlayListItemType:playlistItemType];
+            [playlistItem setUpvoteCount:upvoteCount andDownvoteCount:downvoteCount];
             break;
         }
         default:
@@ -91,9 +101,14 @@
     NSString *dateString = [dateFormatter stringFromDate:self.playlistItem.date];
     [data rw_appendString:dateString];
     
+    
     [data rw_appendInt8: [self.playlistItem getUpvoteCount]];
     [data rw_appendInt8: [self.playlistItem getDownvoteCount]];
     [data rw_appendInt8:  self.playlistItem.playlistItemType];
+    
+    if(self.playlistItem.playlistItemType == PlaylistItemTypeYoutube) {
+        [data rw_appendString:[((MediaItem *)self.playlistItem).url absoluteString]];
+    }
 }
 
 @end

@@ -9,13 +9,16 @@
 #import <MediaPlayer/MediaPlayer.h>
 #import <AVFoundation/AVFoundation.h>
 
-@interface PlayerView : UIView
+#import "MediaItem.h"
+#import "LBYouTubeExtractor.h"
+@interface PlayerView : UIView 
 
 @property (nonatomic, strong) AVPlayerLayer *playerLayer;
 @property (nonatomic, strong) AVPlayerItem *playerItem;
 @property (nonatomic, strong) AVPlayer *player;
+@property (nonatomic, strong) MediaItem *mediaItem;
 
-- (id)initWithContentURL:(NSURL *)url;
+- (id)initWithMediaItem:(MediaItem *)mediaItem;
 - (void)play;
 - (void)stop;
 @end

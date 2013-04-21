@@ -9,17 +9,17 @@
 #import <UIKit/UIKit.h>
 #import "SBJson.h"
 #import "MovieItemCell.h"
-#import "YoutubeItem.h"
+#import "MediaItem.h"
 
 @class YouTubeTableViewController;
 
 @protocol YouTubeDelegate <NSObject>
 
-- (void)addYoutubeVideo:(YoutubeItem *)youtubeItem;
+- (void)addYoutubeVideo:(MediaItem *)youtubeItem;
 
 @end
 
-@interface YouTubeTableViewController : UITableViewController <UISearchBarDelegate> {
+@interface YouTubeTableViewController : UITableViewController <UISearchBarDelegate, NSURLConnectionDelegate> {
 	NSMutableArray			*_videoTitle;
 	NSMutableArray			*_videoURL;
 	NSMutableArray			*_videoDescription;
