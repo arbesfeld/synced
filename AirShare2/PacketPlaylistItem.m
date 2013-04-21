@@ -53,7 +53,7 @@
         case PlaylistItemTypeSong:
         case PlaylistItemTypeMovie:
         {
-            playlistItem = [MediaItem mediaItemWithName:name andSubtitle:subtitle andID:ID andDate:date andURL:nil andPlayListItemType:playlistItemType];
+            playlistItem = [MediaItem mediaItemWithName:name andSubtitle:subtitle andID:ID andDate:date andURL:nil uploadedByUser:NO andPlayListItemType:playlistItemType];
             [playlistItem setUpvoteCount:upvoteCount andDownvoteCount:downvoteCount];
             
             break;
@@ -63,7 +63,7 @@
             NSURL *url = [NSURL URLWithString:[data rw_stringAtOffset:offset bytesRead:&count]];
             offset += count;
             
-            playlistItem = [MediaItem mediaItemWithName:name andSubtitle:subtitle andID:ID andDate:date andURL:url andPlayListItemType:playlistItemType];
+            playlistItem = [MediaItem mediaItemWithName:name andSubtitle:subtitle andID:ID andDate:date andURL:url uploadedByUser:NO andPlayListItemType:playlistItemType];
             [playlistItem setUpvoteCount:upvoteCount andDownvoteCount:downvoteCount];
             break;
         }

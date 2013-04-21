@@ -15,16 +15,17 @@
 @synthesize partyMode = _partyMode;
 @synthesize beats = _beats;
 
-+ (id)mediaItemWithName:(NSString *)name andSubtitle:(NSString *)subtitle andID:(NSString *)ID andDate:(NSDate *)date andURL:(NSURL *)url andPlayListItemType:(PlaylistItemType)playlistItemType
++ (id)mediaItemWithName:(NSString *)name andSubtitle:(NSString *)subtitle andID:(NSString *)ID andDate:(NSDate *)date andURL:(NSURL *)url uploadedByUser:(BOOL)uploadedByUser andPlayListItemType:(PlaylistItemType)playlistItemType
 {
-	return [[[self class] alloc] initMediaItemWithName:name andSubtitle:subtitle andID:ID andDate:date andURL:url andPlayListItemType:playlistItemType];
+	return [[[self class] alloc] initMediaItemWithName:name andSubtitle:subtitle andID:ID andDate:date andURL:url uploadedByUser:uploadedByUser andPlayListItemType:playlistItemType];
 }
 
-- (id)initMediaItemWithName:(NSString *)name andSubtitle:(NSString *)subtitle andID:(NSString *)ID andDate:(NSDate *)date andURL:(NSURL *)url andPlayListItemType:(PlaylistItemType)playlistItemType
+- (id)initMediaItemWithName:(NSString *)name andSubtitle:(NSString *)subtitle andID:(NSString *)ID andDate:(NSDate *)date andURL:(NSURL *)url uploadedByUser:(BOOL)uploadedByUser andPlayListItemType:(PlaylistItemType)playlistItemType
 {
 	if ((self = [super initPlaylistItemWithName:name andSubtitle:subtitle andID:ID andDate:date andPlaylistItemType:playlistItemType]))
 	{
-        if(playlistItemType == PlaylistItemTypeMovie ||
+        self.uploadedByUser = uploadedByUser;
+        if((playlistItemType == PlaylistItemTypeMovie && !uploadedByUser) ||
            playlistItemType == PlaylistItemTypeSong) {
             NSString *tempPath = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
             NSString *fileName = [NSString stringWithFormat:@"%@.m4a", ID];

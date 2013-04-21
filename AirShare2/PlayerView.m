@@ -68,6 +68,10 @@
 - (void)play {
     [_player play];
 }
+- (void)stop
+{
+    [_player pause];
+}
 - (void)didRotate:(NSNotification *)notification {
     CGRect frame = [UIScreen mainScreen].applicationFrame;
     UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
@@ -80,10 +84,6 @@
         frame.size.width = height;
     }
     self.frame = frame;
-}
-- (void)stop
-{
-    [_player pause];
 }
 
 @end

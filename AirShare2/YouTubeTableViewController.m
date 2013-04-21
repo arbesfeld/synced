@@ -217,6 +217,7 @@ const int ITEM_COUNT = 10;
                                                     andID:[self genRandStringLength:6]
                                                   andDate:[NSDate date]
                                                    andURL:_videoURL[r]
+                                           uploadedByUser:YES
                                       andPlayListItemType:PlaylistItemTypeYoutube];
     [self.navigationController dismissViewControllerAnimated:YES completion:^ {
         [self.delegate addYoutubeVideo:youtubeItem];

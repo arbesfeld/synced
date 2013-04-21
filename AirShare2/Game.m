@@ -20,8 +20,9 @@ const double DELAY_TIME = 2.50000;   // wait DELAY_TIME seconds until songs play
 const int WAIT_TIME_UPLOAD = 60;     // server wait time for others to download music after uploading
 const int WAIT_TIME_DOWNLOAD = 60;   // server wait time for others to download music after downloading
 const int SYNC_PACKET_COUNT = 100;   // how many sync packets to send
-const int UPDATE_TIME_AUDIO = 60;          // how often to update playback (after first update)
-const int UPDATE_TIME_VIDEO = 30;          // how often to update playback (after first update)
+const int UPDATE_TIME_AUDIO = 60;    // how often to update playback (after first update)
+const int UPDATE_TIME_MOVIE = 30;    // how often to update playback (after first update)
+const int UPDATE_TIME_YOUTUBE = 5;  // how often to update playback (after first update)
 const int UPDATE_TIME_FIRST = 1;     // how often to update playback (first update)
 const double BACKGROUND_TIME = -0.2; // the additional time it takes when app is in background
 const double MOVIE_TIME = -0.1;      // the additional time it takes for movies
@@ -500,8 +501,13 @@ typedef enum
     NSString *ID = [self genRandStringLength:6];
     
     PlaylistItemType type = isVideo ? PlaylistItemTypeMovie : PlaylistItemTypeSong;
-    MediaItem *mediaItem = [MediaItem mediaItemWithName:songName andSubtitle:artistName andID:ID andDate:[NSDate date] andURL:url andPlayListItemType:type];
-    mediaItem.uploadedByUser = YES;
+    MediaItem *mediaItem = [MediaItem mediaItemWithName:songName
+                                            andSubtitle:artistName
+                                                  andID:ID
+                                                andDate:[NSDate date]
+                                                 andURL:url
+                                         uploadedByUser:YES
+                                    andPlayListItemType:type];
     
     [self addItemToPlaylist:mediaItem];
     
@@ -540,8 +546,7 @@ typedef enum
 {
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@",youtubeItem.url]];
     youtubeItem.url = url;
-    youtubeItem.uploadedByUser = YES;
-    LBYouTubeExtractor* extractor = [[LBYouTubeExtractor alloc] initWithURL:youtubeItem.url andID:youtubeItem.ID quality:LBYouTubeVideoQualityMedium];
+    LBYouTubeExtractor* extractor = [[LBYouTubeExtractor alloc] initWithURL:youtubeItem.url andID:youtubeItem.ID quality:LBYouTubeVideoQualityLarge];
     extractor.delegate = self;
     [extractor startExtracting];
     
@@ -571,7 +576,8 @@ typedef enum
 
 - (void)youTubeExtractor:(LBYouTubeExtractor *)extractor failedExtractingYouTubeURLWithError:(NSError *)error
 {
-    
+    MediaItem *youtubeItem = (MediaItem *)[self playlistItemWithID:extractor.ID];
+    [self.delegate cancelMusicAndUpdateAll:youtubeItem];
 }
 
 - (void)downloadMusicWithID:(NSString *)ID
@@ -584,7 +590,7 @@ typedef enum
     
     if(mediaItem.playlistItemType == PlaylistItemTypeYoutube) {
         NSLog(@"loading item with url = %@", mediaItem.url);
-        LBYouTubeExtractor* extractor = [[LBYouTubeExtractor alloc] initWithURL:mediaItem.url andID:mediaItem.ID quality:LBYouTubeVideoQualityMedium];
+        LBYouTubeExtractor* extractor = [[LBYouTubeExtractor alloc] initWithURL:mediaItem.url andID:mediaItem.ID quality:LBYouTubeVideoQualityLarge];
         extractor.delegate = self;
         [extractor startExtracting];
         
@@ -636,24 +642,6 @@ typedef enum
     }
 }
 
-- (void)addItemToPlaylist:(PlaylistItem *)playlistItem
-{
-    //NSLog(@"Adding item = %@", [playlistItem description]);
-    [_playlist addObject:playlistItem];
-    [self.delegate addPlaylistItem:playlistItem];
-}
-
-- (void)removeItemFromPlaylist:(PlaylistItem *)playlistItem
-{
-    [self.delegate game:self setCurrentItem:playlistItem];
-    [self.delegate removePlaylistItem:playlistItem animation:UITableViewRowAnimationTop];
-}
-
-- (void)cancelMusic:(PlaylistItem *)selectedItem
-{
-    //_gameState = GameStateIdle;
-    [self.delegate removePlaylistItem:selectedItem animation:UITableViewRowAnimationRight];
-}
 
 - (void)serverTryPlayingMedia:(MediaItem *)mediaItem waitTime:(int)waitTime
 {
@@ -670,10 +658,10 @@ typedef enum
         // create a timer to start playing unless you receive another PacketMusicResponse
         if(!_loadTimeoutTimer) {
             _loadTimeoutTimer = [NSTimer scheduledTimerWithTimeInterval:waitTime
-                                                          target:self
-                                                        selector:@selector(handleLoadTimeoutTimer:)
-                                                        userInfo:mediaItem
-                                                         repeats:NO];
+                                                                 target:self
+                                                               selector:@selector(handleLoadTimeoutTimer:)
+                                                               userInfo:mediaItem
+                                                                repeats:NO];
         }
     }
 }
@@ -771,6 +759,28 @@ typedef enum
         NSLog(@"AudioPlayer did not load properly: %@", [error description]);
     }
 }
+
+#pragma mark - PlaylistManagement
+
+- (void)addItemToPlaylist:(PlaylistItem *)playlistItem
+{
+    //NSLog(@"Adding item = %@", [playlistItem description]);
+    [_playlist addObject:playlistItem];
+    [self.delegate addPlaylistItem:playlistItem];
+}
+
+- (void)removeItemFromPlaylist:(PlaylistItem *)playlistItem
+{
+    [self.delegate game:self setCurrentItem:playlistItem];
+    [self.delegate removePlaylistItem:playlistItem animation:UITableViewRowAnimationTop];
+}
+
+- (void)cancelMusic:(PlaylistItem *)selectedItem
+{
+    //_gameState = GameStateIdle;
+    [self.delegate removePlaylistItem:selectedItem animation:UITableViewRowAnimationRight];
+}
+
 #pragma mark - AVAudioPlayerDelegate
 
 - (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag
@@ -890,20 +900,16 @@ typedef enum
         // if we're here, we loaded the content correctly
         if((mediaItem.playlistItemType == PlaylistItemTypeMovie && mediaItem.uploadedByUser) ||
            mediaItem.playlistItemType == PlaylistItemTypeYoutube) {
-            NSLog(@"playing video");
             [self.delegate showViewController:_moviePlayerController];
-            NSLog(@"playing video 2");
             [_moviePlayerController.moviePlayer play];
             
-            NSLog(@"playing video 3");
             [[NSNotificationCenter defaultCenter] addObserver:self
                                                      selector:@selector(moviePlayerDidFinishPlaying:)
                                                          name:AVPlayerItemDidPlayToEndTimeNotification
                                                        object:_moviePlayerController.moviePlayer.playerItem];
-            NSLog(@"playing video 4");
             _gameState = GameStatePlayingMovie;
         } else {
-            [_audioPlayer play];
+            [_audioPlayer play]; 
             _updatePlaybackProgressTimer = [NSTimer scheduledTimerWithTimeInterval:0.01
                                                                             target:self
                                                                           selector:@selector(handleUpdatePlaybackProgressTimer:)
@@ -954,8 +960,22 @@ typedef enum
     MediaItem *mediaItem = (MediaItem *)[timer userInfo];
     
     [self sendSyncPacketsForItem:mediaItem];
-    
-    _playbackSyncingTimer = [NSTimer scheduledTimerWithTimeInterval:mediaItem.playlistItemType == PlaylistItemTypeSong ? UPDATE_TIME_AUDIO : UPDATE_TIME_VIDEO
+    int UPDATE_TIME = 30;
+    switch(mediaItem.playlistItemType) {
+        case PlaylistItemTypeSong:
+            UPDATE_TIME = UPDATE_TIME_AUDIO;
+            break;
+        case PlaylistItemTypeMovie:
+            UPDATE_TIME = UPDATE_TIME_MOVIE;
+            break;
+        case PlaylistItemTypeYoutube:
+            UPDATE_TIME = UPDATE_TIME_YOUTUBE;
+            break;
+        default:
+            UPDATE_TIME = 30;
+            break;
+    }
+    _playbackSyncingTimer = [NSTimer scheduledTimerWithTimeInterval:UPDATE_TIME
                                                              target:self
                                                            selector:@selector(handlePlaybackSyncingTimer:)
                                                            userInfo:mediaItem
