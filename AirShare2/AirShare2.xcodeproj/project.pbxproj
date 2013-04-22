@@ -41,6 +41,8 @@
 		5595E4EB171D2C46006782DE /* MoviePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5595E4EA171D2C45006782DE /* MoviePickerViewController.m */; };
 		5595E4EE171D3995006782DE /* MovieItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5595E4ED171D3995006782DE /* MovieItemCell.m */; };
 		559673C017246A3D000E0D52 /* LBYouTubeExtractor.m in Sources */ = {isa = PBXBuildFile; fileRef = 559673BF17246A3D000E0D52 /* LBYouTubeExtractor.m */; };
+		559673C31724CD96000E0D52 /* loading.gif in Resources */ = {isa = PBXBuildFile; fileRef = 559673C21724CD96000E0D52 /* loading.gif */; };
+		559673C51724CD9F000E0D52 /* youtubeLogo.png in Resources */ = {isa = PBXBuildFile; fileRef = 559673C41724CD9F000E0D52 /* youtubeLogo.png */; };
 		5596E08C16F62FB600511D3E /* PacketOtherClientQuit.m in Sources */ = {isa = PBXBuildFile; fileRef = 5596E08B16F62FB600511D3E /* PacketOtherClientQuit.m */; };
 		5596E0C916F6746900511D3E /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5596E0C816F6746900511D3E /* MediaPlayer.framework */; };
 		5596E0D716F692CE00511D3E /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5596E0D616F692CE00511D3E /* AudioToolbox.framework */; };
@@ -78,7 +80,6 @@
 		559D6B961711EC2000C591D8 /* upvote_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 559D6B8C1711EC2000C591D8 /* upvote_selected.png */; };
 		559D6B9C17120A2900C591D8 /* UIImage+animatedGIF.m in Sources */ = {isa = PBXBuildFile; fileRef = 559D6B9B17120A2900C591D8 /* UIImage+animatedGIF.m */; };
 		559D6B9E17120A5100C591D8 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 559D6B9D17120A5100C591D8 /* ImageIO.framework */; };
-		559D6BA017120BBA00C591D8 /* loading.gif in Resources */ = {isa = PBXBuildFile; fileRef = 559D6B9F17120BBA00C591D8 /* loading.gif */; };
 		55A28DB6171E5C60001E757E /* CustomMovieController.m in Sources */ = {isa = PBXBuildFile; fileRef = 55A28DB5171E5C60001E757E /* CustomMovieController.m */; };
 		55FCC54D16ED3D4C0000BCBD /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55FCC54C16ED3D4C0000BCBD /* UIKit.framework */; };
 		55FCC54F16ED3D4C0000BCBD /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55FCC54E16ED3D4C0000BCBD /* Foundation.framework */; };
@@ -173,6 +174,8 @@
 		559673BD17246A3D000E0D52 /* LBYouTube.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LBYouTube.h; sourceTree = "<group>"; };
 		559673BE17246A3D000E0D52 /* LBYouTubeExtractor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LBYouTubeExtractor.h; sourceTree = "<group>"; };
 		559673BF17246A3D000E0D52 /* LBYouTubeExtractor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LBYouTubeExtractor.m; sourceTree = "<group>"; };
+		559673C21724CD96000E0D52 /* loading.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; name = loading.gif; path = Graphics/loading.gif; sourceTree = "<group>"; };
+		559673C41724CD9F000E0D52 /* youtubeLogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = youtubeLogo.png; path = Graphics/youtubeLogo.png; sourceTree = "<group>"; };
 		5596E08A16F62FB600511D3E /* PacketOtherClientQuit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PacketOtherClientQuit.h; sourceTree = "<group>"; };
 		5596E08B16F62FB600511D3E /* PacketOtherClientQuit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PacketOtherClientQuit.m; sourceTree = "<group>"; };
 		5596E0C816F6746900511D3E /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
@@ -236,7 +239,6 @@
 		559D6B9A17120A2900C591D8 /* UIImage+animatedGIF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+animatedGIF.h"; sourceTree = "<group>"; };
 		559D6B9B17120A2900C591D8 /* UIImage+animatedGIF.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+animatedGIF.m"; sourceTree = "<group>"; };
 		559D6B9D17120A5100C591D8 /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
-		559D6B9F17120BBA00C591D8 /* loading.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = loading.gif; sourceTree = "<group>"; };
 		55A28DB4171E5C60001E757E /* CustomMovieController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomMovieController.h; sourceTree = "<group>"; };
 		55A28DB5171E5C60001E757E /* CustomMovieController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomMovieController.m; sourceTree = "<group>"; };
 		55FCC54916ED3D4C0000BCBD /* AirShare2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AirShare2.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -609,12 +611,13 @@
 		EA18C2001707E1A4008F5DAF /* Graphics */ = {
 			isa = PBXGroup;
 			children = (
+				559673C41724CD9F000E0D52 /* youtubeLogo.png */,
+				559673C21724CD96000E0D52 /* loading.gif */,
 				558F735F1720CFC00048F78F /* skip-01-rotated.png */,
 				89307B7617138BAC0008B488 /* upvote.png */,
 				89E4772D17128F9700DE9ECE /* movies-01.png */,
 				89E477291712869900DE9ECE /* exit-01.png */,
 				89E477271712837C00DE9ECE /* game.png */,
-				559D6B9F17120BBA00C591D8 /* loading.gif */,
 				559D6B841711EC2000C591D8 /* airshare.png */,
 				559D6B851711EC2000C591D8 /* bgGreyImg.png */,
 				559D6B861711EC2000C591D8 /* cancel.png */,
@@ -696,13 +699,14 @@
 				559D6B941711EC2000C591D8 /* music symbol-01.png in Resources */,
 				559D6B951711EC2000C591D8 /* skip-01.png in Resources */,
 				559D6B961711EC2000C591D8 /* upvote_selected.png in Resources */,
-				559D6BA017120BBA00C591D8 /* loading.gif in Resources */,
 				89E477281712837C00DE9ECE /* game.png in Resources */,
 				89E4772A1712869A00DE9ECE /* exit-01.png in Resources */,
 				89E4772E17128F9700DE9ECE /* movies-01.png in Resources */,
 				89307B7717138BAC0008B488 /* upvote.png in Resources */,
 				5596EDE91717355D00F069FE /* gothic.ttf in Resources */,
 				558F73601720CFC00048F78F /* skip-01-rotated.png in Resources */,
+				559673C31724CD96000E0D52 /* loading.gif in Resources */,
+				559673C51724CD9F000E0D52 /* youtubeLogo.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -97,7 +97,13 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if(section == 0) {
-        return 1;
+        NSString * searchString = [_searchBar.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+        
+        if (![searchString length]) {
+            return 1;
+        } else {
+            return 0;
+        }
     } else {
         return ((NSArray *)_searchData[section]).count;
 
@@ -107,15 +113,14 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"VideoCell";
-    UITableViewCell *cell = nil; //[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    MovieItemCell *cell = nil; //[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     
     // Configure the cell...
     if(cell == nil) {
         if(indexPath.section == 0) {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-            cell.textLabel.text = @"YouTube";
+            cell = [[MovieItemCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier title:@"" artist:@"Search for Youtube Videos" duration:@"" image:[UIImage imageNamed:@"youtubeLogo.png"]];
         } else {
-            cell = (UITableViewCell *)[[MovieItemCell alloc] initWithStyle:UITableViewCellStyleDefault
+            cell = [[MovieItemCell alloc] initWithStyle:UITableViewCellStyleDefault
                                                            reuseIdentifier:CellIdentifier
                                                                  movieItem:_searchData[indexPath.section][indexPath.row]];
         }

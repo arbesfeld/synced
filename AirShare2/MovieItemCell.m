@@ -35,6 +35,19 @@
     }
     return self;
 }
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier title:(NSString *)title artist:(NSString *)artist duration:(NSString *)duration image:(UIImage *)image
+{
+    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+    if (self) {
+        _title = title;
+        _artist = artist;
+        _duration = duration;
+        [self loadContent];
+        [_thumbImgView setImage:image];
+        [_thumbImgView setBackgroundColor:[UIColor clearColor]];
+    }
+    return self;
+}
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier title:(NSString *)title artist:(NSString *)artist duration:(NSString *)duration imageURL:(NSURL *)url
 {
@@ -52,13 +65,13 @@
 
 - (void)loadContent
 {
-    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(91, 12, 220, 20)];
+    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(91, 10, 220, 20)];
     titleLabel.text = _title;
     titleLabel.font = [UIFont boldSystemFontOfSize:17.0f];
-    UILabel *artistLabel = [[UILabel alloc] initWithFrame:CGRectMake(91, 33, 220, 20)];
+    UILabel *artistLabel = [[UILabel alloc] initWithFrame:CGRectMake(91, 30, 220, 20)];
     artistLabel.text = _artist;
     artistLabel.font = [UIFont boldSystemFontOfSize:14.0f];
-    UILabel *durationLabel = [[UILabel alloc] initWithFrame:CGRectMake(91, 52, 220, 20)];
+    UILabel *durationLabel = [[UILabel alloc] initWithFrame:CGRectMake(91, 50, 220, 20)];
     durationLabel.text = _duration;
     durationLabel.font = [UIFont boldSystemFontOfSize:14.0f];
     durationLabel.textColor = [UIColor grayColor];

@@ -20,5 +20,6 @@
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier movieItem:(MPMediaItem *)movieItem;
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier title:(NSString *)title artist:(NSString *)artist duration:(NSString *)duration imageURL:(NSURL *)url;
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier title:(NSString *)title artist:(NSString *)artist duration:(NSString *)duration image:(UIImage *)image;
 
 @end
