@@ -26,11 +26,8 @@
         int minutes = [duration intValue] / 60;
         int seconds = [duration intValue] % 60;
         
-        if(seconds < 10) {
-            _duration = [NSString stringWithFormat:@"%d:0%d", minutes, seconds];
-        } else {
-            _duration = [NSString stringWithFormat:@"%d:%d", minutes, seconds];
-        }
+        _duration = [NSString stringWithFormat:@"%02d:%02d", minutes, seconds];
+        
         [self loadContent];
     }
     return self;

@@ -48,6 +48,7 @@ const int ITEM_COUNT = 10;
 
 - (void)queryContent:(NSString *)searchString
 {
+    [self resetContent];
     NSDictionary *command = [NSDictionary dictionaryWithObjectsAndKeys:
                              searchString, @"q",
                              @"json", @"alt",
@@ -108,13 +109,14 @@ const int ITEM_COUNT = 10;
         [_videoURL addObject:tempURL];
         //NSLog(@"JSONmedialPlayerSet array = %@", JSONmediaPlayerSet);
         //[_YTArrayVideoURL addObject:[JSONmediaPlayerSet objectAtIndex:0]];
-        NSLog(@"_YTArrayURL array = %@", _videoURL);
+        //NSLog(@"_YTArrayURL array = %@", _videoURL);
         
         
         //This entry creates an array for duration variable and add it to global IVAR _
         NSArray *JSONdurationSet= [JSONmediaSet objectForKey:@"yt$duration"];
         //NSLog(@"JSONdurationSet = %@", JSONdurationSet);
         NSString *numberString = [self convertTimeFormat:[JSONdurationSet valueForKey:@"seconds"]];
+        //NSLog(@"numberString = %@", JSONdurationSet);
         [_videoDuration addObject:numberString];
         //NSLog(@"videoDuration = %@", _videoDuration);
         
@@ -130,7 +132,7 @@ const int ITEM_COUNT = 10;
 
 - (NSString *) convertTimeFormat:(NSString *)aNumberString {
 	int num_seconds = [aNumberString intValue];
-	//NSLog(@"num_seconds passed is: %i", num_seconds);
+	NSLog(@"num_seconds passed is: %i", num_seconds);
 	//float days = aFloatValue / (60 * 60 * 24);
 	//float num_seconds -= days * (60 * 60 * 24);
 	int hours = num_seconds / (60 * 60);
@@ -141,27 +143,12 @@ const int ITEM_COUNT = 10;
 	num_seconds -= minutes * (60);
 	//NSLog(@"Seconds remaining is: %i", num_seconds);
     
-	//convert time value passed into format
-	NSDateComponents *comps = [[NSDateComponents alloc] init];
-	[comps setHour:hours];
-	[comps setMinute:minutes];
-	[comps setSecond:num_seconds];
-	NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-	NSDate *date = [gregorian dateFromComponents:comps];
-	//NSLog(@"NSDate comps is. date is: %@", date);
-	
-	NSString *timeToReturn = date.description;
-	timeToReturn = [timeToReturn stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-	NSArray *timeArray = [timeToReturn componentsSeparatedByString:@" "];
-	//NSLog(@"timeArray is: %@", timeArray);
-	timeToReturn = [timeArray objectAtIndex:1];
-	//separate the colons into array and parse and return the min:sec only
-	timeArray = [timeToReturn componentsSeparatedByString:@":"];
-	timeToReturn = [timeArray objectAtIndex:1];
-	timeToReturn = [timeToReturn stringByAppendingString:@":"];
-	timeToReturn = [timeToReturn stringByAppendingString:[timeArray objectAtIndex:2]];
-	//NSLog(@"TimeToReturn is: %@", timeToReturn);
-	return timeToReturn;
+    if(hours != 0) {
+        return [NSString stringWithFormat:@"%02d:%02d:%02d",hours, minutes, num_seconds];
+    } else {
+        return [NSString stringWithFormat:@"%02d:%02d", minutes, num_seconds];
+    }
+
 }
 
 - (NSString *)genRandStringLength:(int)len {
