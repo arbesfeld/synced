@@ -74,7 +74,7 @@
     
     // the name of the locally saved file
     NSString *saveName = [NSString stringWithFormat:@"%@-beats.txt", mediaItem.ID];
-    saveName = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:saveName];
+    saveName = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:saveName];
     NSLog(@"saving beats to %@", saveName);
     
     // asynchronous download

@@ -20,14 +20,14 @@ const double DELAY_TIME = 2.50000;   // wait DELAY_TIME seconds until songs play
 const int WAIT_TIME_UPLOAD = 60;     // server wait time for others to download music after uploading
 const int WAIT_TIME_DOWNLOAD = 60;   // server wait time for others to download music after downloading
 const int SYNC_PACKET_COUNT = 100;   // how many sync packets to send
-const int UPDATE_TIME_AUDIO = 60;    // how often to update playback (after first update)
-const int UPDATE_TIME_MOVIE = 30;    // how often to update playback (after first update)
-const int UPDATE_TIME_YOUTUBE = 5;  // how often to update playback (after first update)
+const int UPDATE_TIME_AUDIO = 90;    // how often to update playback (after first update)
+const int UPDATE_TIME_MOVIE = 60;    // how often to update playback (after first update)
+const int UPDATE_TIME_YOUTUBE = 30;   // how often to update playback (after first update)
 const int UPDATE_TIME_FIRST = 1;     // how often to update playback (first update)
 const double BACKGROUND_TIME = -0.2; // the additional time it takes when app is in background
 const double MOVIE_TIME = -0.1;      // the additional time it takes for movies
 const double AUDIO_SEEK_TIME = 0.12; // time for audioplayer to seek
-const double MOVIE_SEEK_TIME = 0.23; // time for movie player to seek
+const double MOVIE_SEEK_TIME = 0.25; // time for movie player to seek
 
 typedef enum
 {
@@ -184,14 +184,7 @@ typedef enum
             }
             
             PlaylistItem *currentItem = ((PacketGameState *)packet).currentPlaylistItem;
-            if(currentItem.playlistItemType == PlaylistItemTypeSong ||
-               currentItem.playlistItemType == PlaylistItemTypeMovie) {
-                // need to make sure the current item is of the correct type
-                MediaItem *mediaCurrentItem = [[MediaItem alloc] initPlaylistItemWithName:currentItem.name andSubtitle:currentItem.subtitle andID:currentItem.ID andDate:nil andPlaylistItemType:currentItem.playlistItemType];
-                [self.delegate game:self setCurrentItem:mediaCurrentItem];
-            } else {
-                [self.delegate game:self setCurrentItem:currentItem];
-            }
+            [self.delegate game:self setCurrentItem:currentItem];
             
             _skipItemCount = ((PacketGameState *)packet).skipCount;
             [self.delegate game:self setSkipItemCount:_skipItemCount];
@@ -238,18 +231,31 @@ typedef enum
                 if(songTime != 0 && _gameState == GameStateIdle) {
                     NSLog(@"Joined in the middle of a song!");
                     // we joined during the middle of a song
-                    if(mediaItem.loadProgress == 1.0) {
+                    if(mediaItem.loadProgress == 1.0 || mediaItem.playlistItemType == PlaylistItemTypeYoutube) {
                         _gameState = GameStatePreparingToPlayMedia;
-                        [self loadAudioPlayer:mediaItem];
+                        
+                        if(mediaItem.playlistItemType == PlaylistItemTypeYoutube) {
+                            _moviePlayerController = [[CustomMovieController alloc] initWithMediaItem:mediaItem];
+                            _moviePlayerController.delegate = self;
+                            NSLog(@"loaded with url = %@", mediaItem.url);
+                            if(_moviePlayerController.moviePlayer == nil) {
+                                _gameState = GameStateIdle;
+                                NSLog(@"ERROR loading moviePlayer!");
+                            }
+                            
+                        } else {
+                            // it must be audio
+                            [self loadAudioPlayer:mediaItem];
+                            [_audioPlayer setVolume:0.0];
+                        }
                         
                         // this is a bit hacky: act like you're playing the song from the beginning
-                        // but set the volume to 0 because it will clearly be off
+                        // but set the volume to 0 because it wont be synced
                         _playMusicTimer = [NSTimer scheduledTimerWithTimeInterval:0.1
                                                                            target:self
                                                                          selector:@selector(handlePlayMusicTimer:)
                                                                          userInfo:mediaItem
                                                                           repeats:NO];
-                        [_audioPlayer setVolume:0.0];
                     }
                 }
             }
@@ -387,10 +393,15 @@ typedef enum
             MediaItem *mediaItem = (MediaItem *)[self playlistItemWithID:ID];
             [self serverTryPlayingMedia:mediaItem waitTime:WAIT_TIME_DOWNLOAD];
             
+            if(mediaItem == _currentItem) {
+                // someone just downloaded the currentItem, update them
+                [self sendSyncPacketsForItem:mediaItem];
+            }
             break;
         }
         case PacketTypePlayMusicRequest:
         {
+            NSLog(@"Request for sync packets");
             // someone wants you to send sync packets
             if([_currentItem isKindOfClass:[MediaItem class]]) {
                 [self sendSyncPacketsForItem:(MediaItem *)_currentItem];
@@ -460,7 +471,8 @@ typedef enum
         
         // only update if you have fully loaded the song
         if((playlistItem.playlistItemType == PlaylistItemTypeSong ||
-            playlistItem.playlistItemType == PlaylistItemTypeMovie) &&
+            playlistItem.playlistItemType == PlaylistItemTypeMovie ||
+            playlistItem.playlistItemType == PlaylistItemTypeYoutube) &&
             playlistItem.loadProgress == 1.0) {
             PacketMusicDownload *packet = [PacketMusicDownload packetWithID:playlistItem.ID];
             [self sendPacket:packet toClientWithPeerID:player.peerID];
@@ -468,7 +480,8 @@ typedef enum
     }
     // maybe send the currentItem
     if((_currentItem.playlistItemType == PlaylistItemTypeSong ||
-        _currentItem.playlistItemType == PlaylistItemTypeMovie) &&
+        _currentItem.playlistItemType == PlaylistItemTypeMovie ||
+        _currentItem.playlistItemType == PlaylistItemTypeYoutube) &&
         _currentItem.loadProgress == 1.0) {
         NSLog(@"Sending current item that has ID = %@", _currentItem.ID);
         PacketMusicDownload *packet = [PacketMusicDownload packetWithID:_currentItem.ID];
@@ -563,6 +576,7 @@ typedef enum
     [self.delegate reloadTable];
     
     if(youtubeItem.uploadedByUser) {
+        NSLog(@"ID = %@", youtubeItem.ID);
         PacketPlaylistItem *packet = [PacketPlaylistItem packetWithPlaylistItem:youtubeItem];
         [self sendPacketToAllClients:packet];
         
@@ -896,6 +910,8 @@ typedef enum
 {
     MediaItem *mediaItem = (MediaItem *)[timer userInfo];
     
+    [self removeItemFromPlaylist:mediaItem];
+    
     if(_gameState == GameStatePreparingToPlayMedia) {
         // if we're here, we loaded the content correctly
         if((mediaItem.playlistItemType == PlaylistItemTypeMovie && mediaItem.uploadedByUser) ||
@@ -929,7 +945,6 @@ typedef enum
         }
     }
     
-    [self removeItemFromPlaylist:mediaItem];
     
     _haveSkippedThisItem = NO;
     _skipItemCount = 0;

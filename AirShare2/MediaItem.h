@@ -10,7 +10,7 @@
 
 @interface MediaItem : PlaylistItem
 
-@property (nonatomic, retain) NSURL *url;
+@property (nonatomic, retain) NSURL *url, *originalURL;
 @property (nonatomic, assign) NSInteger beatPos;
 @property (nonatomic, retain) NSMutableArray *beats;
 @property (nonatomic, assign) BOOL partyMode;

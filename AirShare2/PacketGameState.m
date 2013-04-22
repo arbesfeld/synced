@@ -85,6 +85,17 @@
                 
                 break;
             }
+            case PlaylistItemTypeYoutube:
+            {
+                NSURL *url = [NSURL URLWithString:[data rw_stringAtOffset:offset bytesRead:&count]];
+                offset += count;
+                
+                MediaItem *mediaItem = [MediaItem mediaItemWithName:name andSubtitle:subtitle andID:ID andDate:date andURL:url uploadedByUser:NO andPlayListItemType:playlistItemType];
+                [mediaItem setUpvoteCount:upvoteCount andDownvoteCount:downvoteCount];
+                [playlist addObject:mediaItem];
+                
+                break;
+            }
             default:
                 NSLog(@"Do not recognize playlistItemType!");
                 break;
@@ -102,8 +113,34 @@
     int currentPlaylistItemType = [data rw_int8AtOffset:offset];
     offset += 1;
     
-    PlaylistItem *currentPlaylistItem = [[PlaylistItem alloc] initPlaylistItemWithName:currentName andSubtitle:currentSubtitle andID:currentID andDate:nil andPlaylistItemType:currentPlaylistItemType];
     
+    PlaylistItem *currentPlaylistItem; 
+    switch(currentPlaylistItemType) {
+        case PlaylistItemTypeSong:
+        case PlaylistItemTypeMovie:
+        {
+            currentPlaylistItem = [MediaItem mediaItemWithName:currentName andSubtitle:currentSubtitle andID:currentID andDate:nil andURL:nil uploadedByUser:NO andPlayListItemType:currentPlaylistItemType];
+            
+            break;
+        }
+        case PlaylistItemTypeYoutube:
+        {
+            NSURL *url = [NSURL URLWithString:[data rw_stringAtOffset:offset bytesRead:&count]];
+            offset += count;
+            
+            currentPlaylistItem = [MediaItem mediaItemWithName:currentName andSubtitle:currentSubtitle andID:currentID andDate:nil andURL:url uploadedByUser:NO andPlayListItemType:currentPlaylistItemType];
+            
+            break;
+        }
+        case PlaylistItemTypeNone:
+        {
+            currentPlaylistItem = [[PlaylistItem alloc] initPlaylistItemWithName:currentName andSubtitle:currentSubtitle andID:currentID andDate:nil andPlaylistItemType:currentPlaylistItemType];
+            //break;
+        }
+        default:
+            NSLog(@"Do not recognize playlistItemType!");
+            break;
+    }
     int skipSongCount = [data rw_int8AtOffset:offset];
     offset += 1;
     
@@ -153,12 +190,22 @@
         [data rw_appendInt8: [playlistItem getUpvoteCount]];
         [data rw_appendInt8: [playlistItem getDownvoteCount]];
         [data rw_appendInt8:  playlistItem.playlistItemType];
+        
+        if(playlistItem.playlistItemType == PlaylistItemTypeYoutube) {
+            NSString *urlString = [NSString stringWithFormat:@"%@", ((MediaItem *)playlistItem).originalURL];
+            [data rw_appendString:urlString];
+        }
      }
     
     [data rw_appendString:self.currentPlaylistItem.name];
     [data rw_appendString:self.currentPlaylistItem.subtitle];
+    NSLog(@"ID = %@", self.currentPlaylistItem.ID);
     [data rw_appendString:self.currentPlaylistItem.ID];
     [data rw_appendInt8:  self.currentPlaylistItem.playlistItemType];
+    if(self.currentPlaylistItem.playlistItemType == PlaylistItemTypeYoutube) {
+        NSString *urlString = [NSString stringWithFormat:@"%@", ((MediaItem *)self.currentPlaylistItem).originalURL];
+        [data rw_appendString:urlString];
+    }
     
     [data rw_appendInt8:  self.skipCount];
 }

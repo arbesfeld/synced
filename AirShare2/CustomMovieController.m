@@ -21,7 +21,7 @@
     
     if(self) {
         CGRect frame = [UIScreen mainScreen].applicationFrame;
-        
+        _mediaItem = mediaItem;
         _moviePlayer = [[PlayerView alloc] initWithMediaItem:mediaItem];
         [self.view addSubview:_moviePlayer];
         if ( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad )
@@ -79,6 +79,8 @@
 - (void)applicationDidEnterBackground:(NSNotification *)notification
 {
     if([[UIApplication sharedApplication] applicationState] == UIApplicationStateBackground) {
+        NSLog(@"applicationDidEnterBackground:CustomMovieController");
+        
         [self performSelector:@selector(play) withObject:nil afterDelay:0.001];
     }
 }

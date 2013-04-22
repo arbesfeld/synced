@@ -34,6 +34,7 @@
         } else {
             self.url = url;
         }
+        self.originalURL = url;
         self.beats = [[NSMutableArray alloc] init];
         self.beatPos = -1;
         self.partyMode = NO;
@@ -53,7 +54,7 @@
     // update beatPos = 0;
     
     NSString *saveName = [NSString stringWithFormat:@"%@-beats.txt", self.ID];
-    saveName = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:saveName];
+    saveName = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:saveName];
     NSString* fileContents = [NSString stringWithContentsOfFile:saveName encoding:NSUTF8StringEncoding error:nil];
     //NSLog(@"got filepath: %@", saveName);
     //NSLog(@"got filecontents: %@", fileContents);
