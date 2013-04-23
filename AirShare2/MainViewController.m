@@ -361,11 +361,25 @@
     _hostGameButton.titleLabel.font = [UIFont fontWithName:@"Century Gothic" size:20.0f];
     [_joinGameButton setTitle:@"Join" forState:UIControlStateNormal];
     _joinGameButton.titleLabel.font = [UIFont fontWithName:@"Century Gothic" size:20.0f];
-    [_backButton setTitle:@"Back" forState:UIControlStateNormal];
-    _backButton.titleLabel.font = [UIFont fontWithName:@"Century Gothic" size:17.0f];
     NSURL *url = [[NSBundle mainBundle] URLForResource:@"loading" withExtension:@"gif"];
     _waitingView.image = [UIImage animatedImageWithAnimatedGIFData:[NSData dataWithContentsOfURL:url]];
     _waitingView.hidden = YES;
+    
+
+    _joinGameButton.layer.borderColor = [UIColor colorWithRed:113/255.0 green:254/225.0 blue:235/225.0 alpha:.6].CGColor;
+    _joinGameButton.layer.borderWidth = 2.5f;
+    _joinGameButton.layer.cornerRadius = 10.0f;
+    _joinGameButton.layer.shadowOffset = CGSizeMake(2, 2);
+    _joinGameButton.layer.shadowColor = [[UIColor blackColor] CGColor];
+    _joinGameButton.layer.shadowOpacity = .5f;
+    
+    _hostGameButton.layer.borderColor = [UIColor colorWithRed:188/255.0 green:113/225.0 blue:254/225.0 alpha:.8].CGColor;
+    _hostGameButton.layer.borderWidth = 2.5f;
+    _hostGameButton.layer.cornerRadius = 10.0f;
+    _hostGameButton.layer.shadowOffset = CGSizeMake(2, 2);
+    _hostGameButton.layer.shadowColor = [[UIColor blackColor] CGColor];
+    _hostGameButton.layer.shadowOpacity = .5f;
+    
 }
 
 

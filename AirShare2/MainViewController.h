@@ -3,6 +3,7 @@
 #import "MatchmakingClient.h"
 #import "MatchmakingServer.h"
 #import "UIImage+animatedGIF.h"
+#import "EGORefreshTableHeaderView.h"
 
 @interface MainViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, UIAlertViewDelegate, GameViewControllerDelegate, MatchmakingClientDelegate, MatchmakingServerDelegate>
 
@@ -13,8 +14,10 @@
 @property (strong, nonatomic) IBOutlet UIImageView *waitingView;
 @property (strong, nonatomic) IBOutlet UILabel *sessionsLabel;
 
+
 - (IBAction)backAction:(id)sender;
 - (IBAction)joinGameAction:(id)sender;
 - (IBAction)hostGameAction:(id)sender;
+
 
 @end
