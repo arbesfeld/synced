@@ -9,7 +9,7 @@
 #import "YouTubeTableViewController.h"
 #import "UIImageView+WebCache.h"
 
-const int ITEM_COUNT = 10;
+const int ITEM_COUNT = 20;
 
 @interface YouTubeTableViewController ()
 
@@ -49,8 +49,9 @@ const int ITEM_COUNT = 10;
 - (void)queryContent:(NSString *)searchString
 {
     [self resetContent];
+    NSString* escapedSearchString = [searchString stringByAddingPercentEscapesUsingEncoding:NSASCIIStringEncoding];
     NSDictionary *command = [NSDictionary dictionaryWithObjectsAndKeys:
-                             searchString, @"q",
+                             escapedSearchString, @"q",
                              @"json", @"alt",
                              [NSString stringWithFormat:@"%d", 1], @"start-index",
                              [NSString stringWithFormat:@"%d", ITEM_COUNT], @"max-results",
@@ -132,7 +133,7 @@ const int ITEM_COUNT = 10;
 
 - (NSString *) convertTimeFormat:(NSString *)aNumberString {
 	int num_seconds = [aNumberString intValue];
-	NSLog(@"num_seconds passed is: %i", num_seconds);
+	//NSLog(@"num_seconds passed is: %i", num_seconds);
 	//float days = aFloatValue / (60 * 60 * 24);
 	//float num_seconds -= days * (60 * 60 * 24);
 	int hours = num_seconds / (60 * 60);

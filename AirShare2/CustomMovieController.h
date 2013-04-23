@@ -7,6 +7,7 @@
 //
 
 #import <MediaPlayer/MediaPlayer.h>
+#import <QuartzCore/QuartzCore.h>
 #import "PlayerView.h"
 #import "MediaItem.h"
 
@@ -19,14 +20,18 @@
 
 @end
 
-@interface CustomMovieController : UIViewController
-
+@interface CustomMovieController : UIViewController {
+    NSTimer *_fadeOutTimer;
+}
 @property (nonatomic, weak) id <CustomMovieControllerDelegate> delegate;
 @property (nonatomic, strong) PlayerView *moviePlayer;
-@property (nonatomic, strong) UIButton *skipButton;
+@property (nonatomic, strong) UIButton *skipButton, *fadeButton;
+@property (nonatomic, strong) UILabel *skipLabel;
 @property (nonatomic, strong) UIImage *skipImage;
+@property (nonatomic, strong) UIView *controlBackground;
 @property (nonatomic, strong) MediaItem *mediaItem;
 
 - (id)initWithMediaItem:(MediaItem *)mediaItem;
+- (void)setSkipCount:(int)skipCount total:(int)total;
 - (void)stop;
 @end

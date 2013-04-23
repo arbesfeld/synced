@@ -22,7 +22,8 @@ const int WAIT_TIME_DOWNLOAD = 60;   // server wait time for others to download 
 const int SYNC_PACKET_COUNT = 100;   // how many sync packets to send
 const int UPDATE_TIME_AUDIO = 90;    // how often to update playback (after first update)
 const int UPDATE_TIME_MOVIE = 60;    // how often to update playback (after first update)
-const int UPDATE_TIME_YOUTUBE = 30;   // how often to update playback (after first update)
+const int UPDATE_TIME_YOUTUBE = 30;  // how often to update playback (after first update)
+const int UPDATE_TIME_YOUTUBE_LOADING = 10;   // how often to update playback (after first update)
 const int UPDATE_TIME_FIRST = 1;     // how often to update playback (first update)
 const double BACKGROUND_TIME = -0.2; // the additional time it takes when app is in background
 const double MOVIE_TIME = -0.1;      // the additional time it takes for movies
@@ -110,7 +111,7 @@ typedef enum
     Packet *packet = [PacketSignIn packetWithPlayerName:_localPlayerName];
 	[self sendPacketToServer:packet];
     
-    [self.delegate game:self setSkipItemCount:0];
+    [self.delegate setSkipItemCount:0];
 }
 
 - (void)startServerGameWithSession:(GKSession *)session playerName:(NSString *)name clients:(NSArray *)clients
@@ -136,7 +137,7 @@ typedef enum
 	player.peerID = _session.peerID;
     
 	[_players setObject:player forKey:player.peerID];
-    [self.delegate game:self setSkipItemCount:0];
+    [self.delegate setSkipItemCount:0];
 }
 
 #pragma mark - GKSession Data Receive Handler
@@ -184,10 +185,10 @@ typedef enum
             }
             
             PlaylistItem *currentItem = ((PacketGameState *)packet).currentPlaylistItem;
-            [self.delegate game:self setCurrentItem:currentItem];
+            [self.delegate setCurrentItem:currentItem];
             
             _skipItemCount = ((PacketGameState *)packet).skipCount;
-            [self.delegate game:self setSkipItemCount:_skipItemCount];
+            [self setSkipCount];
             
             [self.delegate reloadTable];
             
@@ -289,7 +290,7 @@ typedef enum
         {
             NSLog(@"Client received PacketTypeSkipMusic");
             _skipItemCount++;
-            [self.delegate game:self setSkipItemCount:_skipItemCount];
+            [self setSkipCount];
             [self trySkippingSong];
             break;
         }
@@ -432,7 +433,7 @@ typedef enum
         {
             NSLog(@"Server received PacketTypeSkipMusic");
             _skipItemCount++;
-            [self.delegate game:self setSkipItemCount:_skipItemCount];
+            [self setSkipCount];
             [self trySkippingSong];
             
             break;
@@ -785,7 +786,7 @@ typedef enum
 
 - (void)removeItemFromPlaylist:(PlaylistItem *)playlistItem
 {
-    [self.delegate game:self setCurrentItem:playlistItem];
+    [self.delegate setCurrentItem:playlistItem];
     [self.delegate removePlaylistItem:playlistItem animation:UITableViewRowAnimationTop];
 }
 
@@ -802,7 +803,7 @@ typedef enum
     NSLog(@"AudioPlayer %@ finished playing, success? %@", player == _audioPlayer ? @"audioPlayer" : @"silentPlayer", flag ? @"YES" : @"NO");
     
     if(player == _audioPlayer) {
-        NSAssert(!flag || _gameState == GameStatePlayingMusic, @"In audioPlayerDidFinishPlaying:");
+        NSAssert(!flag || _gameState == GameStatePlayingMusic || !self.isServer, @"In audioPlayerDidFinishPlaying:");
         _gameState = GameStateIdle;
         
         [self.delegate setPlaybackProgress:0.0];
@@ -829,6 +830,10 @@ typedef enum
     
     NSLog(@"MoviePlayerDidFinishPlaying");
     
+    if(_updatePlaybackProgressTimer) {
+        [_updatePlaybackProgressTimer invalidate];
+        _updatePlaybackProgressTimer = nil;
+    }
     if(_playbackSyncingTimer) {
         [_playbackSyncingTimer invalidate];
         _playbackSyncingTimer = nil;
@@ -861,7 +866,7 @@ typedef enum
         NSLog(@"Haven't skipped this item");
         _haveSkippedThisItem = YES;
         _skipItemCount++;
-        [self.delegate game:self setSkipItemCount:_skipItemCount];
+        [self setSkipCount];
         
         Packet *packet = [Packet packetWithType:PacketTypeSkipMusic];
         [self sendPacketToAllClients:packet];
@@ -875,7 +880,7 @@ typedef enum
     // if we exceed half the player count, stop the audio and let the next song play
     if( _players.count / 2 < _skipItemCount) {
         NSLog(@"Skipping song!");
-        [self.delegate game:self setSkipItemCount:0];
+        [self.delegate setSkipItemCount:0];
         [self.delegate mediaFinishedPlaying];
         
         if(_gameState == GameStatePlayingMusic) {
@@ -916,7 +921,16 @@ typedef enum
         // if we're here, we loaded the content correctly
         if((mediaItem.playlistItemType == PlaylistItemTypeMovie && mediaItem.uploadedByUser) ||
            mediaItem.playlistItemType == PlaylistItemTypeYoutube) {
-            [self.delegate showViewController:_moviePlayerController];
+            if(mediaItem.uploadedByUser) {
+                NSLog(@"making frame 0");
+                [self.delegate showViewController:_moviePlayerController];
+            } else {
+                _updatePlaybackProgressTimer = [NSTimer scheduledTimerWithTimeInterval:0.01
+                                                                                target:self
+                                                                              selector:@selector(handleUpdatePlaybackProgressTimer:)
+                                                                              userInfo:mediaItem
+                                                                               repeats:YES];
+            }
             [_moviePlayerController.moviePlayer play];
             
             [[NSNotificationCenter defaultCenter] addObserver:self
@@ -948,7 +962,7 @@ typedef enum
     
     _haveSkippedThisItem = NO;
     _skipItemCount = 0;
-    [self.delegate game:self setSkipItemCount:_skipItemCount];
+    [self setSkipCount];
     
     NSLog(@"Playing item, name = %@", mediaItem.name);
 }
@@ -984,7 +998,11 @@ typedef enum
             UPDATE_TIME = UPDATE_TIME_MOVIE;
             break;
         case PlaylistItemTypeYoutube:
-            UPDATE_TIME = UPDATE_TIME_YOUTUBE;
+            if(_moviePlayerController && CMTimeGetSeconds([_moviePlayerController.moviePlayer.player currentTime]) < 30) {
+                UPDATE_TIME = UPDATE_TIME_YOUTUBE_LOADING;
+            } else {
+                UPDATE_TIME = UPDATE_TIME_YOUTUBE;
+            }
             break;
         default:
             UPDATE_TIME = 30;
@@ -1000,17 +1018,27 @@ typedef enum
 
 - (void)handleUpdatePlaybackProgressTimer:(NSTimer *)timer
 {
-    float total = _audioPlayer.duration;
-    float fraction = _audioPlayer.currentTime / total;
-    
-    [self.delegate setPlaybackProgress:fraction];
-    
     // decide whether to mark a beat
     MediaItem *mediaItem = (MediaItem *)timer.userInfo;
-    if (mediaItem.beatPos >= 0 && mediaItem.beatPos < [mediaItem.beats count] &&[(NSNumber *)[mediaItem.beats objectAtIndex:mediaItem.beatPos] doubleValue] < _audioPlayer.currentTime) {
-        // play a beat
-        //NSLog(@"%f is the time; %@ is the beat", _audioPlayer.currentTime, (NSNumber*)[mediaItem.beats objectAtIndex:mediaItem.beatPos]);
-        [mediaItem nextBeat];
+    if(mediaItem.playlistItemType == PlaylistItemTypeSong ||
+       (mediaItem.playlistItemType == PlaylistItemTypeMovie && !mediaItem.uploadedByUser)) {
+        float total = _audioPlayer.duration;
+        float fraction = _audioPlayer.currentTime / total;
+        
+        [self.delegate setPlaybackProgress:fraction];
+        
+        if (mediaItem.beatPos >= 0 && mediaItem.beatPos < [mediaItem.beats count] &&[(NSNumber *)[mediaItem.beats objectAtIndex:mediaItem.beatPos] doubleValue] < _audioPlayer.currentTime) {
+            // play a beat
+            //NSLog(@"%f is the time; %@ is the beat", _audioPlayer.currentTime, (NSNumber*)[mediaItem.beats objectAtIndex:mediaItem.beatPos]);
+            [mediaItem nextBeat];
+        }
+    } else if(mediaItem.playlistItemType == PlaylistItemTypeMovie ||
+              mediaItem.playlistItemType == PlaylistItemTypeYoutube) {
+        float current = CMTimeGetSeconds([_moviePlayerController.moviePlayer.player currentTime]);
+        float total = CMTimeGetSeconds(_moviePlayerController.moviePlayer.player.currentItem.asset.duration);
+        float fraction = current / total;
+        
+        [self.delegate setPlaybackProgress:fraction];
     }
 }
 
@@ -1191,6 +1219,12 @@ typedef enum
     return randomString;
 }
 
+- (void)setSkipCount {
+    [self.delegate setSkipItemCount:_skipItemCount];
+    if(_moviePlayerController) {
+        [_moviePlayerController setSkipCount:_skipItemCount total:_players.count];
+    }
+}
 #pragma mark - End Session Handling
 
 - (void)destroyFilesWithSessionID:(NSString *)sessionID
@@ -1252,7 +1286,7 @@ typedef enum
     [_moviePlayerController.moviePlayer stop];
     _audioPlayer = nil;
     _moviePlayerController = nil;
-	[self.delegate game:self didQuitWithReason:reason];
+	[self.delegate didQuitWithReason:reason];
 }
 
 #pragma mark - GKSessionDelegate
@@ -1345,8 +1379,8 @@ typedef enum
         Player *player = [[Player alloc] init];
         player.peerID = peerID;
         [_players setObject:player forKey:player.peerID];
-        [self.delegate game:self clientDidConnect:player];
-        [self.delegate game:self setSkipItemCount:_skipItemCount];
+        [self.delegate clientDidConnect:player];
+        [self setSkipCount];
     }
 }
 
@@ -1363,8 +1397,9 @@ typedef enum
             PacketOtherClientQuit *packet = [PacketOtherClientQuit packetWithPeerID:peerID];
             [self sendPacketToAllClients:packet];
         }
-        [self.delegate game:self clientDidDisconnect:player];
-        [self.delegate game:self setSkipItemCount:_skipItemCount];
+        [self.delegate clientDidDisconnect:player];
+        [self setSkipCount];
+        [self trySkippingSong];
     }
 }
 

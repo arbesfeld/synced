@@ -7,11 +7,6 @@
 
 const double epsilon = 0.02;
 
-@interface GameViewController ()
-
-@property (nonatomic, strong) MarqueeLabel * songTitle;
-
-@end
 
 @implementation GameViewController
 {
@@ -47,17 +42,26 @@ const double epsilon = 0.02;
     self.artistLabel.hidden = YES;
     self.waitingLabel.hidden = NO;
     self.waitingLabel.font = [UIFont fontWithName:@"Century Gothic" size:17.0f];
-    self.songTitle = [[MarqueeLabel alloc] initWithFrame:CGRectMake(20, 70, self.view.frame.size.width-40.0f, 20.0f) duration:6.0 andFadeLength:10.0f];
+    float marqueeX;
+    if ( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad )
+    {
+        marqueeX = self.view.frame.size.width / 2.0;
+    } else {
+        marqueeX = self.view.frame.size.width / 2.0 - 140;
+    }
+    
+    self.songTitle = [[MarqueeLabel alloc] initWithFrame:CGRectMake(marqueeX, 70, 280.0f, 20.0f) duration:6.0 andFadeLength:10.0f];
+    
     self.songTitle.tag = 101;
     self.songTitle.numberOfLines = 1;
     self.songTitle.shadowOffset = CGSizeMake(0.0, -1.0);
     self.songTitle.textAlignment = NSTextAlignmentCenter;
     self.songTitle.textColor = [UIColor colorWithRed:0.234 green:0.234 blue:0.234 alpha:1.000];
     self.songTitle.backgroundColor = [UIColor clearColor];
-    self.songTitle.font = [UIFont systemFontOfSize:17];
+    self.songTitle.font = [UIFont fontWithName:@"Century Gothic" size:19.0f];
     self.songTitle.text = @"";
     [self.view addSubview:self.songTitle];
-    self.skipSongLabel.font = [UIFont fontWithName:@"Century Gothic" size:17.0f];
+    self.skipSongLabel.font = [UIFont fontWithName:@"Century Gothic" size:20.0f];
     
     [[UIApplication sharedApplication] beginReceivingRemoteControlEvents];
 }
@@ -112,18 +116,18 @@ const double epsilon = 0.02;
 
 #pragma mark - GameDelegate
 
-- (void)game:(Game *)game didQuitWithReason:(QuitReason)reason
+- (void)didQuitWithReason:(QuitReason)reason
 {
 	[self.delegate gameViewController:self didQuitWithReason:reason];
 }
 
-- (void)game:(Game *)game clientDidConnect:(Player *)player;
+- (void)clientDidConnect:(Player *)player;
 {
     [self.userTable reloadData];
     [self.playlistTable reloadData];
 }
 
-- (void)game:(Game *)game clientDidDisconnect:(Player *)player;
+- (void)clientDidDisconnect:(Player *)player;
 {
     [self.userTable reloadData];
     [self.playlistTable reloadData];
@@ -188,7 +192,7 @@ const double epsilon = 0.02;
     self.songTitle.text = @"";
 }
 
-- (void)game:(Game *)game setCurrentItem:(PlaylistItem *)playlistItem
+- (void)setCurrentItem:(PlaylistItem *)playlistItem
 {
     _game.currentItem = playlistItem;
     if([_game.currentItem.name isEqualToString:@""] && [_game.currentItem.subtitle isEqualToString:@""] && [_game.currentItem.ID isEqualToString:@""]) {
@@ -200,9 +204,9 @@ const double epsilon = 0.02;
     [self setHeaderWithSongName:playlistItem.name andArtistName:playlistItem.subtitle];
 }
 
-- (void)game:(Game *)game setSkipItemCount:(int)skipItemCount
+- (void)setSkipItemCount:(int)skipItemCount
 {
-    self.skipSongLabel.text = [NSString stringWithFormat:@"%d/%d", skipItemCount, game.players.count];
+    self.skipSongLabel.text = [NSString stringWithFormat:@"%d/%d", skipItemCount, _game.players.count];
 }
 
 - (void)gameSessionDidEnd:(Game *)server;

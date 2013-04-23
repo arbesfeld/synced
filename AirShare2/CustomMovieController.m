@@ -33,28 +33,120 @@
                 frame.size.height = frame.size.width;
                 frame.size.width = height;
             }
-            _skipButton = [[UIButton alloc] initWithFrame:CGRectMake(frame.size.width - 80, frame.size.height - 50, 50, 50)];
-            _skipImage = [UIImage imageNamed:@"skip-01.png"];
-            
-            id center = [NSNotificationCenter defaultCenter];
-            [center addObserver:self
-                       selector:@selector(didRotate:)
-                           name:UIApplicationDidChangeStatusBarOrientationNotification
-                         object:nil];
+            _skipLabel = [[UILabel alloc] initWithFrame:CGRectMake(frame.size.width - 130, frame.size.height - 64, 50, 50)];
+            _skipLabel.font = [UIFont fontWithName:@"Century Gothic" size:24.0f];
+            _skipButton = [[UIButton alloc] initWithFrame:CGRectMake(frame.size.width - 80, frame.size.height - 60, 50, 45.59)];
+            _controlBackground = [[UIView alloc] initWithFrame:CGRectMake(frame.size.width - 153, frame.size.height - 75, 137, 72)];
+            [[NSNotificationCenter defaultCenter] addObserver:self
+                                                     selector:@selector(didRotate:)
+                                                         name:UIApplicationDidChangeStatusBarOrientationNotification
+                                                       object:nil];
         } else {
-            _skipButton = [[UIButton alloc] initWithFrame:CGRectMake(15, frame.size.height - 35, 34, 31)];
-            _skipImage = [UIImage imageNamed:@"skip-01-rotated.png"];
+            _skipLabel = [[UILabel alloc] initWithFrame:CGRectMake(17, frame.size.height - 75, 34, 31)];
+            [_skipLabel setTransform:CGAffineTransformMakeRotation(M_PI / 2)];
+            _skipLabel.font = [UIFont fontWithName:@"Century Gothic" size:20.0f];
+            _skipButton = [[UIButton alloc] initWithFrame:CGRectMake(13, frame.size.height - 35, 40, 37)];
+            [_skipButton setTransform:CGAffineTransformMakeRotation(M_PI / 2)];
+            _controlBackground = [[UIView alloc] initWithFrame:CGRectMake(3, frame.size.height - 97, 61, 111)];
         }
         
-        [_skipButton setNeedsDisplay];
+        _skipLabel.textColor = [UIColor grayColor];
+        _skipLabel.backgroundColor = [UIColor clearColor];
+        [_skipLabel setAlpha:0.0];
+        [self setSkipCount:0 total:0];
         
-        [_skipButton addTarget:self action:@selector(skipButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
-        
+        _skipImage = [UIImage imageNamed:@"skip-01.png"];
         [_skipButton setImage:_skipImage forState:UIControlStateNormal];
+        [_skipButton addTarget:self action:@selector(skipButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+        [_skipButton setAlpha:0.0];
+        _skipButton.enabled = NO;
+        
+        _controlBackground.layer.cornerRadius = 5;
+        _controlBackground.layer.masksToBounds = YES;
+        _controlBackground.layer.borderColor = [UIColor whiteColor].CGColor;
+        _controlBackground.backgroundColor = [UIColor blackColor];
+        _controlBackground.layer.borderWidth = 3.0f;
+        [_controlBackground setAlpha:0.0];
+        
+        _fadeButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        _fadeButton.frame = frame;
+        [_fadeButton addTarget:self action:@selector(fadeButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+        
+        [self.view addSubview:_skipLabel];
         [self.view addSubview:_skipButton];
+        [self.view addSubview:_controlBackground];
+        [self.view addSubview:_fadeButton];
+        [self.view bringSubviewToFront:_controlBackground];
+        [self.view bringSubviewToFront:_skipLabel];
+        [self.view bringSubviewToFront:_fadeButton];
         [self.view bringSubviewToFront:_skipButton];
     }
     return self;
+}
+
+- (void)didRotate:(NSNotification *)notification {
+    CGRect frame = [UIScreen mainScreen].applicationFrame;
+    UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
+    if (orientation == UIInterfaceOrientationLandscapeLeft ||
+        orientation == UIInterfaceOrientationLandscapeRight) {
+        float height = frame.size.height;
+        frame.size.height = frame.size.width;
+        frame.size.width = height;
+    }
+    self.view.frame = frame;
+    _skipLabel.frame = CGRectMake(frame.size.width - 130, frame.size.height - 64, 50, 50);
+    _skipButton.frame = CGRectMake(frame.size.width - 80, frame.size.height - 60, 50, 45.59);
+    _controlBackground.frame = CGRectMake(frame.size.width - 150, frame.size.height - 75, 137, 72);
+    _fadeButton.frame = self.view.frame;
+}
+
+- (void)skipButtonPressed:(id)sender
+{
+    [self.delegate skipButtonPressed];
+}
+
+- (void)fadeButtonPressed:(id)sender
+{
+    NSLog(@"Fade button pressed");
+    [UIView beginAnimations:nil context:NULL];
+    [UIView setAnimationDuration:0.5];
+    [_skipLabel setAlpha:1.0];
+    [_skipButton setAlpha:1.0];
+    [_controlBackground setAlpha:0.75];
+    [UIView commitAnimations];
+    if(_fadeOutTimer) {
+        [_fadeOutTimer invalidate];
+        _fadeOutTimer = nil;
+    }
+    _skipButton.enabled = YES;
+    _fadeOutTimer = [NSTimer scheduledTimerWithTimeInterval:5.0 target:self selector:@selector(fadeOut:) userInfo:nil repeats:NO];
+}
+
+- (void)fadeOut:(NSTimer *)timer
+{
+    [UIView beginAnimations:nil context:NULL];
+    [UIView setAnimationDuration:0.5];
+    [_skipLabel setAlpha:0.0];
+    [_skipButton setAlpha:0.0];
+    [_controlBackground setAlpha:0.0];
+    [UIView commitAnimations];
+    _skipButton.enabled = NO;
+}
+
+- (void)setSkipCount:(int)skipCount total:(int)total
+{
+    _skipLabel.text = [NSString stringWithFormat:@"%d/%d", skipCount, total];
+}
+
+- (void)play
+{
+    [_moviePlayer play];
+    
+    [self.delegate sendSyncPacketsForItem:_mediaItem];
+}
+- (void)stop
+{
+    [_moviePlayer stop];
 }
 
 - (void)viewDidAppear:(BOOL)animated{
@@ -88,35 +180,5 @@
 - (void)applicationDidBecomeActive:(NSNotification *)notification
 {
     [self.delegate sendSyncPacketsForItem:_mediaItem];
-}
-
-- (void)play
-{
-    [_moviePlayer play];
-    
-    [self.delegate sendSyncPacketsForItem:_mediaItem];
-}
-
-- (void)didRotate:(NSNotification *)notification {
-    CGRect frame = [UIScreen mainScreen].applicationFrame;
-    UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
-    if (orientation == UIInterfaceOrientationLandscapeLeft ||
-        orientation == UIInterfaceOrientationLandscapeRight) {
-        float height = frame.size.height;
-        frame.size.height = frame.size.width;
-        frame.size.width = height;
-    }
-    self.view.frame = frame;
-    _skipButton.frame = CGRectMake(frame.size.width - 80, frame.size.height - 50, 34, 31);
-}
-
-- (void)skipButtonPressed:(id)sender
-{
-    [self.delegate skipButtonPressed];
-}
-
-- (void)stop
-{
-    [_moviePlayer stop];
 }
 @end

@@ -5,6 +5,7 @@
 #import "PlaylistItemCell.h"
 #import "MoviePickerViewController.h"
 #import <MediaPlayer/MediaPlayer.h>
+#import "MarqueeLabel.h"
 
 @class GameViewController;
 
@@ -23,6 +24,7 @@
 @property (nonatomic, weak) IBOutlet UIButton *exitButton, *skipSongButton;
 @property (nonatomic, weak) IBOutlet UITableView *userTable, *playlistTable;
 @property (nonatomic, weak) IBOutlet UIProgressView *playbackProgressBar;
+@property (nonatomic, strong) MarqueeLabel * songTitle;
 @property (nonatomic, strong) UINavigationController *navController;
 @property (nonatomic, strong) MPMediaPickerController *mediaPicker;
 @property (nonatomic, strong) UIWebView *youtube;

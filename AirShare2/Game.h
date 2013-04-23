@@ -23,7 +23,7 @@ ServerState;
 
 @protocol GameDelegate <NSObject>
 
-- (void)game:(Game *)game didQuitWithReason:(QuitReason)reason;
+- (void)didQuitWithReason:(QuitReason)reason;
 
 - (void)reloadTable;
 - (void)reloadPlaylistItem:(PlaylistItem *)playlistItem;
@@ -33,11 +33,11 @@ ServerState;
 
 - (void)mediaFinishedPlaying;
 
-- (void)game:(Game *)game setCurrentItem:(PlaylistItem *)playlistItem;
-- (void)game:(Game *)game setSkipItemCount:(int)skipItemCount;
+- (void)setCurrentItem:(PlaylistItem *)playlistItem;
+- (void)setSkipItemCount:(int)skipItemCount;
 
-- (void)game:(Game *)game clientDidConnect:(Player *)player;
-- (void)game:(Game *)game clientDidDisconnect:(Player *)player;
+- (void)clientDidConnect:(Player *)player;
+- (void)clientDidDisconnect:(Player *)player;
 
 - (void)gameSessionDidEnd:(Game *)server;
 - (void)gameNoNetwork:(Game *)server;
