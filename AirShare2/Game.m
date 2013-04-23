@@ -1324,6 +1324,7 @@ typedef enum
 	[_session disconnectFromAllPeers];
 	_session.delegate = nil;
 	_session = nil;
+    [self stopAllTimers];
     [_audioPlayer stop];
     [_moviePlayerController.moviePlayer stop];
     _audioPlayer = nil;
