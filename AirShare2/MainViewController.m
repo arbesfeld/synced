@@ -28,6 +28,13 @@
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(reload)
                                                  name:UIApplicationDidBecomeActiveNotification object:nil];
+    [self.tableView setAlpha:0.0];
+    [_hostGameButton setAlpha:1.0];
+    [_joinGameButton setAlpha:1.0];
+    [_sessionsLabel setAlpha:0.0];
+    [_backButton setAlpha:0.0];
+    [_hostSessionTextBox setAlpha:0.0];
+    [_submitServerButton setAlpha:0.0];
 
 }
 
@@ -39,6 +46,15 @@
     
     self.nameTextField.placeholder = _matchmakingClient.session.displayName;
     [self.tableView reloadData];
+    
+    [self.tableView setAlpha:0.0];
+    [_hostGameButton setAlpha:1.0];
+    [_joinGameButton setAlpha:1.0];
+    [_backButton setAlpha:0.0];
+    [_sessionsLabel setAlpha:0.0];
+    [_hostSessionTextBox setAlpha:0.0];
+    [_submitServerButton setAlpha:0.0];
+
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -72,17 +88,15 @@
     [self hostGameAction:self];
 }
 
-- (IBAction)hostGameAction:(id)sender
-{
-    if(_serverName == nil) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"" message:@"Session Name?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:nil];
-        [alert setAlertViewStyle:UIAlertViewStylePlainTextInput];
-        [alert addButtonWithTitle:@"Ok"];
-        [alert show];
-    }
-    
-    // set up server
-    
+- (IBAction)submitServerAction:(id)sender {
+    _serverName = _hostSessionTextBox.text;
+    [self.tableView setAlpha:0.0];
+    [_backButton setAlpha:0.0];
+    [_hostGameButton setAlpha:0.0];
+    [_joinGameButton setAlpha:0.0];
+    [_sessionsLabel setAlpha:0.0];
+    [_hostSessionTextBox setAlpha:0.0];
+    [_submitServerButton setAlpha:0.0];
     if (_matchmakingServer == nil && _serverName.length != 0)
 	{
 		_matchmakingServer = [[MatchmakingServer alloc] init];
@@ -95,7 +109,7 @@
 	}
     
     // start server but wait until alertView is responded to
-    if (_matchmakingServer != nil &&  _serverName.length != 0)//&& [_matchmakingServer connectedClientCount] > 0)
+    if (_matchmakingServer != nil |  _serverName.length != 0)//&& [_matchmakingServer connectedClientCount] > 0)
 	{
 		if ([_serverName length] == 0)
 			_serverName = _matchmakingServer.session.displayName;
@@ -106,7 +120,54 @@
         _matchmakingServer = nil;
         _serverName = nil;
     }
+
 }
+
+- (IBAction)backAction:(id)sender {
+    [UIView animateWithDuration:0.4 animations:^() {
+    [self.tableView setAlpha:0.0];
+    [_backButton setAlpha:0.0];
+    [_hostGameButton setAlpha:1.0];
+    [_joinGameButton setAlpha:1.0];
+    [_sessionsLabel setAlpha:0.0];
+    [_hostSessionTextBox setAlpha:0.0];
+    [_submitServerButton setAlpha:0.0];
+    }];
+}
+
+- (IBAction)joinGameAction:(id)sender {
+    _backButton.frame = CGRectMake(self.view.frame.size.width/2 - _backButton.frame.size.width/2, self.view.frame.size.height - _backButton.frame.size.height - 40, _backButton.frame.size.width, _backButton.frame.size.height);
+    [UIView animateWithDuration:0.4 animations:^() {
+    [self.tableView setAlpha:1.0];
+    [_backButton setAlpha:1.0];
+    [_hostGameButton setAlpha:0.0];
+    [_joinGameButton setAlpha:0.0];
+    [_sessionsLabel setAlpha:1.0];
+        
+    }];
+    
+}
+
+- (IBAction)hostGameAction:(id)sender
+{
+    [UIView animateWithDuration:0.4 animations:^() {
+        [_backButton setAlpha:1.0];
+        [_hostGameButton setAlpha:0.0];
+        [_joinGameButton setAlpha:0.0];
+        [_hostSessionTextBox setAlpha:1.0];
+        [_submitServerButton setAlpha:1.0];
+
+        
+    }];
+//    if(_serverName == nil) {
+//        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"" message:@"Session Name?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:nil];
+//        [alert setAlertViewStyle:UIAlertViewStylePlainTextInput];
+//        [alert addButtonWithTitle:@"Ok"];
+//        [alert show];
+//    }
+    
+    // set up server
+   }
 
 - (void)serverDidEndSessionWithReason:(QuitReason)reason
 {
@@ -323,6 +384,12 @@
     self.sessionsLabel.font = [UIFont fontWithName:@"Century Gothic" size:20.0f];
     [_hostGameButton setTitle:@"Host Session" forState:UIControlStateNormal];
     _hostGameButton.titleLabel.font = [UIFont fontWithName:@"gothic" size:17.0f];
+    [_joinGameButton setTitle:@"Join Session" forState:UIControlStateNormal];
+    _joinGameButton.titleLabel.font = [UIFont fontWithName:@"gothic" size:17.0f];
+    [_submitServerButton setTitle:@"Start" forState:UIControlStateNormal];
+    _submitServerButton.titleLabel.font = [UIFont fontWithName:@"gothic" size:17.0f];
+    [_backButton setTitle:@"Back" forState:UIControlStateNormal];
+    _backButton.titleLabel.font = [UIFont fontWithName:@"gothic" size:17.0f];
     NSURL *url = [[NSBundle mainBundle] URLForResource:@"loading" withExtension:@"gif"];
     _waitingView.image = [UIImage animatedImageWithAnimatedGIFData:[NSData dataWithContentsOfURL:url]];
     _waitingView.hidden = YES;
