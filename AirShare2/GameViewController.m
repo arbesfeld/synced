@@ -225,17 +225,26 @@ const double epsilon = 0.02;
 
 - (void)showViewController:(UIViewController *)viewController
 {
+    [[UIApplication sharedApplication] beginIgnoringInteractionEvents];
     // dismiss the other view controllers if they are being presented
-    while(!_canLoadView) {
-        NSLog(@"Cant load view!");
-        // wait until you can load
+    while([_navController isBeingDismissed] || [_navController isBeingPresented] ||
+          [_mediaPicker isBeingDismissed]   || [_mediaPicker isBeingPresented]) {
+        NSLog(@"Wating for view to load");
     }
+    
     if(_navController && _navController.isViewLoaded && _navController.view.window) {
-        [_navController presentViewController:viewController animated:YES completion:nil];
+        [_navController dismissViewControllerAnimated:YES completion:^{
+            [self presentViewController:viewController animated:NO completion:nil];
+            [[UIApplication sharedApplication] endIgnoringInteractionEvents];
+        }];
     } else if(_mediaPicker && _mediaPicker.isViewLoaded && _mediaPicker.view.window) {
-        [_mediaPicker presentViewController:viewController animated:YES completion:nil];
+        [_mediaPicker dismissViewControllerAnimated:YES completion:^{
+            [self presentViewController:viewController animated:NO completion:nil];
+            [[UIApplication sharedApplication] endIgnoringInteractionEvents];
+        }];
     } else {
         [self presentViewController:viewController animated:YES completion:nil];
+        [[UIApplication sharedApplication] endIgnoringInteractionEvents];
     }
 }
 

@@ -22,8 +22,8 @@ const int WAIT_TIME_DOWNLOAD = 60;   // server wait time for others to download 
 const int SYNC_PACKET_COUNT = 100;   // how many sync packets to send
 const int UPDATE_TIME_AUDIO = 90;    // how often to update playback (after first update)
 const int UPDATE_TIME_MOVIE = 60;    // how often to update playback (after first update)
-const int UPDATE_TIME_YOUTUBE = 30;  // how often to update playback (after first update)
-const int UPDATE_TIME_YOUTUBE_LOADING = 10;   // how often to update playback (after first update)
+const int UPDATE_TIME_YOUTUBE = 15;  // how often to update playback (after first update)
+const int UPDATE_TIME_YOUTUBE_LOADING = 7;   // how often to update playback (after first update)
 const int UPDATE_TIME_FIRST = 1;     // how often to update playback (first update)
 const double BACKGROUND_TIME = -0.2; // the additional time it takes when app is in background
 const double MOVIE_TIME = -0.1;      // the additional time it takes for movies
@@ -933,6 +933,11 @@ typedef enum
         if((mediaItem.playlistItemType == PlaylistItemTypeMovie && mediaItem.uploadedByUser) ||
            mediaItem.playlistItemType == PlaylistItemTypeYoutube) {
             [self.delegate showViewController:_moviePlayerController];
+            _updatePlaybackProgressTimer = [NSTimer scheduledTimerWithTimeInterval:0.01
+                                                                            target:self
+                                                                          selector:@selector(handleUpdatePlaybackProgressTimer:)
+                                                                          userInfo:mediaItem
+                                                                           repeats:YES];
             // code if you only want youtube video on host:
 //            if(mediaItem.uploadedByUser) {
 //                NSLog(@"making frame 0");
@@ -1034,6 +1039,7 @@ typedef enum
 {
     // decide whether to mark a beat
     MediaItem *mediaItem = (MediaItem *)timer.userInfo;
+    
     if(mediaItem.playlistItemType == PlaylistItemTypeSong ||
        (mediaItem.playlistItemType == PlaylistItemTypeMovie && !mediaItem.uploadedByUser)) {
         float total = _audioPlayer.duration;

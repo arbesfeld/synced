@@ -20,6 +20,8 @@
     self = [super init];
     
     if(self) {
+        [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
+        
         CGRect frame = [UIScreen mainScreen].applicationFrame;
         _mediaItem = mediaItem;
         _moviePlayer = [[PlayerView alloc] initWithMediaItem:mediaItem];
@@ -33,21 +35,21 @@
                 frame.size.height = frame.size.width;
                 frame.size.width = height;
             }
-            _skipLabel = [[UILabel alloc] initWithFrame:CGRectMake(frame.size.width - 130, frame.size.height - 64, 50, 50)];
+            _skipLabel = [[UILabel alloc] initWithFrame:CGRectMake(frame.size.width - 130, frame.size.height - 74, 50, 50)];
             _skipLabel.font = [UIFont fontWithName:@"Century Gothic" size:24.0f];
-            _skipButton = [[UIButton alloc] initWithFrame:CGRectMake(frame.size.width - 80, frame.size.height - 60, 50, 45.59)];
-            _controlBackground = [[UIView alloc] initWithFrame:CGRectMake(frame.size.width - 153, frame.size.height - 75, 137, 72)];
+            _skipButton = [[UIButton alloc] initWithFrame:CGRectMake(frame.size.width - 80, frame.size.height - 70, 50, 45.59)];
+            _controlBackground = [[UIView alloc] initWithFrame:CGRectMake(frame.size.width - 153, frame.size.height - 85, 137, 72)];
             [[NSNotificationCenter defaultCenter] addObserver:self
                                                      selector:@selector(didRotate:)
                                                          name:UIApplicationDidChangeStatusBarOrientationNotification
                                                        object:nil];
         } else {
-            _skipLabel = [[UILabel alloc] initWithFrame:CGRectMake(17, frame.size.height - 75, 34, 31)];
+            _skipLabel = [[UILabel alloc] initWithFrame:CGRectMake(17, frame.size.height - 95, 34, 31)];
             [_skipLabel setTransform:CGAffineTransformMakeRotation(M_PI / 2)];
             _skipLabel.font = [UIFont fontWithName:@"Century Gothic" size:20.0f];
-            _skipButton = [[UIButton alloc] initWithFrame:CGRectMake(13, frame.size.height - 35, 40, 37)];
+            _skipButton = [[UIButton alloc] initWithFrame:CGRectMake(13, frame.size.height - 55, 40, 37)];
             [_skipButton setTransform:CGAffineTransformMakeRotation(M_PI / 2)];
-            _controlBackground = [[UIView alloc] initWithFrame:CGRectMake(3, frame.size.height - 97, 61, 111)];
+            _controlBackground = [[UIView alloc] initWithFrame:CGRectMake(3, frame.size.height - 117, 61, 111)];
         }
         
         _skipLabel.textColor = [UIColor grayColor];
@@ -63,7 +65,7 @@
         
         _controlBackground.layer.cornerRadius = 5;
         _controlBackground.layer.masksToBounds = YES;
-        _controlBackground.layer.borderColor = [UIColor whiteColor].CGColor;
+        _controlBackground.layer.borderColor = [UIColor grayColor].CGColor;
         _controlBackground.backgroundColor = [UIColor blackColor];
         _controlBackground.layer.borderWidth = 3.0f;
         [_controlBackground setAlpha:0.0];
@@ -94,9 +96,9 @@
         frame.size.width = height;
     }
     self.view.frame = frame;
-    _skipLabel.frame = CGRectMake(frame.size.width - 130, frame.size.height - 64, 50, 50);
-    _skipButton.frame = CGRectMake(frame.size.width - 80, frame.size.height - 60, 50, 45.59);
-    _controlBackground.frame = CGRectMake(frame.size.width - 150, frame.size.height - 75, 137, 72);
+    _skipLabel.frame = CGRectMake(frame.size.width - 130, frame.size.height - 74, 50, 50);
+    _skipButton.frame = CGRectMake(frame.size.width - 80, frame.size.height - 70, 50, 45.59);
+    _controlBackground.frame = CGRectMake(frame.size.width - 150, frame.size.height - 85, 137, 72);
     _fadeButton.frame = self.view.frame;
 }
 
@@ -154,7 +156,6 @@
     [self becomeFirstResponder];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground:) name: UIApplicationDidEnterBackgroundNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive:) name: UIApplicationDidBecomeActiveNotification object:nil];
-    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
