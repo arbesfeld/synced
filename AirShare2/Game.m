@@ -816,7 +816,7 @@ typedef enum
     NSLog(@"AudioPlayer %@ finished playing, success? %@", player == _audioPlayer ? @"audioPlayer" : @"silentPlayer", flag ? @"YES" : @"NO");
     
     if(player == _audioPlayer) {
-        NSAssert(!flag || _gameState == GameStatePlayingMusic || !self.isServer, @"In audioPlayerDidFinishPlaying:");
+        //NSAssert(!flag || _gameState == GameStatePlayingMusic || !self.isServer, @"In audioPlayerDidFinishPlaying:");
         _gameState = GameStateIdle;
         
         [self.delegate setPlaybackProgress:0.0];
@@ -838,7 +838,7 @@ typedef enum
 
 - (void)moviePlayerDidFinishPlaying:(AVPlayerItem *)playerItem
 {
-    NSAssert(_gameState == GameStatePlayingMovie, @"In moviePlayerDidFinishPlaying:");
+    //NSAssert(_gameState == GameStatePlayingMovie, @"In moviePlayerDidFinishPlaying:");
     _gameState = GameStateIdle;
     
     NSLog(@"MoviePlayerDidFinishPlaying");
