@@ -18,6 +18,7 @@
     NSError *sessionError = nil;
     [[AVAudioSession sharedInstance] setDelegate:self];
     [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:&sessionError];
+    [[AVAudioSession sharedInstance] setActive:YES error:nil];
     //UInt32 audioRouteOverride = kAudioSessionOverrideAudioRoute_Speaker; //AudioSessionSetProperty(kAudioSessionProperty_OverrideAudioRoute, sizeof(audioRouteOverride), &audioRouteOverride);
     // Override point for customization after application launch.
     return YES;
@@ -57,6 +58,18 @@
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     NSLog(@"applicationWIlLTerminate");
+    
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSError *error;
+    NSString *saveDirectory = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+
+    NSArray *cacheFiles = [fileManager contentsOfDirectoryAtPath:saveDirectory error:&error];
+    for (NSString *file in cacheFiles) {
+        error = nil;
+        [fileManager removeItemAtPath:[saveDirectory stringByAppendingPathComponent:file] error:&error];
+        /* handle error */
+    }
+    
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 

@@ -87,12 +87,20 @@ typedef enum
     
     _gameState = GameStateIdle;
     
+    _partyMode = NO;
     _currentItem = [[PlaylistItem alloc] initPlaylistItemWithName:@"" andSubtitle:@"" andID:@"" andDate:nil andPlaylistItemType:PlaylistItemTypeNone];
     _currentItem.loadProgress = 0.0;
     
     self.maxClients = 4;
     
     [[UIApplication sharedApplication] beginReceivingRemoteControlEvents];
+    
+    // app works in background if you start playing the audio player... weird
+    NSString *emptyPath = [[NSBundle mainBundle] pathForResource:@"empty" ofType:@"mp3"];
+    _audioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL fileURLWithPath:emptyPath] error:nil];
+    [_audioPlayer play];
+    [_audioPlayer stop];
+    _audioPlayer = nil;
 }
 
 - (void)startClientGameWithSession:(GKSession *)session playerName:(NSString *)name server:(NSString *)peerID
@@ -924,16 +932,18 @@ typedef enum
         // if we're here, we loaded the content correctly
         if((mediaItem.playlistItemType == PlaylistItemTypeMovie && mediaItem.uploadedByUser) ||
            mediaItem.playlistItemType == PlaylistItemTypeYoutube) {
-            if(mediaItem.uploadedByUser) {
-                NSLog(@"making frame 0");
-                [self.delegate showViewController:_moviePlayerController];
-            } else {
-                _updatePlaybackProgressTimer = [NSTimer scheduledTimerWithTimeInterval:0.01
-                                                                                target:self
-                                                                              selector:@selector(handleUpdatePlaybackProgressTimer:)
-                                                                              userInfo:mediaItem
-                                                                               repeats:YES];
-            }
+            [self.delegate showViewController:_moviePlayerController];
+            // code if you only want youtube video on host:
+//            if(mediaItem.uploadedByUser) {
+//                NSLog(@"making frame 0");
+//                [self.delegate showViewController:_moviePlayerController];
+//            } else {
+//                _updatePlaybackProgressTimer = [NSTimer scheduledTimerWithTimeInterval:0.01
+//                                                                                target:self
+//                                                                              selector:@selector(handleUpdatePlaybackProgressTimer:)
+//                                                                              userInfo:mediaItem
+//                                                                               repeats:YES];
+//            }
             [_moviePlayerController.moviePlayer play];
             
             [[NSNotificationCenter defaultCenter] addObserver:self
@@ -942,6 +952,7 @@ typedef enum
                                                        object:_moviePlayerController.moviePlayer.playerItem];
             _gameState = GameStatePlayingMovie;
         } else {
+    
             [_audioPlayer play]; 
             _updatePlaybackProgressTimer = [NSTimer scheduledTimerWithTimeInterval:0.01
                                                                             target:self
@@ -1029,8 +1040,8 @@ typedef enum
         float fraction = _audioPlayer.currentTime / total;
         
         [self.delegate setPlaybackProgress:fraction];
-        
-        if (mediaItem.beatPos >= 0 && mediaItem.beatPos < [mediaItem.beats count] &&[(NSNumber *)[mediaItem.beats objectAtIndex:mediaItem.beatPos] doubleValue] < _audioPlayer.currentTime) {
+    
+        if (_partyMode && mediaItem.beatsLoaded && mediaItem.beatPos >= 0 && mediaItem.beatPos < [mediaItem.beats count] &&[(NSNumber *)[mediaItem.beats objectAtIndex:mediaItem.beatPos] doubleValue] < _audioPlayer.currentTime + 0.05) {
             // play a beat
             //NSLog(@"%f is the time; %@ is the beat", _audioPlayer.currentTime, (NSNumber*)[mediaItem.beats objectAtIndex:mediaItem.beatPos]);
             [mediaItem nextBeat];
@@ -1260,6 +1271,7 @@ typedef enum
 	[_session disconnectFromAllPeers];
     
     [[UIApplication sharedApplication] endReceivingRemoteControlEvents];
+    
 	[self.delegate gameSessionDidEnd:self];
 }
 

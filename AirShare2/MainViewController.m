@@ -34,7 +34,9 @@
     [_joinGameButton setAlpha:1.0];
     [_sessionsLabel setAlpha:0.0];
     [_backButton setAlpha:0.0];
-
+    
+    
+    [[UIApplication sharedApplication] beginReceivingRemoteControlEvents];
 }
 
 - (void)reload
@@ -59,11 +61,6 @@
 	[super viewWillAppear:animated];
     _waitingView.hidden = YES;
     [self reload];
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-	[super viewDidAppear:animated];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation

@@ -62,20 +62,16 @@ const double epsilon = 0.02;
     self.songTitle.text = @"";
     [self.view addSubview:self.songTitle];
     self.skipSongLabel.font = [UIFont fontWithName:@"Century Gothic" size:20.0f];
-    
-    [[UIApplication sharedApplication] beginReceivingRemoteControlEvents];
 }
 
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
-    [[UIApplication sharedApplication] beginReceivingRemoteControlEvents];
     [self becomeFirstResponder];
 }
 - (void)viewWillDisappear:(BOOL)animated
 {
 	[super viewWillDisappear:animated];
 	[_alertView dismissWithClickedButtonIndex:_alertView.cancelButtonIndex animated:NO];
-    [[UIApplication sharedApplication] endReceivingRemoteControlEvents];
     [self resignFirstResponder];
 }
 
@@ -412,15 +408,7 @@ const double epsilon = 0.02;
 
 - (IBAction)togglePartyMode:(UISwitch *)sender {
     NSLog(@"Toggling party mode");
-    if (_game.currentItem.playlistItemType == PlaylistItemTypeMovie ||
-        _game.currentItem.playlistItemType == PlaylistItemTypeSong) {
-        [(MediaItem *)_game.currentItem togglePartyMode];
-    }
-    for (int i = 0; i < [_game.playlist count]; i++) {
-        if ([[_game.playlist objectAtIndex:i] isKindOfClass:[MediaItem class]]) {
-            [(MediaItem *)[_game.playlist objectAtIndex:i] togglePartyMode];
-        }
-    }
+    _game.partyMode = [sender isOn];
 }
 
 @end

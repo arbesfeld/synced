@@ -300,18 +300,18 @@
                             <constraint firstItem="qGG-Mn-1P9" firstAttribute="top" secondItem="YuW-3R-SF1" secondAttribute="bottom" constant="8" symbolic="YES" type="default" id="4bo-VA-204"/>
                             <constraint firstItem="YuW-3R-SF1" firstAttribute="leading" secondItem="BCy-oa-ZtW" secondAttribute="leading" constant="6" id="4uC-HT-LxR"/>
                             <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="eeC-ei-Tr1" secondAttribute="bottom" constant="33" type="user" id="5NS-uq-WhJ"/>
-                            <constraint firstAttribute="trailing" secondItem="eeC-ei-Tr1" secondAttribute="trailing" constant="4" id="5sL-rm-rYs"/>
                             <constraint firstItem="PdE-4c-64j" firstAttribute="top" secondItem="BCy-oa-ZtW" secondAttribute="top" constant="97" id="6gv-lD-7b5"/>
                             <constraint firstItem="1Sy-ST-eaC" firstAttribute="bottom" secondItem="uh1-8p-J3r" secondAttribute="bottom" type="default" id="Alr-P4-l8w"/>
                             <constraint firstItem="IVa-kZ-LtJ" firstAttribute="top" secondItem="BCy-oa-ZtW" secondAttribute="top" constant="-7" id="B8G-aq-U7m"/>
                             <constraint firstItem="fE0-7M-B9O" firstAttribute="centerX" secondItem="eJo-Sb-0RW" secondAttribute="centerX" type="user" id="DZA-BJ-Uul"/>
                             <constraint firstItem="fE0-7M-B9O" firstAttribute="baseline" secondItem="YuW-3R-SF1" secondAttribute="baseline" type="default" id="Fwh-n1-gxZ"/>
                             <constraint firstItem="eJo-Sb-0RW" firstAttribute="top" secondItem="BCy-oa-ZtW" secondAttribute="top" constant="92" id="GNN-TP-cEm"/>
+                            <constraint firstAttribute="trailing" secondItem="eeC-ei-Tr1" secondAttribute="trailing" constant="2" id="Goo-nT-Abf"/>
                             <constraint firstItem="PdE-4c-64j" firstAttribute="trailing" secondItem="WD3-Wu-ZGd" secondAttribute="trailing" type="default" id="Guo-ay-yJe"/>
                             <constraint firstItem="WD3-Wu-ZGd" firstAttribute="top" secondItem="BCy-oa-ZtW" secondAttribute="top" constant="118" type="user" id="HNd-qH-wOR"/>
                             <constraint firstItem="ge9-R5-1vQ" firstAttribute="leading" secondItem="BCy-oa-ZtW" secondAttribute="leading" type="default" id="IWt-nQ-jOy"/>
                             <constraint firstItem="qcU-o1-ezA" firstAttribute="centerX" secondItem="12U-g7-co7" secondAttribute="centerX" type="default" id="JJw-hT-xNB"/>
-                            <constraint firstAttribute="trailing" secondItem="gAi-42-x5e" secondAttribute="trailing" constant="13" id="KBc-BH-4IG"/>
+                            <constraint firstAttribute="trailing" secondItem="96i-Zy-Rwc" secondAttribute="trailing" constant="52" id="K8O-bh-lKN"/>
                             <constraint firstItem="96i-Zy-Rwc" firstAttribute="centerY" secondItem="eeC-ei-Tr1" secondAttribute="centerY" type="user" id="P40-hq-CEG"/>
                             <constraint firstItem="uh1-8p-J3r" firstAttribute="leading" secondItem="BCy-oa-ZtW" secondAttribute="leading" constant="20" symbolic="YES" type="default" id="Qwq-M1-Js2"/>
                             <constraint firstAttribute="bottom" secondItem="qGG-Mn-1P9" secondAttribute="bottom" constant="5" type="user" id="R69-ey-1hP"/>
@@ -329,8 +329,8 @@
                             <constraint firstItem="qcU-o1-ezA" firstAttribute="centerX" secondItem="BCy-oa-ZtW" secondAttribute="centerX" type="default" id="jLB-A3-aRH"/>
                             <constraint firstItem="IVa-kZ-LtJ" firstAttribute="leading" secondItem="BCy-oa-ZtW" secondAttribute="leading" constant="3" id="kDS-u1-8Ed"/>
                             <constraint firstItem="eeC-ei-Tr1" firstAttribute="top" secondItem="YuW-3R-SF1" secondAttribute="top" type="default" id="nJD-gA-oZo"/>
+                            <constraint firstAttribute="trailing" secondItem="gAi-42-x5e" secondAttribute="trailing" constant="11" id="nKe-V1-9Zr"/>
                             <constraint firstItem="1Sy-ST-eaC" firstAttribute="leading" secondItem="BCy-oa-ZtW" secondAttribute="leading" constant="104" id="nop-De-rvt"/>
-                            <constraint firstAttribute="trailing" secondItem="96i-Zy-Rwc" secondAttribute="trailing" constant="54" id="nsE-he-Aad"/>
                             <constraint firstItem="uh1-8p-J3r" firstAttribute="top" secondItem="BCy-oa-ZtW" secondAttribute="top" constant="-121" id="oLb-YI-89P"/>
                             <constraint firstItem="96i-Zy-Rwc" firstAttribute="baseline" secondItem="YuW-3R-SF1" secondAttribute="baseline" type="default" id="pD6-zK-ltw"/>
                             <constraint firstItem="12U-g7-co7" firstAttribute="top" secondItem="BCy-oa-ZtW" secondAttribute="top" type="default" id="ssx-GJ-u7N"/>
@@ -366,46 +366,6 @@
         <image name="music symbol-01.png" width="237" height="243"/>
         <image name="skip-01.png" width="135" height="158"/>
     </resources>
-    <classes>
-        <class className="GameViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/GameViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="exitAction:"/>
-                <relationship kind="action" name="playMovie:"/>
-                <relationship kind="action" name="playMusic:"/>
-                <relationship kind="action" name="skipMusic:"/>
-                <relationship kind="action" name="togglePartyMode:" candidateClass="UISwitch"/>
-                <relationship kind="outlet" name="artistLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="exitButton" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="playbackProgressBar" candidateClass="UIProgressView"/>
-                <relationship kind="outlet" name="playlistTable" candidateClass="UITableView"/>
-                <relationship kind="outlet" name="skipSongButton" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="skipSongLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="userTable" candidateClass="UITableView"/>
-                <relationship kind="outlet" name="waitingLabel" candidateClass="UILabel"/>
-            </relationships>
-        </class>
-        <class className="MPVolumeView" superclassName="UIView">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/MPVolumeView.h"/>
-        </class>
-        <class className="MainViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/MainViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="backAction:"/>
-                <relationship kind="action" name="hostGameAction:"/>
-                <relationship kind="action" name="joinGameAction:"/>
-                <relationship kind="outlet" name="backButton" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="hostGameButton" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="joinGameButton" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="sessionsLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="tableView" candidateClass="UITableView"/>
-                <relationship kind="outlet" name="waitingView" candidateClass="UIImageView"/>
-            </relationships>
-        </class>
-        <class className="NSLayoutConstraint" superclassName="NSObject">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/NSLayoutConstraint.h"/>
-        </class>
-    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>

@@ -38,6 +38,7 @@
 		5592DE82170BAA9F00C766B0 /* ECSlidingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5592DE7F170BAA9F00C766B0 /* ECSlidingViewController.m */; };
 		5592DE83170BAA9F00C766B0 /* UIImage+ImageWithUIView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5592DE81170BAA9F00C766B0 /* UIImage+ImageWithUIView.m */; };
 		5592FEFD1700D65B0038ED40 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5592FEFC1700D65B0038ED40 /* CoreAudio.framework */; };
+		5593E3BC1727170600CF9149 /* empty.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 5593E3BB1727170600CF9149 /* empty.mp3 */; };
 		5595E4EB171D2C46006782DE /* MoviePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5595E4EA171D2C45006782DE /* MoviePickerViewController.m */; };
 		5595E4EE171D3995006782DE /* MovieItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5595E4ED171D3995006782DE /* MovieItemCell.m */; };
 		559673C017246A3D000E0D52 /* LBYouTubeExtractor.m in Sources */ = {isa = PBXBuildFile; fileRef = 559673BF17246A3D000E0D52 /* LBYouTubeExtractor.m */; };
@@ -166,6 +167,7 @@
 		5592DE80170BAA9F00C766B0 /* UIImage+ImageWithUIView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ImageWithUIView.h"; sourceTree = "<group>"; };
 		5592DE81170BAA9F00C766B0 /* UIImage+ImageWithUIView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ImageWithUIView.m"; sourceTree = "<group>"; };
 		5592FEFC1700D65B0038ED40 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
+		5593E3BB1727170600CF9149 /* empty.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = empty.mp3; sourceTree = "<group>"; };
 		5595E4E9171D2C45006782DE /* MoviePickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoviePickerViewController.h; sourceTree = "<group>"; };
 		5595E4EA171D2C45006782DE /* MoviePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MoviePickerViewController.m; sourceTree = "<group>"; };
 		5595E4EC171D3995006782DE /* MovieItemCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MovieItemCell.h; sourceTree = "<group>"; };
@@ -504,6 +506,7 @@
 		55FCC55316ED3D4C0000BCBD /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				5593E3BB1727170600CF9149 /* empty.mp3 */,
 				558E14B816F185780076F6FC /* Fonts */,
 				55FCC55416ED3D4C0000BCBD /* AirShare2-Info.plist */,
 				55FCC55516ED3D4C0000BCBD /* InfoPlist.strings */,
@@ -695,6 +698,7 @@
 				559673C31724CD96000E0D52 /* loading.gif in Resources */,
 				559673C51724CD9F000E0D52 /* youtubeLogo.png in Resources */,
 				559C177E17261920009D2F38 /* airshare.png in Resources */,
+				5593E3BC1727170600CF9149 /* empty.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

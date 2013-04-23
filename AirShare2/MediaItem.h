@@ -13,12 +13,11 @@
 @property (nonatomic, retain) NSURL *url, *originalURL;
 @property (nonatomic, assign) NSInteger beatPos;
 @property (nonatomic, retain) NSMutableArray *beats;
-@property (nonatomic, assign) BOOL partyMode;
+@property (nonatomic, assign) BOOL beatsLoaded;
 
 + (id)mediaItemWithName:(NSString *)name andSubtitle:(NSString *)subtitle andID:(NSString *)ID andDate:(NSDate *)date andURL:(NSURL *)url uploadedByUser:(BOOL)uploadedByUser andPlayListItemType:(PlaylistItemType)playlistItemType;
 
 - (void)loadBeats;
 - (void)nextBeat;
-- (void)togglePartyMode;
 
 @end

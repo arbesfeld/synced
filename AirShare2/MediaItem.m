@@ -12,7 +12,6 @@
 @implementation MediaItem
 
 @synthesize beatPos = _beatPos;
-@synthesize partyMode = _partyMode;
 @synthesize beats = _beats;
 
 + (id)mediaItemWithName:(NSString *)name andSubtitle:(NSString *)subtitle andID:(NSString *)ID andDate:(NSDate *)date andURL:(NSURL *)url uploadedByUser:(BOOL)uploadedByUser andPlayListItemType:(PlaylistItemType)playlistItemType
@@ -37,7 +36,7 @@
         self.originalURL = url;
         self.beats = [[NSMutableArray alloc] init];
         self.beatPos = -1;
-        self.partyMode = NO;
+        self.beatsLoaded = NO;
 	}
 	return self;
 }
@@ -73,7 +72,7 @@
         }
     }
     NSLog(@"BEATS LOADED! There are %d.", [self.beats count]);
-    
+    self.beatsLoaded = YES;
     self.beatPos = 0;
 }
 
@@ -83,24 +82,23 @@
     self.beatPos++;
     //NSLog(@"BEAT!!");
     
-    if (self.partyMode == YES) {
-        Class captureDeviceClass = NSClassFromString(@"AVCaptureDevice");
-        if (captureDeviceClass != nil) {
-            AVCaptureDevice *device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
-            if ([device hasTorch] && [device hasFlash]){
-                [device lockForConfiguration:nil];
-                
-                [device setTorchModeOnWithLevel:0.1 error:NULL];
+    Class captureDeviceClass = NSClassFromString(@"AVCaptureDevice");
+    if (captureDeviceClass != nil) {
+        AVCaptureDevice *device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
+        if ([device hasTorch] && [device hasFlash]){
+            [device lockForConfiguration:nil];
             
-                // turn on
-                [device setTorchMode:AVCaptureTorchModeOn];
-                [device setFlashMode:AVCaptureFlashModeOn];
-            
-                // wait
-                [self performSelector:@selector(turnOff:) withObject:device afterDelay:0.1];
-            }
+            [device setTorchModeOnWithLevel:0.1 error:NULL];
+        
+            // turn on
+            [device setTorchMode:AVCaptureTorchModeOn];
+            [device setFlashMode:AVCaptureFlashModeOn];
+        
+            // wait
+            [self performSelector:@selector(turnOff:) withObject:device afterDelay:0.1];
         }
     }
+    
 }
 
 - (void)turnOff:(AVCaptureDevice *)device
@@ -110,15 +108,6 @@
     [device setFlashMode:AVCaptureFlashModeOff];
     
     [device unlockForConfiguration];
-}
-
-- (void)togglePartyMode
-{
-    if (self.partyMode == YES) {
-        self.partyMode = NO;
-    } else {
-        self.partyMode = YES;
-    }
 }
 
 @end

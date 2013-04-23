@@ -52,7 +52,7 @@ ServerState;
 }
 
 @property (nonatomic, weak) id <GameDelegate> delegate;
-@property (nonatomic, assign) BOOL isServer;
+@property (nonatomic, assign) BOOL isServer, partyMode;
 @property (nonatomic, assign) int maxClients;
 @property (nonatomic, strong) NSMutableDictionary *players;
 @property (nonatomic, strong) GKSession *session;
