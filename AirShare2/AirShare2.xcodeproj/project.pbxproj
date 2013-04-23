@@ -333,13 +333,6 @@
 			name = Fonts;
 			sourceTree = "<group>";
 		};
-		558E14B916F185860076F6FC /* Images */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Images;
-			sourceTree = "<group>";
-		};
 		5590968816FF5E9B004149A0 /* AFNetworking */ = {
 			isa = PBXGroup;
 			children = (
@@ -511,7 +504,6 @@
 		55FCC55316ED3D4C0000BCBD /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				558E14B916F185860076F6FC /* Images */,
 				558E14B816F185780076F6FC /* Fonts */,
 				55FCC55416ED3D4C0000BCBD /* AirShare2-Info.plist */,
 				55FCC55516ED3D4C0000BCBD /* InfoPlist.strings */,

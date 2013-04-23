@@ -135,7 +135,7 @@
         case PlaylistItemTypeNone:
         {
             currentPlaylistItem = [[PlaylistItem alloc] initPlaylistItemWithName:currentName andSubtitle:currentSubtitle andID:currentID andDate:nil andPlaylistItemType:currentPlaylistItemType];
-            //break;
+            break;
         }
         default:
             NSLog(@"Do not recognize playlistItemType!");

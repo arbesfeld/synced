@@ -353,7 +353,7 @@ typedef enum
             player.timeOffset += timeOffset;
             player.syncPacketsReceived++;
             
-            NSLog(@"Received sync response with timeOffset = %f", timeOffset);
+            //NSLog(@"Received sync response with timeOffset = %f", timeOffset);
             
             if(packet.packetNumber < SYNC_PACKET_COUNT - 1) {
                 Packet *sendPacket = [Packet packetWithType:PacketTypeSync];
@@ -685,6 +685,8 @@ typedef enum
     NSAssert(self.isServer, @"Client in serverStartPlayingMedia:");
     NSAssert(_gameState == GameStatePreparingToPlayMedia, @"Not correct state in serverStartPlayingMedia:");
     
+    [self removeItemFromPlaylist:mediaItem];
+    
     NSDate *playTime = [[NSDate date] dateByAddingTimeInterval:DELAY_TIME];
     for (NSString *peerID in _players)
 	{
@@ -714,6 +716,8 @@ typedef enum
     
     if(songTime == 0) {
         NSAssert(_gameState == GameStatePreparingToPlayMedia, @"Not correct state in prepareToPlayMediaItem:");
+    
+        [self removeItemFromPlaylist:mediaItem];
         
         // if you are starting the song for the first time
         if((mediaItem.playlistItemType == PlaylistItemTypeMovie && mediaItem.uploadedByUser) ||
@@ -914,8 +918,6 @@ typedef enum
 - (void)handlePlayMusicTimer:(NSTimer *)timer
 {
     MediaItem *mediaItem = (MediaItem *)[timer userInfo];
-    
-    [self removeItemFromPlaylist:mediaItem];
     
     if(_gameState == GameStatePreparingToPlayMedia) {
         // if we're here, we loaded the content correctly

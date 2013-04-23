@@ -8,9 +8,10 @@
 
 @end
 
-@implementation MainViewController
-
-{
+@implementation MainViewController {
+    int tapCount, tappedRow;
+    NSTimer *tapTimer;
+    
 	MatchmakingClient *_matchmakingClient;
     QuitReason _quitReasonClient;
     
@@ -33,8 +34,6 @@
     [_joinGameButton setAlpha:1.0];
     [_sessionsLabel setAlpha:0.0];
     [_backButton setAlpha:0.0];
-    [_hostSessionTextBox setAlpha:0.0];
-    [_submitServerButton setAlpha:0.0];
 
 }
 
@@ -44,7 +43,7 @@
     _matchmakingClient.delegate = self;
     [_matchmakingClient startSearchingForServersWithSessionID:SESSION_ID];
     
-    self.nameTextField.placeholder = _matchmakingClient.session.displayName;
+    tapCount = 0;
     [self.tableView reloadData];
     
     [self.tableView setAlpha:0.0];
@@ -52,8 +51,6 @@
     [_joinGameButton setAlpha:1.0];
     [_backButton setAlpha:0.0];
     [_sessionsLabel setAlpha:0.0];
-    [_hostSessionTextBox setAlpha:0.0];
-    [_submitServerButton setAlpha:0.0];
 
 }
 
@@ -88,86 +85,42 @@
     [self hostGameAction:self];
 }
 
-- (IBAction)submitServerAction:(id)sender {
-    _serverName = _hostSessionTextBox.text;
-    [self.tableView setAlpha:0.0];
-    [_backButton setAlpha:0.0];
-    [_hostGameButton setAlpha:0.0];
-    [_joinGameButton setAlpha:0.0];
-    [_sessionsLabel setAlpha:0.0];
-    [_hostSessionTextBox setAlpha:0.0];
-    [_submitServerButton setAlpha:0.0];
-    if (_matchmakingServer == nil && _serverName.length != 0)
-	{
-		_matchmakingServer = [[MatchmakingServer alloc] init];
-		_matchmakingServer.maxClients = 3;
-        _matchmakingServer.delegate = self;
-		[_matchmakingServer startAcceptingConnectionsForSessionID:SESSION_ID name:_serverName];
-        
-		//self.nameTextField.placeholder = _matchmakingServer.session.displayName;
-		//[self.tableView reloadData];
-	}
-    
-    // start server but wait until alertView is responded to
-    if (_matchmakingServer != nil |  _serverName.length != 0)//&& [_matchmakingServer connectedClientCount] > 0)
-	{
-		if ([_serverName length] == 0)
-			_serverName = _matchmakingServer.session.displayName;
-        
-		//[_matchmakingServer stopAcceptingConnections];
-        _matchmakingClient = nil;
-		[self serverStartGameWithSession:_matchmakingServer.session playerName:_serverName clients:_matchmakingServer.connectedClients];
-        _matchmakingServer = nil;
-        _serverName = nil;
-    }
-
-}
-
 - (IBAction)backAction:(id)sender {
     [UIView animateWithDuration:0.4 animations:^() {
-    [self.tableView setAlpha:0.0];
-    [_backButton setAlpha:0.0];
-    [_hostGameButton setAlpha:1.0];
-    [_joinGameButton setAlpha:1.0];
-    [_sessionsLabel setAlpha:0.0];
-    [_hostSessionTextBox setAlpha:0.0];
-    [_submitServerButton setAlpha:0.0];
+        [self.tableView setAlpha:0.0];
+        [_backButton setAlpha:0.0];
+        [_hostGameButton setAlpha:1.0];
+        [_joinGameButton setAlpha:1.0];
+        [_sessionsLabel setAlpha:0.0];
+        [_waitingView setAlpha:0.0];
     }];
 }
 
 - (IBAction)joinGameAction:(id)sender {
-    _backButton.frame = CGRectMake(self.view.frame.size.width/2 - _backButton.frame.size.width/2, self.view.frame.size.height - _backButton.frame.size.height - 40, _backButton.frame.size.width, _backButton.frame.size.height);
+    [self.tableView reloadData];
     [UIView animateWithDuration:0.4 animations:^() {
-    [self.tableView setAlpha:1.0];
-    [_backButton setAlpha:1.0];
-    [_hostGameButton setAlpha:0.0];
-    [_joinGameButton setAlpha:0.0];
-    [_sessionsLabel setAlpha:1.0];
-        
+        [self.tableView setAlpha:1.0];
+        [_backButton setAlpha:1.0];
+        [_hostGameButton setAlpha:0.0];
+        [_joinGameButton setAlpha:0.0];
+        [_sessionsLabel setAlpha:1.0];
+        [_waitingView setAlpha:1.0];
+
     }];
     
 }
 
 - (IBAction)hostGameAction:(id)sender
 {
-    [UIView animateWithDuration:0.4 animations:^() {
-        [_backButton setAlpha:1.0];
-        [_hostGameButton setAlpha:0.0];
-        [_joinGameButton setAlpha:0.0];
-        [_hostSessionTextBox setAlpha:1.0];
-        [_submitServerButton setAlpha:1.0];
-
-        
-    }];
-//    if(_serverName == nil) {
-//        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"" message:@"Session Name?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:nil];
-//        [alert setAlertViewStyle:UIAlertViewStylePlainTextInput];
-//        [alert addButtonWithTitle:@"Ok"];
-//        [alert show];
-//    }
-    
-    // set up server
-   }
+    _matchmakingServer = [[MatchmakingServer alloc] init];
+    _matchmakingServer.maxClients = 3;
+    _matchmakingServer.delegate = self;
+    [_matchmakingServer startAcceptingConnectionsForSessionID:SESSION_ID name:UIDevice.currentDevice.name];
+    //[_matchmakingServer stopAcceptingConnections];
+    _matchmakingClient = nil;
+    [self serverStartGameWithSession:_matchmakingServer.session playerName:UIDevice.currentDevice.name clients:_matchmakingServer.connectedClients];
+    _matchmakingServer = nil;
+}
 
 - (void)serverDidEndSessionWithReason:(QuitReason)reason
 {
@@ -198,7 +151,10 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil];
 	GameViewController *gameViewController = [storyboard instantiateViewControllerWithIdentifier:@"GameViewController"];
-    [self presentViewController:gameViewController animated:YES completion:nil];
+    gameViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    [self presentViewController:gameViewController
+                                              animated:YES
+                                           completion:nil];
 	gameViewController.delegate = self;
     
     Game *game = [[Game alloc] init];
@@ -247,11 +203,12 @@
      
  - (void)gameViewController:(GameViewController *)controller didQuitWithReason:(QuitReason)reason
 {
-    [self dismissViewControllerAnimated:NO completion:^
+    [self dismissViewControllerAnimated:YES completion:^
      {
          if (reason == QuitReasonConnectionDropped)
          {
              [self showDisconnectedAlert];
+             _waitingView.hidden = YES;
          }
      }];
 }
@@ -276,7 +233,7 @@
     
 	NSString *peerID = [_matchmakingClient peerIDForAvailableServerAtIndex:indexPath.row];
 	cell.textLabel.text = [_matchmakingClient displayNameForPeerID:peerID];
-    
+    cell.textLabel.font = [UIFont fontWithName:@"Century Gothic" size:18.0f];
 	return cell;
 }
 
@@ -290,11 +247,39 @@
 	{
         _waitingView.hidden = NO;
         
+        if(tapCount == 1 && tapTimer != nil && tappedRow == indexPath.row){
+            //double tap - Put your double tap code here
+            [tapTimer invalidate];
+            _waitingView.hidden = YES;
+            tapTimer = nil;
+        }
+        else if(tapCount == 0){
+            //This is the first tap. If there is no tap till tapTimer is fired, it is a single tap
+            tapCount = tapCount + 1;
+            tappedRow = indexPath.row;
+            tapTimer = [NSTimer timerWithTimeInterval:2.0 target:self selector:@selector(tapTimerFired:) userInfo:nil repeats:NO];
+        }
+        else if(tappedRow != indexPath.row){
+            //tap on new row
+            tapCount = 0;
+            if(tapTimer != nil){
+                [tapTimer invalidate];
+                tapTimer = nil;
+            }
+        }
+        
 		NSString *peerID = [_matchmakingClient peerIDForAvailableServerAtIndex:indexPath.row];
 		[_matchmakingClient connectToServerWithPeerID:peerID];
 	}
 }
 
+- (void)tapTimerFired:(NSTimer *)aTimer{
+    //timer fired, there was a single tap on indexPath.row = tappedRow
+    if(tapTimer != nil){
+    	tapCount = 0;
+    	tappedRow = -1;
+    }
+}
 #pragma mark - UITextFieldDelegate
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
@@ -342,7 +327,7 @@
 - (void)matchmakingClient:(MatchmakingClient *)client didConnectToServer:(NSString *)peerID
 {
     NSLog(@"Connected to server! %@", peerID);
-	NSString *name = [self.nameTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+	NSString *name = UIDevice.currentDevice.name;
 	if ([name length] == 0)
 		name = _matchmakingClient.session.displayName;
     
@@ -360,7 +345,6 @@
     _matchmakingClient.delegate = self;
     [_matchmakingClient startSearchingForServersWithSessionID:SESSION_ID];
     
-    self.nameTextField.placeholder = _matchmakingClient.session.displayName;
     [self.tableView reloadData];
 }
 
@@ -375,21 +359,13 @@
     self.tableView.layer.cornerRadius = 7;
     self.tableView.layer.masksToBounds = YES;
     
-    //Global UI
-//    [[UILabel appearance] setFont:[UIFont fontWithName:@"Century Gothic" size:17.0]];
-//    [[UILabel appearance] setTextColor:[UIColor colorWithHue:0.0 saturation:0.0 brightness:.2 alpha:1.0]];
-//    [[UIButton appearance] setFont:[UIFont fontWithName:@"Century Gothic" size:17.0]];
-//    [[UIButton appearance] setTitleColor:[UIColor colorWithHue:0.0 saturation:0.0 brightness:0.2 alpha:1.0] forState:UIControlStateNormal];
-    
     self.sessionsLabel.font = [UIFont fontWithName:@"Century Gothic" size:20.0f];
-    [_hostGameButton setTitle:@"Host Session" forState:UIControlStateNormal];
-    _hostGameButton.titleLabel.font = [UIFont fontWithName:@"gothic" size:17.0f];
-    [_joinGameButton setTitle:@"Join Session" forState:UIControlStateNormal];
-    _joinGameButton.titleLabel.font = [UIFont fontWithName:@"gothic" size:17.0f];
-    [_submitServerButton setTitle:@"Start" forState:UIControlStateNormal];
-    _submitServerButton.titleLabel.font = [UIFont fontWithName:@"gothic" size:17.0f];
+    [_hostGameButton setTitle:@"Host" forState:UIControlStateNormal];
+    _hostGameButton.titleLabel.font = [UIFont fontWithName:@"Century Gothic" size:20.0f];
+    [_joinGameButton setTitle:@"Join" forState:UIControlStateNormal];
+    _joinGameButton.titleLabel.font = [UIFont fontWithName:@"Century Gothic" size:20.0f];
     [_backButton setTitle:@"Back" forState:UIControlStateNormal];
-    _backButton.titleLabel.font = [UIFont fontWithName:@"gothic" size:17.0f];
+    _backButton.titleLabel.font = [UIFont fontWithName:@"Century Gothic" size:17.0f];
     NSURL *url = [[NSBundle mainBundle] URLForResource:@"loading" withExtension:@"gif"];
     _waitingView.image = [UIImage animatedImageWithAnimatedGIFData:[NSData dataWithContentsOfURL:url]];
     _waitingView.hidden = YES;
