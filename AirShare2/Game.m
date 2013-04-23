@@ -1277,6 +1277,7 @@ typedef enum
     _uploader = nil;
     _downloader = nil;
     
+    [self stopAllTimers];
     [_audioPlayer stop];
     [_moviePlayerController.moviePlayer stop];
 	[_session disconnectFromAllPeers];
@@ -1284,6 +1285,20 @@ typedef enum
     [[UIApplication sharedApplication] endReceivingRemoteControlEvents];
     
 	[self.delegate gameSessionDidEnd:self];
+}
+
+- (void)stopAllTimers
+{
+    [_playMusicTimer invalidate];
+    [_updateMusicTimer invalidate];
+    [_loadTimeoutTimer invalidate];
+    [_updatePlaybackProgressTimer invalidate];
+    [_playbackSyncingTimer invalidate];
+    _playMusicTimer = nil;
+    _updateMusicTimer = nil;
+    _loadTimeoutTimer = nil;
+    _updatePlaybackProgressTimer = nil;
+    _playbackSyncingTimer = nil;
 }
 
 - (void)stopAcceptingConnections
