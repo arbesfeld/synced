@@ -31,14 +31,15 @@
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
-    NSLog(@"applicationDidEnterBackground");
-//    __block UIBackgroundTaskIdentifier task = 0;
-//    task=[application beginBackgroundTaskWithExpirationHandler:^{
-//        NSLog(@"Expiration handler called %f",[application backgroundTimeRemaining]);
-//        [application endBackgroundTask:task];
-//        task=UIBackgroundTaskInvalid;
-//    }];
-//    
+    NSLog(@"applicationDidEnterBackground = %f",[application backgroundTimeRemaining]);
+    __block UIBackgroundTaskIdentifier task = 0;
+    // they have 10 minutes to reconnect
+    task=[application beginBackgroundTaskWithExpirationHandler:^{
+        NSLog(@"Expiration handler called %f",[application backgroundTimeRemaining]);
+        [application endBackgroundTask:task];
+        task=UIBackgroundTaskInvalid;
+    }];
+//
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
 }

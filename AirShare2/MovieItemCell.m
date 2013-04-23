@@ -16,7 +16,7 @@
     if (self) {
         self.movieItem = movieItem;
         
-        [self performSelector:@selector(loadImage:) withObject:@YES afterDelay:0];
+        [self performSelector:@selector(loadImage) withObject:nil afterDelay:0];
         
         _title = [self.movieItem valueForProperty:MPMediaItemPropertyTitle];
         _artist = [self.movieItem valueForProperty:MPMediaItemPropertyArtist];
@@ -83,11 +83,8 @@
     [self.contentView addSubview:artistLabel];
     [self.contentView addSubview:durationLabel];
 }
-- (void)loadImage:(BOOL)load
+- (void)loadImage
 {
-    if(!load) {
-        return;
-    }
     AVURLAsset *asset= [[AVURLAsset alloc] initWithURL:_imageURL options:nil];
     AVAssetImageGenerator *imageGenerator = [[AVAssetImageGenerator alloc]initWithAsset:asset];
     CMTime time = CMTimeMake(30, 1);

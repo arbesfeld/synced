@@ -199,7 +199,6 @@
     
     [data rw_appendString:self.currentPlaylistItem.name];
     [data rw_appendString:self.currentPlaylistItem.subtitle];
-    NSLog(@"ID = %@", self.currentPlaylistItem.ID);
     [data rw_appendString:self.currentPlaylistItem.ID];
     [data rw_appendInt8:  self.currentPlaylistItem.playlistItemType];
     if(self.currentPlaylistItem.playlistItemType == PlaylistItemTypeYoutube) {

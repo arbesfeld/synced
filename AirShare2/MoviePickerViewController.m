@@ -118,7 +118,7 @@
     // Configure the cell...
     if(cell == nil) {
         if(indexPath.section == 0) {
-            cell = [[MovieItemCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier title:@"" artist:@"Search for Youtube Videos" duration:@"" image:[UIImage imageNamed:@"youtubeLogo.png"]];
+            cell = [[MovieItemCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier title:@"" artist:@"Search for YouTube Videos" duration:@"" image:[UIImage imageNamed:@"youtubeLogo.png"]];
         } else {
             cell = [[MovieItemCell alloc] initWithStyle:UITableViewCellStyleDefault
                                                            reuseIdentifier:CellIdentifier

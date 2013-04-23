@@ -91,6 +91,8 @@ typedef enum
     _currentItem.loadProgress = 0.0;
     
     self.maxClients = 4;
+    
+    [[UIApplication sharedApplication] beginReceivingRemoteControlEvents];
 }
 
 - (void)startClientGameWithSession:(GKSession *)session playerName:(NSString *)name server:(NSString *)peerID
@@ -577,7 +579,6 @@ typedef enum
     [self.delegate reloadTable];
     
     if(youtubeItem.uploadedByUser) {
-        NSLog(@"ID = %@", youtubeItem.ID);
         PacketPlaylistItem *packet = [PacketPlaylistItem packetWithPlaylistItem:youtubeItem];
         [self sendPacketToAllClients:packet];
         
@@ -1258,6 +1259,7 @@ typedef enum
     [_moviePlayerController.moviePlayer stop];
 	[_session disconnectFromAllPeers];
     
+    [[UIApplication sharedApplication] endReceivingRemoteControlEvents];
 	[self.delegate gameSessionDidEnd:self];
 }
 

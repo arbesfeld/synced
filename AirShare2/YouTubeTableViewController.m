@@ -26,7 +26,7 @@ const int ITEM_COUNT = 20;
         self.searchBar.delegate = self;
         [self.searchBar sizeToFit];
         self.tableView.tableHeaderView = self.searchBar;
-        
+        self.title = @"YouTube";
         [self resetContent];
         
 //        searchDisplayController = [[UISearchDisplayController alloc] initWithSearchBar:_searchBar contentsController:self];
