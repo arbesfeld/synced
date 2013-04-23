@@ -858,6 +858,11 @@ typedef enum
         [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
     }];
     
+    if(_gameState != GameStatePlayingMovie) {
+        // we already started new content
+        return;
+    }
+    
     [self.delegate setPlaybackProgress:0.0];
     [self.delegate mediaFinishedPlaying];
     
