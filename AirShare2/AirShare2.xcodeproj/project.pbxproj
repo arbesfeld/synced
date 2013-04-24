@@ -450,16 +450,33 @@
 		5597F0A61723DCC600C91952 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
-				89CD82AE1727278900A4BDCD /* EGORefreshTableHeaderView.h */,
-				89CD82AF1727278900A4BDCD /* EGORefreshTableHeaderView.m */,
-				89C016AE1714B545003F0B26 /* MarqueeLabel.h */,
-				89C016AF1714B545003F0B26 /* MarqueeLabel.m */,
+				5592DE84170BAAA500C766B0 /* ECSlidingViewController */,
+				559E887917283F4300CAE248 /* EGORefreshTableHeaderView */,
+				559E887A17283F4D00CAE248 /* MarqueeLabel */,
 				559673C117246A51000E0D52 /* LBYouTube */,
 				5597F0891723DAAB00C91952 /* SDImageCache */,
 				5597F0851723D12A00C91952 /* SBJson */,
 				5590968816FF5E9B004149A0 /* AFNetworking */,
 			);
 			name = Libraries;
+			sourceTree = "<group>";
+		};
+		559E887917283F4300CAE248 /* EGORefreshTableHeaderView */ = {
+			isa = PBXGroup;
+			children = (
+				89CD82AE1727278900A4BDCD /* EGORefreshTableHeaderView.h */,
+				89CD82AF1727278900A4BDCD /* EGORefreshTableHeaderView.m */,
+			);
+			name = EGORefreshTableHeaderView;
+			sourceTree = "<group>";
+		};
+		559E887A17283F4D00CAE248 /* MarqueeLabel */ = {
+			isa = PBXGroup;
+			children = (
+				89C016AE1714B545003F0B26 /* MarqueeLabel.h */,
+				89C016AF1714B545003F0B26 /* MarqueeLabel.m */,
+			);
+			name = MarqueeLabel;
 			sourceTree = "<group>";
 		};
 		55FCC54016ED3D4C0000BCBD = {
@@ -473,7 +490,7 @@
 				55FCC5C916ED7A620000BCBD /* AirShareAdditions */,
 				55FCC5BF16ED62680000BCBD /* DataModel */,
 				55FCC5B816ED3E6E0000BCBD /* Networking */,
-				5592DE84170BAAA500C766B0 /* ECSlidingViewController */,
+				558E0D651704DE3800BF230D /* UI */,
 				55FCC5B716ED3E5A0000BCBD /* ViewControllers */,
 				55FCC55216ED3D4C0000BCBD /* AirShare2 */,
 				55FCC54B16ED3D4C0000BCBD /* Frameworks */,
@@ -550,7 +567,6 @@
 				5595E4EA171D2C45006782DE /* MoviePickerViewController.m */,
 				5597F0631723CDFF00C91952 /* YouTubeTableViewController.h */,
 				5597F0641723CDFF00C91952 /* YouTubeTableViewController.m */,
-				558E0D651704DE3800BF230D /* UI */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
