@@ -263,6 +263,6 @@
 {
     [super layoutSubviews];
     self.textLabel.frame = CGRectMake(65.0f, self.textLabel.frame.origin.y+2, self.frame.size.width - 110.0f, self.textLabel.frame.size.height);
-    self.detailTextLabel.frame = CGRectMake(65.0f, self.detailTextLabel.frame.origin.y+2, self.frame.size.width - 110.0f, self.detailTextLabel.frame.size.height);
+    self.detailTextLabel.frame = CGRectMake(65.0f, self.detailTextLabel.frame.origin.y+2, self.frame.size.width - 115.0f, self.detailTextLabel.frame.size.height);
 }
 @end
