@@ -20,10 +20,10 @@ const double DELAY_TIME = 2.50000;   // wait DELAY_TIME seconds until songs play
 const int WAIT_TIME_UPLOAD = 60;     // server wait time for others to download music after uploading
 const int WAIT_TIME_DOWNLOAD = 60;   // server wait time for others to download music after downloading
 const int SYNC_PACKET_COUNT = 100;   // how many sync packets to send
-const int UPDATE_TIME_AUDIO = 90;    // how often to update playback (after first update)
-const int UPDATE_TIME_MOVIE = 60;    // how often to update playback (after first update)
+const int UPDATE_TIME_AUDIO = 60;    // how often to update playback (after first update)
+const int UPDATE_TIME_MOVIE = 30;    // how often to update playback (after first update)
 const int UPDATE_TIME_YOUTUBE = 15;  // how often to update playback (after first update)
-const int UPDATE_TIME_YOUTUBE_LOADING = 7;   // how often to update playback (after first update)
+const int UPDATE_TIME_YOUTUBE_LOADING = 10;   // how often to update playback (after first update)
 const int UPDATE_TIME_FIRST = 1;     // how often to update playback (first update)
 const double BACKGROUND_TIME = -0.2; // the additional time it takes when app is in background
 const double MOVIE_TIME = -0.1;      // the additional time it takes for movies
@@ -820,6 +820,7 @@ typedef enum
         _gameState = GameStateIdle;
         
         [self.delegate setPlaybackProgress:0.0];
+        
         [self.delegate mediaFinishedPlaying];
         
         if(_updatePlaybackProgressTimer) {
@@ -839,7 +840,6 @@ typedef enum
 - (void)moviePlayerDidFinishPlaying:(AVPlayerItem *)playerItem
 {
     //NSAssert(_gameState == GameStatePlayingMovie, @"In moviePlayerDidFinishPlaying:");
-    _gameState = GameStateIdle;
     
     NSLog(@"MoviePlayerDidFinishPlaying");
     
@@ -863,6 +863,7 @@ typedef enum
         return;
     }
     
+    _gameState = GameStateIdle;
     [self.delegate setPlaybackProgress:0.0];
     [self.delegate mediaFinishedPlaying];
     
@@ -1051,7 +1052,8 @@ typedef enum
         float fraction = _audioPlayer.currentTime / total;
         
         [self.delegate setPlaybackProgress:fraction];
-    
+        [self.delegate secondsRemaining:total - _audioPlayer.currentTime];
+        
         if (_partyMode && mediaItem.beatsLoaded && mediaItem.beatPos >= 0 && mediaItem.beatPos < [mediaItem.beats count] &&[(NSNumber *)[mediaItem.beats objectAtIndex:mediaItem.beatPos] doubleValue] < _audioPlayer.currentTime + 0.05) {
             // play a beat
             //NSLog(@"%f is the time; %@ is the beat", _audioPlayer.currentTime, (NSNumber*)[mediaItem.beats objectAtIndex:mediaItem.beatPos]);
@@ -1064,6 +1066,7 @@ typedef enum
         float fraction = current / total;
         
         [self.delegate setPlaybackProgress:fraction];
+        [self.delegate secondsRemaining:total - current];
     }
 }
 

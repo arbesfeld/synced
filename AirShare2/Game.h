@@ -31,6 +31,7 @@ ServerState;
 - (void)removePlaylistItem:(PlaylistItem *)playlistItem animation:(UITableViewRowAnimation)animation;
 - (void)cancelMusicAndUpdateAll:(PlaylistItem *)playlistItem;
 
+- (void)secondsRemaining:(int)secondsRemaining;
 - (void)mediaFinishedPlaying;
 
 - (void)setCurrentItem:(PlaylistItem *)playlistItem;

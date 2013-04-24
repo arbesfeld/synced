@@ -20,11 +20,14 @@
     BOOL _canLoadView; // for when animations are occuring
 }
 
+@property (weak, nonatomic) IBOutlet UILabel *timeLabel;
 @property (nonatomic, weak) IBOutlet UILabel *skipSongLabel, *artistLabel, *waitingLabel;
+@property (weak, nonatomic) IBOutlet UILabel *playingLabel;
+@property (weak, nonatomic) IBOutlet UIView *gradientView;
 @property (nonatomic, weak) IBOutlet UIButton *exitButton, *skipSongButton;
 @property (nonatomic, weak) IBOutlet UITableView *userTable, *playlistTable;
 @property (nonatomic, weak) IBOutlet UIProgressView *playbackProgressBar;
-@property (nonatomic, strong) MarqueeLabel * songTitle;
+@property (nonatomic, weak) IBOutlet UILabel * songTitle;
 @property (nonatomic, strong) UINavigationController *navController;
 @property (nonatomic, strong) MPMediaPickerController *mediaPicker;
 @property (nonatomic, strong) UIWebView *youtube;

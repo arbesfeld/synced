@@ -23,13 +23,15 @@
 
 @interface PlaylistItemCell : UITableViewCell {
     NSTimer *_updateLoadProgress;
+    BOOL _upvotePressed;
 }
 
 @property (nonatomic, weak) id <PlaylistItemDelegate> delegate;
 
 @property (nonatomic, weak) UIButton *upvoteButton, *downvoteButton, *cancelButton;
 @property (nonatomic, strong) UILabel *upvoteLabel, *downvoteLabel, *positionLabel;
-@property (nonatomic, strong) UIImageView *waitingView;
+@property (nonatomic, strong) UIImageView *waitingView, *iconView;
+@property (nonatomic, strong) UIView *gradientLoadProgress;
 @property (nonatomic, strong) UIView *loadProgress;
 @property (nonatomic, strong) PlaylistItem *playlistItem;
 @property (nonatomic, assign) int position;

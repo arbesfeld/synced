@@ -29,7 +29,12 @@ const double epsilon = 0.02;
 {
 	[super viewDidLoad];
     // visual placeholder
-    [self setupUI];
+    
+//    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 60, self.view.bounds.size.width, 1.5)];
+//    lineView.backgroundColor = [UIColor colorWithHue:1.0 saturation:0.0 brightness:.6 alpha:.8];
+//    [self.view addSubview:lineView];
+    
+    
     _voteAmount = [[NSMutableDictionary alloc] initWithCapacity:10];
     
     self.view.backgroundColor = [[UIColor alloc] initWithPatternImage:[UIImage imageNamed:@"bgGreyImg.png"]];
@@ -39,30 +44,40 @@ const double epsilon = 0.02;
     //self.playlistTable.separatorStyle = UITableViewCellSeparatorStyleNone;
     
     _canLoadView = YES;
-
-    self.artistLabel.hidden = YES;
-    self.waitingLabel.hidden = NO;
-    self.waitingLabel.font = [UIFont fontWithName:@"Century Gothic" size:17.0f];
-    float marqueeX;
-    if ( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad )
-    {
-        marqueeX = self.view.frame.size.width / 2.0;
-    } else {
-        marqueeX = self.view.frame.size.width / 2.0 - 140;
-    }
     
-    self.songTitle = [[MarqueeLabel alloc] initWithFrame:CGRectMake(marqueeX, 70, 280.0f, 20.0f) duration:6.0 andFadeLength:10.0f];
+    [self isWaiting:YES];
     
-    self.songTitle.tag = 101;
-    self.songTitle.numberOfLines = 1;
+    self.waitingLabel.font = [UIFont fontWithName:@"Century Gothic" size:14.0f];
+    self.waitingLabel.textColor = [UIColor darkGrayColor];
+    
+    self.playingLabel.font = [UIFont fontWithName:@"Century Gothic" size:11.0f];
+    self.playingLabel.textColor = [UIColor darkGrayColor];
+    
     self.songTitle.shadowOffset = CGSizeMake(0.0, -1.0);
-    self.songTitle.textAlignment = NSTextAlignmentCenter;
     self.songTitle.textColor = [UIColor colorWithRed:0.234 green:0.234 blue:0.234 alpha:1.000];
     self.songTitle.backgroundColor = [UIColor clearColor];
-    self.songTitle.font = [UIFont fontWithName:@"Century Gothic" size:19.0f];
-    self.songTitle.text = @"";
-    [self.view addSubview:self.songTitle];
-    self.skipSongLabel.font = [UIFont fontWithName:@"Century Gothic" size:20.0f];
+    self.songTitle.font = [UIFont fontWithName:@"Century Gothic" size:16.0f];
+    
+    self.artistLabel.font = [UIFont fontWithName:@"Century Gothic" size:12.0f];
+    self.artistLabel.textColor = [UIColor darkGrayColor];
+    
+    self.skipSongLabel.font = [UIFont fontWithName:@"Century Gothic" size:16.0f];
+    self.skipSongLabel.textColor = [UIColor colorWithRed:0.234 green:0.234 blue:0.234 alpha:1.000];
+    
+    self.timeLabel.font = [UIFont fontWithName:@"Century Gothic" size:16.0f];
+    self.timeLabel.textColor = [UIColor colorWithRed:0.234 green:0.234 blue:0.234 alpha:1.000];
+}
+
+- (void)isWaiting:(BOOL)isWaiting
+{
+    self.waitingLabel.hidden = !isWaiting;
+    self.playingLabel.hidden = isWaiting;
+    self.songTitle.hidden = isWaiting;
+    self.artistLabel.hidden = isWaiting;
+    self.skipSongButton.hidden = isWaiting;
+    self.skipSongLabel.hidden = isWaiting;
+    self.timeLabel.hidden = isWaiting;
+    self.playbackProgressBar.hidden = isWaiting;
 }
 
 -(void)viewDidAppear:(BOOL)animated{
@@ -184,9 +199,16 @@ const double epsilon = 0.02;
 
 - (void)mediaFinishedPlaying
 {
-    _waitingLabel.hidden = NO;
-    _artistLabel.hidden = YES;
-    self.songTitle.text = @"";
+    [self isWaiting:YES];
+    self.timeLabel.text = @"0:00";
+}
+
+- (void)secondsRemaining:(int)secondsRemaining
+{
+    int minutes = secondsRemaining / 60;
+    int seconds = secondsRemaining - 60 * minutes;
+    
+    self.timeLabel.text = [NSString stringWithFormat:@"%.2d:%.2d", minutes, seconds];
 }
 
 - (void)setCurrentItem:(PlaylistItem *)playlistItem
@@ -197,7 +219,8 @@ const double epsilon = 0.02;
         return;
     }
     
-    _waitingLabel.hidden = YES;
+    [self isWaiting:NO];
+    
     [self setHeaderWithSongName:playlistItem.name andArtistName:playlistItem.subtitle];
 }
 
@@ -217,6 +240,7 @@ const double epsilon = 0.02;
 
 - (void)setPlaybackProgress:(double)f {
     self.playbackProgressBar.progress = f;
+    
     if(f == 0.0) {
         self.playbackProgressBar.hidden = YES;
     } else {
@@ -309,10 +333,7 @@ const double epsilon = 0.02;
     _playbackProgressBar.hidden = NO;
     
     self.songTitle.text = songName;
-    self.songTitle.font = [UIFont fontWithName:@"Century Gothic" size:18.0f];
     self.artistLabel.text = artistName;
-    self.artistLabel.font = [UIFont fontWithName:@"Century Gothic" size:14.0f];
-    self.artistLabel.textColor = [UIColor darkGrayColor];
     
 }
 #pragma mark - UITableViewDelegate
@@ -421,11 +442,5 @@ const double epsilon = 0.02;
     _game.partyMode = [sender isOn];
 }
 
-- (void)setupUI
-{
-    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 70, self.view.bounds.size.width, 1.5)];
-    lineView.backgroundColor = [UIColor colorWithHue:1.0 saturation:0.0 brightness:.6 alpha:.4];
-    [self.view addSubview:lineView];
-}
 
 @end

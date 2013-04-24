@@ -15,7 +15,8 @@
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        const NSArray *colorTable = [[NSArray alloc] initWithObjects: [UIColor colorWithRed:254/255.0 green:219/255.0 blue:114/255.0 alpha:.8],[UIColor colorWithRed:165/255.0 green:254/225.0 blue:113/225.0 alpha:.8], [UIColor colorWithRed:113/255.0 green:254/225.0 blue:146/225.0 alpha:.8], [UIColor colorWithRed:113/255.0 green:169/225.0 blue:254/225.0 alpha:.8], [UIColor colorWithRed:113/255.0 green:254/225.0 blue:235/225.0 alpha:.8], [UIColor colorWithRed:113/255.0 green:115/225.0 blue:254/225.0 alpha:.8], [UIColor colorWithRed:188/255.0 green:113/225.0 blue:254/225.0 alpha:.8], [UIColor colorWithRed:254/255.0 green:113/225.0 blue:188/225.0 alpha:.8], [UIColor colorWithRed:254/255.0 green:165/225.0 blue:113/225.0 alpha:.8], [UIColor colorWithRed:254/255.0 green:115/225.0 blue:113/225.0 alpha:.8], nil];
+        static float alpha = 0.6;
+        const NSArray *colorTable = [[NSArray alloc] initWithObjects: [UIColor colorWithRed:254/255.0 green:219/255.0 blue:114/255.0 alpha:alpha],[UIColor colorWithRed:165/255.0 green:254/225.0 blue:113/225.0 alpha:alpha], [UIColor colorWithRed:113/255.0 green:254/225.0 blue:146/225.0 alpha:alpha], [UIColor colorWithRed:113/255.0 green:169/225.0 blue:254/225.0 alpha:alpha], [UIColor colorWithRed:113/255.0 green:254/225.0 blue:235/225.0 alpha:alpha], [UIColor colorWithRed:113/255.0 green:115/225.0 blue:254/225.0 alpha:alpha], [UIColor colorWithRed:188/255.0 green:113/225.0 blue:254/225.0 alpha:alpha], [UIColor colorWithRed:254/255.0 green:113/225.0 blue:188/225.0 alpha:alpha], [UIColor colorWithRed:254/255.0 green:165/225.0 blue:113/225.0 alpha:alpha], [UIColor colorWithRed:254/255.0 green:115/225.0 blue:113/225.0 alpha:alpha], nil];
         
         self.position = position+1;
         self.playlistItem = playlistItem;
@@ -23,68 +24,85 @@
         
         //self.textLabel.font = [UIFont systemFontOfSize:17.0f];
         self.textLabel.text = playlistItem.name;
-        self.textLabel.font = [UIFont fontWithName:@"CenturyGothicStd" size:16];
+        self.textLabel.font = [UIFont fontWithName:@"CenturyGothicStd" size:14];
         self.textLabel.backgroundColor = [UIColor clearColor];
-        self.textLabel.textAlignment = NSTextAlignmentCenter;
+        self.textLabel.textAlignment = NSTextAlignmentLeft;
         
         self.detailTextLabel.text = playlistItem.subtitle;
-        self.detailTextLabel.font = [UIFont fontWithName:@"CenturyGothicStd" size:12];
+        self.detailTextLabel.font = [UIFont fontWithName:@"CenturyGothicStd" size:11];
         self.detailTextLabel.backgroundColor = [UIColor clearColor];
-        self.detailTextLabel.textAlignment = NSTextAlignmentCenter;
+        self.detailTextLabel.textAlignment = NSTextAlignmentLeft;
         self.detailTextLabel.textColor = [UIColor darkGrayColor];
         
         self.positionLabel = [[UILabel alloc] init];
-        self.positionLabel.frame = CGRectMake(6.0f, 15.0f, 30.0f, 30.0f);
+        self.positionLabel.frame = CGRectMake(2.0f, 10.0f, 30.0f, 30.0f);
         self.positionLabel.text = [NSString stringWithFormat:@"%d.", self.position];
-        self.positionLabel.font = [UIFont fontWithName:@"CenturyGothicStd-Bold" size:18];
+        self.positionLabel.font = [UIFont fontWithName:@"CenturyGothicStd-Bold" size:15];
         self.positionLabel.backgroundColor = [UIColor clearColor];
         self.positionLabel.textAlignment = NSTextAlignmentCenter;
         
-        // set status of buttons
-        BOOL upvoteButtonEnabled = YES;
-        BOOL downvoteButtonEnabled = YES;
-        if(voteValue > 0) {
-            upvoteButtonEnabled = NO;
-        } else if(voteValue < 0) {
-            downvoteButtonEnabled = NO;
-        }
         
+        if(playlistItem.playlistItemType == PlaylistItemTypeSong) {
+            _iconView = [[UIImageView alloc] initWithFrame:CGRectMake(28.0f, 6.0f, 30.0f, 30.0f)];
+            _iconView.image = [UIImage imageNamed:@"music symbol-01"];
+        } else {
+            _iconView = [[UIImageView alloc] initWithFrame:CGRectMake(31.0f, 9.0f, 25.0f, 25.0f)];
+            _iconView.image = [UIImage imageNamed:@"movies-01"];
+        }
+        [_iconView setAlpha:0.8];
+        _iconView.layer.shadowColor = [UIColor blackColor].CGColor;
+        _iconView.layer.shadowOffset = CGSizeMake(0, 0.5);
+        _iconView.layer.shadowOpacity = 1;
+        _iconView.layer.shadowRadius = 0.5;
+        
+        // set status of buttons
+        _upvotePressed = YES;
+        
+        NSString *upvoteString;
+        if(voteValue > 0) {
+            upvoteString = @"upvote_selected.png";
+        } else {
+            _upvotePressed = NO;
+            upvoteString = @"upvote.png";
+        }
         _upvoteButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        _upvoteButton.frame = CGRectMake(255.0f, -5.0f, 50.0f, 50.0f);
-        [_upvoteButton setBackgroundImage:[UIImage imageNamed:@"upvote.png"] forState: UIControlStateNormal];
-        [_upvoteButton setBackgroundImage:[UIImage imageNamed:@"upvote.png"] forState: UIControlStateHighlighted];
-        [_upvoteButton setBackgroundImage:[UIImage imageNamed:@"upvote.png"] forState: UIControlStateSelected];
-        [_upvoteButton setBackgroundImage:[UIImage imageNamed:@"upvote_selected.png"] forState: UIControlStateDisabled];
+        _upvoteButton.frame = CGRectMake(269.0f, -8.0f, 45.0f, 45.0f);
+        [_upvoteButton setBackgroundImage:[UIImage imageNamed:upvoteString] forState: UIControlStateNormal];
+        [_upvoteButton setBackgroundImage:[UIImage imageNamed:upvoteString] forState: UIControlStateHighlighted];
+        [_upvoteButton setBackgroundImage:[UIImage imageNamed:upvoteString] forState: UIControlStateSelected];
         _upvoteButton.showsTouchWhenHighlighted = YES;
         //[_upvoteButton setTitle:@"+" forState:UIControlStateNormal];
-        [_upvoteButton setEnabled:upvoteButtonEnabled];
         
         self.upvoteLabel = [[UILabel alloc] init];
-        _upvoteLabel.frame = CGRectMake(275.0f, 25.0f, 15.0f, 30.0f);
+        _upvoteLabel.frame = CGRectMake(288.0f, 11.0f, 15.0f, 30.0f);
+        _upvoteLabel.font = [UIFont fontWithName:@"Century Gothic" size:12.0f];
         _upvoteLabel.text = [NSString stringWithFormat:@"%d", [playlistItem getUpvoteCount]];
         _upvoteLabel.backgroundColor = [UIColor clearColor];
         
         _downvoteButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        _downvoteButton.frame = CGRectMake(280.0f, -5.0f, 50.0f, 50.0f);
+        _downvoteButton.frame = CGRectMake(280.0f, 5.0f, 35.0f, 35.0f);
+        _downvoteButton.imageView.contentMode = UIViewContentModeCenter;
+        _downvoteButton.imageView.bounds = CGRectMake(293.0f, 10.0f, 28.0f, 28.0f);
         [_downvoteButton setBackgroundImage:[UIImage imageNamed:@"downvote.png"] forState: UIControlStateNormal];
         [_downvoteButton setBackgroundImage:[UIImage imageNamed:@"downvote.png"] forState: UIControlStateHighlighted];
         [_downvoteButton setBackgroundImage:[UIImage imageNamed:@"downvote.png"] forState: UIControlStateSelected];
         [_downvoteButton setBackgroundImage:[UIImage imageNamed:@"downvote_selected.png"] forState: UIControlStateDisabled];
         _downvoteButton.showsTouchWhenHighlighted = YES;
         //[_downvoteButton setTitle:@"-" forState:UIControlStateNormal];
-        [_downvoteButton setEnabled:downvoteButtonEnabled];
+        //[_downvoteButton setEnabled:downvoteButtonEnabled];
         
         self.downvoteLabel = [[UILabel alloc] init];
-        _downvoteLabel.frame = CGRectMake(300.0f, 25.0f, 15.0f, 30.0f);
+        _downvoteLabel.frame = CGRectMake(293.0f, 25.0f, 15.0f, 30.0f);
+        _downvoteLabel.font = [UIFont fontWithName:@"Century Gothic" size:16.0f];
         _downvoteLabel.text = [NSString stringWithFormat:@"%d", [playlistItem getDownvoteCount]];
         _downvoteLabel.backgroundColor = [UIColor clearColor];
 
         NSURL *url = [[NSBundle mainBundle] URLForResource:@"loading" withExtension:@"gif"];
-        _waitingView = [[UIImageView alloc] initWithFrame:CGRectMake(15.0f, 15.0f, 15.0f, 15.0f)];
+        _waitingView = [[UIImageView alloc] initWithFrame:CGRectMake(10.0f, 16.0f, 12.0f, 12.0f)];
         _waitingView.image = [UIImage animatedImageWithAnimatedGIFData:[NSData dataWithContentsOfURL:url]];
         
         _cancelButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        _cancelButton.frame = CGRectMake(270.0f, 3.0f, 50.0f, 50.0f);
+        _cancelButton.frame = CGRectMake(266.0f, 0.0f, 50.0f, 50.0f);
         [_cancelButton setBackgroundImage:[UIImage imageNamed:@"cancel.png"] forState: UIControlStateNormal];
         [_cancelButton setBackgroundImage:[UIImage imageNamed:@"cancel.png"] forState: UIControlStateHighlighted];
         [_cancelButton setBackgroundImage:[UIImage imageNamed:@"cancel.png"] forState: UIControlStateSelected];
@@ -92,7 +110,12 @@
         //[_cancelButton setTitle:@"Cancel" forState:UIControlStateNormal];
         
         _loadProgress = [[UIView alloc] init];
-        _loadProgress.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y - 2, self.frame.size.width * playlistItem.previousLoadProgress, self.frame.size.height + 1);
+        NSString *gradientLocation = [[NSBundle mainBundle] pathForResource:@"gradient_transparent" ofType:@"png"];
+        _gradientLoadProgress = [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:gradientLocation]];
+        [_gradientLoadProgress setAlpha:0.3];
+        [_loadProgress addSubview:_gradientLoadProgress];
+        _loadProgress.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, self.frame.size.width * playlistItem.previousLoadProgress, self.frame.size.height+1);
+        _gradientLoadProgress.frame = _loadProgress.frame;
         
         if(self.playlistItem.loadProgress != 0.0 && (self.playlistItem.loadProgress != 1.0 || self.playlistItem.previousLoadProgress != 1.0)) {
             _updateLoadProgress = [NSTimer timerWithTimeInterval:0.01
@@ -128,6 +151,7 @@
         
         // place behind other views
         
+        [self.contentView addSubview:_iconView];
         //NSLog(@"Load progress = %f", playlistItem.loadProgress);
         if(playlistItem.loadProgress != 1.0) {
             if(playlistItem.loadProgress == 0.0) {
@@ -145,9 +169,10 @@
             [self.contentView insertSubview:_loadProgress atIndex:0];
             [self.contentView addSubview:_positionLabel];
             [self.contentView addSubview:_upvoteButton];
+            [self.contentView bringSubviewToFront:_upvoteButton];
             [self.contentView addSubview:_upvoteLabel];
-            [self.contentView addSubview:_downvoteButton];
-            [self.contentView addSubview:_downvoteLabel];
+            //[self.contentView addSubview:_downvoteButton];
+            //[self.contentView addSubview:_downvoteLabel];
         }
         
         [_upvoteButton addTarget:self
@@ -171,6 +196,7 @@
     CGRect frame = self.loadProgress.frame;
     frame.size.width =  self.frame.size.width * newLoadProgress;
     _loadProgress.frame = frame;
+    _gradientLoadProgress.frame = _loadProgress.frame;
     self.playlistItem.previousLoadProgress = newLoadProgress;
     if(newLoadProgress == 1.0) {
         [timer invalidate];
@@ -178,16 +204,26 @@
 }
 - (IBAction)upvoteButtonPressed:(id)sender
 {
-    [_upvoteButton setEnabled:NO];
-    
-    [self.delegate voteForItem:_playlistItem withValue:1 upvote:YES];
-    
-    if(![_downvoteButton isEnabled]) {
-        // user no longer wants it to be downvoted
-        [self.delegate voteForItem:_playlistItem withValue:-1 upvote:NO];
-        
-        [_downvoteButton setEnabled:YES];
+    NSLog(@"Pressed");
+    //[_upvoteButton setEnabled:NO];
+    if(_upvotePressed) {
+        // unpress it
+        NSLog(@"Yes");
+        _upvotePressed = NO;
+        [self.delegate voteForItem:_playlistItem withValue:-1 upvote:YES];
+        _upvoteButton.imageView.image = [UIImage imageNamed:@"upvote.png"];
+    } else {
+        NSLog(@"No");
+        _upvotePressed = YES;
+        [self.delegate voteForItem:_playlistItem withValue:1 upvote:YES];
+        _upvoteButton.imageView.image = [UIImage imageNamed:@"upvote_selected.png"];
     }
+//    if(![_downvoteButton isEnabled]) {
+//        // user no longer wants it to be downvoted
+//        [self.delegate voteForItem:_playlistItem withValue:-1 upvote:NO];
+//        
+//        [_downvoteButton setEnabled:YES];
+//    }
     self.playlistItem.justVoted = YES;
     [self.delegate reloadTable];
 }
@@ -226,7 +262,7 @@
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    self.textLabel.frame = CGRectMake(40.0f, self.textLabel.frame.origin.y, self.frame.size.width - 80.0f, self.textLabel.frame.size.height);
-    self.detailTextLabel.frame = CGRectMake(40.0f, self.detailTextLabel.frame.origin.y, self.frame.size.width - 80.0f, self.detailTextLabel.frame.size.height);
+    self.textLabel.frame = CGRectMake(65.0f, self.textLabel.frame.origin.y+2, self.frame.size.width - 110.0f, self.textLabel.frame.size.height);
+    self.detailTextLabel.frame = CGRectMake(65.0f, self.detailTextLabel.frame.origin.y+2, self.frame.size.width - 110.0f, self.detailTextLabel.frame.size.height);
 }
 @end
