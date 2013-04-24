@@ -30,6 +30,7 @@
 @property (nonatomic, strong) UIImage *skipImage;
 @property (nonatomic, strong) UIView *controlBackground;
 @property (nonatomic, strong) MediaItem *mediaItem;
+@property (nonatomic, strong) MPVolumeView *volumeView;
 
 - (id)initWithMediaItem:(MediaItem *)mediaItem;
 - (void)setSkipCount:(int)skipCount total:(int)total;

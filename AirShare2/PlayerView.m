@@ -46,13 +46,22 @@
                                                      selector:@selector(didRotate:)
                                                          name:UIApplicationDidChangeStatusBarOrientationNotification
                                                        object:nil];
-        } else {
-            float width = frame.size.width;
-            float height = frame.size.height;
-            self.bounds = CGRectMake(0, 0, height*1.75, width*2);
-            self.center = CGPointMake(width + 10, height - 80);
-            self.transform = CGAffineTransformMakeRotation(M_PI / 2);
-            //NSLog(@"width = %f, height = %f", width, height);
+        }
+        else {
+            if ([[UIScreen mainScreen] bounds].size.height > 480.0f) {
+                float width = frame.size.width;
+                float height = frame.size.height;
+                self.bounds = CGRectMake(0, 0, height*1.75, width*2);
+                self.center = CGPointMake(width + 10, height - 80);
+                self.transform = CGAffineTransformMakeRotation(M_PI / 2);
+                //NSLog(@"width = %f, height = %f", width, height);
+            } else{
+                float width = frame.size.width;
+                float height = frame.size.height;
+                self.bounds = CGRectMake(0, 0, height*1.75, width*2);
+                self.center = CGPointMake(width - 50, height - 50);
+                self.transform = CGAffineTransformMakeRotation(M_PI / 2);
+            }
         }
         _playerItem = [AVPlayerItem playerItemWithURL:mediaItem.url];
         _player = [AVPlayer playerWithPlayerItem:_playerItem];

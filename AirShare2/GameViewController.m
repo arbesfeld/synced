@@ -29,6 +29,7 @@ const double epsilon = 0.02;
 {
 	[super viewDidLoad];
     // visual placeholder
+    [self setupUI];
     _voteAmount = [[NSMutableDictionary alloc] initWithCapacity:10];
     
     self.view.backgroundColor = [[UIColor alloc] initWithPatternImage:[UIImage imageNamed:@"bgGreyImg.png"]];
@@ -418,6 +419,13 @@ const double epsilon = 0.02;
 - (IBAction)togglePartyMode:(UISwitch *)sender {
     NSLog(@"Toggling party mode");
     _game.partyMode = [sender isOn];
+}
+
+- (void)setupUI
+{
+    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 70, self.view.bounds.size.width, 1.5)];
+    lineView.backgroundColor = [UIColor colorWithHue:1.0 saturation:0.0 brightness:.6 alpha:.4];
+    [self.view addSubview:lineView];
 }
 
 @end

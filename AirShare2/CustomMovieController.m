@@ -82,6 +82,13 @@
         [self.view bringSubviewToFront:_skipLabel];
         [self.view bringSubviewToFront:_fadeButton];
         [self.view bringSubviewToFront:_skipButton];
+        
+        _volumeView = [[MPVolumeView alloc] initWithFrame:CGRectMake(0, 0, 200, 15)];
+        _volumeView.center = CGPointMake(28,self.view.frame.size.height/2);
+        [_volumeView sizeToFit];
+        _volumeView.transform=CGAffineTransformRotate(_volumeView.transform,-270.0/180*M_PI);
+        [self.view addSubview:_volumeView];
+        [_volumeView setAlpha:0.0];
     }
     return self;
 }
@@ -115,6 +122,7 @@
     [_skipLabel setAlpha:1.0];
     [_skipButton setAlpha:1.0];
     [_controlBackground setAlpha:0.75];
+    [_volumeView setAlpha:1.0];
     [UIView commitAnimations];
     if(_fadeOutTimer) {
         [_fadeOutTimer invalidate];
@@ -131,6 +139,7 @@
     [_skipLabel setAlpha:0.0];
     [_skipButton setAlpha:0.0];
     [_controlBackground setAlpha:0.0];
+    [_volumeView setAlpha:0.0];
     [UIView commitAnimations];
     _skipButton.enabled = NO;
 }
