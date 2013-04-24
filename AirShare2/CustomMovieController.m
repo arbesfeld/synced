@@ -38,18 +38,28 @@
             _skipLabel = [[UILabel alloc] initWithFrame:CGRectMake(frame.size.width - 130, frame.size.height - 74, 50, 50)];
             _skipLabel.font = [UIFont fontWithName:@"Century Gothic" size:24.0f];
             _skipButton = [[UIButton alloc] initWithFrame:CGRectMake(frame.size.width - 80, frame.size.height - 70, 50, 45.59)];
-            _controlBackground = [[UIView alloc] initWithFrame:CGRectMake(frame.size.width - 153, frame.size.height - 85, 137, 72)];
+            _controlBackground = [[UIView alloc] initWithFrame:CGRectMake(10, frame.size.height - 85, frame.size.width - 20, 72)];
             [[NSNotificationCenter defaultCenter] addObserver:self
                                                      selector:@selector(didRotate:)
                                                          name:UIApplicationDidChangeStatusBarOrientationNotification
                                                        object:nil];
+            _volumeView = [[MPVolumeView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width - 320, 15)];
+            _volumeView.center = CGPointMake(frame.size.width / 2, frame.size.height - 51);
+            [_volumeView setAlpha:0.0];
+            [_volumeView sizeToFit];
         } else {
             _skipLabel = [[UILabel alloc] initWithFrame:CGRectMake(17, frame.size.height - 95, 34, 31)];
             [_skipLabel setTransform:CGAffineTransformMakeRotation(M_PI / 2)];
             _skipLabel.font = [UIFont fontWithName:@"Century Gothic" size:20.0f];
             _skipButton = [[UIButton alloc] initWithFrame:CGRectMake(13, frame.size.height - 55, 40, 37)];
             [_skipButton setTransform:CGAffineTransformMakeRotation(M_PI / 2)];
-            _controlBackground = [[UIView alloc] initWithFrame:CGRectMake(3, frame.size.height - 117, 61, 111)];
+            _controlBackground = [[UIView alloc] initWithFrame:CGRectMake(3, 7, 61, frame.size.height - 14)];
+            
+            _volumeView = [[MPVolumeView alloc] initWithFrame:CGRectMake(0, 0, frame.size.height - 237, 15)];
+            _volumeView.center = CGPointMake(31,self.view.frame.size.height/2);
+            [_volumeView setAlpha:0.0];
+            [_volumeView sizeToFit];
+            _volumeView.transform=CGAffineTransformRotate(_volumeView.transform, M_PI / 2);
         }
         [_skipButton setHitTestEdgeInsets:UIEdgeInsetsMake(-20, -20, -20, -20)];
         
@@ -75,23 +85,40 @@
         _fadeButton.frame = frame;
         [_fadeButton addTarget:self action:@selector(fadeButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
         
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(volumeChanged:)
+                                                     name:@"AVSystemController_SystemVolumeDidChangeNotification"
+                                                   object:nil];
+        
         [self.view addSubview:_skipLabel];
         [self.view addSubview:_skipButton];
         [self.view addSubview:_controlBackground];
         [self.view addSubview:_fadeButton];
+        [self.view addSubview:_volumeView];
         [self.view bringSubviewToFront:_controlBackground];
         [self.view bringSubviewToFront:_skipLabel];
         [self.view bringSubviewToFront:_fadeButton];
         [self.view bringSubviewToFront:_skipButton];
+        [self.view bringSubviewToFront:_volumeView];
         
-        _volumeView = [[MPVolumeView alloc] initWithFrame:CGRectMake(0, 0, 200, 15)];
-        _volumeView.center = CGPointMake(28,self.view.frame.size.height/2);
-        [_volumeView sizeToFit];
-        _volumeView.transform=CGAffineTransformRotate(_volumeView.transform,-270.0/180*M_PI);
-        [self.view addSubview:_volumeView];
-        [_volumeView setAlpha:0.0];
     }
     return self;
+}
+- (void)volumeChanged:(NSNotification *)notification
+{
+    [UIView beginAnimations:nil context:NULL];
+    [UIView setAnimationDuration:0.5];
+    [_skipLabel setAlpha:1.0];
+    [_skipButton setAlpha:1.0];
+    [_controlBackground setAlpha:0.75];
+    [_volumeView setAlpha:1.0];
+    [UIView commitAnimations];
+    if(_fadeOutTimer) {
+        [_fadeOutTimer invalidate];
+        _fadeOutTimer = nil;
+    }
+    _skipButton.enabled = YES;
+    _fadeOutTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(fadeOut:) userInfo:nil repeats:NO];
 }
 
 - (void)didRotate:(NSNotification *)notification {
@@ -106,13 +133,17 @@
     self.view.frame = frame;
     _skipLabel.frame = CGRectMake(frame.size.width - 130, frame.size.height - 74, 50, 50);
     _skipButton.frame = CGRectMake(frame.size.width - 80, frame.size.height - 70, 50, 45.59);
-    _controlBackground.frame = CGRectMake(frame.size.width - 150, frame.size.height - 85, 137, 72);
+    _controlBackground.frame = CGRectMake(10, frame.size.height - 85, frame.size.width - 20, 72);
     _fadeButton.frame = self.view.frame;
+    _volumeView.frame= CGRectMake(0, 0, frame.size.width - 320, 15);
+    _volumeView.center = CGPointMake(frame.size.width / 2, frame.size.height - 51);
+
 }
 
 - (void)skipButtonPressed:(id)sender
 {
     [self.delegate skipButtonPressed];
+    
 }
 
 - (void)fadeButtonPressed:(id)sender
@@ -128,21 +159,27 @@
     if(_fadeOutTimer) {
         [_fadeOutTimer invalidate];
         _fadeOutTimer = nil;
+        [self fadeOut:nil];
+    } else {
+        _skipButton.enabled = YES;
+        _fadeOutTimer = [NSTimer scheduledTimerWithTimeInterval:4.0 target:self selector:@selector(fadeOut:) userInfo:nil repeats:NO];
     }
-    _skipButton.enabled = YES;
-    _fadeOutTimer = [NSTimer scheduledTimerWithTimeInterval:5.0 target:self selector:@selector(fadeOut:) userInfo:nil repeats:NO];
 }
 
 - (void)fadeOut:(NSTimer *)timer
 {
-    [UIView beginAnimations:nil context:NULL];
-    [UIView setAnimationDuration:0.5];
-    [_skipLabel setAlpha:0.0];
-    [_skipButton setAlpha:0.0];
-    [_controlBackground setAlpha:0.0];
-    [_volumeView setAlpha:0.0];
-    [UIView commitAnimations];
-    _skipButton.enabled = NO;
+    [UIView animateWithDuration:0.5f
+                          delay:0.0f
+                        options:UIViewAnimationOptionCurveEaseInOut
+                     animations:^{
+                         [_skipLabel setAlpha:0.0];
+                         [_skipButton setAlpha:0.0];
+                         [_controlBackground setAlpha:0.0];
+                         [_volumeView setAlpha:0.0];
+                  }
+                     completion:^(BOOL finished) {
+                         _skipButton.enabled = NO;
+                  }];
 }
 
 - (void)setSkipCount:(int)skipCount total:(int)total
@@ -172,8 +209,7 @@
 {
     [super viewWillDisappear:animated];
     [self resignFirstResponder];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObject:self];
     [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
 }
 

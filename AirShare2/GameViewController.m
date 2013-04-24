@@ -68,6 +68,8 @@ const double epsilon = 0.02;
     
     self.timeLabel.font = [UIFont fontWithName:@"Century Gothic" size:16.0f];
     self.timeLabel.textColor = [UIColor colorWithRed:0.234 green:0.234 blue:0.234 alpha:1.000];
+    
+    self.playlistTable.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
 }
 
 - (void)isWaiting:(BOOL)isWaiting

@@ -15,6 +15,21 @@
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
+        CGRect appFrame = [UIScreen mainScreen].applicationFrame;
+        UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
+        if (orientation == UIInterfaceOrientationLandscapeLeft ||
+            orientation == UIInterfaceOrientationLandscapeRight) {
+            float height = appFrame.size.height;
+            appFrame.size.height = appFrame.size.width;
+            appFrame.size.width = height;
+        }
+        self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, appFrame.size.width, self.frame.size.height);
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(didRotate:)
+                                                     name:UIApplicationDidChangeStatusBarOrientationNotification
+                                                   object:nil];
+        
         static float alpha = 0.5;
         const NSArray *colorTable = [[NSArray alloc] initWithObjects: [UIColor colorWithRed:254/255.0 green:219/255.0 blue:114/255.0 alpha:alpha],[UIColor colorWithRed:165/255.0 green:254/225.0 blue:113/225.0 alpha:alpha], [UIColor colorWithRed:113/255.0 green:254/225.0 blue:146/225.0 alpha:alpha], [UIColor colorWithRed:113/255.0 green:169/225.0 blue:254/225.0 alpha:alpha], [UIColor colorWithRed:113/255.0 green:254/225.0 blue:235/225.0 alpha:alpha], [UIColor colorWithRed:113/255.0 green:115/225.0 blue:254/225.0 alpha:alpha], [UIColor colorWithRed:188/255.0 green:113/225.0 blue:254/225.0 alpha:alpha], [UIColor colorWithRed:254/255.0 green:113/225.0 blue:188/225.0 alpha:alpha], [UIColor colorWithRed:254/255.0 green:165/225.0 blue:113/225.0 alpha:alpha], [UIColor colorWithRed:254/255.0 green:115/225.0 blue:113/225.0 alpha:alpha], nil];
         
@@ -66,7 +81,7 @@
             upvoteString = @"upvote.png";
         }
         _upvoteButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        _upvoteButton.frame = CGRectMake(269.0f, -8.0f, 45.0f, 45.0f);
+        _upvoteButton.frame = CGRectMake(self.frame.size.width - 51.0f, -8.0f, 45.0f, 45.0f);
         [_upvoteButton setBackgroundImage:[UIImage imageNamed:upvoteString] forState: UIControlStateNormal];
         [_upvoteButton setBackgroundImage:[UIImage imageNamed:upvoteString] forState: UIControlStateHighlighted];
         [_upvoteButton setBackgroundImage:[UIImage imageNamed:upvoteString] forState: UIControlStateSelected];
@@ -74,35 +89,18 @@
         [_upvoteButton setHitTestEdgeInsets:UIEdgeInsetsMake(-5, -20, -5, -5)];
         
         self.upvoteLabel = [[UILabel alloc] init];
-        _upvoteLabel.frame = CGRectMake(288.0f, 11.0f, 15.0f, 30.0f);
+        _upvoteLabel.frame = CGRectMake(self.frame.size.width - 32.0f, 11.0f, 15.0f, 30.0f);
         _upvoteLabel.font = [UIFont fontWithName:@"Century Gothic" size:12.0f];
         _upvoteLabel.text = [NSString stringWithFormat:@"%d", [playlistItem getUpvoteCount]];
         _upvoteLabel.backgroundColor = [UIColor clearColor];
-        
-        _downvoteButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        _downvoteButton.frame = CGRectMake(280.0f, 5.0f, 35.0f, 35.0f);
-        _downvoteButton.imageView.contentMode = UIViewContentModeCenter;
-        _downvoteButton.imageView.bounds = CGRectMake(293.0f, 10.0f, 28.0f, 28.0f);
-        [_downvoteButton setBackgroundImage:[UIImage imageNamed:@"downvote.png"] forState: UIControlStateNormal];
-        [_downvoteButton setBackgroundImage:[UIImage imageNamed:@"downvote.png"] forState: UIControlStateHighlighted];
-        [_downvoteButton setBackgroundImage:[UIImage imageNamed:@"downvote.png"] forState: UIControlStateSelected];
-        [_downvoteButton setBackgroundImage:[UIImage imageNamed:@"downvote_selected.png"] forState: UIControlStateDisabled];
-        _downvoteButton.showsTouchWhenHighlighted = YES;
-        //[_downvoteButton setTitle:@"-" forState:UIControlStateNormal];
-        //[_downvoteButton setEnabled:downvoteButtonEnabled];
-        
-        self.downvoteLabel = [[UILabel alloc] init];
-        _downvoteLabel.frame = CGRectMake(293.0f, 25.0f, 15.0f, 30.0f);
-        _downvoteLabel.font = [UIFont fontWithName:@"Century Gothic" size:16.0f];
-        _downvoteLabel.text = [NSString stringWithFormat:@"%d", [playlistItem getDownvoteCount]];
-        _downvoteLabel.backgroundColor = [UIColor clearColor];
 
         NSURL *url = [[NSBundle mainBundle] URLForResource:@"loading" withExtension:@"gif"];
         _waitingView = [[UIImageView alloc] initWithFrame:CGRectMake(10.0f, 16.0f, 12.0f, 12.0f)];
         _waitingView.image = [UIImage animatedImageWithAnimatedGIFData:[NSData dataWithContentsOfURL:url]];
         
+        NSLog(@"self.frame.size.width = %f", self.frame.size.width);
         _cancelButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        _cancelButton.frame = CGRectMake(266.0f, 0.0f, 50.0f, 50.0f);
+        _cancelButton.frame = CGRectMake(self.frame.size.width - 54.0f, 0.0f, 50.0f, 50.0f);
         [_cancelButton setBackgroundImage:[UIImage imageNamed:@"cancel.png"] forState: UIControlStateNormal];
         [_cancelButton setBackgroundImage:[UIImage imageNamed:@"cancel.png"] forState: UIControlStateHighlighted];
         [_cancelButton setBackgroundImage:[UIImage imageNamed:@"cancel.png"] forState: UIControlStateSelected];
@@ -187,6 +185,23 @@
     }
     return self;
 }
+
+- (void)didRotate:(NSNotification *)notification {
+    CGRect frame = [UIScreen mainScreen].applicationFrame;
+    UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
+    if (orientation == UIInterfaceOrientationLandscapeLeft ||
+        orientation == UIInterfaceOrientationLandscapeRight) {
+        float height = frame.size.height;
+        frame.size.height = frame.size.width;
+        frame.size.width = height;
+    }
+    self.frame = frame;
+    _cancelButton.frame = CGRectMake(self.frame.size.width - 54.0f, 0.0f, 50.0f, 50.0f);
+    _upvoteLabel.frame = CGRectMake(self.frame.size.width - 32.0f, 11.0f, 15.0f, 30.0f);
+    _upvoteButton.frame = CGRectMake(self.frame.size.width - 51.0f, -8.0f, 45.0f, 45.0f);
+    
+}
+
 - (void)handleLoadProgress:(NSTimer *)timer {
     float newLoadProgress = (self.playlistItem.loadProgress + 9*self.playlistItem.previousLoadProgress) / 10.0;
     // if it's very close to load progress, just set it equal to loadProgress
@@ -258,7 +273,10 @@
 
     // Configure the view for the selected state
 }
-
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
 - (void)layoutSubviews
 {
     [super layoutSubviews];

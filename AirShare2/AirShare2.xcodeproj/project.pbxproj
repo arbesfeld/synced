@@ -78,7 +78,6 @@
 		559C177E17261920009D2F38 /* airshare.png in Resources */ = {isa = PBXBuildFile; fileRef = 559C177D17261920009D2F38 /* airshare.png */; };
 		559D6B8F1711EC2000C591D8 /* bgGreyImg.png in Resources */ = {isa = PBXBuildFile; fileRef = 559D6B851711EC2000C591D8 /* bgGreyImg.png */; };
 		559D6B901711EC2000C591D8 /* cancel.png in Resources */ = {isa = PBXBuildFile; fileRef = 559D6B861711EC2000C591D8 /* cancel.png */; };
-		559D6B911711EC2000C591D8 /* cancel.psd in Resources */ = {isa = PBXBuildFile; fileRef = 559D6B871711EC2000C591D8 /* cancel.psd */; };
 		559D6B941711EC2000C591D8 /* music symbol-01.png in Resources */ = {isa = PBXBuildFile; fileRef = 559D6B8A1711EC2000C591D8 /* music symbol-01.png */; };
 		559D6B951711EC2000C591D8 /* skip-01.png in Resources */ = {isa = PBXBuildFile; fileRef = 559D6B8B1711EC2000C591D8 /* skip-01.png */; };
 		559D6B9C17120A2900C591D8 /* UIImage+animatedGIF.m in Sources */ = {isa = PBXBuildFile; fileRef = 559D6B9B17120A2900C591D8 /* UIImage+animatedGIF.m */; };
@@ -241,7 +240,6 @@
 		559C177D17261920009D2F38 /* airshare.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = airshare.png; path = Graphics/airshare.png; sourceTree = "<group>"; };
 		559D6B851711EC2000C591D8 /* bgGreyImg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = bgGreyImg.png; path = Graphics/bgGreyImg.png; sourceTree = "<group>"; };
 		559D6B861711EC2000C591D8 /* cancel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = cancel.png; path = Graphics/cancel.png; sourceTree = "<group>"; };
-		559D6B871711EC2000C591D8 /* cancel.psd */ = {isa = PBXFileReference; lastKnownFileType = file; name = cancel.psd; path = Graphics/cancel.psd; sourceTree = "<group>"; };
 		559D6B8A1711EC2000C591D8 /* music symbol-01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "music symbol-01.png"; path = "Graphics/music symbol-01.png"; sourceTree = "<group>"; };
 		559D6B8B1711EC2000C591D8 /* skip-01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "skip-01.png"; path = "Graphics/skip-01.png"; sourceTree = "<group>"; };
 		559D6B9A17120A2900C591D8 /* UIImage+animatedGIF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+animatedGIF.h"; sourceTree = "<group>"; };
@@ -653,7 +651,6 @@
 				559C177D17261920009D2F38 /* airshare.png */,
 				559D6B851711EC2000C591D8 /* bgGreyImg.png */,
 				559D6B861711EC2000C591D8 /* cancel.png */,
-				559D6B871711EC2000C591D8 /* cancel.psd */,
 				559D6B8A1711EC2000C591D8 /* music symbol-01.png */,
 				559D6B8B1711EC2000C591D8 /* skip-01.png */,
 			);
@@ -720,7 +717,6 @@
 				558E14B716F185600076F6FC /* CenturyGothicStd.otf in Resources */,
 				559D6B8F1711EC2000C591D8 /* bgGreyImg.png in Resources */,
 				559D6B901711EC2000C591D8 /* cancel.png in Resources */,
-				559D6B911711EC2000C591D8 /* cancel.psd in Resources */,
 				559D6B941711EC2000C591D8 /* music symbol-01.png in Resources */,
 				559D6B951711EC2000C591D8 /* skip-01.png in Resources */,
 				89E477281712837C00DE9ECE /* game.png in Resources */,
