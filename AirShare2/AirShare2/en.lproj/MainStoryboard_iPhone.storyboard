@@ -234,7 +234,7 @@
                                     <action selector="exitAction:" destination="FQX-ru-M2g" eventType="touchUpInside" id="U05-gu-FMp"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eeC-ei-Tr1" userLabel="skipButton">
+                            <button opaque="NO" contentMode="center" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eeC-ei-Tr1" userLabel="skipButton">
                                 <constraints>
                                     <constraint firstAttribute="height" constant="28" id="AAM-Us-sds"/>
                                     <constraint firstAttribute="width" constant="29" id="kFe-m7-InM"/>
@@ -327,7 +327,7 @@
                             <constraint firstItem="LWF-a9-TuI" firstAttribute="leading" secondItem="o8S-ku-u21" secondAttribute="leading" type="user" id="Al7-Da-WIV"/>
                             <constraint firstItem="WD3-Wu-ZGd" firstAttribute="leading" secondItem="eJo-Sb-0RW" secondAttribute="leading" type="user" id="CFr-PI-avW"/>
                             <constraint firstAttribute="trailing" secondItem="IVa-kZ-LtJ" secondAttribute="trailing" constant="64" type="user" id="Dgo-zs-efF"/>
-                            <constraint firstAttribute="bottom" secondItem="qGG-Mn-1P9" secondAttribute="bottom" constant="8" type="user" id="FZr-z9-3Dy"/>
+                            <constraint firstAttribute="bottom" secondItem="qGG-Mn-1P9" secondAttribute="bottom" constant="7" type="user" id="FZr-z9-3Dy"/>
                             <constraint firstItem="IVa-kZ-LtJ" firstAttribute="top" secondItem="BCy-oa-ZtW" secondAttribute="top" constant="-3" id="IZm-ja-suD"/>
                             <constraint firstAttribute="bottom" secondItem="ge9-R5-1vQ" secondAttribute="bottom" constant="38" type="user" id="Izm-mm-wvc"/>
                             <constraint firstAttribute="trailing" secondItem="YC5-9B-f4q" secondAttribute="trailing" constant="-12" type="user" id="Khb-fU-O7k"/>
@@ -353,6 +353,7 @@
                             <constraint firstItem="ge9-R5-1vQ" firstAttribute="leading" secondItem="BCy-oa-ZtW" secondAttribute="leading" constant="-2" type="user" id="epG-kV-Fd3"/>
                             <constraint firstItem="o8S-ku-u21" firstAttribute="top" secondItem="BCy-oa-ZtW" secondAttribute="top" constant="76" id="ezl-EY-n9j"/>
                             <constraint firstItem="qGG-Mn-1P9" firstAttribute="leading" secondItem="BCy-oa-ZtW" secondAttribute="leading" constant="39" id="fde-eK-hAJ"/>
+                            <constraint firstItem="eeC-ei-Tr1" firstAttribute="top" secondItem="BCy-oa-ZtW" secondAttribute="top" constant="66" id="fri-Js-quh"/>
                             <constraint firstItem="ge9-R5-1vQ" firstAttribute="trailing" secondItem="BCy-oa-ZtW" secondAttribute="trailing" type="user" id="g9z-kY-yIM"/>
                             <constraint firstItem="YC5-9B-f4q" firstAttribute="top" secondItem="BCy-oa-ZtW" secondAttribute="top" constant="-7" type="user" id="hkH-Ci-xQt"/>
                             <constraint firstItem="eeC-ei-Tr1" firstAttribute="top" relation="greaterThanOrEqual" secondItem="BCy-oa-ZtW" secondAttribute="top" constant="66" type="user" id="imJ-oV-f7b"/>
@@ -360,9 +361,7 @@
                             <constraint firstAttribute="trailing" secondItem="dEq-t8-cgV" secondAttribute="trailing" constant="-2" type="user" id="lHX-pZ-NQz"/>
                             <constraint firstItem="YuW-3R-SF1" firstAttribute="leading" secondItem="LWF-a9-TuI" secondAttribute="leading" type="user" id="n7Y-WF-o2e"/>
                             <constraint firstItem="YuW-3R-SF1" firstAttribute="top" relation="greaterThanOrEqual" secondItem="BCy-oa-ZtW" secondAttribute="top" constant="12" type="user" id="n8k-kA-Kqb"/>
-                            <constraint firstItem="96i-Zy-Rwc" firstAttribute="top" relation="greaterThanOrEqual" secondItem="BCy-oa-ZtW" secondAttribute="top" constant="68" type="user" id="oxw-zW-IbP"/>
                             <constraint firstItem="PdE-4c-64j" firstAttribute="top" relation="greaterThanOrEqual" secondItem="BCy-oa-ZtW" secondAttribute="top" constant="19" type="user" id="pRQ-Dp-sXh"/>
-                            <constraint firstItem="eeC-ei-Tr1" firstAttribute="top" secondItem="BCy-oa-ZtW" secondAttribute="top" constant="66" id="r2r-e5-2hv"/>
                             <constraint firstItem="12U-g7-co7" firstAttribute="top" secondItem="BCy-oa-ZtW" secondAttribute="top" type="default" id="ssx-GJ-u7N"/>
                             <constraint firstAttribute="trailing" secondItem="eeC-ei-Tr1" secondAttribute="trailing" constant="42" id="tfk-NA-qK8"/>
                             <constraint firstItem="WD3-Wu-ZGd" firstAttribute="leading" secondItem="BCy-oa-ZtW" secondAttribute="leading" constant="12" type="user" id="vgu-zf-8HD"/>

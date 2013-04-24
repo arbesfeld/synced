@@ -15,7 +15,7 @@
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        static float alpha = 0.6;
+        static float alpha = 0.5;
         const NSArray *colorTable = [[NSArray alloc] initWithObjects: [UIColor colorWithRed:254/255.0 green:219/255.0 blue:114/255.0 alpha:alpha],[UIColor colorWithRed:165/255.0 green:254/225.0 blue:113/225.0 alpha:alpha], [UIColor colorWithRed:113/255.0 green:254/225.0 blue:146/225.0 alpha:alpha], [UIColor colorWithRed:113/255.0 green:169/225.0 blue:254/225.0 alpha:alpha], [UIColor colorWithRed:113/255.0 green:254/225.0 blue:235/225.0 alpha:alpha], [UIColor colorWithRed:113/255.0 green:115/225.0 blue:254/225.0 alpha:alpha], [UIColor colorWithRed:188/255.0 green:113/225.0 blue:254/225.0 alpha:alpha], [UIColor colorWithRed:254/255.0 green:113/225.0 blue:188/225.0 alpha:alpha], [UIColor colorWithRed:254/255.0 green:165/225.0 blue:113/225.0 alpha:alpha], [UIColor colorWithRed:254/255.0 green:115/225.0 blue:113/225.0 alpha:alpha], nil];
         
         self.position = position+1;
@@ -71,7 +71,7 @@
         [_upvoteButton setBackgroundImage:[UIImage imageNamed:upvoteString] forState: UIControlStateHighlighted];
         [_upvoteButton setBackgroundImage:[UIImage imageNamed:upvoteString] forState: UIControlStateSelected];
         _upvoteButton.showsTouchWhenHighlighted = YES;
-        //[_upvoteButton setTitle:@"+" forState:UIControlStateNormal];
+        [_upvoteButton setHitTestEdgeInsets:UIEdgeInsetsMake(-5, -20, -5, -5)];
         
         self.upvoteLabel = [[UILabel alloc] init];
         _upvoteLabel.frame = CGRectMake(288.0f, 11.0f, 15.0f, 30.0f);
@@ -112,7 +112,7 @@
         _loadProgress = [[UIView alloc] init];
         NSString *gradientLocation = [[NSBundle mainBundle] pathForResource:@"gradient_transparent" ofType:@"png"];
         _gradientLoadProgress = [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:gradientLocation]];
-        [_gradientLoadProgress setAlpha:0.3];
+        [_gradientLoadProgress setAlpha:0.25];
         [_loadProgress addSubview:_gradientLoadProgress];
         _loadProgress.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, self.frame.size.width * playlistItem.previousLoadProgress, self.frame.size.height+1);
         _gradientLoadProgress.frame = _loadProgress.frame;
@@ -129,7 +129,7 @@
         _loadProgress.layer.borderWidth = 1.0f;
         _loadProgress.autoresizingMask = 0x3f;
         
-        int colorID = (int)[playlistItem.ID characterAtIndex:0] % colorTable.count;
+        int colorID = position % colorTable.count;
         UIColor *originalColor = (UIColor *)colorTable[colorID];
         _loadProgress.backgroundColor = originalColor;
         

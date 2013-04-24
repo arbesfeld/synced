@@ -4,8 +4,10 @@
 #import "PlaylistItem.h"
 #import "PlaylistItemCell.h"
 #import "MoviePickerViewController.h"
-#import <MediaPlayer/MediaPlayer.h>
 #import "MarqueeLabel.h"
+#import "UIButton+Extensions.h"
+
+#import <MediaPlayer/MediaPlayer.h>
 
 @class GameViewController;
 

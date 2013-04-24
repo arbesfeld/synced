@@ -51,6 +51,7 @@
             [_skipButton setTransform:CGAffineTransformMakeRotation(M_PI / 2)];
             _controlBackground = [[UIView alloc] initWithFrame:CGRectMake(3, frame.size.height - 117, 61, 111)];
         }
+        [_skipButton setHitTestEdgeInsets:UIEdgeInsetsMake(-20, -20, -20, -20)];
         
         _skipLabel.textColor = [UIColor grayColor];
         _skipLabel.backgroundColor = [UIColor clearColor];

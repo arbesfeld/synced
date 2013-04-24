@@ -47,6 +47,8 @@ const double epsilon = 0.02;
     
     [self isWaiting:YES];
     
+    [self.skipSongButton setHitTestEdgeInsets:UIEdgeInsetsMake(-10, -10, -10, -10)];
+    
     self.waitingLabel.font = [UIFont fontWithName:@"Century Gothic" size:14.0f];
     self.waitingLabel.textColor = [UIColor darkGrayColor];
     

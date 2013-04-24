@@ -10,6 +10,7 @@
 #import <QuartzCore/QuartzCore.h>
 
 #import "PlaylistItem.h"
+#import "UIButton+Extensions.h"
 
 @class PlaylistItemCell;
 

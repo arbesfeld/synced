@@ -8,8 +8,10 @@
 
 #import <MediaPlayer/MediaPlayer.h>
 #import <QuartzCore/QuartzCore.h>
+
 #import "PlayerView.h"
 #import "MediaItem.h"
+#import "UIButton+Extensions.h"
 
 @class CustomMovieController;
 

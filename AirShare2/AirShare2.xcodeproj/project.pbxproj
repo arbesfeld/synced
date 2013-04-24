@@ -83,6 +83,7 @@
 		559D6B951711EC2000C591D8 /* skip-01.png in Resources */ = {isa = PBXBuildFile; fileRef = 559D6B8B1711EC2000C591D8 /* skip-01.png */; };
 		559D6B9C17120A2900C591D8 /* UIImage+animatedGIF.m in Sources */ = {isa = PBXBuildFile; fileRef = 559D6B9B17120A2900C591D8 /* UIImage+animatedGIF.m */; };
 		559D6B9E17120A5100C591D8 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 559D6B9D17120A5100C591D8 /* ImageIO.framework */; };
+		559E887817283CD500CAE248 /* UIButton+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 559E887717283CD500CAE248 /* UIButton+Extensions.m */; };
 		55A28DB6171E5C60001E757E /* CustomMovieController.m in Sources */ = {isa = PBXBuildFile; fileRef = 55A28DB5171E5C60001E757E /* CustomMovieController.m */; };
 		55FCC54D16ED3D4C0000BCBD /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55FCC54C16ED3D4C0000BCBD /* UIKit.framework */; };
 		55FCC54F16ED3D4C0000BCBD /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55FCC54E16ED3D4C0000BCBD /* Foundation.framework */; };
@@ -246,6 +247,8 @@
 		559D6B9A17120A2900C591D8 /* UIImage+animatedGIF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+animatedGIF.h"; sourceTree = "<group>"; };
 		559D6B9B17120A2900C591D8 /* UIImage+animatedGIF.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+animatedGIF.m"; sourceTree = "<group>"; };
 		559D6B9D17120A5100C591D8 /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
+		559E887617283CD400CAE248 /* UIButton+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIButton+Extensions.h"; path = "AirShare2/UIButton+Extensions.h"; sourceTree = "<group>"; };
+		559E887717283CD500CAE248 /* UIButton+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIButton+Extensions.m"; path = "AirShare2/UIButton+Extensions.m"; sourceTree = "<group>"; };
 		55A28DB4171E5C60001E757E /* CustomMovieController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomMovieController.h; sourceTree = "<group>"; };
 		55A28DB5171E5C60001E757E /* CustomMovieController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomMovieController.m; sourceTree = "<group>"; };
 		55FCC54916ED3D4C0000BCBD /* AirShare2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AirShare2.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -323,12 +326,8 @@
 		558E0D651704DE3800BF230D /* UI */ = {
 			isa = PBXGroup;
 			children = (
-				89CD82AE1727278900A4BDCD /* EGORefreshTableHeaderView.h */,
-				89CD82AF1727278900A4BDCD /* EGORefreshTableHeaderView.m */,
-				89C016AE1714B545003F0B26 /* MarqueeLabel.h */,
-				89C016AF1714B545003F0B26 /* MarqueeLabel.m */,
-				559D6B9A17120A2900C591D8 /* UIImage+animatedGIF.h */,
-				559D6B9B17120A2900C591D8 /* UIImage+animatedGIF.m */,
+				558F735C1720C6B40048F78F /* PlayerView.h */,
+				558F735D1720C6B50048F78F /* PlayerView.m */,
 				558E0D621704DE3100BF230D /* PlaylistItemCell.h */,
 				558E0D631704DE3100BF230D /* PlaylistItemCell.m */,
 				5595E4EC171D3995006782DE /* MovieItemCell.h */,
@@ -451,6 +450,10 @@
 		5597F0A61723DCC600C91952 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				89CD82AE1727278900A4BDCD /* EGORefreshTableHeaderView.h */,
+				89CD82AF1727278900A4BDCD /* EGORefreshTableHeaderView.m */,
+				89C016AE1714B545003F0B26 /* MarqueeLabel.h */,
+				89C016AF1714B545003F0B26 /* MarqueeLabel.m */,
 				559673C117246A51000E0D52 /* LBYouTube */,
 				5597F0891723DAAB00C91952 /* SDImageCache */,
 				5597F0851723D12A00C91952 /* SBJson */,
@@ -541,8 +544,6 @@
 				55FCC5BA16ED60460000BCBD /* GameViewController.m */,
 				55FCC57616ED3DA20000BCBD /* MainViewController.h */,
 				55FCC57716ED3DA20000BCBD /* MainViewController.m */,
-				558F735C1720C6B40048F78F /* PlayerView.h */,
-				558F735D1720C6B50048F78F /* PlayerView.m */,
 				55A28DB4171E5C60001E757E /* CustomMovieController.h */,
 				55A28DB5171E5C60001E757E /* CustomMovieController.m */,
 				5595E4E9171D2C45006782DE /* MoviePickerViewController.h */,
@@ -609,8 +610,12 @@
 		55FCC5C916ED7A620000BCBD /* AirShareAdditions */ = {
 			isa = PBXGroup;
 			children = (
+				559E887617283CD400CAE248 /* UIButton+Extensions.h */,
+				559E887717283CD500CAE248 /* UIButton+Extensions.m */,
 				55FCC5C616ED7A5E0000BCBD /* NSData+AirShareAdditions.h */,
 				55FCC5C716ED7A5E0000BCBD /* NSData+AirShareAdditions.m */,
+				559D6B9A17120A2900C591D8 /* UIImage+animatedGIF.h */,
+				559D6B9B17120A2900C591D8 /* UIImage+animatedGIF.m */,
 			);
 			name = AirShareAdditions;
 			sourceTree = "<group>";
@@ -792,6 +797,7 @@
 				5597F0A41723DAC400C91952 /* SDWebImagePrefetcher.m in Sources */,
 				5597F0A51723DAC400C91952 /* UIButton+WebCache.m in Sources */,
 				559673C017246A3D000E0D52 /* LBYouTubeExtractor.m in Sources */,
+				559E887817283CD500CAE248 /* UIButton+Extensions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
