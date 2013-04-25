@@ -11,6 +11,7 @@ const double epsilon = 0.02;
 @implementation GameViewController
 {
     UIAlertView *_alertView;
+    int _itemNumber;
 }
 @synthesize delegate = _delegate;
 @synthesize game = _game;
@@ -35,7 +36,7 @@ const double epsilon = 0.02;
 //    [self.view addSubview:lineView];
     
     
-    _voteAmount = [[NSMutableDictionary alloc] initWithCapacity:10];
+    _hasVotedForItem = [[NSMutableDictionary alloc] initWithCapacity:10];
     
     self.view.backgroundColor = [[UIColor alloc] initWithPatternImage:[UIImage imageNamed:@"bgGreyImg.png"]];
     //self.playlistTable.layer.cornerRadius = 12;
@@ -44,6 +45,7 @@ const double epsilon = 0.02;
     //self.playlistTable.separatorStyle = UITableViewCellSeparatorStyleNone;
     
     _canLoadView = YES;
+    _itemNumber = 0;
     
     [self isWaiting:YES];
     
@@ -168,9 +170,29 @@ const double epsilon = 0.02;
 
 - (void)reloadTable
 {
-    _game.playlist = [NSMutableArray arrayWithArray:[_game.playlist sortedArrayUsingSelector:@selector(compare:)]];
+    //[self.playlistTable beginUpdates];
+    NSMutableArray *newPlaylist = [NSMutableArray arrayWithArray:[_game.playlist sortedArrayUsingSelector:@selector(compare:)]];
+    if([self.playlistTable numberOfRowsInSection:0] == _game.playlist.count) {
+        NSLog(@"Reloading table");
+        [self.playlistTable beginUpdates];
+        for(int i = 0; i < _game.playlist.count; i++) {
+            for(int j = 0; j < newPlaylist.count; j++) {
+                if(i != j && newPlaylist[j] == _game.playlist[i]) {
+                    // row moved from i to j
+                    //NSLog(@"moving i = %d to j = %d", i , j);
+                    [self.playlistTable moveRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]
+                                               toIndexPath:[NSIndexPath indexPathForRow:j inSection:0]];
+                }
+            }
+        }
+        [self.playlistTable endUpdates];
+    }
+    NSLog(@"Done realoding table");
+    //[self.playlistTable endUpdates];
+    _game.playlist = newPlaylist;
+    [self.playlistTable performSelector:@selector(reloadData) withObject:nil afterDelay:0.15];
     [self.userTable reloadData];
-    [self.playlistTable reloadData];
+    //[self.playlistTable reloadData];
 }
 
 - (void)reloadPlaylistItem:(PlaylistItem *)playlistItem
@@ -185,6 +207,9 @@ const double epsilon = 0.02;
 
 - (void)addPlaylistItem:(PlaylistItem *)playlistItem
 {
+    playlistItem.itemNumber = _itemNumber;
+    _itemNumber++;
+    
     [self.playlistTable beginUpdates];
     int loc = [self.game indexForPlaylistItem:playlistItem];
     //NSLog(@"inserting at loc %d", loc);
@@ -273,7 +298,8 @@ const double epsilon = 0.02;
 {
     [[UIApplication sharedApplication] beginIgnoringInteractionEvents];
     // dismiss the other view controllers if they are being presented
-    while([_navController isBeingDismissed] || [_navController isBeingPresented] ||
+    while([self isBeingPresented] || [self isBeingDismissed] ||
+          [_navController isBeingDismissed] || [_navController isBeingPresented] ||
           [_mediaPicker isBeingDismissed]   || [_mediaPicker isBeingPresented]) {
         NSLog(@"Wating for view to load");
     }
@@ -307,10 +333,7 @@ const double epsilon = 0.02;
     // else, is the music list
     else {
         if (_game != nil) {
-            //return [_game.playlist count];
-            //count the songs that are still valid (not cancelled)
-            NSInteger len = [_game.playlist count];
-            return len;
+            return [_game.playlist count];
         } else {
             return 0;
         }
@@ -341,7 +364,11 @@ const double epsilon = 0.02;
         
          
         if (cell == nil) {
-            cell = [[PlaylistItemCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:nil playlistItem:selectedItem voteValue:[[_voteAmount objectForKey:selectedItem.ID] intValue] position:indexPath.row];
+            cell = [[PlaylistItemCell alloc] initWithStyle:UITableViewCellStyleSubtitle
+                                           reuseIdentifier:nil
+                                              playlistItem:selectedItem
+                                                     voted:([_hasVotedForItem objectForKey:selectedItem.ID] != nil)
+                                                  position:indexPath.row];
             cell.delegate = self;
         }
         return cell;
@@ -386,20 +413,17 @@ const double epsilon = 0.02;
 }
 
 - (void)addValue:(NSNumber *)value forID:(NSString *)ID {
-    NSNumber *prevAmount = [_voteAmount objectForKey:ID];
-    if(prevAmount) {
-        [_voteAmount setObject:[NSNumber numberWithInt:([value intValue] + [prevAmount intValue])]
-                        forKey:ID];
+    if([_hasVotedForItem objectForKey:ID]) {
+        [_hasVotedForItem removeObjectForKey:ID];
     }
     else {
-        [_voteAmount setObject:value forKey:ID];
+        [_hasVotedForItem setObject:@YES forKey:ID];
     }
 }
 
 - (void)cancelMusicAndUpdateAll:(PlaylistItem *)playlistItem {
     [playlistItem cancel];
     [self.game cancelMusic:playlistItem];
-    // send a packet
     [self.game sendCancelMusicPacket:playlistItem];
 }
 

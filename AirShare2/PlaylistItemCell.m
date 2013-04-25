@@ -11,7 +11,7 @@
 
 @implementation PlaylistItemCell
 
-- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier playlistItem:(PlaylistItem *)playlistItem voteValue:(int)voteValue position:(int)position
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier playlistItem:(PlaylistItem *)playlistItem voted:(BOOL)voted position:(int)position
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
@@ -74,7 +74,7 @@
         _upvotePressed = YES;
         
         NSString *upvoteString;
-        if(voteValue > 0) {
+        if(voted) {
             upvoteString = @"upvote_selected.png";
         } else {
             _upvotePressed = NO;
@@ -98,7 +98,6 @@
         _waitingView = [[UIImageView alloc] initWithFrame:CGRectMake(10.0f, 16.0f, 12.0f, 12.0f)];
         _waitingView.image = [UIImage animatedImageWithAnimatedGIFData:[NSData dataWithContentsOfURL:url]];
         
-        NSLog(@"self.frame.size.width = %f", self.frame.size.width);
         _cancelButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         _cancelButton.frame = CGRectMake(self.frame.size.width - 54.0f, 0.0f, 50.0f, 50.0f);
         [_cancelButton setBackgroundImage:[UIImage imageNamed:@"cancel.png"] forState: UIControlStateNormal];
@@ -127,7 +126,7 @@
         _loadProgress.layer.borderWidth = 1.0f;
         _loadProgress.autoresizingMask = 0x3f;
         
-        int colorID = position % colorTable.count;
+        int colorID = _playlistItem.itemNumber % colorTable.count;
         UIColor *originalColor = (UIColor *)colorTable[colorID];
         _loadProgress.backgroundColor = originalColor;
         
@@ -135,9 +134,9 @@
         if(self.playlistItem.justVoted) {
             CGFloat hue, saturation, brightness, alpha;
             [originalColor getHue:&hue saturation:&saturation brightness:&brightness alpha:&alpha];
-            UIColor *flashedColor = [UIColor colorWithHue:hue saturation:MIN(1.0, saturation + 0.25) brightness:MAX(0.0, brightness - 0.1) alpha:alpha];
+            UIColor *flashedColor = [UIColor colorWithHue:hue saturation:MIN(1.0, saturation + 0.4) brightness:MAX(0.0, brightness - 0.25) alpha:alpha];
             
-            [UIView animateWithDuration:0.4 animations:^ {
+            [UIView animateWithDuration:0.2 animations:^ {
                 self.loadProgress.backgroundColor = flashedColor;
             } completion:^(BOOL finished) {
                 [UIView animateWithDuration:0.4 animations:^ {

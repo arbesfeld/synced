@@ -191,6 +191,7 @@ typedef enum
                                 andDownvoteCount:[playlistItem getDownvoteCount]];
                 } else {
                     [self.playlist addObject:playlistItem];
+                    [self.delegate addPlaylistItem:playlistItem];
                 }
             }
             
@@ -200,7 +201,7 @@ typedef enum
             _skipItemCount = ((PacketGameState *)packet).skipCount;
             [self setSkipCount];
             
-            [self.delegate reloadTable];
+            //[self.delegate reloadTable];
             
             break;
         }
@@ -576,7 +577,7 @@ typedef enum
     
     [self addItemToPlaylist:youtubeItem];
     
-    [self.delegate reloadTable];
+    //[self.delegate reloadTable];
 }
 
 - (void)youTubeExtractor:(LBYouTubeExtractor *)extractor didSuccessfullyExtractYouTubeURL:(NSURL *)videoURL
@@ -584,7 +585,7 @@ typedef enum
     NSLog(@"loaded");
     MediaItem *youtubeItem = (MediaItem *)[self playlistItemWithID:extractor.ID];
     youtubeItem.loadProgress = 1.0;
-    [self.delegate reloadTable];
+    [self.delegate reloadPlaylistItem:youtubeItem];
     
     if(youtubeItem.uploadedByUser) {
         PacketPlaylistItem *packet = [PacketPlaylistItem packetWithPlaylistItem:youtubeItem];

@@ -18,7 +18,7 @@
 @end
 
 @interface GameViewController : UIViewController <UIAlertViewDelegate, UIApplicationDelegate, UITableViewDataSource, UITableViewDelegate, MPMediaPickerControllerDelegate, GameDelegate, PlaylistItemDelegate, MoviePickerDelegate> {
-    NSMutableDictionary *_voteAmount; // key is songID, value is vote amount
+    NSMutableDictionary *_hasVotedForItem; // key is songID, value is whethere they have upvoted it
     BOOL _canLoadView; // for when animations are occuring
 }
 @property (strong, nonatomic) IBOutlet UISwitch *partySwitch;
