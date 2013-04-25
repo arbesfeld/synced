@@ -112,6 +112,9 @@
 		89E477281712837C00DE9ECE /* game.png in Resources */ = {isa = PBXBuildFile; fileRef = 89E477271712837C00DE9ECE /* game.png */; };
 		89E4772A1712869A00DE9ECE /* exit-01.png in Resources */ = {isa = PBXBuildFile; fileRef = 89E477291712869900DE9ECE /* exit-01.png */; };
 		89E4772E17128F9700DE9ECE /* movies-01.png in Resources */ = {isa = PBXBuildFile; fileRef = 89E4772D17128F9700DE9ECE /* movies-01.png */; };
+		89FDAA181728AF61003355D7 /* fullVolume-01.png in Resources */ = {isa = PBXBuildFile; fileRef = 89FDAA151728AF61003355D7 /* fullVolume-01.png */; };
+		89FDAA191728AF61003355D7 /* lowVolume-01.png in Resources */ = {isa = PBXBuildFile; fileRef = 89FDAA161728AF61003355D7 /* lowVolume-01.png */; };
+		89FDAA1A1728AF61003355D7 /* muteVolume-01.png in Resources */ = {isa = PBXBuildFile; fileRef = 89FDAA171728AF61003355D7 /* muteVolume-01.png */; };
 		EAB726371711EFDC0084D2CC /* PacketCancelMusic.m in Sources */ = {isa = PBXBuildFile; fileRef = EAB726361711EFDC0084D2CC /* PacketCancelMusic.m */; };
 /* End PBXBuildFile section */
 
@@ -292,6 +295,9 @@
 		89E477271712837C00DE9ECE /* game.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = game.png; path = Graphics/game.png; sourceTree = "<group>"; };
 		89E477291712869900DE9ECE /* exit-01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "exit-01.png"; path = "Graphics/exit-01.png"; sourceTree = "<group>"; };
 		89E4772D17128F9700DE9ECE /* movies-01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "movies-01.png"; path = "Graphics/movies-01.png"; sourceTree = "<group>"; };
+		89FDAA151728AF61003355D7 /* fullVolume-01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "fullVolume-01.png"; sourceTree = "<group>"; };
+		89FDAA161728AF61003355D7 /* lowVolume-01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "lowVolume-01.png"; sourceTree = "<group>"; };
+		89FDAA171728AF61003355D7 /* muteVolume-01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "muteVolume-01.png"; sourceTree = "<group>"; };
 		EAB726351711EFDB0084D2CC /* PacketCancelMusic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PacketCancelMusic.h; sourceTree = "<group>"; };
 		EAB726361711EFDC0084D2CC /* PacketCancelMusic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PacketCancelMusic.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -637,6 +643,9 @@
 		EA18C2001707E1A4008F5DAF /* Graphics */ = {
 			isa = PBXGroup;
 			children = (
+				89FDAA151728AF61003355D7 /* fullVolume-01.png */,
+				89FDAA161728AF61003355D7 /* lowVolume-01.png */,
+				89FDAA171728AF61003355D7 /* muteVolume-01.png */,
 				5593E3C11727BDD700CF9149 /* downvote_selected.png */,
 				5593E3C21727BDD700CF9149 /* downvote.png */,
 				5593E3C31727BDD800CF9149 /* upvote.png */,
@@ -736,6 +745,9 @@
 				5593E3C61727BDD800CF9149 /* downvote.png in Resources */,
 				5593E3C71727BDD800CF9149 /* upvote.png in Resources */,
 				5593E3C81727BDD800CF9149 /* upvote_selected.png in Resources */,
+				89FDAA181728AF61003355D7 /* fullVolume-01.png in Resources */,
+				89FDAA191728AF61003355D7 /* lowVolume-01.png in Resources */,
+				89FDAA1A1728AF61003355D7 /* muteVolume-01.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

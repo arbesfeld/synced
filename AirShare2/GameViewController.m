@@ -55,6 +55,10 @@ const double epsilon = 0.02;
     self.playingLabel.font = [UIFont fontWithName:@"Century Gothic" size:11.0f];
     self.playingLabel.textColor = [UIColor darkGrayColor];
     
+    self.partyModeLabel.hidden = true;
+    self.partyModeLabel.font = [UIFont fontWithName:@"Century Gothic" size:11.0f];
+    self.partyModeLabel.textColor = [UIColor darkGrayColor];
+    
     self.songTitle.shadowOffset = CGSizeMake(0.0, -1.0);
     self.songTitle.textColor = [UIColor colorWithRed:0.234 green:0.234 blue:0.234 alpha:1.000];
     self.songTitle.backgroundColor = [UIColor clearColor];
@@ -63,6 +67,9 @@ const double epsilon = 0.02;
     self.artistLabel.font = [UIFont fontWithName:@"Century Gothic" size:12.0f];
     self.artistLabel.textColor = [UIColor darkGrayColor];
     
+    self.skipsLabel.font = [UIFont fontWithName:@"Century Gothic" size:12.0f];
+    self.skipsLabel.textColor = [UIColor darkGrayColor];
+    
     self.skipSongLabel.font = [UIFont fontWithName:@"Century Gothic" size:16.0f];
     self.skipSongLabel.textColor = [UIColor colorWithRed:0.234 green:0.234 blue:0.234 alpha:1.000];
     
@@ -70,8 +77,11 @@ const double epsilon = 0.02;
     self.timeLabel.textColor = [UIColor colorWithRed:0.234 green:0.234 blue:0.234 alpha:1.000];
     
     self.playlistTable.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(volumeChanged:) name:@"AVSystemController_SystemVolumeDidChangeNotification" object:nil];
+    
 }
-
+    
 - (void)isWaiting:(BOOL)isWaiting
 {
     self.waitingLabel.hidden = !isWaiting;
@@ -82,7 +92,12 @@ const double epsilon = 0.02;
     self.skipSongLabel.hidden = isWaiting;
     self.timeLabel.hidden = isWaiting;
     self.playbackProgressBar.hidden = isWaiting;
+    self.skipsLabel.hidden = isWaiting;
+    self.partyModeLabel.hidden = isWaiting;
+    self.partySwitch.hidden = isWaiting;
 }
+
+
 
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
@@ -101,6 +116,8 @@ const double epsilon = 0.02;
 }
 
 #pragma mark - Actions
+
+
 
 - (IBAction)exitAction:(id)sender
 {
@@ -445,6 +462,18 @@ const double epsilon = 0.02;
     NSLog(@"Toggling party mode");
     _game.partyMode = [sender isOn];
 }
+
+- (void)volumeChanged:(NSNotification *)notification
+{
+    float volume = [[[notification userInfo] objectForKey:@"AVSystemController_AudioVolumeNotificationParameter"] floatValue];
+    if (volume > .5) {
+        [_volumeButton setBackgroundImage:[UIImage imageNamed:@"fullVolume-01.png"] forState:UIControlStateNormal];    }
+    else if (volume <= .5 && volume > 0.0) {
+        [_volumeButton setBackgroundImage:[UIImage imageNamed:@"lowVolume-01.png"] forState:UIControlStateNormal];    }
+    else {
+        [_volumeButton setBackgroundImage:[UIImage imageNamed:@"muteVolume-01.png"] forState:UIControlStateNormal];    }
+}
+
 
 
 @end

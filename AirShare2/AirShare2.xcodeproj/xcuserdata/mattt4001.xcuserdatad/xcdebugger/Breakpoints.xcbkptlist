@@ -8,13 +8,13 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "GameViewController.m"
-         timestampString = "388457799.584317"
+         timestampString = "388549175.695712"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "418"
-         endingLineNumber = "418"
-         landmarkName = "@implementation GameViewController"
-         landmarkType = "3">
+         startingLineNumber = "435"
+         endingLineNumber = "435"
+         landmarkName = "-playMovie:"
+         landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>
 </Bucket>

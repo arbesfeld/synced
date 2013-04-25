@@ -21,7 +21,10 @@
     NSMutableDictionary *_voteAmount; // key is songID, value is vote amount
     BOOL _canLoadView; // for when animations are occuring
 }
-
+@property (strong, nonatomic) IBOutlet UISwitch *partySwitch;
+@property (strong, nonatomic) IBOutlet UILabel *partyModeLabel;
+@property (strong, nonatomic) IBOutlet UIButton *volumeButton;
+@property (strong, nonatomic) IBOutlet UILabel *skipsLabel;
 @property (weak, nonatomic) IBOutlet UILabel *timeLabel;
 @property (nonatomic, weak) IBOutlet UILabel *skipSongLabel, *artistLabel, *waitingLabel;
 @property (weak, nonatomic) IBOutlet UILabel *playingLabel;
