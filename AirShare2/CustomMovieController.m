@@ -209,7 +209,7 @@
 {
     [super viewWillDisappear:animated];
     [self resignFirstResponder];
-    [[NSNotificationCenter defaultCenter] removeObject:self];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
 }
 
