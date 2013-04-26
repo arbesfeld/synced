@@ -490,9 +490,11 @@ const double epsilon = 0.02;
 - (void)volumeChanged:(NSNotification *)notification
 {
     float volume = [[[notification userInfo] objectForKey:@"AVSystemController_AudioVolumeNotificationParameter"] floatValue];
-    if (volume > .5) {
+    if (volume > .66) {
+        [_volumeButton setBackgroundImage:[UIImage imageNamed:@"extrafullVolume-01.png"] forState:UIControlStateNormal];    }
+    else if (volume <= .66 && volume > 0.33) {
         [_volumeButton setBackgroundImage:[UIImage imageNamed:@"fullVolume-01.png"] forState:UIControlStateNormal];    }
-    else if (volume <= .5 && volume > 0.0) {
+    else if (volume <= .33 && volume > 0.0) {
         [_volumeButton setBackgroundImage:[UIImage imageNamed:@"lowVolume-01.png"] forState:UIControlStateNormal];    }
     else {
         [_volumeButton setBackgroundImage:[UIImage imageNamed:@"muteVolume-01.png"] forState:UIControlStateNormal];    }
