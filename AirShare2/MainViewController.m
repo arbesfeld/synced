@@ -54,6 +54,7 @@
     [_backButton setAlpha:0.0];
     [_sessionsLabel setAlpha:0.0];
 
+
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -365,20 +366,38 @@
     _waitingView.image = [UIImage animatedImageWithAnimatedGIFData:[NSData dataWithContentsOfURL:url]];
     _waitingView.hidden = YES;
     
-
-    _joinGameButton.layer.borderColor = [UIColor colorWithRed:113/255.0 green:254/225.0 blue:235/225.0 alpha:.6].CGColor;
-    _joinGameButton.layer.borderWidth = 2.5f;
-    _joinGameButton.layer.cornerRadius = 10.0f;
+    _joinGameButton.frame = CGRectMake(320,272, 320, 54);
     _joinGameButton.layer.shadowOffset = CGSizeMake(2, 2);
     _joinGameButton.layer.shadowColor = [[UIColor blackColor] CGColor];
     _joinGameButton.layer.shadowOpacity = .5f;
+    _joinGameButton.layer.borderColor = [UIColor grayColor].CGColor;
+    _joinGameButton.layer.borderWidth = 1.0f;
+
+    _joinGameButton.layer.backgroundColor = [UIColor colorWithRed:255/255.0 green:70/225.0 blue:0/225.0 alpha:.6].CGColor;
     
-    _hostGameButton.layer.borderColor = [UIColor colorWithRed:188/255.0 green:113/225.0 blue:254/225.0 alpha:.8].CGColor;
-    _hostGameButton.layer.borderWidth = 2.5f;
-    _hostGameButton.layer.cornerRadius = 10.0f;
+    NSString *gradientLocation = [[NSBundle mainBundle] pathForResource:@"gradient_transparent" ofType:@"png"];
+    _gradientLoadProgress = [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:gradientLocation]];
+    [_joinGameButton addSubview:_gradientLoadProgress];
+    [_gradientLoadProgress setAlpha:.25];
+    _gradientLoadProgress.frame = CGRectMake(0,0,320,54);;
+
+    _hostGameButton.frame = CGRectMake(-320,195, 320, 54);
     _hostGameButton.layer.shadowOffset = CGSizeMake(2, 2);
     _hostGameButton.layer.shadowColor = [[UIColor blackColor] CGColor];
     _hostGameButton.layer.shadowOpacity = .5f;
+    _hostGameButton.layer.borderColor = [UIColor grayColor].CGColor;
+    _hostGameButton.layer.borderWidth = 1.0f;
+    _hostGameButton.layer.backgroundColor = [UIColor colorWithRed:255/255.0 green:150/225.0 blue:0/225.0 alpha:.6].CGColor;
+    
+       _gradientLoadProgressTwo = [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:gradientLocation]];
+    [_hostGameButton addSubview:_gradientLoadProgressTwo];
+    [_gradientLoadProgressTwo setAlpha:.25];
+    _gradientLoadProgressTwo.frame = CGRectMake(0,0,320,54);;
+
+    [UIView animateWithDuration:1 animations:^() {
+        _joinGameButton.frame = CGRectMake(0,77,320,54);;
+        _hostGameButton.frame = CGRectMake(0,0,320,54);
+    }];
     
 }
 
