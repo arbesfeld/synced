@@ -34,7 +34,7 @@
     [_joinGameButton setAlpha:1.0];
     [_sessionsLabel setAlpha:0.0];
     [_backButton setAlpha:0.0];
-    
+
     
     [[UIApplication sharedApplication] beginReceivingRemoteControlEvents];
 }
@@ -84,7 +84,7 @@
 }
 
 - (IBAction)backAction:(id)sender {
-    [UIView animateWithDuration:0.4 animations:^() {
+    [UIView animateWithDuration:0.6 animations:^() {
         [self.tableView setAlpha:0.0];
         [_backButton setAlpha:0.0];
         [_hostGameButton setAlpha:1.0];
@@ -92,32 +92,30 @@
         [_sessionsLabel setAlpha:0.0];
         [_waitingView setAlpha:0.0];
     }];
+    [self performSelector:@selector(reloadMainScreen:) withObject:nil afterDelay:.4];
+
+
+    
 }
 
 - (IBAction)joinGameAction:(id)sender {
     [self.tableView reloadData];
-    [UIView animateWithDuration:0.4 animations:^() {
-        [self.tableView setAlpha:1.0];
-        [_backButton setAlpha:1.0];
-        [_hostGameButton setAlpha:0.0];
-        [_joinGameButton setAlpha:0.0];
-        [_sessionsLabel setAlpha:1.0];
-        [_waitingView setAlpha:1.0];
-
+    [UIView animateWithDuration:0.6 animations:^() {
+        _joinGameButton.frame = CGRectMake(-320,272,320,54);;
+        _hostGameButton.frame = CGRectMake(320,195,320,54);
     }];
+    [self performSelector:@selector(releaseMainScreen:) withObject:nil afterDelay:.4];
     
 }
 
 - (IBAction)hostGameAction:(id)sender
 {
-    _matchmakingServer = [[MatchmakingServer alloc] init];
-    _matchmakingServer.maxClients = 3;
-    _matchmakingServer.delegate = self;
-    [_matchmakingServer startAcceptingConnectionsForSessionID:SESSION_ID name:UIDevice.currentDevice.name];
-    //[_matchmakingServer stopAcceptingConnections];
-    _matchmakingClient = nil;
-    [self serverStartGameWithSession:_matchmakingServer.session playerName:UIDevice.currentDevice.name clients:_matchmakingServer.connectedClients];
-    _matchmakingServer = nil;
+    [UIView animateWithDuration:0.6 animations:^() {
+        _joinGameButton.frame = CGRectMake(-320,272,320,54);;
+        _hostGameButton.frame = CGRectMake(320,195,320,54);
+    }];
+    [self performSelector:@selector(startGame:) withObject:nil afterDelay:.4];
+
 }
 
 - (void)serverDidEndSessionWithReason:(QuitReason)reason
@@ -373,6 +371,7 @@
     _joinGameButton.layer.borderColor = [UIColor grayColor].CGColor;
     _joinGameButton.layer.borderWidth = 1.0f;
 
+
     _joinGameButton.layer.backgroundColor = [UIColor colorWithRed:255/255.0 green:70/225.0 blue:0/225.0 alpha:.6].CGColor;
     
     NSString *gradientLocation = [[NSBundle mainBundle] pathForResource:@"gradient_transparent" ofType:@"png"];
@@ -399,6 +398,35 @@
         _hostGameButton.frame = CGRectMake(0,0,320,54);
     }];
     
+}
+
+- (void)reloadMainScreen:(id)sender {
+    [UIView animateWithDuration:0.6 animations:^() {
+    _joinGameButton.frame = CGRectMake(0,272,320,54);;
+    _hostGameButton.frame = CGRectMake(0,195,320,54);
+    }];
+}
+- (void)releaseMainScreen:(id)sender {
+    [UIView animateWithDuration:0.4 animations:^() {
+        [self.tableView setAlpha:1.0];
+        [_backButton setAlpha:1.0];
+        [_hostGameButton setAlpha:0.0];
+        [_joinGameButton setAlpha:0.0];
+        [_sessionsLabel setAlpha:1.0];
+        [_waitingView setAlpha:1.0];
+    }];
+}
+- (void)startGame:(id)sender {
+    _matchmakingServer = [[MatchmakingServer alloc] init];
+    _matchmakingServer.maxClients = 3;
+    _matchmakingServer.delegate = self;
+    [_matchmakingServer startAcceptingConnectionsForSessionID:SESSION_ID name:UIDevice.currentDevice.name];
+    //[_matchmakingServer stopAcceptingConnections];
+    _matchmakingClient = nil;
+    [self serverStartGameWithSession:_matchmakingServer.session playerName:UIDevice.currentDevice.name clients:_matchmakingServer.connectedClients];
+    _matchmakingServer = nil;
+    _hostGameButton.alpha = 0.0;
+    _joinGameButton.alpha = 0.0;
 }
 
 
