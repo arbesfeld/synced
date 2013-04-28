@@ -8,12 +8,14 @@
 
 #import "PlaylistItem.h"
 
+
 @interface MediaItem : PlaylistItem
 
 @property (nonatomic, retain) NSURL *url, *originalURL;
 @property (nonatomic, assign) NSInteger beatPos;
 @property (nonatomic, retain) NSMutableArray *beats;
 @property (nonatomic, assign) BOOL beatsLoaded;
+@property (nonatomic, strong) UIViewController *controller;
 
 + (id)mediaItemWithName:(NSString *)name andSubtitle:(NSString *)subtitle andID:(NSString *)ID andDate:(NSDate *)date andURL:(NSURL *)url uploadedByUser:(BOOL)uploadedByUser andPlayListItemType:(PlaylistItemType)playlistItemType;
 

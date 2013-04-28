@@ -9,16 +9,10 @@
             <objects>
                 <viewController storyboardIdentifier="MainViewController" id="2" customClass="MainViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="3">
-                        <rect key="frame" x="0.0" y="20" width="320" height="548"/>
+                        <rect key="frame" x="0.0" y="20" width="320" height="460"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="bgGreyImg.png" translatesAutoresizingMaskIntoConstraints="NO" id="AD4-Q8-1a4"/>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" image="airshare.png" translatesAutoresizingMaskIntoConstraints="NO" id="kZ1-ww-eNC">
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="177" id="OdC-PI-exo"/>
-                                    <constraint firstAttribute="width" constant="290" id="oeY-vL-2ZT"/>
-                                </constraints>
-                            </imageView>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" verticalCompressionResistancePriority="1" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="edi-GE-42e">
                                 <color key="backgroundColor" white="1" alpha="0.5" colorSpace="calibratedWhite"/>
                                 <constraints>
@@ -100,28 +94,26 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="bht-7b-rQK" firstAttribute="leading" secondItem="3" secondAttribute="leading" constant="153" id="1Hm-HT-NpT"/>
                             <constraint firstItem="AD4-Q8-1a4" firstAttribute="bottom" secondItem="3" secondAttribute="bottom" type="default" id="2k9-Cy-0Lu"/>
                             <constraint firstItem="AD4-Q8-1a4" firstAttribute="trailing" secondItem="3" secondAttribute="trailing" type="default" id="5AQ-U6-h1z"/>
-                            <constraint firstItem="kZ1-ww-eNC" firstAttribute="top" secondItem="3" secondAttribute="top" constant="-6" type="user" id="7E0-PE-lIh"/>
                             <constraint firstItem="AD4-Q8-1a4" firstAttribute="top" secondItem="3" secondAttribute="top" type="default" id="7qb-yx-6F4"/>
                             <constraint firstItem="edi-GE-42e" firstAttribute="leading" secondItem="GU4-nS-SJA" secondAttribute="leading" type="default" id="AGF-YX-ejp"/>
-                            <constraint firstItem="GU4-nS-SJA" firstAttribute="top" secondItem="kZ1-ww-eNC" secondAttribute="bottom" priority="826" constant="-21" type="user" id="GNV-0d-aOQ"/>
+                            <constraint firstItem="99G-vY-x30" firstAttribute="leading" secondItem="3" secondAttribute="leading" type="default" id="EHR-00-vAG"/>
                             <constraint firstItem="xQz-oA-iaC" firstAttribute="centerX" secondItem="GU4-nS-SJA" secondAttribute="centerX" type="default" id="Nth-Ry-Dzg"/>
-                            <constraint firstItem="99G-vY-x30" firstAttribute="leading" secondItem="3" secondAttribute="leading" type="default" id="RPT-n3-LdV"/>
                             <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="WVP-dF-E9X" secondAttribute="bottom" constant="16" type="user" id="SUU-B6-ZOc"/>
-                            <constraint firstItem="xQz-oA-iaC" firstAttribute="top" secondItem="3" secondAttribute="top" constant="195" id="TuR-DF-Ds0"/>
+                            <constraint firstItem="99G-vY-x30" firstAttribute="trailing" secondItem="3" secondAttribute="trailing" type="default" id="VM4-It-PPI"/>
                             <constraint firstItem="GU4-nS-SJA" firstAttribute="trailing" secondItem="edi-GE-42e" secondAttribute="trailing" type="default" id="Yag-ys-6et"/>
+                            <constraint firstItem="bht-7b-rQK" firstAttribute="leading" secondItem="3" secondAttribute="leading" constant="153" id="aVd-UE-TRi"/>
                             <constraint firstItem="bht-7b-rQK" firstAttribute="top" secondItem="edi-GE-42e" secondAttribute="bottom" constant="11" type="user" id="b60-Kh-uZY"/>
                             <constraint firstItem="edi-GE-42e" firstAttribute="top" secondItem="3" secondAttribute="top" constant="199" id="cFF-Vf-gqY"/>
+                            <constraint firstItem="WVP-dF-E9X" firstAttribute="leading" secondItem="3" secondAttribute="leading" constant="15" id="eLh-YW-HXl"/>
                             <constraint firstItem="AD4-Q8-1a4" firstAttribute="leading" secondItem="3" secondAttribute="leading" type="default" id="gJu-DT-hbJ"/>
-                            <constraint firstItem="99G-vY-x30" firstAttribute="trailing" secondItem="3" secondAttribute="trailing" type="default" id="h2C-dV-84y"/>
-                            <constraint firstItem="99G-vY-x30" firstAttribute="top" secondItem="3" secondAttribute="top" constant="273" id="icD-zl-yNT"/>
+                            <constraint firstItem="99G-vY-x30" firstAttribute="top" secondItem="3" secondAttribute="top" constant="279" id="iaE-ap-e0D"/>
                             <constraint firstItem="xQz-oA-iaC" firstAttribute="leading" secondItem="3" secondAttribute="leading" type="default" id="lwH-bc-nwo"/>
-                            <constraint firstAttribute="centerX" secondItem="kZ1-ww-eNC" secondAttribute="centerX" type="user" id="mQV-l4-Mjd"/>
                             <constraint firstAttribute="bottom" secondItem="WVP-dF-E9X" secondAttribute="bottom" constant="16" id="nb7-98-3sb"/>
-                            <constraint firstItem="WVP-dF-E9X" firstAttribute="leading" secondItem="kZ1-ww-eNC" secondAttribute="leading" type="default" id="rzq-XM-o1J"/>
                             <constraint firstItem="xQz-oA-iaC" firstAttribute="trailing" secondItem="3" secondAttribute="trailing" type="default" id="tqg-9I-qcG"/>
+                            <constraint firstItem="GU4-nS-SJA" firstAttribute="top" secondItem="3" secondAttribute="top" constant="150" id="xw3-hc-iAj"/>
+                            <constraint firstItem="xQz-oA-iaC" firstAttribute="top" secondItem="3" secondAttribute="top" constant="195" id="zbc-lI-IWM"/>
                         </constraints>
                     </view>
                     <connections>
@@ -142,7 +134,7 @@
             <objects>
                 <viewController storyboardIdentifier="GameViewController" id="FQX-ru-M2g" customClass="GameViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="BCy-oa-ZtW">
-                        <rect key="frame" x="0.0" y="20" width="320" height="548"/>
+                        <rect key="frame" x="0.0" y="20" width="320" height="460"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="bgGreyImg.png" translatesAutoresizingMaskIntoConstraints="NO" id="12U-g7-co7"/>
@@ -419,7 +411,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="airshare.png" width="746" height="332"/>
         <image name="bgGreyImg.png" width="1080" height="1920"/>
         <image name="exit-01.png" width="73" height="73"/>
         <image name="fullVolume-01.png" width="248" height="197"/>
@@ -428,9 +419,58 @@
         <image name="music symbol-01.png" width="237" height="243"/>
         <image name="skip-01.png" width="135" height="158"/>
     </resources>
+    <classes>
+        <class className="GameViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/GameViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="exitAction:"/>
+                <relationship kind="action" name="playMovie:"/>
+                <relationship kind="action" name="playMusic:"/>
+                <relationship kind="action" name="skipMusic:"/>
+                <relationship kind="action" name="togglePartyMode:" candidateClass="UISwitch"/>
+                <relationship kind="outlet" name="artistLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="exitButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="gradientView" candidateClass="UIView"/>
+                <relationship kind="outlet" name="partyModeLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="partySwitch" candidateClass="UISwitch"/>
+                <relationship kind="outlet" name="playbackProgressBar" candidateClass="UIProgressView"/>
+                <relationship kind="outlet" name="playingLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="playlistTable" candidateClass="UITableView"/>
+                <relationship kind="outlet" name="skipSongButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="skipSongLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="skipsLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="songTitle" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="timeLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="userTable" candidateClass="UITableView"/>
+                <relationship kind="outlet" name="volumeButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="waitingLabel" candidateClass="UILabel"/>
+            </relationships>
+        </class>
+        <class className="MPVolumeView" superclassName="UIView">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/MPVolumeView.h"/>
+        </class>
+        <class className="MainViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/MainViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="backAction:"/>
+                <relationship kind="action" name="hostGameAction:"/>
+                <relationship kind="action" name="joinGameAction:"/>
+                <relationship kind="outlet" name="backButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="hostGameButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="joinGameButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="logo" candidateClass="UIImageView"/>
+                <relationship kind="outlet" name="sessionsLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="tableView" candidateClass="UITableView"/>
+                <relationship kind="outlet" name="waitingView" candidateClass="UIImageView"/>
+            </relationships>
+        </class>
+        <class className="NSLayoutConstraint" superclassName="NSObject">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/NSLayoutConstraint.h"/>
+        </class>
+    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>
-        <simulatedScreenMetrics key="destination" type="retina4"/>
+        <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
 </document>

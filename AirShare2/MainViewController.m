@@ -23,6 +23,7 @@
 
 - (void)viewDidLoad
 {
+    
 	[super viewDidLoad];
     _quitReasonClient = QuitReasonConnectionDropped;
     [self setupUI];
@@ -34,6 +35,9 @@
     [_joinGameButton setAlpha:1.0];
     [_sessionsLabel setAlpha:0.0];
     [_backButton setAlpha:0.0];
+    
+
+
 
     
     [[UIApplication sharedApplication] beginReceivingRemoteControlEvents];
@@ -351,59 +355,78 @@
 
 -(void)setupUI
 {
+    NSString *gradientLocation = [[NSBundle mainBundle] pathForResource:@"gradient_transparent" ofType:@"png"];
+    NSURL *url = [[NSBundle mainBundle] URLForResource:@"loading" withExtension:@"gif"];
+
     self.view.backgroundColor = [[UIColor alloc] initWithPatternImage:[UIImage imageNamed:@"bgGreyImg.png"]];
     self.tableView.layer.cornerRadius = 7;
     self.tableView.layer.masksToBounds = YES;
     
     self.sessionsLabel.font = [UIFont fontWithName:@"Century Gothic" size:20.0f];
-    [_hostGameButton setTitle:@"Host" forState:UIControlStateNormal];
-    _hostGameButton.titleLabel.font = [UIFont fontWithName:@"Century Gothic" size:20.0f];
-    [_joinGameButton setTitle:@"Join" forState:UIControlStateNormal];
-    _joinGameButton.titleLabel.font = [UIFont fontWithName:@"Century Gothic" size:20.0f];
-    NSURL *url = [[NSBundle mainBundle] URLForResource:@"loading" withExtension:@"gif"];
+
     _waitingView.image = [UIImage animatedImageWithAnimatedGIFData:[NSData dataWithContentsOfURL:url]];
     _waitingView.hidden = YES;
     
-    _joinGameButton.frame = CGRectMake(320,272, 320, 54);
+    _gradientLoadProgress = [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:gradientLocation]];
+    [_gradientLoadProgress setAlpha:.25];
+    _gradientLoadProgress.frame = CGRectMake(0,0,320,54);;
+    _gradientLoadProgressTwo = [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:gradientLocation]];
+    [_gradientLoadProgressTwo setAlpha:.25];
+    _gradientLoadProgressTwo.frame = CGRectMake(0,0,320,54);;
+    
+    [_joinGameButton setTitle:@"Join" forState:UIControlStateNormal];
+    _joinGameButton.titleLabel.font = [UIFont fontWithName:@"Century Gothic" size:20.0f];
     _joinGameButton.layer.shadowOffset = CGSizeMake(2, 2);
     _joinGameButton.layer.shadowColor = [[UIColor blackColor] CGColor];
     _joinGameButton.layer.shadowOpacity = .5f;
     _joinGameButton.layer.borderColor = [UIColor grayColor].CGColor;
     _joinGameButton.layer.borderWidth = 1.0f;
-
-
+    _joinGameButton.hidden = true;
     _joinGameButton.layer.backgroundColor = [UIColor colorWithRed:255/255.0 green:70/225.0 blue:0/225.0 alpha:.6].CGColor;
-    
-    NSString *gradientLocation = [[NSBundle mainBundle] pathForResource:@"gradient_transparent" ofType:@"png"];
-    _gradientLoadProgress = [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:gradientLocation]];
     [_joinGameButton addSubview:_gradientLoadProgress];
-    [_gradientLoadProgress setAlpha:.25];
-    _gradientLoadProgress.frame = CGRectMake(0,0,320,54);;
 
-    _hostGameButton.frame = CGRectMake(-320,195, 320, 54);
+
+    [_hostGameButton setTitle:@"Host" forState:UIControlStateNormal];
+    _hostGameButton.titleLabel.font = [UIFont fontWithName:@"Century Gothic" size:20.0f];
     _hostGameButton.layer.shadowOffset = CGSizeMake(2, 2);
     _hostGameButton.layer.shadowColor = [[UIColor blackColor] CGColor];
     _hostGameButton.layer.shadowOpacity = .5f;
     _hostGameButton.layer.borderColor = [UIColor grayColor].CGColor;
     _hostGameButton.layer.borderWidth = 1.0f;
     _hostGameButton.layer.backgroundColor = [UIColor colorWithRed:255/255.0 green:150/225.0 blue:0/225.0 alpha:.6].CGColor;
-    
-       _gradientLoadProgressTwo = [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:gradientLocation]];
+    _hostGameButton.hidden = true;
     [_hostGameButton addSubview:_gradientLoadProgressTwo];
-    [_gradientLoadProgressTwo setAlpha:.25];
-    _gradientLoadProgressTwo.frame = CGRectMake(0,0,320,54);;
 
-    [UIView animateWithDuration:1 animations:^() {
-        _joinGameButton.frame = CGRectMake(0,77,320,54);;
-        _hostGameButton.frame = CGRectMake(0,0,320,54);
+    
+    _airshareLogo = [[UIImageView alloc] initWithFrame:CGRectMake(42, 147, 280, 130)];
+    _airshareLogo.image = [UIImage imageNamed:@"airshare.png"];
+    _airshareLogo.contentMode = UIViewContentModeScaleAspectFill;
+    [self.view addSubview:_airshareLogo];
+    
+    [UIView animateWithDuration:.6 animations:^() {
+        _airshareLogo.frame = CGRectMake(42, 25, 280, 130);
     }];
     
+    [self performSelector:@selector(uiMainScreenDelay:) withObject:nil afterDelay:.3];
+    
+}
+
+- (void)uiMainScreenDelay:(id)sender {
+    _hostGameButton.frame = CGRectMake(-320,195, 320, 54);
+    _joinGameButton.frame = CGRectMake(320,272, 320, 54);
+    _joinGameButton.hidden = false;
+    _hostGameButton.hidden = false;
+    [UIView animateWithDuration:0.6 animations:^() {
+        _joinGameButton.frame = CGRectMake(0,272,320,54);;
+        _hostGameButton.frame = CGRectMake(0,195,320,54);
+
+    }];
 }
 
 - (void)reloadMainScreen:(id)sender {
     [UIView animateWithDuration:0.6 animations:^() {
-    _joinGameButton.frame = CGRectMake(0,272,320,54);;
-    _hostGameButton.frame = CGRectMake(0,195,320,54);
+        _joinGameButton.frame = CGRectMake(0,272,320,54);;
+        _hostGameButton.frame = CGRectMake(0,195,320,54);
     }];
 }
 - (void)releaseMainScreen:(id)sender {

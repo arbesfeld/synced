@@ -80,6 +80,7 @@ const double epsilon = 0.02;
     
     self.playlistTable.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     
+    [self initialCheckVolume];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(volumeChanged:) name:@"AVSystemController_SystemVolumeDidChangeNotification" object:nil];
     
 }
@@ -490,6 +491,16 @@ const double epsilon = 0.02;
 - (void)volumeChanged:(NSNotification *)notification
 {
     float volume = [[[notification userInfo] objectForKey:@"AVSystemController_AudioVolumeNotificationParameter"] floatValue];
+    [self changeVolumeIcon:volume];
+}
+
+- (void)initialCheckVolume {
+    MPMusicPlayerController *musicPlayer = [MPMusicPlayerController iPodMusicPlayer];
+    float volume = musicPlayer.volume;
+    [self changeVolumeIcon:volume];
+}
+
+- (void)changeVolumeIcon: (float)volume{
     if (volume > .66) {
         [_volumeButton setBackgroundImage:[UIImage imageNamed:@"extrafullVolume-01.png"] forState:UIControlStateNormal];    }
     else if (volume <= .66 && volume > 0.33) {

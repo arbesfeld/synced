@@ -7,6 +7,7 @@
 
 @interface MainViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, UIAlertViewDelegate, GameViewControllerDelegate, MatchmakingClientDelegate, MatchmakingServerDelegate>
 
+
 @property (strong, nonatomic) IBOutlet UIButton *hostGameButton;
 @property (strong, nonatomic) IBOutlet UIButton *joinGameButton;
 @property (strong, nonatomic) IBOutlet UIButton *backButton;
@@ -15,6 +16,7 @@
 @property (strong, nonatomic) IBOutlet UILabel *sessionsLabel;
 @property (nonatomic, strong) UIView *gradientLoadProgress;
 @property (nonatomic, strong) UIView *gradientLoadProgressTwo;
+@property (nonatomic, strong) UIImageView *airshareLogo;
 
 
 - (IBAction)backAction:(id)sender;

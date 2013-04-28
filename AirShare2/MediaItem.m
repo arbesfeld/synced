@@ -81,7 +81,11 @@
 {
     self.beatPos++;
     //NSLog(@"BEAT!!");
-    
+    UIView *screenFlash = [[UIView alloc] initWithFrame:CGRectMake(0,0, 320,480)];
+    [screenFlash setBackgroundColor:[UIColor redColor]];
+    [UIView animateWithDuration:0.6 animations:^() {
+        screenFlash.alpha = 0.0;
+    }];
     Class captureDeviceClass = NSClassFromString(@"AVCaptureDevice");
     if (captureDeviceClass != nil) {
         AVCaptureDevice *device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
