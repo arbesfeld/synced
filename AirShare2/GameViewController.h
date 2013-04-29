@@ -21,9 +21,12 @@
 
 @interface GameViewController : UIViewController <UIAlertViewDelegate, UIApplicationDelegate, UITableViewDataSource, UITableViewDelegate, MPMediaPickerControllerDelegate, GameDelegate, PlaylistItemDelegate, MoviePickerDelegate> {
     MenuViewController *_menuViewController;
+    UIViewController *_displayedViewController;
     NSMutableDictionary *_hasVotedForItem; // key is songID, value is whethere they have upvoted it
     BOOL _canLoadView; // for when animations are occuring
 }
+
+@property (weak, nonatomic) IBOutlet UIButton *eyeButton;
 @property (strong, nonatomic) IBOutlet UISwitch *partySwitch;
 @property (strong, nonatomic) IBOutlet UILabel *partyModeLabel;
 @property (strong, nonatomic) IBOutlet UIButton *volumeButton;
@@ -46,6 +49,8 @@
 - (IBAction)playMusic:(id)sender;
 - (IBAction)skipMusic:(id)sender;
 - (IBAction)playMovie:(id)sender;
+- (IBAction)eyeAction:(id)sender;
+
 - (IBAction)togglePartyMode:(UISwitch *)sender;
 
 

@@ -94,6 +94,10 @@
     self.skipsLabel.hidden = isWaiting;
     self.partyModeLabel.hidden = isWaiting;
     self.partySwitch.hidden = isWaiting;
+    
+    if(isWaiting) {
+        self.eyeButton.hidden = YES;
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -108,7 +112,7 @@
     }
     
     [self.view addGestureRecognizer:self.slidingViewController.panGesture];
-    [self.slidingViewController setAnchorRightRevealAmount:280.0f];
+    [self.slidingViewController setAnchorRightRevealAmount:180.0f];
 }
 
 -(void)viewDidAppear:(BOOL)animated{
@@ -327,8 +331,13 @@
         [self presentViewController:viewController animated:YES completion:nil];
         [[UIApplication sharedApplication] endIgnoringInteractionEvents];
     }
+    _displayedViewController = viewController;
+    self.eyeButton.hidden = NO;
 }
 
+- (IBAction)eyeAction:(id)sender {
+    [self presentViewController:_displayedViewController animated:YES completion:nil];
+}
 #pragma mark - UITableViewDataSource
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -372,7 +381,6 @@
     self.artistLabel.text = artistName;
     
 }
-#pragma mark - UITableViewDelegate
 
 #pragma mark - MoviePickerDelegate
 
@@ -427,6 +435,7 @@
 }
 
 #pragma mark - playMusic____
+
 - (IBAction)playMusic:(id)sender {
     _mediaPicker = [[MPMediaPickerController alloc] initWithMediaTypes: MPMediaTypeMusic];
     
@@ -449,6 +458,7 @@
     }];
 	moviePickerViewController.delegate = self;
 }
+
     
 - (IBAction)skipMusic:(id)sender {
     [_game skipButtonPressed];
@@ -475,6 +485,8 @@
     NSLog(@"Toggling party mode");
     _game.partyMode = [sender isOn];
 }
+
+#pragma mark - Volume Control
 
 - (void)volumeChanged:(NSNotification *)notification
 {
