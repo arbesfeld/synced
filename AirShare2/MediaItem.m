@@ -76,6 +76,11 @@
     self.beatPos = 0;
 }
 
+- (void)skipBeat
+{
+    self.beatPos++;
+}
+
 // advance beat pointer and perform action
 - (void)nextBeat
 {

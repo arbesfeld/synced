@@ -1055,10 +1055,19 @@ typedef enum
         [self.delegate setPlaybackProgress:fraction];
         [self.delegate secondsRemaining:total - _audioPlayer.currentTime];
         
-        if (_partyMode && mediaItem.beatsLoaded && mediaItem.beatPos >= 0 && mediaItem.beatPos < [mediaItem.beats count] &&[(NSNumber *)[mediaItem.beats objectAtIndex:mediaItem.beatPos] doubleValue] < _audioPlayer.currentTime + 0.05) {
+        while (_partyMode && mediaItem.beatsLoaded && mediaItem.beatPos >= 0 && mediaItem.beatPos < [mediaItem.beats count] - 1 && [(NSNumber *)[mediaItem.beats objectAtIndex:mediaItem.beatPos + 1] doubleValue] < _audioPlayer.currentTime + 0.05) {
+            [mediaItem skipBeat];
+        }
+        if (_partyMode && mediaItem.beatsLoaded && mediaItem.beatPos >= 0 && mediaItem.beatPos < [mediaItem.beats count] && [(NSNumber *)[mediaItem.beats objectAtIndex:mediaItem.beatPos] doubleValue] < _audioPlayer.currentTime + 0.05) {
             // play a beat
             //NSLog(@"%f is the time; %@ is the beat", _audioPlayer.currentTime, (NSNumber*)[mediaItem.beats objectAtIndex:mediaItem.beatPos]);
-            [mediaItem nextBeat];
+            
+            // don't play the beat if it's too far elapsed
+            if ([(NSNumber *)[mediaItem.beats objectAtIndex:mediaItem.beatPos] doubleValue] < _audioPlayer.currentTime + 0.03) {
+                [mediaItem skipBeat];
+            } else {
+                [mediaItem nextBeat];
+            }
         }
     } else if(mediaItem.playlistItemType == PlaylistItemTypeMovie ||
               mediaItem.playlistItemType == PlaylistItemTypeYoutube) {

@@ -20,6 +20,7 @@
 + (id)mediaItemWithName:(NSString *)name andSubtitle:(NSString *)subtitle andID:(NSString *)ID andDate:(NSDate *)date andURL:(NSURL *)url uploadedByUser:(BOOL)uploadedByUser andPlayListItemType:(PlaylistItemType)playlistItemType;
 
 - (void)loadBeats;
+- (void)skipBeat;
 - (void)nextBeat;
 
 @end
