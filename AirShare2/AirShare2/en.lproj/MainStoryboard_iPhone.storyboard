@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="3084" systemVersion="12C3012" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="2">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="3084" systemVersion="12D78" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="2">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="2083"/>
     </dependencies>
@@ -300,7 +300,6 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8r2-Le-lFZ">
                                 <constraints>
                                     <constraint firstAttribute="width" constant="34" id="wan-TZ-ThV"/>
-                                    <constraint firstAttribute="height" constant="29" id="xKW-7A-fuR"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                 <state key="normal" title=" " backgroundImage="fullVolume-01.png">
@@ -332,22 +331,20 @@
                             <constraint firstItem="eJo-Sb-0RW" firstAttribute="top" relation="greaterThanOrEqual" secondItem="BCy-oa-ZtW" secondAttribute="top" constant="96" type="user" id="2Gr-TS-32I"/>
                             <constraint firstItem="o8S-ku-u21" firstAttribute="top" relation="greaterThanOrEqual" secondItem="BCy-oa-ZtW" secondAttribute="top" constant="76" type="user" id="2lY-Nc-Zzq"/>
                             <constraint firstItem="8r2-Le-lFZ" firstAttribute="centerY" secondItem="qGG-Mn-1P9" secondAttribute="centerY" type="default" id="2ny-Vv-Cea"/>
-                            <constraint firstItem="ACL-ij-h37" firstAttribute="leading" secondItem="BCy-oa-ZtW" secondAttribute="leading" constant="283" id="3HF-5v-7XK"/>
                             <constraint firstItem="12U-g7-co7" firstAttribute="leading" secondItem="BCy-oa-ZtW" secondAttribute="leading" type="user" id="3o3-Ep-qaK"/>
                             <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="eeC-ei-Tr1" secondAttribute="bottom" constant="33" type="user" id="5NS-uq-WhJ"/>
                             <constraint firstAttribute="trailing" secondItem="eeC-ei-Tr1" secondAttribute="trailing" constant="42" id="8RT-8I-EV6"/>
                             <constraint firstItem="LWF-a9-TuI" firstAttribute="top" relation="greaterThanOrEqual" secondItem="BCy-oa-ZtW" secondAttribute="top" constant="56" type="user" id="8ba-5P-0KC"/>
                             <constraint firstAttribute="trailing" secondItem="swj-rq-us7" secondAttribute="trailing" constant="1" id="8i9-9J-VfY"/>
+                            <constraint firstItem="ACL-ij-h37" firstAttribute="leading" secondItem="BCy-oa-ZtW" secondAttribute="leading" constant="285" id="9JF-MN-tyf"/>
                             <constraint firstItem="PdE-4c-64j" firstAttribute="top" secondItem="BCy-oa-ZtW" secondAttribute="top" constant="19" type="user" id="9Lz-vB-6mi"/>
                             <constraint firstItem="dEq-t8-cgV" firstAttribute="leading" secondItem="BCy-oa-ZtW" secondAttribute="leading" constant="-4" type="user" id="9QD-mm-jma"/>
                             <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="gAi-42-x5e" secondAttribute="trailing" constant="13" type="user" id="9sM-vy-CCz"/>
-                            <constraint firstItem="YuW-3R-SF1" firstAttribute="leading" secondItem="BCy-oa-ZtW" secondAttribute="leading" constant="12" type="user" id="A2I-jh-HK3"/>
                             <constraint firstItem="LWF-a9-TuI" firstAttribute="leading" secondItem="o8S-ku-u21" secondAttribute="leading" type="user" id="Al7-Da-WIV"/>
                             <constraint firstItem="qcU-o1-ezA" firstAttribute="leading" secondItem="BCy-oa-ZtW" secondAttribute="leading" constant="88" id="C1j-Cl-La0"/>
-                            <constraint firstItem="WD3-Wu-ZGd" firstAttribute="leading" secondItem="eJo-Sb-0RW" secondAttribute="leading" type="user" id="CFr-PI-avW"/>
                             <constraint firstItem="qGG-Mn-1P9" firstAttribute="leading" secondItem="PdE-4c-64j" secondAttribute="leading" type="default" id="DF5-Yy-PsQ"/>
                             <constraint firstItem="EIA-jH-c4J" firstAttribute="top" secondItem="BCy-oa-ZtW" secondAttribute="top" constant="1" id="F0e-6D-Wlw"/>
-                            <constraint firstAttribute="bottom" secondItem="qGG-Mn-1P9" secondAttribute="bottom" constant="7" type="user" id="FZr-z9-3Dy"/>
+                            <constraint firstAttribute="bottom" secondItem="qGG-Mn-1P9" secondAttribute="bottom" constant="5" type="user" id="FZr-z9-3Dy"/>
                             <constraint firstItem="IVa-kZ-LtJ" firstAttribute="leading" secondItem="BCy-oa-ZtW" secondAttribute="leading" constant="195" id="HsW-Il-e5I"/>
                             <constraint firstAttribute="bottom" secondItem="ge9-R5-1vQ" secondAttribute="bottom" constant="38" type="user" id="Izm-mm-wvc"/>
                             <constraint firstAttribute="trailing" secondItem="96i-Zy-Rwc" secondAttribute="trailing" constant="7" id="JHR-9c-qZJ"/>
@@ -357,32 +354,33 @@
                             <constraint firstItem="gAi-42-x5e" firstAttribute="top" relation="greaterThanOrEqual" secondItem="BCy-oa-ZtW" secondAttribute="top" constant="5" type="user" id="QXD-Aa-tZz"/>
                             <constraint firstItem="YuW-3R-SF1" firstAttribute="baseline" secondItem="IVa-kZ-LtJ" secondAttribute="baseline" type="default" id="Qaq-us-urN"/>
                             <constraint firstItem="EIA-jH-c4J" firstAttribute="leading" secondItem="BCy-oa-ZtW" secondAttribute="leading" constant="94" id="T6Z-yJ-mC7"/>
+                            <constraint firstItem="o8S-ku-u21" firstAttribute="leading" secondItem="WD3-Wu-ZGd" secondAttribute="leading" type="default" id="URM-G4-o5v"/>
                             <constraint firstItem="IVa-kZ-LtJ" firstAttribute="top" relation="greaterThanOrEqual" secondItem="BCy-oa-ZtW" secondAttribute="top" constant="-3" type="user" id="YYH-zu-P8t"/>
-                            <constraint firstItem="o8S-ku-u21" firstAttribute="leading" secondItem="eJo-Sb-0RW" secondAttribute="leading" type="user" id="a0Z-oD-Ddk"/>
                             <constraint firstItem="eeC-ei-Tr1" firstAttribute="baseline" secondItem="96i-Zy-Rwc" secondAttribute="baseline" type="default" id="adS-44-Tkc"/>
                             <constraint firstItem="swj-rq-us7" firstAttribute="top" secondItem="BCy-oa-ZtW" secondAttribute="top" constant="111" id="auM-2f-Cx8"/>
                             <constraint firstAttribute="trailing" secondItem="PdE-4c-64j" secondAttribute="trailing" constant="126" type="user" id="bdb-HW-YHc"/>
                             <constraint firstItem="12U-g7-co7" firstAttribute="bottom" secondItem="BCy-oa-ZtW" secondAttribute="bottom" type="default" id="bnp-w7-Qgn"/>
                             <constraint firstItem="YC5-9B-f4q" firstAttribute="leading" secondItem="BCy-oa-ZtW" secondAttribute="leading" constant="-9" type="user" id="c3B-GD-qL0"/>
                             <constraint firstItem="ge9-R5-1vQ" firstAttribute="top" secondItem="BCy-oa-ZtW" secondAttribute="top" constant="137" type="user" id="cyp-ad-iMW"/>
+                            <constraint firstItem="o8S-ku-u21" firstAttribute="leading" secondItem="eJo-Sb-0RW" secondAttribute="leading" type="default" id="dJs-5R-U9u"/>
                             <constraint firstAttribute="trailing" secondItem="12U-g7-co7" secondAttribute="trailing" constant="-2" type="user" id="deh-Um-jng"/>
                             <constraint firstItem="ge9-R5-1vQ" firstAttribute="leading" secondItem="BCy-oa-ZtW" secondAttribute="leading" type="user" id="epG-kV-Fd3"/>
                             <constraint firstItem="o8S-ku-u21" firstAttribute="top" secondItem="BCy-oa-ZtW" secondAttribute="top" constant="76" id="ezl-EY-n9j"/>
                             <constraint firstItem="o8S-ku-u21" firstAttribute="bottom" secondItem="ACL-ij-h37" secondAttribute="bottom" type="default" id="f2d-Ef-vGf"/>
                             <constraint firstItem="LWF-a9-TuI" firstAttribute="top" secondItem="BCy-oa-ZtW" secondAttribute="top" constant="56" id="fFb-xH-Kvf"/>
                             <constraint firstItem="ge9-R5-1vQ" firstAttribute="trailing" secondItem="BCy-oa-ZtW" secondAttribute="trailing" type="user" id="g9z-kY-yIM"/>
+                            <constraint firstItem="8r2-Le-lFZ" firstAttribute="centerX" secondItem="YuW-3R-SF1" secondAttribute="centerX" type="default" id="gl6-he-IvA"/>
                             <constraint firstItem="YC5-9B-f4q" firstAttribute="top" secondItem="BCy-oa-ZtW" secondAttribute="top" constant="-7" type="user" id="hkH-Ci-xQt"/>
                             <constraint firstItem="eeC-ei-Tr1" firstAttribute="top" relation="greaterThanOrEqual" secondItem="BCy-oa-ZtW" secondAttribute="top" constant="66" type="user" id="imJ-oV-f7b"/>
                             <constraint firstItem="dEq-t8-cgV" firstAttribute="top" secondItem="BCy-oa-ZtW" secondAttribute="top" constant="52" id="k5y-ya-Kf1"/>
                             <constraint firstAttribute="trailing" secondItem="dEq-t8-cgV" secondAttribute="trailing" constant="-2" type="user" id="lHX-pZ-NQz"/>
-                            <constraint firstItem="YuW-3R-SF1" firstAttribute="leading" secondItem="LWF-a9-TuI" secondAttribute="leading" type="user" id="n7Y-WF-o2e"/>
-                            <constraint firstItem="YuW-3R-SF1" firstAttribute="top" relation="greaterThanOrEqual" secondItem="BCy-oa-ZtW" secondAttribute="top" constant="12" type="user" id="n8k-kA-Kqb"/>
                             <constraint firstItem="PdE-4c-64j" firstAttribute="top" relation="greaterThanOrEqual" secondItem="BCy-oa-ZtW" secondAttribute="top" constant="19" type="user" id="pRQ-Dp-sXh"/>
-                            <constraint firstItem="YuW-3R-SF1" firstAttribute="trailing" secondItem="8r2-Le-lFZ" secondAttribute="trailing" type="default" id="qR8-D9-gqq"/>
+                            <constraint firstItem="8r2-Le-lFZ" firstAttribute="top" secondItem="ge9-R5-1vQ" secondAttribute="bottom" constant="8" symbolic="YES" type="default" id="qlJ-UT-alf"/>
                             <constraint firstItem="12U-g7-co7" firstAttribute="top" secondItem="BCy-oa-ZtW" secondAttribute="top" type="default" id="ssx-GJ-u7N"/>
                             <constraint firstItem="96i-Zy-Rwc" firstAttribute="top" secondItem="BCy-oa-ZtW" secondAttribute="top" constant="58" id="tJG-fW-cNL"/>
+                            <constraint firstItem="LWF-a9-TuI" firstAttribute="leading" secondItem="BCy-oa-ZtW" secondAttribute="leading" constant="12" id="u4T-oy-1E1"/>
                             <constraint firstItem="gAi-42-x5e" firstAttribute="top" secondItem="BCy-oa-ZtW" secondAttribute="top" constant="5" id="uQF-4n-ugw"/>
-                            <constraint firstItem="WD3-Wu-ZGd" firstAttribute="leading" secondItem="BCy-oa-ZtW" secondAttribute="leading" constant="12" type="user" id="vgu-zf-8HD"/>
+                            <constraint firstItem="8r2-Le-lFZ" firstAttribute="leading" secondItem="BCy-oa-ZtW" secondAttribute="leading" constant="9" id="wrH-0x-Z9X"/>
                             <constraint firstItem="IVa-kZ-LtJ" firstAttribute="baseline" secondItem="gAi-42-x5e" secondAttribute="baseline" type="default" id="xYY-gL-cnE"/>
                             <constraint firstItem="qGG-Mn-1P9" firstAttribute="trailing" secondItem="gAi-42-x5e" secondAttribute="trailing" type="default" id="yAM-cq-akB"/>
                             <constraint firstAttribute="trailing" secondItem="gAi-42-x5e" secondAttribute="trailing" constant="13" id="yge-tZ-xGf"/>
@@ -458,7 +456,6 @@
                 <relationship kind="outlet" name="backButton" candidateClass="UIButton"/>
                 <relationship kind="outlet" name="hostGameButton" candidateClass="UIButton"/>
                 <relationship kind="outlet" name="joinGameButton" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="logo" candidateClass="UIImageView"/>
                 <relationship kind="outlet" name="sessionsLabel" candidateClass="UILabel"/>
                 <relationship kind="outlet" name="tableView" candidateClass="UITableView"/>
                 <relationship kind="outlet" name="waitingView" candidateClass="UIImageView"/>

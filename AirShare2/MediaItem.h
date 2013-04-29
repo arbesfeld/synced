@@ -21,6 +21,5 @@
 
 - (void)loadBeats;
 - (void)skipBeat;
-- (void)nextBeat;
 
 @end
