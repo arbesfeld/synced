@@ -1,12 +1,6 @@
 #import "GameViewController.h"
 #import "PlaylistItemCell.h"
-#import "ECSlidingViewController.h"
-#import "MarqueeLabel.h"
 #import "MoviePickerViewController.h"
-#import <QuartzCore/QuartzCore.h>
-
-const double epsilon = 0.02;
-
 
 @implementation GameViewController
 {
@@ -35,6 +29,8 @@ const double epsilon = 0.02;
 //    lineView.backgroundColor = [UIColor colorWithHue:1.0 saturation:0.0 brightness:.6 alpha:.8];
 //    [self.view addSubview:lineView];
     
+    _menuViewController.game = _game;
+    [_menuViewController.usersTable reloadData];
     
     _hasVotedForItem = [[NSMutableDictionary alloc] initWithCapacity:10];
     
@@ -100,7 +96,20 @@ const double epsilon = 0.02;
     self.partySwitch.hidden = isWaiting;
 }
 
-
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    self.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    
+    if (![self.slidingViewController.underLeftViewController isKindOfClass:[MenuViewController class]]) {
+        _menuViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"Menu"];
+        self.slidingViewController.underLeftViewController = _menuViewController;
+    }
+    
+    [self.view addGestureRecognizer:self.slidingViewController.panGesture];
+    [self.slidingViewController setAnchorRightRevealAmount:280.0f];
+}
 
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
@@ -159,13 +168,13 @@ const double epsilon = 0.02;
 
 - (void)clientDidConnect:(Player *)player;
 {
-    [self.userTable reloadData];
+    [_menuViewController.usersTable reloadData];
     [self.playlistTable reloadData];
 }
 
 - (void)clientDidDisconnect:(Player *)player;
 {
-    [self.userTable reloadData];
+    [_menuViewController.usersTable reloadData];
     [self.playlistTable reloadData];
 }
 
@@ -192,7 +201,6 @@ const double epsilon = 0.02;
     //[self.playlistTable endUpdates];
     _game.playlist = newPlaylist;
     [self.playlistTable performSelector:@selector(reloadData) withObject:nil afterDelay:0.15];
-    [self.userTable reloadData];
     //[self.playlistTable reloadData];
 }
 
@@ -325,19 +333,10 @@ const double epsilon = 0.02;
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if(tableView == self.userTable) {
-        if (_game != nil)
-            return [_game.players count];
-        else
-            return 0;
-    }
-    // else, is the music list
-    else {
-        if (_game != nil) {
-            return [_game.playlist count];
-        } else {
-            return 0;
-        }
+    if (_game != nil) {
+        return [_game.playlist count];
+    } else {
+        return 0;
     }
 }
 
@@ -348,32 +347,20 @@ const double epsilon = 0.02;
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"CellIdentifier";
+
+    PlaylistItemCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    PlaylistItem *selectedItem = ((PlaylistItem *)[_game.playlist objectAtIndex:indexPath.row]);
     
-    if(tableView == self.userTable) {
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-        if (cell == nil) {
-            cell = [[UITableViewCell alloc] init];
-            NSString *peerID = [[_game.players allKeys] objectAtIndex:indexPath.row];
-            cell.textLabel.text = [_game displayNameForPeerID:peerID];
-        }
-        return cell;
+     
+    if (cell == nil) {
+        cell = [[PlaylistItemCell alloc] initWithStyle:UITableViewCellStyleSubtitle
+                                       reuseIdentifier:nil
+                                          playlistItem:selectedItem
+                                                 voted:([_hasVotedForItem objectForKey:selectedItem.ID] != nil)
+                                              position:indexPath.row];
+        cell.delegate = self;
     }
-    // else, is the playlist
-    else {
-        PlaylistItemCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-        PlaylistItem *selectedItem = ((PlaylistItem *)[_game.playlist objectAtIndex:indexPath.row]);
-        
-         
-        if (cell == nil) {
-            cell = [[PlaylistItemCell alloc] initWithStyle:UITableViewCellStyleSubtitle
-                                           reuseIdentifier:nil
-                                              playlistItem:selectedItem
-                                                     voted:([_hasVotedForItem objectForKey:selectedItem.ID] != nil)
-                                                  position:indexPath.row];
-            cell.delegate = self;
-        }
-        return cell;
-    }
+    return cell;
 }
 
 - (void)setHeaderWithSongName:(NSString *)songName andArtistName:(NSString *)artistName
@@ -434,6 +421,7 @@ const double epsilon = 0.02;
 {
 	if (buttonIndex != alertView.cancelButtonIndex)
 	{
+        [self dismissViewControllerAnimated:YES completion:nil];
 		[self.game quitGameWithReason:QuitReasonUserQuit];
 	}
 }

@@ -74,6 +74,7 @@
 		5597F0A31723DAC400C91952 /* SDWebImageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5597F0971723DAC300C91952 /* SDWebImageManager.m */; };
 		5597F0A41723DAC400C91952 /* SDWebImagePrefetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 5597F09A1723DAC300C91952 /* SDWebImagePrefetcher.m */; };
 		5597F0A51723DAC400C91952 /* UIButton+WebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 5597F09C1723DAC400C91952 /* UIButton+WebCache.m */; };
+		559AAB35172ED81A006757C5 /* MenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 559AAB34172ED81A006757C5 /* MenuViewController.m */; };
 		559ADC79172369B200F5EBE5 /* PacketPlayMusic.m in Sources */ = {isa = PBXBuildFile; fileRef = 559ADC78172369B200F5EBE5 /* PacketPlayMusic.m */; };
 		559D6B8F1711EC2000C591D8 /* bgGreyImg.png in Resources */ = {isa = PBXBuildFile; fileRef = 559D6B851711EC2000C591D8 /* bgGreyImg.png */; };
 		559D6B901711EC2000C591D8 /* cancel.png in Resources */ = {isa = PBXBuildFile; fileRef = 559D6B861711EC2000C591D8 /* cancel.png */; };
@@ -240,6 +241,8 @@
 		5597F09A1723DAC300C91952 /* SDWebImagePrefetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDWebImagePrefetcher.m; sourceTree = "<group>"; };
 		5597F09B1723DAC300C91952 /* UIButton+WebCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIButton+WebCache.h"; sourceTree = "<group>"; };
 		5597F09C1723DAC400C91952 /* UIButton+WebCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIButton+WebCache.m"; sourceTree = "<group>"; };
+		559AAB33172ED81A006757C5 /* MenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuViewController.h; sourceTree = "<group>"; };
+		559AAB34172ED81A006757C5 /* MenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuViewController.m; sourceTree = "<group>"; };
 		559ADC77172369B200F5EBE5 /* PacketPlayMusic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PacketPlayMusic.h; sourceTree = "<group>"; };
 		559ADC78172369B200F5EBE5 /* PacketPlayMusic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PacketPlayMusic.m; sourceTree = "<group>"; };
 		559D6B851711EC2000C591D8 /* bgGreyImg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = bgGreyImg.png; path = Graphics/bgGreyImg.png; sourceTree = "<group>"; };
@@ -567,6 +570,8 @@
 			children = (
 				55FCC5B916ED60460000BCBD /* GameViewController.h */,
 				55FCC5BA16ED60460000BCBD /* GameViewController.m */,
+				559AAB33172ED81A006757C5 /* MenuViewController.h */,
+				559AAB34172ED81A006757C5 /* MenuViewController.m */,
 				55FCC57616ED3DA20000BCBD /* MainViewController.h */,
 				55FCC57716ED3DA20000BCBD /* MainViewController.m */,
 				55A28DB4171E5C60001E757E /* CustomMovieController.h */,
@@ -830,6 +835,7 @@
 				5597F0A51723DAC400C91952 /* UIButton+WebCache.m in Sources */,
 				559673C017246A3D000E0D52 /* LBYouTubeExtractor.m in Sources */,
 				559E887817283CD500CAE248 /* UIButton+Extensions.m in Sources */,
+				559AAB35172ED81A006757C5 /* MenuViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

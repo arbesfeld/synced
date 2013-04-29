@@ -36,10 +36,6 @@
     [_sessionsLabel setAlpha:0.0];
     [_backButton setAlpha:0.0];
     
-
-
-
-    
     [[UIApplication sharedApplication] beginReceivingRemoteControlEvents];
 }
 
@@ -150,16 +146,20 @@
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil];
-	GameViewController *gameViewController = [storyboard instantiateViewControllerWithIdentifier:@"GameViewController"];
+    
+    ECSlidingViewController *slidingViewController = [[ECSlidingViewController alloc] init];
+    GameViewController *gameViewController = [storyboard instantiateViewControllerWithIdentifier:@"GameViewController"];
+    slidingViewController.topViewController = gameViewController;
     gameViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-    [self presentViewController:gameViewController
-                                              animated:YES
-                                           completion:nil];
-	gameViewController.delegate = self;
+    slidingViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    slidingViewController.topViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     
     Game *game = [[Game alloc] init];
     gameViewController.game = game;
+    gameViewController.delegate = self;
     game.delegate = gameViewController;
+    
+    [self presentViewController:slidingViewController animated:YES completion:nil];
     block(game);
 }
 

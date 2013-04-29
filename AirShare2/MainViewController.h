@@ -4,9 +4,9 @@
 #import "MatchmakingServer.h"
 #import "UIImage+animatedGIF.h"
 #import "EGORefreshTableHeaderView.h"
+#import "ECSlidingViewController.h"
 
 @interface MainViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, UIAlertViewDelegate, GameViewControllerDelegate, MatchmakingClientDelegate, MatchmakingServerDelegate>
-
 
 @property (strong, nonatomic) IBOutlet UIButton *hostGameButton;
 @property (strong, nonatomic) IBOutlet UIButton *joinGameButton;

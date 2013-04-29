@@ -4,10 +4,12 @@
 #import "PlaylistItem.h"
 #import "PlaylistItemCell.h"
 #import "MoviePickerViewController.h"
-#import "MarqueeLabel.h"
 #import "UIButton+Extensions.h"
+#import "ECSlidingViewController.h"
+#import "MenuViewController.h"
 
 #import <MediaPlayer/MediaPlayer.h>
+#import <QuartzCore/QuartzCore.h>
 
 @class GameViewController;
 
@@ -18,6 +20,7 @@
 @end
 
 @interface GameViewController : UIViewController <UIAlertViewDelegate, UIApplicationDelegate, UITableViewDataSource, UITableViewDelegate, MPMediaPickerControllerDelegate, GameDelegate, PlaylistItemDelegate, MoviePickerDelegate> {
+    MenuViewController *_menuViewController;
     NSMutableDictionary *_hasVotedForItem; // key is songID, value is whethere they have upvoted it
     BOOL _canLoadView; // for when animations are occuring
 }
@@ -30,7 +33,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *playingLabel;
 @property (weak, nonatomic) IBOutlet UIView *gradientView;
 @property (nonatomic, weak) IBOutlet UIButton *exitButton, *skipSongButton;
-@property (nonatomic, weak) IBOutlet UITableView *userTable, *playlistTable;
+@property (nonatomic, weak) IBOutlet UITableView *playlistTable;
 @property (nonatomic, weak) IBOutlet UIProgressView *playbackProgressBar;
 @property (nonatomic, weak) IBOutlet UILabel * songTitle;
 @property (nonatomic, strong) UINavigationController *navController;

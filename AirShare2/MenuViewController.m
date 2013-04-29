@@ -2,7 +2,7 @@
 //  MenuViewController.m
 //  AirShare2
 //
-//  Created by Matthew Tancik on 4/2/13.
+//  Created by mata on 4/29/13.
 //  Copyright (c) 2013 Matthew Arbesfeld. All rights reserved.
 //
 
@@ -33,6 +33,33 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - UITableViewDataSource
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    if(_game) {
+        NSLog(@"Count = %d", _game.players.count);
+        return _game.players.count;
+    } else {
+        return 0;
+    }
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *CellIdentifier = @"CellIdentifier";
+    
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (cell == nil) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+    }
+    
+    NSString *peerID = [[_game.players allKeys] objectAtIndex:indexPath.row];
+    cell.textLabel.text = [_game displayNameForPeerID:peerID];
+    
+    return cell;
 }
 
 @end
