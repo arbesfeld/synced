@@ -29,9 +29,6 @@
 //    lineView.backgroundColor = [UIColor colorWithHue:1.0 saturation:0.0 brightness:.6 alpha:.8];
 //    [self.view addSubview:lineView];
     
-    _menuViewController.game = _game;
-    [_menuViewController.usersTable reloadData];
-    
     _hasVotedForItem = [[NSMutableDictionary alloc] initWithCapacity:10];
     
     self.view.backgroundColor = [[UIColor alloc] initWithPatternImage:[UIImage imageNamed:@"bgGreyImg.png"]];
@@ -68,10 +65,10 @@
     self.skipsLabel.font = [UIFont fontWithName:@"Century Gothic" size:12.0f];
     self.skipsLabel.textColor = [UIColor darkGrayColor];
     
-    self.skipSongLabel.font = [UIFont fontWithName:@"Century Gothic" size:16.0f];
+    self.skipSongLabel.font = [UIFont fontWithName:@"Century Gothic" size:14.0f];
     self.skipSongLabel.textColor = [UIColor colorWithRed:0.234 green:0.234 blue:0.234 alpha:1.000];
     
-    self.timeLabel.font = [UIFont fontWithName:@"Century Gothic" size:16.0f];
+    self.timeLabel.font = [UIFont fontWithName:@"Century Gothic" size:14.0f];
     self.timeLabel.textColor = [UIColor colorWithRed:0.234 green:0.234 blue:0.234 alpha:1.000];
     
     self.playlistTable.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
@@ -113,12 +110,13 @@
     
     [self.view addGestureRecognizer:self.slidingViewController.panGesture];
     [self.slidingViewController setAnchorRightRevealAmount:180.0f];
-}
-
--(void)viewDidAppear:(BOOL)animated{
-    [super viewDidAppear:animated];
+    
+    _menuViewController.game = _game;
+    [_menuViewController.usersTable reloadData];
+    
     [self becomeFirstResponder];
 }
+
 - (void)viewWillDisappear:(BOOL)animated
 {
 	[super viewWillDisappear:animated];
@@ -132,8 +130,6 @@
 }
 
 #pragma mark - Actions
-
-
 
 - (IBAction)exitAction:(id)sender
 {
@@ -359,7 +355,6 @@
 
     PlaylistItemCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     PlaylistItem *selectedItem = ((PlaylistItem *)[_game.playlist objectAtIndex:indexPath.row]);
-    
      
     if (cell == nil) {
         cell = [[PlaylistItemCell alloc] initWithStyle:UITableViewCellStyleSubtitle
@@ -396,8 +391,8 @@
 }
 #pragma mark - PlaylistItemDelegate
 
-// value is a int that represents the weight of the vote
 - (void)voteForItem:(PlaylistItem *)playlistItem withValue:(int)value upvote:(BOOL)upvote {
+    // value is a int that represents the weight of the vote
     if(upvote) {
         [playlistItem upvote:value];
         [self addValue:[NSNumber numberWithInt:value] forID:playlistItem.ID];
@@ -464,7 +459,7 @@
     [_game skipButtonPressed];
 }
 
-- (void)mediaPicker: (MPMediaPickerController *)mediaPicker didPickMediaItems:(MPMediaItemCollection *)mediaItemCollection
+- (void)mediaPicker:(MPMediaPickerController *)mediaPicker didPickMediaItems:(MPMediaItemCollection *)mediaItemCollection
 {
     [mediaPicker dismissViewControllerAnimated:YES completion:nil];
     
@@ -476,7 +471,7 @@
     }
 }
 
-- (void) mediaPickerDidCancel: (MPMediaPickerController *) mediaPicker
+- (void) mediaPickerDidCancel:(MPMediaPickerController *) mediaPicker
 {
     [mediaPicker dismissViewControllerAnimated:YES completion:nil];
 }
@@ -502,13 +497,14 @@
 
 - (void)changeVolumeIcon: (float)volume{
     if (volume > .66) {
-        [_volumeButton setBackgroundImage:[UIImage imageNamed:@"extrafullVolume-01.png"] forState:UIControlStateNormal];    }
-    else if (volume <= .66 && volume > 0.33) {
-        [_volumeButton setBackgroundImage:[UIImage imageNamed:@"fullVolume-01.png"] forState:UIControlStateNormal];    }
-    else if (volume <= .33 && volume > 0.0) {
-        [_volumeButton setBackgroundImage:[UIImage imageNamed:@"lowVolume-01.png"] forState:UIControlStateNormal];    }
-    else {
-        [_volumeButton setBackgroundImage:[UIImage imageNamed:@"muteVolume-01.png"] forState:UIControlStateNormal];    }
+        [_volumeButton setBackgroundImage:[UIImage imageNamed:@"extrafullVolume-01.png"] forState:UIControlStateNormal];
+    } else if (volume <= .66 && volume > 0.33) {
+        [_volumeButton setBackgroundImage:[UIImage imageNamed:@"fullVolume-01.png"] forState:UIControlStateNormal];
+    } else if (volume <= .33 && volume > 0.0) {
+        [_volumeButton setBackgroundImage:[UIImage imageNamed:@"lowVolume-01.png"] forState:UIControlStateNormal];
+    } else {
+        [_volumeButton setBackgroundImage:[UIImage imageNamed:@"muteVolume-01.png"] forState:UIControlStateNormal];
+    }
 }
 
 

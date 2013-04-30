@@ -24,10 +24,11 @@
 
 @interface CustomMovieController : UIViewController {
     NSTimer *_fadeOutTimer;
+    NSDate *_fadeOutTimerHit;
 }
 @property (nonatomic, weak) id <CustomMovieControllerDelegate> delegate;
 @property (nonatomic, strong) PlayerView *moviePlayer;
-@property (nonatomic, strong) UIButton *skipButton, *fadeButton;
+@property (nonatomic, strong) UIButton *skipButton, *fadeButton, *eyeButton;
 @property (nonatomic, strong) UILabel *skipLabel;
 @property (nonatomic, strong) UIImage *skipImage;
 @property (nonatomic, strong) UIView *controlBackground;

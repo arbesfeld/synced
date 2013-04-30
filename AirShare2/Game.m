@@ -772,7 +772,7 @@ typedef enum
 }
 
 - (void)loadAudioPlayer:(MediaItem *)mediaItem {
-    if([_moviePlayerController isBeingPresented]) {
+    if(_moviePlayerController) {
         [self moviePlayerDidFinishPlaying:nil];
     }
     NSString *tempPath = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
@@ -844,6 +844,16 @@ typedef enum
     
     NSLog(@"MoviePlayerDidFinishPlaying");
     
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [_moviePlayerController stop];
+    if([_moviePlayerController isViewLoaded]) {
+        [_moviePlayerController dismissViewControllerAnimated:NO completion:^ {
+            _moviePlayerController = nil;
+        }];
+    } else {
+        _moviePlayerController = nil;
+    }
+    
     if(_updatePlaybackProgressTimer) {
         [_updatePlaybackProgressTimer invalidate];
         _updatePlaybackProgressTimer = nil;
@@ -853,11 +863,8 @@ typedef enum
         _playbackSyncingTimer = nil;
     }
     
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-    [_moviePlayerController stop];
-    [_moviePlayerController dismissViewControllerAnimated:YES completion:^ {
-        [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
-    }];
+    [self.delegate setPlaybackProgress:0.0];
+    [self.delegate mediaFinishedPlaying];
     
     if(_gameState != GameStatePlayingMovie) {
         // we already started new content
@@ -865,8 +872,6 @@ typedef enum
     }
     
     _gameState = GameStateIdle;
-    [self.delegate setPlaybackProgress:0.0];
-    [self.delegate mediaFinishedPlaying];
     
     [self tryPlayingNextItem];
 }

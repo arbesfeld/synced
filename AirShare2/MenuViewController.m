@@ -40,7 +40,6 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if(_game) {
-        NSLog(@"Count = %d", _game.players.count);
         return _game.players.count;
     } else {
         return 0;
@@ -53,12 +52,12 @@
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
     }
     
     NSString *peerID = [[_game.players allKeys] objectAtIndex:indexPath.row];
     cell.textLabel.text = [_game displayNameForPeerID:peerID];
-    
+    cell.textLabel.font = [UIFont fontWithName:@"Century Gothic" size:15.0f];
     return cell;
 }
 

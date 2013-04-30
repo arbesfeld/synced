@@ -13,14 +13,34 @@
 - (void)dealloc
 {
     NSLog(@"dealloc: %@", [self description]);
+    
+    [self resignFirstResponder];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    [self becomeFirstResponder];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground:) name: UIApplicationDidEnterBackgroundNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive:) name: UIApplicationDidBecomeActiveNotification object:nil];
+    
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
+    
+}
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
+}
 - (id)initWithMediaItem:(MediaItem *)mediaItem
 {
     self = [super init];
     
     if(self) {
-        [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
+        _fadeOutTimerHit = [NSDate dateWithTimeIntervalSince1970:0];
         
         CGRect frame = [UIScreen mainScreen].applicationFrame;
         _mediaItem = mediaItem;
@@ -28,38 +48,36 @@
         [self.view addSubview:_moviePlayer];
         if ( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad )
         {
-            UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
-            if (orientation == UIInterfaceOrientationLandscapeLeft ||
-                orientation == UIInterfaceOrientationLandscapeRight) {
-                float height = frame.size.height;
-                frame.size.height = frame.size.width;
-                frame.size.width = height;
-            }
-            _skipLabel = [[UILabel alloc] initWithFrame:CGRectMake(frame.size.width - 130, frame.size.height - 74, 50, 50)];
+            _controlBackground = [[UIView alloc] init];
+            _skipLabel = [[UILabel alloc] init];
             _skipLabel.font = [UIFont fontWithName:@"Century Gothic" size:24.0f];
-            _skipButton = [[UIButton alloc] initWithFrame:CGRectMake(frame.size.width - 80, frame.size.height - 70, 50, 45.59)];
-            _controlBackground = [[UIView alloc] initWithFrame:CGRectMake(10, frame.size.height - 85, frame.size.width - 20, 72)];
+            _skipButton = [[UIButton alloc] init];
+            _volumeView = [[MPVolumeView alloc] init];
+            _eyeButton = [[UIButton alloc] init];
+            
+            [self setIpadDisplay];
+            
             [[NSNotificationCenter defaultCenter] addObserver:self
                                                      selector:@selector(didRotate:)
                                                          name:UIApplicationDidChangeStatusBarOrientationNotification
                                                        object:nil];
-            _volumeView = [[MPVolumeView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width - 320, 15)];
-            _volumeView.center = CGPointMake(frame.size.width / 2, frame.size.height - 51);
-            [_volumeView setAlpha:0.0];
-            [_volumeView sizeToFit];
         } else {
+            _controlBackground = [[UIView alloc] initWithFrame:CGRectMake(4, 7, 61, frame.size.height - 14)];
+            
             _skipLabel = [[UILabel alloc] initWithFrame:CGRectMake(17, frame.size.height - 95, 34, 31)];
             [_skipLabel setTransform:CGAffineTransformMakeRotation(M_PI / 2)];
             _skipLabel.font = [UIFont fontWithName:@"Century Gothic" size:20.0f];
+            
             _skipButton = [[UIButton alloc] initWithFrame:CGRectMake(13, frame.size.height - 55, 40, 37)];
             [_skipButton setTransform:CGAffineTransformMakeRotation(M_PI / 2)];
-            _controlBackground = [[UIView alloc] initWithFrame:CGRectMake(3, 7, 61, frame.size.height - 14)];
             
             _volumeView = [[MPVolumeView alloc] initWithFrame:CGRectMake(0, 0, frame.size.height - 237, 15)];
             _volumeView.center = CGPointMake(31,self.view.frame.size.height/2);
-            [_volumeView setAlpha:0.0];
-            [_volumeView sizeToFit];
-            _volumeView.transform=CGAffineTransformRotate(_volumeView.transform, M_PI / 2);
+            _volumeView.transform = CGAffineTransformRotate(_volumeView.transform, M_PI / 2);
+        
+            _eyeButton = [[UIButton alloc] initWithFrame:CGRectMake(8, 28, 49, 39)];
+            _eyeButton.transform = CGAffineTransformRotate(_eyeButton.transform, M_PI / 2);
+            
         }
         [_skipButton setHitTestEdgeInsets:UIEdgeInsetsMake(-20, -20, -20, -20)];
         
@@ -74,6 +92,13 @@
         [_skipButton setAlpha:0.0];
         _skipButton.enabled = NO;
         
+        UIImage *eyeImage = [UIImage imageNamed:@"eye-01.png"];
+        [_eyeButton setBackgroundImage:eyeImage forState:UIControlStateNormal];
+        [_eyeButton addTarget:self action:@selector(eyeButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+        [_eyeButton setAlpha:0.0];
+        _eyeButton.showsTouchWhenHighlighted = YES;
+        _eyeButton.enabled = NO;
+        [_eyeButton setHitTestEdgeInsets:UIEdgeInsetsMake(-10, -10, -10, -10)];
         _controlBackground.layer.cornerRadius = 5;
         _controlBackground.layer.masksToBounds = YES;
         _controlBackground.layer.borderColor = [UIColor grayColor].CGColor;
@@ -85,6 +110,9 @@
         _fadeButton.frame = frame;
         [_fadeButton addTarget:self action:@selector(fadeButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
         
+        [_volumeView setAlpha:0.0];
+        [_volumeView sizeToFit];
+        
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(volumeChanged:)
                                                      name:@"AVSystemController_SystemVolumeDidChangeNotification"
@@ -95,11 +123,13 @@
         [self.view addSubview:_controlBackground];
         [self.view addSubview:_fadeButton];
         [self.view addSubview:_volumeView];
+        [self.view addSubview:_eyeButton];
         [self.view bringSubviewToFront:_controlBackground];
         [self.view bringSubviewToFront:_skipLabel];
         [self.view bringSubviewToFront:_fadeButton];
         [self.view bringSubviewToFront:_skipButton];
         [self.view bringSubviewToFront:_volumeView];
+        [self.view bringSubviewToFront:_eyeButton];
         
     }
     return self;
@@ -112,16 +142,20 @@
     [_skipButton setAlpha:1.0];
     [_controlBackground setAlpha:0.75];
     [_volumeView setAlpha:1.0];
+    [_eyeButton setAlpha:1.0];
     [UIView commitAnimations];
     if(_fadeOutTimer) {
         [_fadeOutTimer invalidate];
         _fadeOutTimer = nil;
     }
     _skipButton.enabled = YES;
+    _eyeButton.enabled = YES;
     _fadeOutTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(fadeOut:) userInfo:nil repeats:NO];
 }
 
-- (void)didRotate:(NSNotification *)notification {
+- (void)setIpadDisplay
+{
+    
     CGRect frame = [UIScreen mainScreen].applicationFrame;
     UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
     if (orientation == UIInterfaceOrientationLandscapeLeft ||
@@ -135,15 +169,24 @@
     _skipButton.frame = CGRectMake(frame.size.width - 80, frame.size.height - 70, 50, 45.59);
     _controlBackground.frame = CGRectMake(10, frame.size.height - 85, frame.size.width - 20, 72);
     _fadeButton.frame = self.view.frame;
-    _volumeView.frame= CGRectMake(0, 0, frame.size.width - 320, 15);
+    _volumeView.frame = CGRectMake(0, 0, frame.size.width - 320, 15);
     _volumeView.center = CGPointMake(frame.size.width / 2, frame.size.height - 51);
+    _eyeButton.frame = CGRectMake(25, frame.size.height - 75, 70, 56);
+}
 
+- (void)didRotate:(NSNotification *)notification {
+    [self setIpadDisplay];
+
+}
+
+- (void)eyeButtonPressed:(id)sender
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)skipButtonPressed:(id)sender
 {
     [self.delegate skipButtonPressed];
-    
 }
 
 - (void)fadeButtonPressed:(id)sender
@@ -155,19 +198,27 @@
     [_skipButton setAlpha:1.0];
     [_controlBackground setAlpha:0.75];
     [_volumeView setAlpha:1.0];
+    [_eyeButton setAlpha:1.0];
     [UIView commitAnimations];
     if(_fadeOutTimer) {
+        if(ABS([_fadeOutTimerHit timeIntervalSinceNow]) < 0.5) {
+            // double tap
+            return;
+        }
         [_fadeOutTimer invalidate];
         _fadeOutTimer = nil;
         [self fadeOut:nil];
     } else {
         _skipButton.enabled = YES;
+        _eyeButton.enabled = YES;
         _fadeOutTimer = [NSTimer scheduledTimerWithTimeInterval:4.0 target:self selector:@selector(fadeOut:) userInfo:nil repeats:NO];
+        _fadeOutTimerHit = [NSDate date];
     }
 }
 
 - (void)fadeOut:(NSTimer *)timer
 {
+    _fadeOutTimerHit = [NSDate dateWithTimeIntervalSince1970:0];
     [UIView animateWithDuration:0.5f
                           delay:0.0f
                         options:UIViewAnimationOptionCurveEaseInOut
@@ -176,9 +227,12 @@
                          [_skipButton setAlpha:0.0];
                          [_controlBackground setAlpha:0.0];
                          [_volumeView setAlpha:0.0];
+                         [_eyeButton setAlpha:0.0];
                   }
                      completion:^(BOOL finished) {
+                         _fadeOutTimer = nil;
                          _skipButton.enabled = NO;
+                         _eyeButton.enabled = NO;
                   }];
 }
 
@@ -198,20 +252,7 @@
     [_moviePlayer stop];
 }
 
-- (void)viewDidAppear:(BOOL)animated{
-    [super viewDidAppear:animated];
-    [self becomeFirstResponder];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground:) name: UIApplicationDidEnterBackgroundNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive:) name: UIApplicationDidBecomeActiveNotification object:nil];
-}
 
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    [self resignFirstResponder];
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
-}
 
 - (void)applicationDidEnterBackground:(NSNotification *)notification
 {
