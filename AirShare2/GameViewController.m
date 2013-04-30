@@ -73,6 +73,9 @@
     
     self.playlistTable.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     
+    _eyeButton.showsTouchWhenHighlighted = YES;
+    _skipSongButton.showsTouchWhenHighlighted = YES;
+    
     [self initialCheckVolume];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(volumeChanged:) name:@"AVSystemController_SystemVolumeDidChangeNotification" object:nil];
     
@@ -334,6 +337,7 @@
 - (IBAction)eyeAction:(id)sender {
     [self presentViewController:_displayedViewController animated:YES completion:nil];
 }
+
 #pragma mark - UITableViewDataSource
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -497,13 +501,13 @@
 
 - (void)changeVolumeIcon: (float)volume{
     if (volume > .66) {
-        [_volumeButton setBackgroundImage:[UIImage imageNamed:@"extrafullVolume-01.png"] forState:UIControlStateNormal];
+        _volumeImage.image = [UIImage imageNamed:@"extrafullVolume-01.png"];
     } else if (volume <= .66 && volume > 0.33) {
-        [_volumeButton setBackgroundImage:[UIImage imageNamed:@"fullVolume-01.png"] forState:UIControlStateNormal];
+        _volumeImage.image = [UIImage imageNamed:@"fullVolume-01.png"];
     } else if (volume <= .33 && volume > 0.0) {
-        [_volumeButton setBackgroundImage:[UIImage imageNamed:@"lowVolume-01.png"] forState:UIControlStateNormal];
+        _volumeImage.image = [UIImage imageNamed:@"lowVolume-01.png"];
     } else {
-        [_volumeButton setBackgroundImage:[UIImage imageNamed:@"muteVolume-01.png"] forState:UIControlStateNormal];
+        _volumeImage.image = [UIImage imageNamed:@"muteVolume-01.png"];
     }
 }
 

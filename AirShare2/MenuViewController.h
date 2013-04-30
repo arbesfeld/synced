@@ -15,4 +15,6 @@
 @property (weak, nonatomic) IBOutlet UITableView *usersTable;
 @property (nonatomic, strong) Game *game;
 
+- (IBAction)syncButtonPressed:(id)sender;
+
 @end

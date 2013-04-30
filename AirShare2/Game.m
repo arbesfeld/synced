@@ -21,8 +21,8 @@ const int WAIT_TIME_UPLOAD = 60;     // server wait time for others to download 
 const int WAIT_TIME_DOWNLOAD = 60;   // server wait time for others to download music after downloading
 const int SYNC_PACKET_COUNT = 100;   // how many sync packets to send
 const int UPDATE_TIME_AUDIO = 60;    // how often to update playback (after first update)
-const int UPDATE_TIME_MOVIE = 30;    // how often to update playback (after first update)
-const int UPDATE_TIME_YOUTUBE = 15;  // how often to update playback (after first update)
+const int UPDATE_TIME_MOVIE = 45;    // how often to update playback (after first update)
+const int UPDATE_TIME_YOUTUBE = 30;  // how often to update playback (after first update)
 const int UPDATE_TIME_YOUTUBE_LOADING = 10;   // how often to update playback (after first update)
 const int UPDATE_TIME_FIRST = 1;     // how often to update playback (first update)
 const double BACKGROUND_TIME = -0.2; // the additional time it takes when app is in background
@@ -863,13 +863,14 @@ typedef enum
         _playbackSyncingTimer = nil;
     }
     
-    [self.delegate setPlaybackProgress:0.0];
-    [self.delegate mediaFinishedPlaying];
     
     if(_gameState != GameStatePlayingMovie) {
         // we already started new content
         return;
     }
+    
+    [self.delegate setPlaybackProgress:0.0];
+    [self.delegate mediaFinishedPlaying];
     
     _gameState = GameStateIdle;
     

@@ -29,7 +29,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *eyeButton;
 @property (strong, nonatomic) IBOutlet UISwitch *partySwitch;
 @property (strong, nonatomic) IBOutlet UILabel *partyModeLabel;
-@property (strong, nonatomic) IBOutlet UIButton *volumeButton;
+@property (strong, nonatomic) IBOutlet UIImageView *volumeImage;
 @property (strong, nonatomic) IBOutlet UILabel *skipsLabel;
 @property (weak, nonatomic) IBOutlet UILabel *timeLabel;
 @property (nonatomic, weak) IBOutlet UILabel *skipSongLabel, *artistLabel, *waitingLabel;

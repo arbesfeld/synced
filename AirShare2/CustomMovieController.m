@@ -54,6 +54,7 @@
             _skipButton = [[UIButton alloc] init];
             _volumeView = [[MPVolumeView alloc] init];
             _eyeButton = [[UIButton alloc] init];
+            _volumeImageView = [[UIImageView alloc] init];
             
             [self setIpadDisplay];
             
@@ -62,7 +63,7 @@
                                                          name:UIApplicationDidChangeStatusBarOrientationNotification
                                                        object:nil];
         } else {
-            _controlBackground = [[UIView alloc] initWithFrame:CGRectMake(4, 7, 61, frame.size.height - 14)];
+            _controlBackground = [[UIView alloc] initWithFrame:CGRectMake(4, 7, 61, frame.size.height - 3)];
             
             _skipLabel = [[UILabel alloc] initWithFrame:CGRectMake(17, frame.size.height - 95, 34, 31)];
             [_skipLabel setTransform:CGAffineTransformMakeRotation(M_PI / 2)];
@@ -78,8 +79,10 @@
             _eyeButton = [[UIButton alloc] initWithFrame:CGRectMake(8, 28, 49, 39)];
             _eyeButton.transform = CGAffineTransformRotate(_eyeButton.transform, M_PI / 2);
             
+            _volumeImageView = [[UIImageView alloc] initWithFrame:CGRectMake(12, 86, 42, 32)];
+            _volumeImageView.transform = CGAffineTransformRotate(_volumeImageView.transform, M_PI / 2);
+            
         }
-        [_skipButton setHitTestEdgeInsets:UIEdgeInsetsMake(-20, -20, -20, -20)];
         
         _skipLabel.textColor = [UIColor grayColor];
         _skipLabel.backgroundColor = [UIColor clearColor];
@@ -90,14 +93,18 @@
         [_skipButton setImage:_skipImage forState:UIControlStateNormal];
         [_skipButton addTarget:self action:@selector(skipButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
         [_skipButton setAlpha:0.0];
+        [_skipButton setHitTestEdgeInsets:UIEdgeInsetsMake(-20, -20, -20, -20)];
+        _skipButton.showsTouchWhenHighlighted = YES;
         _skipButton.enabled = NO;
         
         UIImage *eyeImage = [UIImage imageNamed:@"eye-01.png"];
         [_eyeButton setBackgroundImage:eyeImage forState:UIControlStateNormal];
         [_eyeButton addTarget:self action:@selector(eyeButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
         [_eyeButton setAlpha:0.0];
+        [_eyeButton setHitTestEdgeInsets:UIEdgeInsetsMake(-20, -20, -20, -20)];
         _eyeButton.showsTouchWhenHighlighted = YES;
         _eyeButton.enabled = NO;
+        
         [_eyeButton setHitTestEdgeInsets:UIEdgeInsetsMake(-10, -10, -10, -10)];
         _controlBackground.layer.cornerRadius = 5;
         _controlBackground.layer.masksToBounds = YES;
@@ -113,6 +120,10 @@
         [_volumeView setAlpha:0.0];
         [_volumeView sizeToFit];
         
+        [_volumeImageView setAlpha:0.0];
+        
+        [self initialCheckVolume];
+        
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(volumeChanged:)
                                                      name:@"AVSystemController_SystemVolumeDidChangeNotification"
@@ -124,34 +135,19 @@
         [self.view addSubview:_fadeButton];
         [self.view addSubview:_volumeView];
         [self.view addSubview:_eyeButton];
+        [self.view addSubview:_volumeImageView];
         [self.view bringSubviewToFront:_controlBackground];
         [self.view bringSubviewToFront:_skipLabel];
         [self.view bringSubviewToFront:_fadeButton];
         [self.view bringSubviewToFront:_skipButton];
         [self.view bringSubviewToFront:_volumeView];
         [self.view bringSubviewToFront:_eyeButton];
+        [self.view bringSubviewToFront:_volumeImageView];
         
     }
     return self;
 }
-- (void)volumeChanged:(NSNotification *)notification
-{
-    [UIView beginAnimations:nil context:NULL];
-    [UIView setAnimationDuration:0.5];
-    [_skipLabel setAlpha:1.0];
-    [_skipButton setAlpha:1.0];
-    [_controlBackground setAlpha:0.75];
-    [_volumeView setAlpha:1.0];
-    [_eyeButton setAlpha:1.0];
-    [UIView commitAnimations];
-    if(_fadeOutTimer) {
-        [_fadeOutTimer invalidate];
-        _fadeOutTimer = nil;
-    }
-    _skipButton.enabled = YES;
-    _eyeButton.enabled = YES;
-    _fadeOutTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(fadeOut:) userInfo:nil repeats:NO];
-}
+
 
 - (void)setIpadDisplay
 {
@@ -172,6 +168,7 @@
     _volumeView.frame = CGRectMake(0, 0, frame.size.width - 320, 15);
     _volumeView.center = CGPointMake(frame.size.width / 2, frame.size.height - 51);
     _eyeButton.frame = CGRectMake(25, frame.size.height - 75, 70, 56);
+    _volumeImageView.frame = CGRectMake(108, frame.size.height - 65, 45, 33);
 }
 
 - (void)didRotate:(NSNotification *)notification {
@@ -189,6 +186,29 @@
     [self.delegate skipButtonPressed];
 }
 
+- (void)volumeChanged:(NSNotification *)notification
+{
+    [UIView beginAnimations:nil context:NULL];
+    [UIView setAnimationDuration:0.5];
+    [_skipLabel setAlpha:1.0];
+    [_skipButton setAlpha:1.0];
+    [_controlBackground setAlpha:0.75];
+    [_volumeView setAlpha:1.0];
+    [_eyeButton setAlpha:1.0];
+    [_volumeImageView setAlpha:1.0];
+    [UIView commitAnimations];
+    if(_fadeOutTimer) {
+        [_fadeOutTimer invalidate];
+        _fadeOutTimer = nil;
+    }
+    _skipButton.enabled = YES;
+    _eyeButton.enabled = YES;
+    _fadeOutTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(fadeOut:) userInfo:nil repeats:NO];
+    
+    float volume = [[[notification userInfo] objectForKey:@"AVSystemController_AudioVolumeNotificationParameter"] floatValue];
+    [self changeVolumeIcon:volume];
+}
+
 - (void)fadeButtonPressed:(id)sender
 {
     NSLog(@"Fade button pressed");
@@ -199,10 +219,13 @@
     [_controlBackground setAlpha:0.75];
     [_volumeView setAlpha:1.0];
     [_eyeButton setAlpha:1.0];
+    [_volumeImageView setAlpha:1.0];
     [UIView commitAnimations];
     if(_fadeOutTimer) {
         if(ABS([_fadeOutTimerHit timeIntervalSinceNow]) < 0.5) {
             // double tap
+            _skipButton.enabled = YES;
+            _eyeButton.enabled = YES;
             return;
         }
         [_fadeOutTimer invalidate];
@@ -228,6 +251,7 @@
                          [_controlBackground setAlpha:0.0];
                          [_volumeView setAlpha:0.0];
                          [_eyeButton setAlpha:0.0];
+                         [_volumeImageView setAlpha:0.0];
                   }
                      completion:^(BOOL finished) {
                          _fadeOutTimer = nil;
@@ -252,8 +276,6 @@
     [_moviePlayer stop];
 }
 
-
-
 - (void)applicationDidEnterBackground:(NSNotification *)notification
 {
     if([[UIApplication sharedApplication] applicationState] == UIApplicationStateBackground) {
@@ -266,5 +288,25 @@
 - (void)applicationDidBecomeActive:(NSNotification *)notification
 {
     [self.delegate sendSyncPacketsForItem:_mediaItem];
+}
+
+#pragma mark - Volume Control
+
+- (void)initialCheckVolume {
+    MPMusicPlayerController *musicPlayer = [MPMusicPlayerController iPodMusicPlayer];
+    float volume = musicPlayer.volume;
+    [self changeVolumeIcon:volume];
+}
+
+- (void)changeVolumeIcon: (float)volume{
+    if (volume > .66) {
+        _volumeImageView.image = [UIImage imageNamed:@"extrafullVolume-01.png"];
+    } else if (volume <= .66 && volume > 0.33) {
+        _volumeImageView.image = [UIImage imageNamed:@"fullVolume-01.png"];
+    } else if (volume <= .33 && volume > 0.0) {
+        _volumeImageView.image = [UIImage imageNamed:@"lowVolume-01.png"];
+    } else {
+        _volumeImageView.image = [UIImage imageNamed:@"muteVolume-01.png"];
+    }
 }
 @end

@@ -61,4 +61,7 @@
     return cell;
 }
 
+- (IBAction)syncButtonPressed:(id)sender {
+    [_game sendSyncPacketsForItem:(MediaItem *)_game.currentItem];
+}
 @end

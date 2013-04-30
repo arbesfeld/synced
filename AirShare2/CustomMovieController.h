@@ -31,6 +31,7 @@
 @property (nonatomic, strong) UIButton *skipButton, *fadeButton, *eyeButton;
 @property (nonatomic, strong) UILabel *skipLabel;
 @property (nonatomic, strong) UIImage *skipImage;
+@property (nonatomic, strong) UIImageView *volumeImageView;
 @property (nonatomic, strong) UIView *controlBackground;
 @property (nonatomic, strong) MediaItem *mediaItem;
 @property (nonatomic, strong) MPVolumeView *volumeView;
