@@ -168,7 +168,7 @@
     _skipLabel.frame = CGRectMake(frame.size.width - 130, frame.size.height - 74, 50, 50);
     _skipButton.frame = CGRectMake(frame.size.width - 80, frame.size.height - 70, 50, 45.59);
     _controlBackground.frame = CGRectMake(10, frame.size.height - 85, frame.size.width - 20, 72);
-    _fadeButton.frame = self.view.frame;
+    _fadeButton.frame = frame;
     _volumeView.frame = CGRectMake(0, 0, frame.size.width - 320, 15);
     _volumeView.center = CGPointMake(frame.size.width / 2, frame.size.height - 51);
     _eyeButton.frame = CGRectMake(25, frame.size.height - 75, 70, 56);

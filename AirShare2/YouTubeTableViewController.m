@@ -28,13 +28,19 @@ const int ITEM_COUNT = 20;
         self.tableView.tableHeaderView = self.searchBar;
         self.title = @"YouTube";
         [self resetContent];
-        
+    
 //        searchDisplayController = [[UISearchDisplayController alloc] initWithSearchBar:_searchBar contentsController:self];
 //        searchDisplayController.delegate = self;
 //        searchDisplayController.searchResultsDataSource = self;
 //        searchDisplayController.searchResultsDelegate = self;
     }
     return self;
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self.searchBar becomeFirstResponder];
 }
 
 - (void)resetContent
