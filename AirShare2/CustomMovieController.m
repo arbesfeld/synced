@@ -46,7 +46,7 @@
         _mediaItem = mediaItem;
         _moviePlayer = [[PlayerView alloc] initWithMediaItem:mediaItem];
         [self.view addSubview:_moviePlayer];
-        if ( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad )
+        if (!IS_PHONE )
         {
             _controlBackground = [[UIView alloc] init];
             _skipLabel = [[UILabel alloc] init];
