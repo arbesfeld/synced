@@ -39,7 +39,7 @@
     [_backButton setAlpha:0.0];
     
     if(IS_IPHONE_5) {
-        _verticalOffset = 68.0f;
+        _verticalOffset = 60.0f;
     } else {
         _verticalOffset = 0.0f;
     }

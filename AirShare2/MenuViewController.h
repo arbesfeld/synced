@@ -15,6 +15,7 @@
 @property (weak, nonatomic) IBOutlet UITableView *usersTable;
 @property (weak, nonatomic) IBOutlet UILabel *connectedUsersLabel;
 @property (nonatomic, strong) Game *game;
+@property (weak, nonatomic) IBOutlet UIImageView *sepeartorImageView;
 
 - (IBAction)syncButtonPressed:(id)sender;
 

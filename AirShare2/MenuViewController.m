@@ -27,7 +27,9 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     [self.usersTable setSeparatorStyle:UITableViewCellSeparatorStyleNone];
+    _usersTable.backgroundColor = [UIColor clearColor];
     _connectedUsersLabel.font = [UIFont fontWithName:@"CenturyGothicStd-Bold" size:17.0f];
+    _sepeartorImageView.backgroundColor = [UIColor blackColor];
 }
 
 - (void)didReceiveMemoryWarning
@@ -59,6 +61,9 @@
     NSString *peerID = [[_game.players allKeys] objectAtIndex:indexPath.row];
     cell.textLabel.text = [_game displayNameForPeerID:peerID];
     cell.textLabel.font = [UIFont fontWithName:@"Century Gothic" size:15.0f];
+    UIView *backView = [[UIView alloc] initWithFrame:CGRectZero];
+    backView.backgroundColor = [UIColor clearColor];
+    cell.backgroundView = backView;
     return cell;
 }
 
