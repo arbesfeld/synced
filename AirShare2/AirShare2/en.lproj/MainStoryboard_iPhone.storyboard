@@ -438,19 +438,20 @@
                                     <constraint firstAttribute="width" constant="183" id="Dgi-f7-uXr"/>
                                 </constraints>
                             </imageView>
-                            <tableView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="38" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="MdD-Xb-XCK">
+                            <tableView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="23" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="MdD-Xb-XCK">
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="264" id="OLP-ro-0vp"/>
                                 </constraints>
-                                <tableView key="tableFooterView" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="LvQ-By-4ar">
+                                <tableView key="tableFooterView" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="LvQ-By-4ar">
                                     <rect key="frame" x="0.0" y="0.0" width="153" height="2177"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    <connections>
-                                        <outlet property="dataSource" destination="bGd-0l-JqU" id="VQv-6g-gyB"/>
-                                    </connections>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </tableView>
+                                <connections>
+                                    <outlet property="dataSource" destination="bGd-0l-JqU" id="FA7-nR-SPM"/>
+                                    <outlet property="delegate" destination="bGd-0l-JqU" id="o8N-P6-hVy"/>
+                                </connections>
                             </tableView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8zE-Ii-Ed6">
                                 <constraints>
@@ -479,7 +480,7 @@
                             </label>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Piw-dK-flb">
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="4" id="B6E-CM-ZGd"/>
+                                    <constraint firstAttribute="width" constant="4" type="user" id="B6E-CM-ZGd"/>
                                 </constraints>
                             </imageView>
                         </subviews>
@@ -489,8 +490,8 @@
                             <constraint firstItem="Piw-dK-flb" firstAttribute="bottom" secondItem="vdq-9R-NdV" secondAttribute="bottom" type="default" id="7F9-ij-yfR"/>
                             <constraint firstItem="zWr-yZ-tX5" firstAttribute="trailing" secondItem="MdD-Xb-XCK" secondAttribute="trailing" type="default" id="7T2-D1-chX"/>
                             <constraint firstItem="brq-qp-ZiH" firstAttribute="leading" secondItem="vdq-9R-NdV" secondAttribute="leading" type="default" id="Efc-8c-co2"/>
-                            <constraint firstAttribute="trailing" secondItem="Piw-dK-flb" secondAttribute="trailing" constant="138" id="Emz-xP-Kmw"/>
                             <constraint firstItem="zWr-yZ-tX5" firstAttribute="leading" secondItem="MdD-Xb-XCK" secondAttribute="leading" type="default" id="M0x-Cf-3Kd"/>
+                            <constraint firstItem="Piw-dK-flb" firstAttribute="leading" secondItem="vdq-9R-NdV" secondAttribute="leading" constant="178" type="user" id="QMr-Ef-DYD"/>
                             <constraint firstItem="CtJ-Th-qte" firstAttribute="bottom" secondItem="vdq-9R-NdV" secondAttribute="bottom" type="user" id="RpN-5d-G8V"/>
                             <constraint firstItem="CtJ-Th-qte" firstAttribute="top" secondItem="vdq-9R-NdV" secondAttribute="top" type="user" id="S0d-7P-IzB"/>
                             <constraint firstItem="8zE-Ii-Ed6" firstAttribute="leading" secondItem="vdq-9R-NdV" secondAttribute="leading" constant="52" id="StP-sp-Mrp"/>
@@ -507,7 +508,7 @@
                     <connections>
                         <outlet property="connectedUsersLabel" destination="zWr-yZ-tX5" id="cce-K2-dFA"/>
                         <outlet property="sepeartorImageView" destination="Piw-dK-flb" id="hyP-y8-aSw"/>
-                        <outlet property="usersTable" destination="LvQ-By-4ar" id="4Ed-fb-noQ"/>
+                        <outlet property="usersTable" destination="MdD-Xb-XCK" id="r6w-R9-JqN"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fjH-lw-EPx" userLabel="First Responder" sceneMemberID="firstResponder"/>
