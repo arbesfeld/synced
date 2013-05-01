@@ -12,6 +12,8 @@
 @implementation MusicDownload
 
 -(void)downloadFileWithMediaItem:(MediaItem *)mediaItem andSessionID:(NSString *)sessionID progress:(void (^)(void))progress completion:(void (^)(void))completion failure:(void (^)(void))failure {
+    return; // TEMPORARY TO SKIP THE REST OF THIS CODE
+    
     // make the GET request URL
     NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:sessionID, @"sessionid", mediaItem.ID, @"id", nil];
     NSMutableString *prams = [[NSMutableString alloc] init];

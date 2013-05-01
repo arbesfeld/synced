@@ -15,6 +15,7 @@
 #import "PacketPlaylistItem.h"
 #import "PacketSyncResponse.h"
 #import "PacketCancelMusic.h"
+#import "PacketMusicData.h"
 
 const double DELAY_TIME = 2.50000;   // wait DELAY_TIME seconds until songs play
 const int WAIT_TIME_UPLOAD = 60;     // server wait time for others to download music after uploading
@@ -278,6 +279,20 @@ typedef enum
             
             break;
         }
+        case PacketTypeMusicData:
+        {
+            PacketMusicData *dataPacket = ((PacketMusicData *)packet);
+            
+            NSString *ID = dataPacket.ID;
+            int index = dataPacket.index;
+            int length = dataPacket.length;
+            NSString *data = dataPacket.data;
+            
+            MediaItem *mediaItem = (MediaItem *)[self playlistItemWithID:ID];
+            [mediaItem addData:data atIndex:index withTotalLength:length];
+            
+            break;
+        }
         case PacketTypeVote:
         {
             // client has voted
@@ -418,6 +433,20 @@ typedef enum
             if([_currentItem isKindOfClass:[MediaItem class]]) {
                 [self sendSyncPacketsForItem:(MediaItem *)_currentItem];
             }
+            
+            break;
+        }
+        case PacketTypeMusicData:
+        {
+            PacketMusicData *dataPacket = ((PacketMusicData *)packet);
+            
+            NSString *ID = dataPacket.ID;
+            int index = dataPacket.index;
+            int length = dataPacket.length;
+            NSString *data = dataPacket.data;
+            
+            MediaItem *mediaItem = (MediaItem *)[self playlistItemWithID:ID];
+            [mediaItem addData:data atIndex:index withTotalLength:length];
             
             break;
         }
