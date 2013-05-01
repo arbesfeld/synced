@@ -436,6 +436,7 @@
 #pragma mark - playMusic____
 
 - (IBAction)playMusic:(id)sender {
+    _swipeToReveal.hidden = true;
     _tapToAdd.hidden = true;
     _mediaPicker = [[MPMediaPickerController alloc] initWithMediaTypes: MPMediaTypeMusic];
     
@@ -447,6 +448,7 @@
 }
 
 - (IBAction)playMovie:(id)sender {
+    _swipeToReveal.hidden = true;
     _tapToAdd.hidden = true;
 	MoviePickerViewController *moviePickerViewController = [[MoviePickerViewController alloc] initWithStyle:UITableViewStylePlain];
     _navController = [[UINavigationController alloc] initWithRootViewController:moviePickerViewController];
@@ -508,6 +510,7 @@
         _volumeImage.image = [UIImage imageNamed:@"muteVolume-01.png"];
     }
 }
+
 
 
 

@@ -45,7 +45,6 @@
 {
 	return [NSString stringWithFormat:@"%@", [super description]];
 }
-
 - (void)loadBeats
 {
     // read from ID-beats.txt
@@ -62,7 +61,7 @@
     
     for (int i = 0; i < [allLinedStrings count]; i++) {
         NSString* cur = [allLinedStrings objectAtIndex:i];
-    
+        
         NSArray* singleStrs = [cur componentsSeparatedByCharactersInSet: [NSCharacterSet characterSetWithCharactersInString:@" "]];
         singleStrs = [singleStrs filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"length > 0"]];
         if ([singleStrs count] > 1 && [[singleStrs objectAtIndex:1] length] > 0) {
@@ -80,6 +79,7 @@
 {
     self.beatPos++;
 }
+
 
 
 
