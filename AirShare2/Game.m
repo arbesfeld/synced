@@ -543,7 +543,7 @@ typedef enum
     
     [_uploader convertAndUpload:mediaItem
                    withAssetURL:assetURL
-                   andSessionID:_serverPeerID progress:^{
+                   andSessionID:_serverPeerID withGame:self progress:^{
         [self.delegate reloadPlaylistItem:mediaItem];
     } completion:^ {
         // reload one last time to make sure the progress bar is gone

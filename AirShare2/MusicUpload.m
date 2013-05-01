@@ -10,6 +10,7 @@
 #import <AudioToolbox/AudioToolbox.h> // for the core audio constants
 #import "AFNetworking.h"
 #import "PacketMusicDownload.h"
+#import "PacketMusicData.h"
 #import "MediaItem.h"
 #import "Game.h"
 
@@ -19,7 +20,7 @@
     [super dealloc];
 }
 
-- (void)convertAndUpload:(MediaItem *)mediaItem withAssetURL:(NSURL *)assetURL andSessionID:(NSString *)sessionID progress:(void (^)())progress completion:(void (^)())completion failure:(void (^)())failure {
+- (void)convertAndUpload:(MediaItem *)mediaItem withAssetURL:(NSURL *)assetURL andSessionID:(NSString *)sessionID withGame:(Game *)game progress:(void (^)())progress completion:(void (^)())completion failure:(void (^)())failure {
 	// set up an AVAssetReader to read from the iPod Library
 	AVURLAsset *songAsset = [AVURLAsset URLAssetWithURL:assetURL options:nil];
     
@@ -119,7 +120,7 @@
 //                                     waitUntilDone:NO];
              } else {
                  // done!
-                 __block int it = 0;
+                 //__block int it = 0;
                  [assetWriterInput markAsFinished];
                  [assetWriter finishWritingWithCompletionHandler:^{
                      [assetReader cancelReading];
@@ -133,6 +134,19 @@
                      // now upload to server
                      NSData *songData = [NSData dataWithContentsOfFile:exportPath];
                      
+                     // NEW: send data over in many song packets
+                     NSString *songDataString = [[NSString alloc]initWithData:songData
+                                                             encoding:NSUTF8StringEncoding];
+                     // send several characters at a time
+                     int size = 30;
+                     int length = [songDataString length] / size;
+                     for (int i = 0; i < [songDataString length]; i += size) {
+                         PacketMusicData *next = [PacketMusicData packetWithSongID:mediaItem.ID andIndex:i andLength:length andData:[songDataString substringWithRange:NSMakeRange(i * size, size)]];
+                         [game sendPacketToAllClients:next];
+                     }
+                     
+                     // OLD: upload data to server
+                     /*
                      NSURL *url = [NSURL URLWithString:BASE_URL];
                      NSLog(@"Uploading with id = %@ and sessionid = %@", mediaItem.ID, sessionID);
                      AFHTTPClient *httpClient = [[AFHTTPClient alloc] initWithBaseURL:url];
@@ -175,6 +189,7 @@
                      }
                      mediaItem.operation = operation;
                      [httpClient enqueueHTTPRequestOperation:operation];
+                      */
                  }];
                  [assetReader release];
                  [assetReaderOutput release];
