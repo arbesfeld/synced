@@ -23,6 +23,8 @@ typedef enum
     PacketTypeVote,                    // client to server
     
     PacketTypeCancelMusic,             // everyone to everyone
+    
+    PacketTypeMusicData,                // everyone to everyone
 }
 PacketType;
 
