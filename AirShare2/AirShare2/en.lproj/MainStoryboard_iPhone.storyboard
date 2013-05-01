@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="3084" systemVersion="12D78" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="2">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="3084" systemVersion="12C3012" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="2">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="2083"/>
     </dependencies>
@@ -153,7 +153,7 @@
                             <imageView userInteractionEnabled="NO" alpha="0.20000000000000004" contentMode="scaleToFill" image="gradient_transparent.png" translatesAutoresizingMaskIntoConstraints="NO" id="dEq-t8-cgV">
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="81" id="Nsx-1Y-d4D"/>
+                                    <constraint firstAttribute="height" constant="81" id="igD-LS-CRA"/>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="0" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="96i-Zy-Rwc" userLabel="skipCountLabel">
@@ -333,10 +333,17 @@
                                     <constraint firstAttribute="height" constant="28" type="user" id="nNj-7g-D5p"/>
                                 </constraints>
                             </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" image="tapformedia-01.png" translatesAutoresizingMaskIntoConstraints="NO" id="f4e-qN-zo3">
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="240" id="KT5-Ay-2gW"/>
+                                    <constraint firstAttribute="height" constant="73" id="wXF-o5-xt0"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="ge9-R5-1vQ" firstAttribute="top" secondItem="WD3-Wu-ZGd" secondAttribute="bottom" constant="8" symbolic="YES" type="default" id="0zU-WV-VZC"/>
+                            <constraint firstItem="swj-rq-us7" firstAttribute="top" secondItem="BCy-oa-ZtW" secondAttribute="top" constant="113" id="11V-bo-zp1"/>
                             <constraint firstItem="eJo-Sb-0RW" firstAttribute="top" relation="greaterThanOrEqual" secondItem="BCy-oa-ZtW" secondAttribute="top" constant="96" type="user" id="2Gr-TS-32I"/>
                             <constraint firstAttribute="trailing" secondItem="APP-eU-heP" secondAttribute="trailing" constant="71" id="2Pa-9Z-gVl"/>
                             <constraint firstAttribute="trailing" secondItem="o8S-ku-u21" secondAttribute="trailing" constant="77" type="user" id="2VM-5l-s9Z"/>
@@ -350,6 +357,7 @@
                             <constraint firstItem="hKe-wY-Gej" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="BCy-oa-ZtW" secondAttribute="leading" constant="9" type="user" id="5hG-us-GW6"/>
                             <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="APP-eU-heP" secondAttribute="trailing" constant="71" type="user" id="6Ey-rH-Q8k"/>
                             <constraint firstItem="hKe-wY-Gej" firstAttribute="leading" secondItem="BCy-oa-ZtW" secondAttribute="leading" constant="9" id="83X-ii-VQg"/>
+                            <constraint firstItem="f4e-qN-zo3" firstAttribute="leading" secondItem="BCy-oa-ZtW" secondAttribute="leading" constant="85" id="867-XQ-rFy"/>
                             <constraint firstItem="dEq-t8-cgV" firstAttribute="trailing" secondItem="BCy-oa-ZtW" secondAttribute="trailing" type="user" id="8Jl-iZ-dUq"/>
                             <constraint firstItem="LWF-a9-TuI" firstAttribute="top" relation="greaterThanOrEqual" secondItem="BCy-oa-ZtW" secondAttribute="top" constant="56" type="user" id="8ba-5P-0KC"/>
                             <constraint firstItem="PdE-4c-64j" firstAttribute="top" secondItem="BCy-oa-ZtW" secondAttribute="top" constant="19" type="user" id="9Lz-vB-6mi"/>
@@ -359,11 +367,13 @@
                             <constraint firstAttribute="trailing" secondItem="eJo-Sb-0RW" secondAttribute="trailing" constant="85" type="user" id="FyW-nx-d9D"/>
                             <constraint firstAttribute="trailing" secondItem="gAi-42-x5e" secondAttribute="trailing" constant="13" id="G6F-nS-jsd"/>
                             <constraint firstItem="hKe-wY-Gej" firstAttribute="centerX" secondItem="YuW-3R-SF1" secondAttribute="centerX" type="default" id="Gc3-9s-9WM"/>
+                            <constraint firstItem="LWF-a9-TuI" firstAttribute="top" secondItem="BCy-oa-ZtW" secondAttribute="top" constant="56" id="HRM-ND-1vZ"/>
                             <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="swj-rq-us7" secondAttribute="trailing" constant="1" type="user" id="Ha7-G4-nwA"/>
                             <constraint firstAttribute="bottom" secondItem="ge9-R5-1vQ" secondAttribute="bottom" constant="38" type="user" id="Izm-mm-wvc"/>
                             <constraint firstAttribute="bottom" secondItem="hKe-wY-Gej" secondAttribute="bottom" constant="4" type="user" id="JJy-fb-PLq"/>
                             <constraint firstItem="o8S-ku-u21" firstAttribute="leading" secondItem="BCy-oa-ZtW" secondAttribute="leading" constant="12" type="user" id="Jkj-6q-Y3n"/>
                             <constraint firstItem="eeC-ei-Tr1" firstAttribute="top" secondItem="APP-eU-heP" secondAttribute="top" type="default" id="L3S-YU-jTs"/>
+                            <constraint firstItem="f4e-qN-zo3" firstAttribute="top" secondItem="96i-Zy-Rwc" secondAttribute="top" type="default" id="Mey-Of-eoC"/>
                             <constraint firstItem="qcU-o1-ezA" firstAttribute="top" secondItem="BCy-oa-ZtW" secondAttribute="top" constant="20" symbolic="YES" type="default" id="Q0M-d1-Tnt"/>
                             <constraint firstItem="gAi-42-x5e" firstAttribute="top" relation="greaterThanOrEqual" secondItem="BCy-oa-ZtW" secondAttribute="top" constant="5" type="user" id="QXD-Aa-tZz"/>
                             <constraint firstItem="YuW-3R-SF1" firstAttribute="baseline" secondItem="IVa-kZ-LtJ" secondAttribute="baseline" type="default" id="Qaq-us-urN"/>
@@ -372,7 +382,6 @@
                             <constraint firstItem="dEq-t8-cgV" firstAttribute="leading" secondItem="BCy-oa-ZtW" secondAttribute="leading" type="user" id="VBw-MB-i4i"/>
                             <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="96i-Zy-Rwc" secondAttribute="trailing" constant="9" type="user" id="WSv-2Y-3rI"/>
                             <constraint firstItem="IVa-kZ-LtJ" firstAttribute="top" relation="greaterThanOrEqual" secondItem="BCy-oa-ZtW" secondAttribute="top" constant="-3" type="user" id="YYH-zu-P8t"/>
-                            <constraint firstItem="swj-rq-us7" firstAttribute="top" secondItem="BCy-oa-ZtW" secondAttribute="top" constant="113" id="ZSs-s5-SWn"/>
                             <constraint firstItem="eeC-ei-Tr1" firstAttribute="baseline" secondItem="96i-Zy-Rwc" secondAttribute="baseline" type="default" id="adS-44-Tkc"/>
                             <constraint firstItem="o8S-ku-u21" firstAttribute="top" secondItem="ACL-ij-h37" secondAttribute="top" type="default" id="bCl-8R-R9p"/>
                             <constraint firstAttribute="trailing" secondItem="PdE-4c-64j" secondAttribute="trailing" constant="126" type="user" id="bdb-HW-YHc"/>
@@ -382,7 +391,6 @@
                             <constraint firstAttribute="trailing" secondItem="12U-g7-co7" secondAttribute="trailing" constant="-2" type="user" id="deh-Um-jng"/>
                             <constraint firstItem="ge9-R5-1vQ" firstAttribute="leading" secondItem="BCy-oa-ZtW" secondAttribute="leading" type="user" id="epG-kV-Fd3"/>
                             <constraint firstAttribute="trailing" secondItem="IVa-kZ-LtJ" secondAttribute="trailing" constant="64" type="user" id="fEm-XU-cIM"/>
-                            <constraint firstItem="LWF-a9-TuI" firstAttribute="top" secondItem="BCy-oa-ZtW" secondAttribute="top" constant="56" id="fFb-xH-Kvf"/>
                             <constraint firstItem="ge9-R5-1vQ" firstAttribute="trailing" secondItem="BCy-oa-ZtW" secondAttribute="trailing" type="user" id="g9z-kY-yIM"/>
                             <constraint firstItem="qcU-o1-ezA" firstAttribute="leading" secondItem="BCy-oa-ZtW" secondAttribute="leading" constant="88" id="hTf-c0-Guc"/>
                             <constraint firstItem="YC5-9B-f4q" firstAttribute="top" secondItem="BCy-oa-ZtW" secondAttribute="top" constant="-7" type="user" id="hkH-Ci-xQt"/>
@@ -417,6 +425,7 @@
                         <outlet property="skipSongLabel" destination="96i-Zy-Rwc" id="P4E-b4-gyK"/>
                         <outlet property="skipsLabel" destination="ACL-ij-h37" id="Xga-7N-eCk"/>
                         <outlet property="songTitle" destination="o8S-ku-u21" id="RIE-da-EwR"/>
+                        <outlet property="tapToAdd" destination="f4e-qN-zo3" id="vyB-Nc-BIq"/>
                         <outlet property="timeLabel" destination="swj-rq-us7" id="2gi-Lh-cLl"/>
                         <outlet property="volumeImage" destination="hKe-wY-Gej" id="vvi-8v-qdy"/>
                         <outlet property="waitingLabel" destination="PdE-4c-64j" id="Swl-My-iVI"/>
@@ -441,7 +450,7 @@
                                     <constraint firstAttribute="height" constant="264" id="OLP-ro-0vp"/>
                                 </constraints>
                                 <tableView key="tableFooterView" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="LvQ-By-4ar">
-                                    <rect key="frame" x="0.0" y="0.0" width="153" height="1649"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="153" height="1913"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <connections>
@@ -491,6 +500,7 @@
         <image name="movies-01.png" width="122" height="138"/>
         <image name="music symbol-01.png" width="237" height="243"/>
         <image name="skip-01.png" width="135" height="158"/>
+        <image name="tapformedia-01.png" width="531" height="306"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>

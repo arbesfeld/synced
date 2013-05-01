@@ -44,6 +44,7 @@
     
     [self.skipSongButton setHitTestEdgeInsets:UIEdgeInsetsMake(-10, -10, -10, -10)];
     
+    self.waitingLabel.hidden = true;
     self.waitingLabel.font = [UIFont fontWithName:@"Century Gothic" size:14.0f];
     self.waitingLabel.textColor = [UIColor darkGrayColor];
     
@@ -436,6 +437,7 @@
 #pragma mark - playMusic____
 
 - (IBAction)playMusic:(id)sender {
+    _tapToAdd.hidden = true;
     _mediaPicker = [[MPMediaPickerController alloc] initWithMediaTypes: MPMediaTypeMusic];
     
     _mediaPicker.delegate = self;
@@ -449,6 +451,7 @@
 }
 
 - (IBAction)playMovie:(id)sender {
+    _tapToAdd.hidden = true;
 	MoviePickerViewController *moviePickerViewController = [[MoviePickerViewController alloc] initWithStyle:UITableViewStylePlain];
     _navController = [[UINavigationController alloc] initWithRootViewController:moviePickerViewController];
     _canLoadView = NO;

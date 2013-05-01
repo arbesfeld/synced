@@ -26,6 +26,7 @@
     BOOL _canLoadView; // for when animations are occuring
 }
 
+@property (strong, nonatomic) IBOutlet UIImageView *tapToAdd;
 @property (weak, nonatomic) IBOutlet UIButton *eyeButton;
 @property (strong, nonatomic) IBOutlet UISwitch *partySwitch;
 @property (strong, nonatomic) IBOutlet UILabel *partyModeLabel;
