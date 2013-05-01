@@ -14,6 +14,8 @@
 @synthesize beatPos = _beatPos;
 @synthesize beats = _beats;
 
+@synthesize data = _data;
+
 + (id)mediaItemWithName:(NSString *)name andSubtitle:(NSString *)subtitle andID:(NSString *)ID andDate:(NSDate *)date andURL:(NSURL *)url uploadedByUser:(BOOL)uploadedByUser andPlayListItemType:(PlaylistItemType)playlistItemType
 {
 	return [[[self class] alloc] initMediaItemWithName:name andSubtitle:subtitle andID:ID andDate:date andURL:url uploadedByUser:uploadedByUser andPlayListItemType:playlistItemType];
@@ -37,6 +39,10 @@
         self.beats = [[NSMutableArray alloc] init];
         self.beatPos = -1;
         self.beatsLoaded = NO;
+        
+        self.data = [[NSMutableDictionary alloc] init];
+        self.dataStart = NO;
+        self.dataDone = NO;
 	}
 	return self;
 }
@@ -81,6 +87,28 @@
     self.beatPos++;
 }
 
-
+- (void)addData:(NSString *)value atIndex:(int)index withTotalLength:(int)length
+{
+    self.dataStart = YES;
+    
+    [self.data setObject:value forKey:[NSNumber numberWithInt:index]];
+    
+    // check if we should finalize data
+    if ([self.data count] == length) {
+        // download data to file
+        NSString *tempPath = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+        NSString *fileName = [NSString stringWithFormat:@"%@.m4a", self.ID];
+        NSString *songPath = [tempPath stringByAppendingPathComponent:fileName];
+        
+        NSMutableString *allData = [NSMutableString stringWithCapacity:1000];
+        for (int i = 0; i < length; i++) {
+            [allData appendString:(NSString *)[self.data objectForKey:[NSNumber numberWithInt:i]]];
+        }
+        
+        [allData writeToFile:songPath atomically:YES encoding:NSUTF8StringEncoding error:nil];
+        
+        self.dataDone = YES;
+    }
+}
 
 @end

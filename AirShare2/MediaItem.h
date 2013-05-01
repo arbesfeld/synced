@@ -17,9 +17,14 @@
 @property (nonatomic, assign) BOOL beatsLoaded;
 @property (nonatomic, strong) UIViewController *controller;
 
+@property (nonatomic, retain) NSMutableDictionary *data;
+@property (nonatomic, assign) BOOL dataStart, dataDone;
+
 + (id)mediaItemWithName:(NSString *)name andSubtitle:(NSString *)subtitle andID:(NSString *)ID andDate:(NSDate *)date andURL:(NSURL *)url uploadedByUser:(BOOL)uploadedByUser andPlayListItemType:(PlaylistItemType)playlistItemType;
 
 - (void)loadBeats;
 - (void)skipBeat;
+
+- (void)addData:(NSString *)value atIndex:(int)index withTotalLength:(int)length;
 
 @end
