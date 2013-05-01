@@ -38,7 +38,10 @@
     [_sessionsLabel setAlpha:0.0];
     [_backButton setAlpha:0.0];
     
-    if(IS_IPHONE_5) {
+    if(!IS_PHONE) {
+        _verticalOffset = -50.0f;
+    }
+    else if(IS_IPHONE_5) {
         _verticalOffset = 60.0f;
     } else {
         _verticalOffset = 0.0f;
@@ -100,29 +103,34 @@
         [_sessionsLabel setAlpha:0.0];
         [_waitingView setAlpha:0.0];
     }];
-    [self performSelector:@selector(reloadMainScreen:) withObject:nil afterDelay:.4];
-
-
-    
+    if(IS_PHONE) {
+        [self performSelector:@selector(reloadMainScreen:) withObject:nil afterDelay:.4];
+    }
 }
 
 - (IBAction)joinGameAction:(id)sender {
     [self.tableView reloadData];
-    [UIView animateWithDuration:0.6 animations:^() {
-        _joinGameButton.frame = CGRectMake(-320,272+_verticalOffset,320,54);;
-        _hostGameButton.frame = CGRectMake(320,195+_verticalOffset,320,54);
-    }];
+    if(IS_PHONE) {
+        [UIView animateWithDuration:0.6 animations:^() {
+            _joinGameButton.frame = CGRectMake(-320,272+_verticalOffset,320,54);;
+            _hostGameButton.frame = CGRectMake(320,195+_verticalOffset,320,54);
+        }];
+    }
     [self performSelector:@selector(releaseMainScreen:) withObject:nil afterDelay:.4];
     
 }
 
 - (IBAction)hostGameAction:(id)sender
 {
-    [UIView animateWithDuration:0.6 animations:^() {
-        _joinGameButton.frame = CGRectMake(-320,272+_verticalOffset,320,54);;
-        _hostGameButton.frame = CGRectMake(320,195+_verticalOffset,320,54);
-    }];
-    [self performSelector:@selector(startGame:) withObject:nil afterDelay:.4];
+    if(IS_PHONE) {
+        [UIView animateWithDuration:0.6 animations:^() {
+            _joinGameButton.frame = CGRectMake(-320,272+_verticalOffset,320,54);;
+            _hostGameButton.frame = CGRectMake(320,195+_verticalOffset,320,54);
+        }];
+        [self performSelector:@selector(startGame:) withObject:nil afterDelay:.4];
+    } else {
+        [self startGame:nil];
+    }
 
 }
 
@@ -375,12 +383,18 @@
     _waitingView.image = [UIImage animatedImageWithAnimatedGIFData:[NSData dataWithContentsOfURL:url]];
     _waitingView.hidden = YES;
     
+    float width = 320;
+    if(!IS_PHONE) {
+        CGRect frame = [UIScreen mainScreen].applicationFrame;
+        width = MAX(frame.size.height, frame.size.width);
+    }
+    
     _gradientLoadProgress = [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:gradientLocation]];
     [_gradientLoadProgress setAlpha:.25];
-    _gradientLoadProgress.frame = CGRectMake(0,0,320,54);;
+    _gradientLoadProgress.frame = CGRectMake(0,0,width,54);;
     _gradientLoadProgressTwo = [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:gradientLocation]];
     [_gradientLoadProgressTwo setAlpha:.25];
-    _gradientLoadProgressTwo.frame = CGRectMake(0,0,320,54);;
+    _gradientLoadProgressTwo.frame = CGRectMake(0,0,width,54);;
     
     [_joinGameButton setTitle:@"Join" forState:UIControlStateNormal];
     _joinGameButton.titleLabel.font = [UIFont fontWithName:@"Century Gothic" size:20.0f];
@@ -406,7 +420,11 @@
     [_hostGameButton addSubview:_gradientLoadProgressTwo];
 
     
-    if(IS_IPHONE_5) {
+    if(!IS_PHONE) {
+        _airshareLogo = [[UIImageView alloc] initWithFrame:CGRectMake(42, 250, 280, 130)];
+        _airshareLogo.center = _airshareLogo.center = CGPointMake(self.view.frame.size.height / 2 + 30, 200);
+        _airshareLogo.contentMode = UIViewContentModeScaleAspectFill;
+    } else if(IS_IPHONE_5) {
         _airshareLogo = [[UIImageView alloc] initWithFrame:CGRectMake(12, 135, 346, 242)];
         _airshareLogo.contentMode = UIViewContentModeScaleAspectFit;
     } else {
@@ -416,15 +434,23 @@
     _airshareLogo.image = [UIImage imageNamed:@"airshare.png"];
     [self.view addSubview:_airshareLogo];
     
+    
     [UIView animateWithDuration:.6 animations:^() {
-        if(IS_IPHONE_5) {
+        if(!IS_PHONE) {
+            _airshareLogo.center = CGPointMake(self.view.frame.size.height / 2 + 30, 90);
+        } else if(IS_IPHONE_5) {
             _airshareLogo.frame = CGRectMake(12, -25, 346, 242);
         } else {
             _airshareLogo.frame = CGRectMake(42, 25, 280, 130);
         }
     }];
     
+    if(IS_PHONE) {
     [self performSelector:@selector(uiMainScreenDelay:) withObject:nil afterDelay:.3];
+    } else {
+        _hostGameButton.hidden = NO;
+        _joinGameButton.hidden = NO;
+    }
     
 }
 
