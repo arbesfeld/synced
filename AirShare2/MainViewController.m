@@ -42,7 +42,7 @@
         _verticalOffset = -50.0f;
     }
     else if(IS_IPHONE_5) {
-        _verticalOffset = 60.0f;
+        _verticalOffset = 40.0f;
     } else {
         _verticalOffset = 0.0f;
     }
