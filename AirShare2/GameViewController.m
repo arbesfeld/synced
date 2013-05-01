@@ -466,9 +466,10 @@
     
     if (mediaItemCollection) {
         
-        MPMediaItem *chosenItem = mediaItemCollection.items[0];
-        
-        [_game uploadMusicWithMediaItem:chosenItem video:NO];
+        for(MPMediaItem *chosenItem in mediaItemCollection.items)
+        {
+            [_game uploadMusicWithMediaItem:chosenItem video:NO];
+        }
     }
 }
 
