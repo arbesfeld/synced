@@ -421,8 +421,8 @@
 
     
     if(!IS_PHONE) {
-        _airshareLogo = [[UIImageView alloc] initWithFrame:CGRectMake(42, 250, 280, 130)];
-        _airshareLogo.center = _airshareLogo.center = CGPointMake(self.view.frame.size.height / 2 + 30, 200);
+        _airshareLogo = [[UIImageView alloc] initWithFrame:CGRectMake(42, 250, 300, 130)];
+        _airshareLogo.center = _airshareLogo.center = CGPointMake(self.view.frame.size.height / 2 + 30, 300);
         _airshareLogo.contentMode = UIViewContentModeScaleAspectFill;
     } else if(IS_IPHONE_5) {
         _airshareLogo = [[UIImageView alloc] initWithFrame:CGRectMake(12, 135, 346, 242)];

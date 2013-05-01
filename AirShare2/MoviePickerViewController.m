@@ -143,11 +143,18 @@
         NSURL *assetURL = [selected valueForProperty:MPMediaItemPropertyAssetURL];
         AVURLAsset *songAsset = [AVURLAsset URLAssetWithURL:assetURL options:nil];
         
-        if([songAsset hasProtectedContent]) {
-            // can't play something with protected content
+        if(!songAsset) {
+            NSLog(@"has protected content");
+            UIAlertView *alertView = [[UIAlertView alloc]
+                                      initWithTitle:NSLocalizedString(@"Protected Content", @"Protected Content alert view")
+                                      message:NSLocalizedString(@"Sorry, airShare can't play movies that contain DRM.", @"Protectect Content alert message")
+                                      delegate:nil
+                                      cancelButtonTitle:NSLocalizedString(@"OK", @"Button: OK")
+                                      otherButtonTitles:nil];
+            [alertView show];
+            [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
             return;
         }
-        
         [self.delegate addMovie:selected];
         [searchDisplayController setActive:NO animated:YES];
         [self dismissViewControllerAnimated:YES completion:nil];
