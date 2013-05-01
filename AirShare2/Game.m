@@ -282,11 +282,12 @@ typedef enum
         case PacketTypeMusicData:
         {
             PacketMusicData *dataPacket = ((PacketMusicData *)packet);
-            
             NSString *ID = dataPacket.ID;
             int index = dataPacket.index;
             int length = dataPacket.length;
             NSString *data = dataPacket.data;
+            
+            NSLog(@"Adding data of length %d at index %d", length, index);
             
             MediaItem *mediaItem = (MediaItem *)[self playlistItemWithID:ID];
             [mediaItem addData:data atIndex:index withTotalLength:length];
@@ -572,8 +573,10 @@ typedef enum
     
     [_uploader convertAndUpload:mediaItem
                    withAssetURL:assetURL
-                   andSessionID:_serverPeerID withGame:self progress:^{
-        [self.delegate reloadPlaylistItem:mediaItem];
+                   andSessionID:_serverPeerID
+                       progress:^(PacketMusicData *packet){
+        [self sendPacketToAllClients:packet];
+        //[self.delegate reloadPlaylistItem:mediaItem];
     } completion:^ {
         // reload one last time to make sure the progress bar is gone
         [self.delegate reloadTable];

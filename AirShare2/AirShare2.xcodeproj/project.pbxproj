@@ -87,6 +87,7 @@
 		559D6B9C17120A2900C591D8 /* UIImage+animatedGIF.m in Sources */ = {isa = PBXBuildFile; fileRef = 559D6B9B17120A2900C591D8 /* UIImage+animatedGIF.m */; };
 		559D6B9E17120A5100C591D8 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 559D6B9D17120A5100C591D8 /* ImageIO.framework */; };
 		559E887817283CD500CAE248 /* UIButton+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 559E887717283CD500CAE248 /* UIButton+Extensions.m */; };
+		55A0F8FC17314EA300FE2CE8 /* PacketMusicData.m in Sources */ = {isa = PBXBuildFile; fileRef = 55A0F8FB17314EA300FE2CE8 /* PacketMusicData.m */; };
 		55A28DB6171E5C60001E757E /* CustomMovieController.m in Sources */ = {isa = PBXBuildFile; fileRef = 55A28DB5171E5C60001E757E /* CustomMovieController.m */; };
 		55FCC54D16ED3D4C0000BCBD /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55FCC54C16ED3D4C0000BCBD /* UIKit.framework */; };
 		55FCC54F16ED3D4C0000BCBD /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55FCC54E16ED3D4C0000BCBD /* Foundation.framework */; };
@@ -263,6 +264,8 @@
 		559D6B9D17120A5100C591D8 /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		559E887617283CD400CAE248 /* UIButton+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIButton+Extensions.h"; path = "AirShare2/UIButton+Extensions.h"; sourceTree = "<group>"; };
 		559E887717283CD500CAE248 /* UIButton+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIButton+Extensions.m"; path = "AirShare2/UIButton+Extensions.m"; sourceTree = "<group>"; };
+		55A0F8FA17314EA300FE2CE8 /* PacketMusicData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PacketMusicData.h; sourceTree = "<group>"; };
+		55A0F8FB17314EA300FE2CE8 /* PacketMusicData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PacketMusicData.m; sourceTree = "<group>"; };
 		55A28DB4171E5C60001E757E /* CustomMovieController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomMovieController.h; sourceTree = "<group>"; };
 		55A28DB5171E5C60001E757E /* CustomMovieController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomMovieController.m; sourceTree = "<group>"; };
 		55FCC54916ED3D4C0000BCBD /* airShare.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = airShare.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -609,6 +612,8 @@
 				EAB726361711EFDC0084D2CC /* PacketCancelMusic.m */,
 				558B71D71708EF29004E05D5 /* PacketMusicDownload.h */,
 				558B71D81708EF29004E05D5 /* PacketMusicDownload.m */,
+				55A0F8FA17314EA300FE2CE8 /* PacketMusicData.h */,
+				55A0F8FB17314EA300FE2CE8 /* PacketMusicData.m */,
 				552CDD1D17026493003CA4EB /* PacketMusicResponse.h */,
 				552CDD1E17026493003CA4EB /* PacketMusicResponse.m */,
 				558B71DA1708EF34004E05D5 /* PacketPlaylistItem.h */,
@@ -856,6 +861,7 @@
 				559673C017246A3D000E0D52 /* LBYouTubeExtractor.m in Sources */,
 				559E887817283CD500CAE248 /* UIButton+Extensions.m in Sources */,
 				559AAB35172ED81A006757C5 /* MenuViewController.m in Sources */,
+				55A0F8FC17314EA300FE2CE8 /* PacketMusicData.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

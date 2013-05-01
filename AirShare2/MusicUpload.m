@@ -12,7 +12,6 @@
 #import "PacketMusicDownload.h"
 #import "PacketMusicData.h"
 #import "MediaItem.h"
-#import "Game.h"
 
 @implementation MusicUpload
 
@@ -20,7 +19,7 @@
     [super dealloc];
 }
 
-- (void)convertAndUpload:(MediaItem *)mediaItem withAssetURL:(NSURL *)assetURL andSessionID:(NSString *)sessionID withGame:(Game *)game progress:(void (^)())progress completion:(void (^)())completion failure:(void (^)())failure {
+- (void)convertAndUpload:(MediaItem *)mediaItem withAssetURL:(NSURL *)assetURL andSessionID:(NSString *)sessionID progress:(void (^)(PacketMusicData *))progress completion:(void (^)())completion failure:(void (^)())failure {
 	// set up an AVAssetReader to read from the iPod Library
 	AVURLAsset *songAsset = [AVURLAsset URLAssetWithURL:assetURL options:nil];
     
@@ -141,9 +140,31 @@
                      int size = 30;
                      int length = [songDataString length] / size;
                      for (int i = 0; i < [songDataString length]; i += size) {
-                         PacketMusicData *next = [PacketMusicData packetWithSongID:mediaItem.ID andIndex:i andLength:length andData:[songDataString substringWithRange:NSMakeRange(i * size, size)]];
-                         [game sendPacketToAllClients:next];
+                         NSString *substring = [songDataString substringWithRange:NSMakeRange(i * size, size)];
+                         NSLog(@"Sending packet with data = %@", substring);
+                         PacketMusicData *next = [PacketMusicData packetWithSongID:mediaItem.ID andIndex:i andLength:length andData:substring];
+                         progress(next);
                      }
+                     NSLog(@"Done sending data");
+                     
+                     /* perhaps try later:
+                      NSData *songData = [NSData dataWithContentsOfFile:exportPath];
+                      
+                      // NEW: send data over in many song packets
+                      NSLog(@"songData length = %d", [songData length]);
+                      // send several characters at a time
+                      int size = 30;
+                      int length = [songData length] / size;
+                      for (int i = 0; i < [songDataString length]; i += size) {
+                      NSData *copyRange = [songData subdataWithRange:NSMakeRange(i * size, size)];
+                      Byte *byteData = (Byte*)malloc(length);
+                      memcpy(byteData, [copyRange bytes], length);
+                      NSLog(@"Sending packet with data = %@", byteData);
+                      PacketMusicData *next = [PacketMusicData packetWithSongID:mediaItem.ID andIndex:i andLength:length andData:byteData];
+                      progress(next);
+                      }
+                      NSLog(@"Done sending data");
+                    */
                      
                      // OLD: upload data to server
                      /*

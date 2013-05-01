@@ -10,9 +10,10 @@
 #import <AVFoundation/AVFoundation.h>
 #import <MediaPlayer/MediaPlayer.h>
 #import "MediaItem.h"
+#import "PacketMusicData.h"
 
 @interface MusicUpload : NSObject
 
-- (void)convertAndUpload:(MediaItem *)mediaItem withAssetURL:(NSURL *)assetURL andSessionID:(NSString *)sessionID withGame:(Game *)game progress:(void (^)())progress completion:(void (^)())completion failure:(void (^)())failure;
+- (void)convertAndUpload:(MediaItem *)mediaItem withAssetURL:(NSURL *)assetURL andSessionID:(NSString *)sessionID progress:(void (^)(PacketMusicData *))progress completion:(void (^)())completion failure:(void (^)())failure;
 
 @end
