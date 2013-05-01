@@ -556,12 +556,14 @@ typedef enum
         [self sendPacketToAllClients:packet];
         
         // PARTY MODE
+        /*
         NSLog(@"Getting beats for music item with name = %@", mediaItem.name);
         [_downloader downloadBeatsWithMediaItem:mediaItem andSessionID:_serverPeerID completion:^{
             NSLog(@"Found beats for music item with description: %@", [mediaItem description]);
             // update mediaItem
             [mediaItem loadBeats];
         }];
+         */
     } failure:^ {
         [self.delegate cancelMusicAndUpdateAll:mediaItem];
     }];
