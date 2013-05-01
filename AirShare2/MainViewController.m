@@ -19,6 +19,8 @@
     QuitReason _quitReasonServer;
     
     NSString *_serverName;
+    
+    double _verticalOffset;
 }
 
 - (void)viewDidLoad
@@ -35,6 +37,12 @@
     [_joinGameButton setAlpha:1.0];
     [_sessionsLabel setAlpha:0.0];
     [_backButton setAlpha:0.0];
+    
+    if(IS_IPHONE_5) {
+        _verticalOffset = 68.0f;
+    } else {
+        _verticalOffset = 0.0f;
+    }
     
     [[UIApplication sharedApplication] beginReceivingRemoteControlEvents];
 }
@@ -101,8 +109,8 @@
 - (IBAction)joinGameAction:(id)sender {
     [self.tableView reloadData];
     [UIView animateWithDuration:0.6 animations:^() {
-        _joinGameButton.frame = CGRectMake(-320,272,320,54);;
-        _hostGameButton.frame = CGRectMake(320,195,320,54);
+        _joinGameButton.frame = CGRectMake(-320,272+_verticalOffset,320,54);;
+        _hostGameButton.frame = CGRectMake(320,195+_verticalOffset,320,54);
     }];
     [self performSelector:@selector(releaseMainScreen:) withObject:nil afterDelay:.4];
     
@@ -111,8 +119,8 @@
 - (IBAction)hostGameAction:(id)sender
 {
     [UIView animateWithDuration:0.6 animations:^() {
-        _joinGameButton.frame = CGRectMake(-320,272,320,54);;
-        _hostGameButton.frame = CGRectMake(320,195,320,54);
+        _joinGameButton.frame = CGRectMake(-320,272+_verticalOffset,320,54);;
+        _hostGameButton.frame = CGRectMake(320,195+_verticalOffset,320,54);
     }];
     [self performSelector:@selector(startGame:) withObject:nil afterDelay:.4];
 
@@ -398,13 +406,22 @@
     [_hostGameButton addSubview:_gradientLoadProgressTwo];
 
     
-    _airshareLogo = [[UIImageView alloc] initWithFrame:CGRectMake(42, 147, 280, 130)];
+    if(IS_IPHONE_5) {
+        _airshareLogo = [[UIImageView alloc] initWithFrame:CGRectMake(12, 135, 346, 242)];
+        _airshareLogo.contentMode = UIViewContentModeScaleAspectFit;
+    } else {
+        _airshareLogo = [[UIImageView alloc] initWithFrame:CGRectMake(42, 147, 280, 130)];
+        _airshareLogo.contentMode = UIViewContentModeScaleAspectFill;
+    }
     _airshareLogo.image = [UIImage imageNamed:@"airshare.png"];
-    _airshareLogo.contentMode = UIViewContentModeScaleAspectFill;
     [self.view addSubview:_airshareLogo];
     
     [UIView animateWithDuration:.6 animations:^() {
-        _airshareLogo.frame = CGRectMake(42, 25, 280, 130);
+        if(IS_IPHONE_5) {
+            _airshareLogo.frame = CGRectMake(12, -25, 346, 242);
+        } else {
+            _airshareLogo.frame = CGRectMake(42, 25, 280, 130);
+        }
     }];
     
     [self performSelector:@selector(uiMainScreenDelay:) withObject:nil afterDelay:.3];
@@ -412,23 +429,24 @@
 }
 
 - (void)uiMainScreenDelay:(id)sender {
-    _hostGameButton.frame = CGRectMake(-320,195, 320, 54);
-    _joinGameButton.frame = CGRectMake(320,272, 320, 54);
+    _hostGameButton.frame = CGRectMake(-320,195+_verticalOffset, 320, 54);
+    _joinGameButton.frame = CGRectMake(320,272+_verticalOffset, 320, 54);
     _joinGameButton.hidden = false;
     _hostGameButton.hidden = false;
     [UIView animateWithDuration:0.6 animations:^() {
-        _joinGameButton.frame = CGRectMake(0,272,320,54);;
-        _hostGameButton.frame = CGRectMake(0,195,320,54);
+        _joinGameButton.frame = CGRectMake(0,272+_verticalOffset,320,54);;
+        _hostGameButton.frame = CGRectMake(0,195+_verticalOffset,320,54);
 
     }];
 }
 
 - (void)reloadMainScreen:(id)sender {
     [UIView animateWithDuration:0.6 animations:^() {
-        _joinGameButton.frame = CGRectMake(0,272,320,54);;
-        _hostGameButton.frame = CGRectMake(0,195,320,54);
+        _joinGameButton.frame = CGRectMake(0,272+_verticalOffset,320,54);;
+        _hostGameButton.frame = CGRectMake(0,195+_verticalOffset,320,54);
     }];
 }
+
 - (void)releaseMainScreen:(id)sender {
     [UIView animateWithDuration:0.4 animations:^() {
         [self.tableView setAlpha:1.0];
@@ -439,6 +457,7 @@
         [_waitingView setAlpha:1.0];
     }];
 }
+
 - (void)startGame:(id)sender {
     _matchmakingServer = [[MatchmakingServer alloc] init];
     _matchmakingServer.maxClients = 3;

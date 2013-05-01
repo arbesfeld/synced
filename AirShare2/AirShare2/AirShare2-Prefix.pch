@@ -19,6 +19,7 @@
 #define SESSION_ID @"AirShare"
 #define DATE_FORMAT @"yyyy-MM-dd-HH:mm:ss.SSS"
 #define BASE_URL @"http://www.axchen.com/"
+#define IS_IPHONE_5 ( fabs( ( double )[ [ UIScreen mainScreen ] bounds ].size.height - ( double )568 ) < DBL_EPSILON )
 typedef enum
 {
 	QuitReasonNoNetwork,          // no Wi-Fi or Bluetooth

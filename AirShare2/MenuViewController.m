@@ -18,7 +18,6 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        // Custom initialization
     }
     return self;
 }
@@ -27,6 +26,8 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    [self.usersTable setSeparatorStyle:UITableViewCellSeparatorStyleNone];
+    _connectedUsersLabel.font = [UIFont fontWithName:@"CenturyGothicStd-Bold" size:17.0f];
 }
 
 - (void)didReceiveMemoryWarning

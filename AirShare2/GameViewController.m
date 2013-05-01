@@ -37,16 +37,11 @@
 
     //self.playlistTable.separatorStyle = UITableViewCellSeparatorStyleNone;
     
-    _canLoadView = YES;
     _itemNumber = 0;
     
     [self isWaiting:YES];
     
     [self.skipSongButton setHitTestEdgeInsets:UIEdgeInsetsMake(-10, -10, -10, -10)];
-    
-    self.waitingLabel.hidden = true;
-    self.waitingLabel.font = [UIFont fontWithName:@"Century Gothic" size:14.0f];
-    self.waitingLabel.textColor = [UIColor darkGrayColor];
     
     self.playingLabel.font = [UIFont fontWithName:@"Century Gothic" size:11.0f];
     self.playingLabel.textColor = [UIColor darkGrayColor];
@@ -84,7 +79,6 @@
     
 - (void)isWaiting:(BOOL)isWaiting
 {
-    self.waitingLabel.hidden = !isWaiting;
     self.playingLabel.hidden = isWaiting;
     self.songTitle.hidden = isWaiting;
     self.artistLabel.hidden = isWaiting;
@@ -97,7 +91,12 @@
     self.partySwitch.hidden = isWaiting;
     
     if(isWaiting) {
+        // eye button only appears when video plays
         self.eyeButton.hidden = YES;
+    }
+    if(!isWaiting) {
+        // a song is playing, definitely hide this message
+        self.tapToAdd.hidden = YES;
     }
 }
 
@@ -444,20 +443,15 @@
     _mediaPicker.allowsPickingMultipleItems = NO;
     //mediaPicker.prompt = @"Music";
     _mediaPicker.navigationItem.rightBarButtonItem.title = @"Cancel";
-    _canLoadView = NO;
-    [self presentViewController:_mediaPicker animated:YES completion:^{
-        _canLoadView = YES;
-    }];
+    [self presentViewController:_mediaPicker animated:YES completion:nil];
 }
 
 - (IBAction)playMovie:(id)sender {
     _tapToAdd.hidden = true;
 	MoviePickerViewController *moviePickerViewController = [[MoviePickerViewController alloc] initWithStyle:UITableViewStylePlain];
     _navController = [[UINavigationController alloc] initWithRootViewController:moviePickerViewController];
-    _canLoadView = NO;
-    [self presentViewController:_navController animated:YES completion:^{
-        _canLoadView = YES;
-    }];
+    
+    [self presentViewController:_navController animated:YES completion:nil];
 	moviePickerViewController.delegate = self;
 }
 

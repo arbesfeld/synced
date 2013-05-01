@@ -23,7 +23,6 @@
     MenuViewController *_menuViewController;
     UIViewController *_displayedViewController;
     NSMutableDictionary *_hasVotedForItem; // key is songID, value is whethere they have upvoted it
-    BOOL _canLoadView; // for when animations are occuring
 }
 
 @property (strong, nonatomic) IBOutlet UIImageView *tapToAdd;
@@ -33,16 +32,18 @@
 @property (strong, nonatomic) IBOutlet UIImageView *volumeImage;
 @property (strong, nonatomic) IBOutlet UILabel *skipsLabel;
 @property (weak, nonatomic) IBOutlet UILabel *timeLabel;
-@property (nonatomic, weak) IBOutlet UILabel *skipSongLabel, *artistLabel, *waitingLabel;
+@property (nonatomic, weak) IBOutlet UILabel *skipSongLabel, *artistLabel;
 @property (weak, nonatomic) IBOutlet UILabel *playingLabel;
 @property (weak, nonatomic) IBOutlet UIView *gradientView;
 @property (nonatomic, weak) IBOutlet UIButton *exitButton, *skipSongButton;
 @property (nonatomic, weak) IBOutlet UITableView *playlistTable;
 @property (nonatomic, weak) IBOutlet UIProgressView *playbackProgressBar;
 @property (nonatomic, weak) IBOutlet UILabel * songTitle;
+
 @property (nonatomic, strong) UINavigationController *navController;
 @property (nonatomic, strong) MPMediaPickerController *mediaPicker;
 @property (nonatomic, strong) UIWebView *youtube;
+
 @property (nonatomic, weak) id <GameViewControllerDelegate> delegate;
 @property (nonatomic, strong) Game *game;
 

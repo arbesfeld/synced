@@ -13,6 +13,7 @@
 @interface MenuViewController : UIViewController <UITableViewDataSource>
 
 @property (weak, nonatomic) IBOutlet UITableView *usersTable;
+@property (weak, nonatomic) IBOutlet UILabel *connectedUsersLabel;
 @property (nonatomic, strong) Game *game;
 
 - (IBAction)syncButtonPressed:(id)sender;

@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "55FCC54816ED3D4C0000BCBD"
-               BuildableName = "AirShare2.app"
+               BuildableName = "airShare.app"
                BlueprintName = "AirShare2"
                ReferencedContainer = "container:AirShare2.xcodeproj">
             </BuildableReference>
@@ -33,7 +33,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "55FCC54816ED3D4C0000BCBD"
-            BuildableName = "AirShare2.app"
+            BuildableName = "airShare.app"
             BlueprintName = "AirShare2"
             ReferencedContainer = "container:AirShare2.xcodeproj">
          </BuildableReference>
@@ -52,7 +52,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "55FCC54816ED3D4C0000BCBD"
-            BuildableName = "AirShare2.app"
+            BuildableName = "airShare.app"
             BlueprintName = "AirShare2"
             ReferencedContainer = "container:AirShare2.xcodeproj">
          </BuildableReference>
@@ -70,7 +70,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "55FCC54816ED3D4C0000BCBD"
-            BuildableName = "AirShare2.app"
+            BuildableName = "airShare.app"
             BlueprintName = "AirShare2"
             ReferencedContainer = "container:AirShare2.xcodeproj">
          </BuildableReference>

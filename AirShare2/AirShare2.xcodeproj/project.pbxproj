@@ -658,6 +658,7 @@
 		EA18C2001707E1A4008F5DAF /* Graphics */ = {
 			isa = PBXGroup;
 			children = (
+				892464E1172D9D1400C4ABB6 /* airshare.png */,
 				897F5AD617309BF000A32ABB /* tapformedia-01.png */,
 				559A50F3173034F900F356A9 /* icon_highres.png */,
 				559A50F1173034F400F356A9 /* icon_lowres.png */,
@@ -678,7 +679,6 @@
 				89E477291712869900DE9ECE /* exit-01.png */,
 				89E477271712837C00DE9ECE /* game.png */,
 				559D6B851711EC2000C591D8 /* bgGreyImg.png */,
-				892464E1172D9D1400C4ABB6 /* airshare.png */,
 				559D6B861711EC2000C591D8 /* cancel.png */,
 				559D6B8A1711EC2000C591D8 /* music symbol-01.png */,
 				559D6B8B1711EC2000C591D8 /* skip-01.png */,
