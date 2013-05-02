@@ -334,6 +334,44 @@
     self.eyeButton.hidden = NO;
 }
 
+- (void)flashScreen
+{
+    //NSLog(@"BEAT!!");
+    UIView *screenFlash = [[UIView alloc] initWithFrame:CGRectMake(0,0, 320,480)];
+    [screenFlash setBackgroundColor:[UIColor greenColor]];
+    [UIView animateWithDuration:0.6 animations:^() {
+        screenFlash.alpha = 0.0;
+    }];
+    [self.view addSubview:screenFlash];
+    
+    Class captureDeviceClass = NSClassFromString(@"AVCaptureDevice");
+    if (captureDeviceClass != nil) {
+        AVCaptureDevice *device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
+        if ([device hasTorch] && [device hasFlash]){
+            [device lockForConfiguration:nil];
+            
+            [device setTorchModeOnWithLevel:0.1 error:NULL];
+            
+            // turn on
+            [device setTorchMode:AVCaptureTorchModeOn];
+            [device setFlashMode:AVCaptureFlashModeOn];
+            
+            // wait
+            [self performSelector:@selector(turnOff:) withObject:device afterDelay:0.1];
+        }
+    }
+    
+}
+
+- (void)turnOff:(AVCaptureDevice *)device
+{
+    // turn off
+    [device setTorchMode:AVCaptureTorchModeOff];
+    [device setFlashMode:AVCaptureFlashModeOff];
+    
+    [device unlockForConfiguration];
+}
+
 - (IBAction)eyeAction:(id)sender {
     [self presentViewController:_displayedViewController animated:YES completion:nil];
 }

@@ -43,6 +43,8 @@ ServerState;
 - (void)gameSessionDidEnd:(Game *)server;
 - (void)gameNoNetwork:(Game *)server;
 
+- (void)flashScreen;
+
 - (void)setPlaybackProgress:(double)f;
 
 - (void)showViewController:(UIViewController *)viewController;
