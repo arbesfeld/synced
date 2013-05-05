@@ -124,7 +124,6 @@
 		89E477281712837C00DE9ECE /* game.png in Resources */ = {isa = PBXBuildFile; fileRef = 89E477271712837C00DE9ECE /* game.png */; };
 		89E4772A1712869A00DE9ECE /* exit-01.png in Resources */ = {isa = PBXBuildFile; fileRef = 89E477291712869900DE9ECE /* exit-01.png */; };
 		89E4772E17128F9700DE9ECE /* movies-01.png in Resources */ = {isa = PBXBuildFile; fileRef = 89E4772D17128F9700DE9ECE /* movies-01.png */; };
-		EA244DA91730E30900D3B4CA /* PacketMusicData.m in Sources */ = {isa = PBXBuildFile; fileRef = EA244DA81730E30900D3B4CA /* PacketMusicData.m */; };
 		EAB726371711EFDC0084D2CC /* PacketCancelMusic.m in Sources */ = {isa = PBXBuildFile; fileRef = EAB726361711EFDC0084D2CC /* PacketCancelMusic.m */; };
 /* End PBXBuildFile section */
 
@@ -318,8 +317,6 @@
 		89E477271712837C00DE9ECE /* game.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = game.png; path = Graphics/game.png; sourceTree = "<group>"; };
 		89E477291712869900DE9ECE /* exit-01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "exit-01.png"; path = "Graphics/exit-01.png"; sourceTree = "<group>"; };
 		89E4772D17128F9700DE9ECE /* movies-01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "movies-01.png"; path = "Graphics/movies-01.png"; sourceTree = "<group>"; };
-		EA244DA71730E30900D3B4CA /* PacketMusicData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PacketMusicData.h; sourceTree = "<group>"; };
-		EA244DA81730E30900D3B4CA /* PacketMusicData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PacketMusicData.m; sourceTree = "<group>"; };
 		EAB726351711EFDB0084D2CC /* PacketCancelMusic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PacketCancelMusic.h; sourceTree = "<group>"; };
 		EAB726361711EFDC0084D2CC /* PacketCancelMusic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PacketCancelMusic.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -610,8 +607,6 @@
 				552CDD21170279BF003CA4EB /* PacketGameState.m */,
 				5596E08A16F62FB600511D3E /* PacketOtherClientQuit.h */,
 				5596E08B16F62FB600511D3E /* PacketOtherClientQuit.m */,
-				EA244DA71730E30900D3B4CA /* PacketMusicData.h */,
-				EA244DA81730E30900D3B4CA /* PacketMusicData.m */,
 				EAB726351711EFDB0084D2CC /* PacketCancelMusic.h */,
 				EAB726361711EFDC0084D2CC /* PacketCancelMusic.m */,
 				558B71D71708EF29004E05D5 /* PacketMusicDownload.h */,
@@ -865,7 +860,6 @@
 				559673C017246A3D000E0D52 /* LBYouTubeExtractor.m in Sources */,
 				559E887817283CD500CAE248 /* UIButton+Extensions.m in Sources */,
 				559AAB35172ED81A006757C5 /* MenuViewController.m in Sources */,
-				EA244DA91730E30900D3B4CA /* PacketMusicData.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
