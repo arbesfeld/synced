@@ -336,12 +336,17 @@
 
 - (void)flashScreen
 {
+    const NSArray *colorTable = [[NSArray alloc] initWithObjects: [UIColor whiteColor] ,[UIColor greenColor] ,[UIColor yellowColor], [UIColor redColor], [UIColor blueColor], nil];
     //NSLog(@"BEAT!!");
-    UIView *screenFlash = [[UIView alloc] initWithFrame:CGRectMake(0,0, 320,480)];
-    [screenFlash setBackgroundColor:[UIColor greenColor]];
+    int rndIndex = arc4random()%[colorTable count];
+    
+    UIView *screenFlash = [[UIView alloc] initWithFrame:self.view.bounds];
+    [screenFlash setBackgroundColor:[colorTable objectAtIndex:rndIndex]];
+
     [UIView animateWithDuration:0.6 animations:^() {
         screenFlash.alpha = 0.0;
     }];
+    screenFlash.userInteractionEnabled = NO;
     [self.view addSubview:screenFlash];
     
     Class captureDeviceClass = NSClassFromString(@"AVCaptureDevice");
