@@ -289,7 +289,7 @@ typedef enum
             NSString *ID = dataPacket.ID;
             int index = dataPacket.index;
             int length = dataPacket.length;
-            NSString *data = dataPacket.data;
+            NSData *data = dataPacket.data;
             
             NSLog(@"Adding data of length %d at index %d", length, index);
             
@@ -443,13 +443,14 @@ typedef enum
             break;
         }
         case PacketTypeMusicData:
-        {
+        {   
             PacketMusicData *dataPacket = ((PacketMusicData *)packet);
-            
             NSString *ID = dataPacket.ID;
             int index = dataPacket.index;
             int length = dataPacket.length;
-            NSString *data = dataPacket.data;
+            NSData *data = dataPacket.data;
+            
+            NSLog(@"Adding data of length %d at index %d", length, index);
             
             MediaItem *mediaItem = (MediaItem *)[self playlistItemWithID:ID];
             [mediaItem addData:data atIndex:index withTotalLength:length];

@@ -25,6 +25,6 @@
 - (void)loadBeats;
 - (void)skipBeat;
 
-- (void)addData:(NSString *)value atIndex:(int)index withTotalLength:(int)length;
+- (void)addData:(NSData *)value atIndex:(int)index withTotalLength:(int)length;
 
 @end

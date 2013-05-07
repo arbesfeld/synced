@@ -86,7 +86,7 @@
     self.beatPos++;
 }
 
-- (void)addData:(NSString *)value atIndex:(int)index withTotalLength:(int)length
+- (void)addData:(NSData *)value atIndex:(int)index withTotalLength:(int)length
 {
     self.dataStart = YES;
     
@@ -99,12 +99,12 @@
         NSString *fileName = [NSString stringWithFormat:@"%@.m4a", self.ID];
         NSString *songPath = [tempPath stringByAppendingPathComponent:fileName];
         
-        NSMutableString *allData = [NSMutableString stringWithCapacity:1000];
+        NSMutableData *allData = [[NSMutableData alloc] init];
         for (int i = 0; i < length; i++) {
-            [allData appendString:(NSString *)[self.data objectForKey:[NSNumber numberWithInt:i]]];
+            [allData appendData:(NSData *)[self.data objectForKey:[NSNumber numberWithInt:i]]];
         }
         
-        [allData writeToFile:songPath atomically:YES encoding:NSUTF8StringEncoding error:nil];
+        [allData writeToFile:songPath atomically:YES];
         
         self.dataDone = YES;
     }
