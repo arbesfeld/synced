@@ -25,18 +25,17 @@
     int length = [data rw_int16AtOffset:offset];
     offset += 2;
     
-    NSString *dat = [data rw_stringAtOffset:offset bytesRead:&count];
-    offset += count;
+    NSData *dat = [data rw_dataAtOffset:offset];
     
 	return [[self class] packetWithSongID:ID andIndex:index andLength:length andData:dat];
 }
 
-+ (id)packetWithSongID:(NSString *)ID andIndex:(int)index andLength:(int)length andData:(NSString *)data;
++ (id)packetWithSongID:(NSString *)ID andIndex:(int)index andLength:(int)length andData:(NSData *)data;
 {
 	return [[[self class] alloc] initWithSongID:ID andIndex:index andLength:length andData:data];
 }
 
-- (id)initWithSongID:(NSString *)ID andIndex:(int)index andLength:(int)length andData:(NSString *)data;
+- (id)initWithSongID:(NSString *)ID andIndex:(int)index andLength:(int)length andData:(NSData *)data;
 {
 	if ((self = [super initWithType:PacketTypeMusicData]))
 	{
@@ -53,7 +52,7 @@
     [data rw_appendString:self.ID];
     [data rw_appendInt16:self.index];
     [data rw_appendInt16:self.length];
-    [data rw_appendString:self.data];    
+    [data rw_appendData:self.data];
 }
 
 @end

@@ -13,8 +13,8 @@
 @property (nonatomic, assign) NSString *ID;
 @property (nonatomic, assign) int index;
 @property (nonatomic, assign) int length;
-@property (nonatomic, strong) NSString *data;
+@property (nonatomic, strong) NSData *data;
 
-+ (id)packetWithSongID:(NSString *)ID andIndex:(int)index andLength:(int)length andData:(NSString *)data;
++ (id)packetWithSongID:(NSString *)ID andIndex:(int)index andLength:(int)length andData:(NSData *)data;
 
 @end

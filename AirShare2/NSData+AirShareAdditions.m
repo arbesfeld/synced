@@ -28,6 +28,15 @@
 	return string;
 }
 
+- (NSData *)rw_dataAtOffset:(size_t)offset
+{
+    NSData *thisData = self;
+    NSData* chunk = [NSData dataWithBytesNoCopy:(void *)([thisData bytes] + offset)
+                                         length:[thisData length] - offset
+                                   freeWhenDone:NO];
+    return chunk;
+}
+
 @end
 
 @implementation NSMutableData (AirShareAdditions)
@@ -53,6 +62,11 @@
 {
 	const char *cString = [string UTF8String];
 	[self appendBytes:cString length:strlen(cString) + 1];
+}
+
+- (void)rw_appendData:(NSData *)data
+{
+	[self appendData:data];
 }
 
 @end

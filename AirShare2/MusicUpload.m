@@ -133,16 +133,14 @@
                      // now upload to server
                      NSData *songData = [NSData dataWithContentsOfFile:exportPath];
                      
-                     // NEW: send data over in many song packets
-                     NSString *songDataString = [[NSString alloc]initWithData:songData
-                                                             encoding:NSUTF8StringEncoding];
                      // send several characters at a time
                      int size = 30;
-                     int length = [songDataString length] / size;
-                     for (int i = 0; i < [songDataString length]; i += size) {
-                         NSString *substring = [songDataString substringWithRange:NSMakeRange(i * size, size)];
-                         NSLog(@"Sending packet with data = %@", substring);
-                         PacketMusicData *next = [PacketMusicData packetWithSongID:mediaItem.ID andIndex:i andLength:length andData:substring];
+                     int length = [songData length] / size;
+                     for (int i = 0; i < [songData length]; i += size) {
+                         NSData *data = [[NSData alloc] init];
+                         [songData getBytes:data range:NSMakeRange(i * size, size)];
+                         NSLog(@"Sending packet with data = %@", data);
+                         PacketMusicData *next = [PacketMusicData packetWithSongID:mediaItem.ID andIndex:i andLength:length andData:data];
                          progress(next);
                      }
                      NSLog(@"Done sending data");
