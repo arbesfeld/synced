@@ -811,11 +811,13 @@ typedef enum
                 [self updateServerStats:2];
             }
         }
+        NSLog(@"preparing playMusicTimer");
         _playMusicTimer = [NSTimer scheduledTimerWithTimeInterval:[startTime timeIntervalSinceNow] + compensate
                                                            target:self
                                                          selector:@selector(handlePlayMusicTimer:)
                                                          userInfo:mediaItem
                                                           repeats:NO];
+        NSLog(@"done preparing playMusicTimer");
     } else {
         if([[UIApplication sharedApplication] applicationState] == UIApplicationStateInactive) {
             return;
@@ -1005,9 +1007,12 @@ typedef enum
 
 - (void)handlePlayMusicTimer:(NSTimer *)timer
 {
+    NSLog(@"handle play music timer");
     MediaItem *mediaItem = (MediaItem *)[timer userInfo];
     
     if(_gameState == GameStatePreparingToPlayMedia) {
+        NSLog(@"handle play music timer success?");
+        
         // if we're here, we loaded the content correctly
         if((mediaItem.playlistItemType == PlaylistItemTypeMovie && mediaItem.uploadedByUser) ||
            mediaItem.playlistItemType == PlaylistItemTypeYoutube) {

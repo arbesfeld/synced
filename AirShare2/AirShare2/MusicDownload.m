@@ -12,6 +12,8 @@
 @implementation MusicDownload
 
 -(void)downloadFileWithMediaItem:(MediaItem *)mediaItem andSessionID:(NSString *)sessionID progress:(void (^)(void))progress completion:(void (^)(void))completion failure:(void (^)(void))failure {
+    mediaItem.loadProgress = 1.0;
+    completion();
     return; // TEMPORARY TO SKIP THE REST OF THIS CODE
     
     // make the GET request URL
