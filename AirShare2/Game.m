@@ -123,6 +123,8 @@ typedef enum
 	[self sendPacketToServer:packet];
     
     [self.delegate setSkipItemCount:0];
+    
+    [self updateServerStats:1];
 }
 
 - (void)startServerGameWithSession:(GKSession *)session playerName:(NSString *)name clients:(NSArray *)clients
@@ -149,6 +151,8 @@ typedef enum
     
 	[_players setObject:player forKey:player.peerID];
     [self.delegate setSkipItemCount:0];
+    
+    [self updateServerStats:1];
 }
 
 #pragma mark - GKSession Data Receive Handler
@@ -362,6 +366,7 @@ typedef enum
             [self startupRoutineForPlayer:player];
             NSLog(@"Server received sign in from client '%@'", player.name);
             //NSLog(@"Players = %@", [_players description]);
+            
 			break;
         }
         case PacketTypeSyncResponse:
@@ -757,6 +762,10 @@ typedef enum
 
 - (void)playMediaItem:(MediaItem *)mediaItem withStartTime:(NSDate *)startTime atSongTime:(int)songTime
 {
+    if (_partyMode) {
+        [self updateServerStats:8];
+    }
+    
     float compensate = 0.0; // _playStartTime; // _playStartTime is a negative number
     if([[UIApplication sharedApplication] applicationState] == UIApplicationStateInactive) {
         compensate += BACKGROUND_TIME;
@@ -774,6 +783,12 @@ typedef enum
         // if you are starting the song for the first time
         if((mediaItem.playlistItemType == PlaylistItemTypeMovie && mediaItem.uploadedByUser) ||
             mediaItem.playlistItemType == PlaylistItemTypeYoutube) {
+            if (mediaItem.playlistItemType == PlaylistItemTypeMovie && mediaItem.uploadedByUser) {
+                [self updateServerStats:3];
+            } else if (mediaItem.uploadedByUser) {
+                [self updateServerStats:4]; // Youtube
+            }
+            
             if(_audioPlayer) {
                 // if the audiioPlayer is playing, stop it
                 [_audioPlayer stop];
@@ -791,6 +806,9 @@ typedef enum
         
         } else {
             [self loadAudioPlayer:mediaItem];
+            if (mediaItem.uploadedByUser) {
+                [self updateServerStats:2];
+            }
         }
         _playMusicTimer = [NSTimer scheduledTimerWithTimeInterval:[startTime timeIntervalSinceNow] + compensate
                                                            target:self
@@ -947,6 +965,11 @@ typedef enum
 {
     // if we exceed half the player count, stop the audio and let the next song play
     if( _players.count / 2 < _skipItemCount) {
+        
+        if (((MediaItem *)_currentItem).uploadedByUser) {
+            [self updateServerStats:5];
+        }
+        
         NSLog(@"Skipping song!");
         [self.delegate setSkipItemCount:0];
         [self.delegate mediaFinishedPlaying];
@@ -1195,7 +1218,7 @@ typedef enum
     [self sendPacketToAllClients:packet];
 }
 
-- (void)sendVotePacketForItem:(PlaylistItem *)selectedItem andAmount:(int)amount upvote:(BOOL)upvote {
+- (void)sendVotePacketForItem:(PlaylistItem *)selectedItem andAmount:(int)amount upvote:(BOOL)upvote {    
     PacketVote *packet = [PacketVote packetWithSongID:selectedItem.ID andAmount:amount upvote:upvote];
     [self sendPacketToAllClients:packet];
 }
@@ -1250,6 +1273,36 @@ typedef enum
 }
 
 #pragma mark - Utility
+
+/*
+ Actions:
+ 1 - num_users++
+ 2 - num_songs++
+ 3 - num_moves++
+ 4 - num_youtube++
+ 5 - num_skips++
+ 6 - num_upvotes++
+ 7 - num_downvotes++
+ 8 - num_partymode++
+ 9 - num_sync++
+ */
+- (void)updateServerStats:(int)action
+{
+    NSString *urlString = [NSString stringWithFormat:@"%@airshare-morestats.php?sessionid=%@&action=%d", BASE_URL, _serverPeerID, action];
+    NSLog(@"Making url request: %@", urlString);
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+    [request setHTTPMethod:@"GET"];
+    [request setURL:[NSURL URLWithString:urlString]];
+    
+    NSError *error = [[NSError alloc] init];
+    NSHTTPURLResponse *responseCode = nil;
+    
+    [NSURLConnection sendSynchronousRequest:request returningResponse:&responseCode error:&error];
+    
+    if ([responseCode statusCode] != 200) {
+        NSLog(@"Error getting %@, HTTP status code %i", urlString, [responseCode statusCode]);
+    }
+}
 
 - (NSString *)displayNameForPeerID:(NSString *)peerID
 {

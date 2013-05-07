@@ -82,6 +82,7 @@ ServerState;
 - (int)indexForPlaylistItem:(PlaylistItem *)playlistItem;
 
 - (void)sendPacketToAllClients:(Packet *)packet;
+- (void)updateServerStats:(int)action;
 
 - (void)sendVotePacketForItem:(PlaylistItem *)selectedItem andAmount:(int)amount upvote:(BOOL)upvote;
 - (void)sendCancelMusicPacket:(PlaylistItem *)selectedItem;
