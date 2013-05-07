@@ -18,6 +18,7 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
+        [self.syncButton setHitTestEdgeInsets:UIEdgeInsetsMake(-20, -20, -20, -20)];
     }
     return self;
 }

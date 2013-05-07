@@ -1238,6 +1238,12 @@ typedef enum
     }
 }
 
+#pragma mark - CustomMovieControllerDelegate
+
+- (BOOL)isPlayingMovie {
+    return _gameState == GameStatePlayingMovie;
+}
+
 #pragma mark - Utility
 
 /*
