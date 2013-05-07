@@ -248,12 +248,16 @@ NSString *const ECSlidingViewTopDidReset             = @"ECSlidingViewTopDidRese
 {
   CGPoint currentTouchPoint     = [recognizer locationInView:self.view];
   CGFloat currentTouchPositionX = currentTouchPoint.x;
-  
+    CGFloat currentTouchPositionY = currentTouchPoint.y;
+
+
   if (recognizer.state == UIGestureRecognizerStateBegan) {
     self.initialTouchPositionX = currentTouchPositionX;
     self.initialHoizontalCenter = self.topView.center.x;
   } else if (recognizer.state == UIGestureRecognizerStateChanged) {
+      if (currentTouchPositionY < [UIScreen mainScreen].applicationFrame.size.height - 80.0f & currentTouchPositionY > 80.0f){
     CGFloat panAmount = self.initialTouchPositionX - currentTouchPositionX;
+
     CGFloat newCenterPosition = self.initialHoizontalCenter - panAmount;
     
     if ((newCenterPosition < self.resettedCenter && (self.anchorLeftTopViewCenter == NSNotFound || self.underRightViewController == nil)) ||
@@ -268,7 +272,8 @@ NSString *const ECSlidingViewTopDidReset             = @"ECSlidingViewTopDidRese
       [self updateTopViewHorizontalCenter:newCenterPosition];
       [self topViewHorizontalCenterDidChange:newCenterPosition];
     }
-  } else if (recognizer.state == UIGestureRecognizerStateEnded || recognizer.state == UIGestureRecognizerStateCancelled) {
+  }
+  }else if (recognizer.state == UIGestureRecognizerStateEnded || recognizer.state == UIGestureRecognizerStateCancelled) {
     CGPoint currentVelocityPoint = [recognizer velocityInView:self.view];
     CGFloat currentVelocityX     = currentVelocityPoint.x;
     
@@ -281,6 +286,7 @@ NSString *const ECSlidingViewTopDidReset             = @"ECSlidingViewTopDidRese
     }
   }
 }
+
 
 - (UIPanGestureRecognizer *)panGesture
 {
@@ -598,5 +604,7 @@ NSString *const ECSlidingViewTopDidReset             = @"ECSlidingViewTopDidRese
     [NSException raise:@"Invalid Width Layout" format:@"underRightWidthLayout must be a valid ECViewWidthLayout"];
   }
 }
+
+
 
 @end

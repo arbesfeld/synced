@@ -334,6 +334,49 @@
     self.eyeButton.hidden = NO;
 }
 
+- (void)flashScreen
+{
+    const NSArray *colorTable = [[NSArray alloc] initWithObjects: [UIColor whiteColor] ,[UIColor greenColor] ,[UIColor yellowColor], [UIColor redColor], [UIColor blueColor], nil];
+    //NSLog(@"BEAT!!");
+    int rndIndex = arc4random()%[colorTable count];
+    
+    UIView *screenFlash = [[UIView alloc] initWithFrame:self.view.bounds];
+    [screenFlash setBackgroundColor:[colorTable objectAtIndex:rndIndex]];
+
+    [UIView animateWithDuration:0.6 animations:^() {
+        screenFlash.alpha = 0.0;
+    }];
+    screenFlash.userInteractionEnabled = NO;
+    [self.view addSubview:screenFlash];
+    
+    Class captureDeviceClass = NSClassFromString(@"AVCaptureDevice");
+    if (captureDeviceClass != nil) {
+        AVCaptureDevice *device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
+        if ([device hasTorch] && [device hasFlash]){
+            [device lockForConfiguration:nil];
+            
+            [device setTorchModeOnWithLevel:0.1 error:NULL];
+            
+            // turn on
+            [device setTorchMode:AVCaptureTorchModeOn];
+            [device setFlashMode:AVCaptureFlashModeOn];
+            
+            // wait
+            [self performSelector:@selector(turnOff:) withObject:device afterDelay:0.1];
+        }
+    }
+    
+}
+
+- (void)turnOff:(AVCaptureDevice *)device
+{
+    // turn off
+    [device setTorchMode:AVCaptureTorchModeOff];
+    [device setFlashMode:AVCaptureFlashModeOff];
+    
+    [device unlockForConfiguration];
+}
+
 - (IBAction)eyeAction:(id)sender {
     [self presentViewController:_displayedViewController animated:YES completion:nil];
 }
@@ -436,6 +479,7 @@
 #pragma mark - playMusic____
 
 - (IBAction)playMusic:(id)sender {
+    _swipeToReveal.hidden = true;
     _tapToAdd.hidden = true;
     _mediaPicker = [[MPMediaPickerController alloc] initWithMediaTypes: MPMediaTypeMusic];
     
@@ -447,6 +491,7 @@
 }
 
 - (IBAction)playMovie:(id)sender {
+    _swipeToReveal.hidden = true;
     _tapToAdd.hidden = true;
 	MoviePickerViewController *moviePickerViewController = [[MoviePickerViewController alloc] initWithStyle:UITableViewStylePlain];
     _navController = [[UINavigationController alloc] initWithRootViewController:moviePickerViewController];
@@ -508,6 +553,7 @@
         _volumeImage.image = [UIImage imageNamed:@"muteVolume-01.png"];
     }
 }
+
 
 
 

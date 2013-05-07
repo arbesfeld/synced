@@ -7,6 +7,7 @@
 #import "UIButton+Extensions.h"
 #import "ECSlidingViewController.h"
 #import "MenuViewController.h"
+#import "MediaItem.h"
 
 #import <MediaPlayer/MediaPlayer.h>
 #import <QuartzCore/QuartzCore.h>
@@ -24,7 +25,7 @@
     UIViewController *_displayedViewController;
     NSMutableDictionary *_hasVotedForItem; // key is songID, value is whethere they have upvoted it
 }
-
+@property (strong, nonatomic) IBOutlet UIImageView *swipeToReveal;
 @property (strong, nonatomic) IBOutlet UIImageView *tapToAdd;
 @property (weak, nonatomic) IBOutlet UIButton *eyeButton;
 @property (strong, nonatomic) IBOutlet UISwitch *partySwitch;
@@ -54,6 +55,8 @@
 - (IBAction)eyeAction:(id)sender;
 
 - (IBAction)togglePartyMode:(UISwitch *)sender;
+
+
 
 
 @end
