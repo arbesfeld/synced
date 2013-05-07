@@ -441,11 +441,9 @@
 - (void)voteForItem:(PlaylistItem *)playlistItem withValue:(int)value upvote:(BOOL)upvote {
     // value is a int that represents the weight of the vote
     if(upvote) {
-        [self.game updateServerStats:6];
         [playlistItem upvote:value];
         [self addValue:[NSNumber numberWithInt:value] forID:playlistItem.ID];
     } else {
-        [self.game updateServerStats:7];
         [playlistItem downvote:value];
         [self addValue:[NSNumber numberWithInt:-value] forID:playlistItem.ID];
     }
@@ -454,9 +452,11 @@
 
 - (void)addValue:(NSNumber *)value forID:(NSString *)ID {
     if([_hasVotedForItem objectForKey:ID]) {
+        [self.game updateServerStats:7];
         [_hasVotedForItem removeObjectForKey:ID];
     }
     else {
+        [self.game updateServerStats:6];
         [_hasVotedForItem setObject:@YES forKey:ID];
     }
 }
