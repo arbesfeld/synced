@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="3084" systemVersion="12C3012" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="2">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="3084" systemVersion="12D78" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="2">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="2083"/>
     </dependencies>
@@ -327,7 +327,7 @@
                                     <constraint firstAttribute="height" constant="57" id="dUd-Vp-gwk"/>
                                 </constraints>
                             </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="swipeforusers-01.png" translatesAutoresizingMaskIntoConstraints="NO" id="03B-X1-STL">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" image="swipeforusers-01-01.png" translatesAutoresizingMaskIntoConstraints="NO" id="03B-X1-STL">
                                 <constraints>
                                     <constraint firstAttribute="width" constant="145" id="Gqv-Bh-stJ"/>
                                     <constraint firstAttribute="height" constant="77" id="n7M-ey-ihh"/>
@@ -343,6 +343,7 @@
                             <constraint firstItem="o8S-ku-u21" firstAttribute="top" relation="greaterThanOrEqual" secondItem="BCy-oa-ZtW" secondAttribute="top" constant="76" type="user" id="2lY-Nc-Zzq"/>
                             <constraint firstAttribute="trailing" secondItem="96i-Zy-Rwc" secondAttribute="trailing" constant="9" id="3Xc-YP-C0x"/>
                             <constraint firstItem="12U-g7-co7" firstAttribute="leading" secondItem="BCy-oa-ZtW" secondAttribute="leading" type="user" id="3o3-Ep-qaK"/>
+                            <constraint firstItem="03B-X1-STL" firstAttribute="leading" secondItem="BCy-oa-ZtW" secondAttribute="leading" constant="7" id="46q-Hy-RbV"/>
                             <constraint firstItem="03B-X1-STL" firstAttribute="top" secondItem="BCy-oa-ZtW" secondAttribute="top" constant="250" id="4JM-ST-qV2"/>
                             <constraint firstItem="LWF-a9-TuI" firstAttribute="leading" secondItem="BCy-oa-ZtW" secondAttribute="leading" constant="12" type="user" id="4Xh-NK-X7J"/>
                             <constraint firstItem="qGG-Mn-1P9" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="BCy-oa-ZtW" secondAttribute="leading" constant="53" type="user" id="4lB-L5-UCC"/>
@@ -382,6 +383,7 @@
                             <constraint firstItem="eeC-ei-Tr1" firstAttribute="baseline" secondItem="96i-Zy-Rwc" secondAttribute="baseline" type="default" id="adS-44-Tkc"/>
                             <constraint firstItem="o8S-ku-u21" firstAttribute="top" secondItem="ACL-ij-h37" secondAttribute="top" type="default" id="bCl-8R-R9p"/>
                             <constraint firstItem="12U-g7-co7" firstAttribute="bottom" secondItem="BCy-oa-ZtW" secondAttribute="bottom" type="default" id="bnp-w7-Qgn"/>
+                            <constraint firstItem="hKe-wY-Gej" firstAttribute="leading" secondItem="BCy-oa-ZtW" secondAttribute="leading" constant="9" id="c9B-fY-pos"/>
                             <constraint firstItem="96i-Zy-Rwc" firstAttribute="top" secondItem="BCy-oa-ZtW" secondAttribute="top" constant="58" type="user" id="cFk-Gx-FDU"/>
                             <constraint firstItem="ge9-R5-1vQ" firstAttribute="top" secondItem="BCy-oa-ZtW" secondAttribute="top" constant="137" type="user" id="cyp-ad-iMW"/>
                             <constraint firstAttribute="trailing" secondItem="12U-g7-co7" secondAttribute="trailing" constant="-2" type="user" id="deh-Um-jng"/>
@@ -396,13 +398,11 @@
                             <constraint firstAttribute="trailing" secondItem="WD3-Wu-ZGd" secondAttribute="trailing" constant="54" type="user" id="jeh-BU-5rF"/>
                             <constraint firstItem="dEq-t8-cgV" firstAttribute="top" secondItem="BCy-oa-ZtW" secondAttribute="top" constant="52" type="user" id="k5y-ya-Kf1"/>
                             <constraint firstItem="WD3-Wu-ZGd" firstAttribute="leading" secondItem="BCy-oa-ZtW" secondAttribute="leading" constant="12" type="user" id="lJX-AN-4sv"/>
-                            <constraint firstItem="03B-X1-STL" firstAttribute="leading" secondItem="YuW-3R-SF1" secondAttribute="leading" type="default" id="lWr-Ns-fD4"/>
                             <constraint firstItem="3aC-2Y-cgh" firstAttribute="top" secondItem="BCy-oa-ZtW" secondAttribute="top" type="user" id="m6I-ke-Huy"/>
                             <constraint firstAttribute="trailing" secondItem="swj-rq-us7" secondAttribute="trailing" constant="2" id="mUl-mG-oU2"/>
                             <constraint firstItem="ACL-ij-h37" firstAttribute="baseline" secondItem="o8S-ku-u21" secondAttribute="baseline" type="default" id="mpB-fB-qao"/>
                             <constraint firstItem="qcU-o1-ezA" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="BCy-oa-ZtW" secondAttribute="leading" constant="88" type="user" id="nJs-rh-D0y"/>
                             <constraint firstItem="eJo-Sb-0RW" firstAttribute="leading" secondItem="BCy-oa-ZtW" secondAttribute="leading" constant="12" type="user" id="qx7-Ya-xAZ"/>
-                            <constraint firstItem="hKe-wY-Gej" firstAttribute="leading" secondItem="BCy-oa-ZtW" secondAttribute="leading" constant="9" id="spb-HR-c4D"/>
                             <constraint firstItem="12U-g7-co7" firstAttribute="top" secondItem="BCy-oa-ZtW" secondAttribute="top" type="default" id="ssx-GJ-u7N"/>
                             <constraint firstAttribute="trailing" secondItem="eeC-ei-Tr1" secondAttribute="trailing" constant="40" type="user" id="wOY-a1-3lm"/>
                             <constraint firstItem="YC5-9B-f4q" firstAttribute="trailing" secondItem="BCy-oa-ZtW" secondAttribute="trailing" type="user" id="wcx-Mw-VBe"/>
@@ -454,7 +454,7 @@
                                     <constraint firstAttribute="height" constant="264" id="OLP-ro-0vp"/>
                                 </constraints>
                                 <tableView key="tableFooterView" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="LvQ-By-4ar">
-                                    <rect key="frame" x="0.0" y="0.0" width="153" height="3233"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="153" height="3761"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </tableView>
@@ -519,6 +519,7 @@
                     <connections>
                         <outlet property="connectedUsersLabel" destination="zWr-yZ-tX5" id="cce-K2-dFA"/>
                         <outlet property="sepeartorImageView" destination="Piw-dK-flb" id="hyP-y8-aSw"/>
+                        <outlet property="syncButton" destination="8zE-Ii-Ed6" id="5pb-Wo-PN7"/>
                         <outlet property="usersTable" destination="MdD-Xb-XCK" id="r6w-R9-JqN"/>
                     </connections>
                 </viewController>
@@ -536,7 +537,7 @@
         <image name="musicIcon-01.png" width="237" height="243"/>
         <image name="purple_gradient2.png" width="320" height="548"/>
         <image name="skip-01.png" width="135" height="158"/>
-        <image name="swipeforusers-01.png" width="583" height="328"/>
+        <image name="swipeforusers-01-01.png" width="583" height="328"/>
         <image name="sync-01.png" width="275" height="276"/>
         <image name="tapformedia-01-01.png" width="583" height="255"/>
     </resources>

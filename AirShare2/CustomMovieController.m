@@ -280,8 +280,9 @@
 {
     if([[UIApplication sharedApplication] applicationState] == UIApplicationStateBackground) {
         NSLog(@"applicationDidEnterBackground:CustomMovieController");
-        
-        [self performSelector:@selector(play) withObject:nil afterDelay:0.001];
+        if([self.delegate isPlayingMovie]) {
+            [self performSelector:@selector(play) withObject:nil afterDelay:0.001];
+        }
     }
 }
 

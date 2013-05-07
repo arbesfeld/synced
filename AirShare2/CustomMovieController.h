@@ -19,6 +19,7 @@
 
 - (void)skipButtonPressed;
 - (void)sendSyncPacketsForItem:(MediaItem *)mediaItem;
+- (BOOL)isPlayingMovie;
 
 @end
 
@@ -26,6 +27,7 @@
     NSTimer *_fadeOutTimer;
     NSDate *_fadeOutTimerHit;
 }
+
 @property (nonatomic, weak) id <CustomMovieControllerDelegate> delegate;
 @property (nonatomic, strong) PlayerView *moviePlayer;
 @property (nonatomic, strong) UIButton *skipButton, *fadeButton, *eyeButton;

@@ -7,6 +7,7 @@
 //
 
 #import "Game.h"
+#import "UIButton+Extensions.h"
 
 #import <UIKit/UIKit.h>
 
@@ -14,6 +15,7 @@
 
 @property (weak, nonatomic) IBOutlet UITableView *usersTable;
 @property (weak, nonatomic) IBOutlet UILabel *connectedUsersLabel;
+@property (weak, nonatomic) IBOutlet UIButton *syncButton;
 @property (nonatomic, strong) Game *game;
 @property (weak, nonatomic) IBOutlet UIImageView *sepeartorImageView;
 
