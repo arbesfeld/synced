@@ -106,6 +106,8 @@
         
         [allData writeToFile:songPath atomically:YES];
         
+        NSLog(@"song downloaded to %@", songPath);
+        
         self.dataDone = YES;
     }
 }

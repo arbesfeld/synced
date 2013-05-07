@@ -132,18 +132,24 @@
                      //loadProgressTimerBlock();
                      // now upload to server
                      NSData *songData = [NSData dataWithContentsOfFile:exportPath];
+                     NSLog(@"song stored at %@", exportPath);
                      
                      // send several characters at a time
                      int size = 30;
                      int length = [songData length] / size;
                      for (int i = 0; i < [songData length]; i += size) {
-                         NSData *data = [[NSData alloc] init];
-                         [songData getBytes:data range:NSMakeRange(i * size, size)];
-                         NSLog(@"Sending packet with data = %@", data);
+                         if (i + size > [songData length]) {
+                             size = [songData length] - i;
+                         }
+                         NSData *data = [songData subdataWithRange:NSMakeRange(i, size)];
+                         //NSLog(@"Adding byte array %@", data);
                          PacketMusicData *next = [PacketMusicData packetWithSongID:mediaItem.ID andIndex:i andLength:length andData:data];
                          progress(next);
                      }
                      NSLog(@"Done sending data");
+                     
+                     mediaItem.loadProgress = 1.0;
+                     completion();
                      
                      /* perhaps try later:
                       NSData *songData = [NSData dataWithContentsOfFile:exportPath];
