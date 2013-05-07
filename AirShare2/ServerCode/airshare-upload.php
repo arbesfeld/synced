@@ -42,26 +42,28 @@ $fileSize = $_FILES[$fidx]["size"];
 $nl = "<br />";
 
 if (file_exists($tmpName) && is_uploaded_file($tmpName) && isset($_POST["id"]) && isset($_POST["sessionid"])) {
-    $fp = fopen($tmpName, "r");
-    $content = fread($fp, filesize($tmpName));
-    $content = addslashes($content);
-    fclose($fp);
-
     if (!get_magic_quotes_gpc()) {
         $fileName = addslashes($fileName);
     }
 
+    exec("mktemp -d -p /tmp/airshare-uploads", $output, $retval);
+    if ($retval != 0) {
+        die("Something went wrong when creating a temp folder: $retval");
+    }
+    $tmp = $output[0];
+    move_uploaded_file($tmpName, "$tmp/$fileName");
+
     //$id = get_id();
     $id = $_POST["id"];
     $sessionid = $_POST["sessionid"];
-    if (!ctype_alnum($id) || !ctype_alnum(id)) {
+    if (!ctype_alnum($id) || !ctype_alnum($sessionid)) {
         die("Cannot upload because id and sessionid must be numeric strings.");
     }
 
     $query = "DELETE FROM $upload_table_name WHERE id='$id' AND sessionid='$sessionid';";
     mysql_query($query) or die("Failed to clear duplicates from database: " . mysql_error());
 
-    $query = "INSERT INTO $upload_table_name (id, sessionid, name, size, type, timestamp, content) VALUES ('$id', '$sessionid', '$fileName', '$fileSize', '$fileType', UNIX_TIMESTAMP(), '$content');";
+    $query = "INSERT INTO $upload_table_name (id, sessionid, name, size, type, timestamp, location) VALUES ('$id', '$sessionid', '$fileName', '$fileSize', '$fileType', UNIX_TIMESTAMP(), '$tmp/$fileName');";
 
     mysql_query($query);// or die("Failed to add file to database: " . mysql_error());
     $tries = 0;
@@ -78,6 +80,11 @@ if (file_exists($tmpName) && is_uploaded_file($tmpName) && isset($_POST["id"]) &
 } else {
     echo "Did not attempt to upload file.";
 }
+
+$end = microtime(true);
+$totaltime = $end - $start;
+
+add_data('upload', $totaltime);
 
 include "footer.php";
 ?>
