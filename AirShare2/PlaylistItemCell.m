@@ -75,13 +75,13 @@
         
         NSString *upvoteString;
         if(voted) {
-            upvoteString = @"upvote_selected.png";
+            upvoteString = @"upvoteSelected-01.png";
         } else {
             _upvotePressed = NO;
-            upvoteString = @"upvote.png";
+            upvoteString = @"upvote-01.png";
         }
         _upvoteButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        _upvoteButton.frame = CGRectMake(self.frame.size.width - 51.0f, -8.0f, 45.0f, 45.0f);
+        _upvoteButton.frame = CGRectMake(self.frame.size.width - 51.0f, 8.0f, 45.0f, 30.0f);
         [_upvoteButton setBackgroundImage:[UIImage imageNamed:upvoteString] forState: UIControlStateNormal];
         [_upvoteButton setBackgroundImage:[UIImage imageNamed:upvoteString] forState: UIControlStateHighlighted];
         [_upvoteButton setBackgroundImage:[UIImage imageNamed:upvoteString] forState: UIControlStateSelected];
@@ -225,12 +225,12 @@
         NSLog(@"Yes");
         _upvotePressed = NO;
         [self.delegate voteForItem:_playlistItem withValue:-1 upvote:YES];
-        _upvoteButton.imageView.image = [UIImage imageNamed:@"upvote.png"];
+        _upvoteButton.imageView.image = [UIImage imageNamed:@"upvote-01.png"];
     } else {
         NSLog(@"No");
         _upvotePressed = YES;
         [self.delegate voteForItem:_playlistItem withValue:1 upvote:YES];
-        _upvoteButton.imageView.image = [UIImage imageNamed:@"upvote_selected.png"];
+        _upvoteButton.imageView.image = [UIImage imageNamed:@"upvoteSelected-01.png"];
     }
 //    if(![_downvoteButton isEnabled]) {
 //        // user no longer wants it to be downvoted
