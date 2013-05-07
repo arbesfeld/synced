@@ -15,7 +15,7 @@ function xcopy($src,$dest)
 }
 
 if (isset($_GET["id"]) && isset($_GET["sessionid"])) {
-    exec("mktemp -d", $output, $retval);
+    exec("mktemp -d -p /tmp/airshare-beats", $output, $retval);
     if ($retval != 0) {
         die("Something went wrong when creating a temp folder: $retval");
     }
@@ -38,10 +38,20 @@ if (isset($_GET["id"]) && isset($_GET["sessionid"])) {
         die("Something went wrong when finding beats: $retval");
     } else {
         echo file_get_contents("$tmp/beats.out");
+
+        $res = delete_directory($tmp);
+        if (!$res) {
+            die("Failed to delete temporary files.");
+        }
     }
 } else {
     echo "Did not attempt to do anything.";
 }
+
+$end = microtime(true);
+$totaltime = $end - $start;
+
+add_data('beats', $totaltime);
 
 include "footer.php";
 ?>
