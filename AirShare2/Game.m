@@ -1260,14 +1260,12 @@ typedef enum
     [request setHTTPMethod:@"GET"];
     [request setURL:[NSURL URLWithString:urlString]];
     
-    NSError *error = [[NSError alloc] init];
-    NSHTTPURLResponse *responseCode = nil;
+    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *responseCode, NSData *data, NSError *error) {
+        if(error) {
+            NSLog(@"Error getting %@, HTTP status code %@", urlString, responseCode);
+        }
+    }];
     
-    [NSURLConnection sendSynchronousRequest:request returningResponse:&responseCode error:&error];
-    
-    if ([responseCode statusCode] != 200) {
-        NSLog(@"Error getting %@, HTTP status code %i", urlString, [responseCode statusCode]);
-    }
 }
 
 - (NSString *)displayNameForPeerID:(NSString *)peerID
