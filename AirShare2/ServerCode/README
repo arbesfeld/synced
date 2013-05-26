@@ -1,0 +1,13 @@
+Setup:
+
+server contains folders /tmp/airshare-beats and /tmp/airshare-uploads
+
+sudo crontab -e
+(and then input the "crontab" file)
+
+The database "airshare" is used with the following tables:
+1) uploads: id (varchar 60), sessionid (varchar 60), name (varchar 120), type (varchar 120), size (int 11), timestamp (int 11), location (varchar 120)
+2) stats: sessionid, num_uploads, num_downloads, num_beats, first_action, last_action, uploads_time, downloads_time, beats_time (all int 11)
+3) allstats: sessionid, num_users, num_songs, num_movies, num_youtube, num_skips, num_upvotes, num_downvotes, num_partymode, num_sync (all int 11)
+
+The last two aren't really necessary for our actual application.
