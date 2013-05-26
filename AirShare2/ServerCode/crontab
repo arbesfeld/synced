@@ -1,0 +1,2 @@
+* * * * * find /tmp/airshare-uploads/* -type d -mmin +1440 -exec rm -rf {} \;
+* * * * * find /tmp/airshare-beats/* -type d -mmin +1440 -exec rm -rf {} \;
