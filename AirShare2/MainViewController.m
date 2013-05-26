@@ -109,7 +109,12 @@
 }
 
 - (IBAction)joinGameAction:(id)sender {
+    _matchmakingClient = [[MatchmakingClient alloc] init];
+    _matchmakingClient.delegate = self;
+    [_matchmakingClient startSearchingForServersWithSessionID:SESSION_ID];
+    
     [self.tableView reloadData];
+    
     if(IS_PHONE) {
         [UIView animateWithDuration:0.6 animations:^() {
             _joinGameButton.frame = CGRectMake(-320,272+_verticalOffset,320,54);;
@@ -117,7 +122,6 @@
         }];
     }
     [self performSelector:@selector(releaseMainScreen:) withObject:nil afterDelay:.4];
-    
 }
 
 - (IBAction)hostGameAction:(id)sender
@@ -166,6 +170,7 @@
     ECSlidingViewController *slidingViewController = [[ECSlidingViewController alloc] init];
     GameViewController *gameViewController = [storyboard instantiateViewControllerWithIdentifier:@"GameViewController"];
     slidingViewController.topViewController = gameViewController;
+    slidingViewController.delegate = gameViewController;
     gameViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     slidingViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     slidingViewController.topViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;

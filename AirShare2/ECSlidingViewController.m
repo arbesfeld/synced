@@ -255,7 +255,14 @@ NSString *const ECSlidingViewTopDidReset             = @"ECSlidingViewTopDidRese
     self.initialTouchPositionX = currentTouchPositionX;
     self.initialHoizontalCenter = self.topView.center.x;
   } else if (recognizer.state == UIGestureRecognizerStateChanged) {
-      if (currentTouchPositionY < [UIScreen mainScreen].applicationFrame.size.height - 80.0f & currentTouchPositionY > 80.0f){
+      float height = [UIScreen mainScreen].applicationFrame.size.height;
+      UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
+      if (orientation == UIInterfaceOrientationLandscapeLeft ||
+          orientation == UIInterfaceOrientationLandscapeRight) {
+          height = [UIScreen mainScreen].applicationFrame.size.width;
+      }
+      
+      if (currentTouchPositionY < height - 80.0f & currentTouchPositionY > 80.0f){
     CGFloat panAmount = self.initialTouchPositionX - currentTouchPositionX;
 
     CGFloat newCenterPosition = self.initialHoizontalCenter - panAmount;
@@ -506,12 +513,14 @@ NSString *const ECSlidingViewTopDidReset             = @"ECSlidingViewTopDidRese
 
 - (void)underLeftWillAppear
 {
+    [self.delegate hasSwipedLeft];
   dispatch_async(dispatch_get_main_queue(), ^{
     [[NSNotificationCenter defaultCenter] postNotificationName:ECSlidingViewUnderLeftWillAppear object:self userInfo:nil];
   });
   [self.underRightView removeFromSuperview];
   [self updateUnderLeftLayout];
   [self.view insertSubview:self.underLeftView belowSubview:self.topView];
+
   _underLeftShowing  = YES;
   _underRightShowing = NO;
 }

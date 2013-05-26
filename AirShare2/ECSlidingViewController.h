@@ -9,6 +9,14 @@
 #import <UIKit/UIKit.h>
 #import "UIImage+ImageWithUIView.h"
 
+@class ECSlidingViewController;
+
+@protocol ECSlidingViewControllerDelegate <NSObject>
+
+- (void)hasSwipedLeft;
+
+@end
+
 /** Notification that gets posted when the underRight view will appear */
 extern NSString *const ECSlidingViewUnderRightWillAppear;
 
@@ -66,6 +74,8 @@ typedef enum {
   CGPoint startTouchPosition;
   BOOL topViewHasFocus;
 }
+
+@property (nonatomic, weak) id <ECSlidingViewControllerDelegate> delegate;
 
 /** Returns the view controller that will be visible when the top view is slide to the right.
  
