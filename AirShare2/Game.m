@@ -16,7 +16,8 @@
 #import "PacketSyncResponse.h"
 #import "PacketCancelMusic.h"
 
-const double DELAY_TIME = 2.50000;   // wait DELAY_TIME seconds until songs play
+const double DELAY_TIME = 3.00000;   // wait DELAY_TIME seconds until songs play
+const double DELAY_TIME_YOUTUBE = 6.00000;   // wait DELAY_TIME seconds until youtube songs play
 const int WAIT_TIME_UPLOAD = 60;     // server wait time for others to download music after uploading
 const int WAIT_TIME_DOWNLOAD = 60;   // server wait time for others to download music after downloading
 const int SYNC_PACKET_COUNT = 100;   // how many sync packets to send
@@ -576,7 +577,9 @@ typedef enum
 {
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@",youtubeItem.url]];
     youtubeItem.url = url;
-    LBYouTubeExtractor* extractor = [[LBYouTubeExtractor alloc] initWithURL:youtubeItem.url andID:youtubeItem.ID quality:LBYouTubeVideoQualityLarge];
+    
+    LBYouTubeVideoQuality quality = IS_PHONE ? LBYouTubeVideoQualityMedium : LBYouTubeVideoQualityLarge;
+    LBYouTubeExtractor* extractor = [[LBYouTubeExtractor alloc] initWithURL:youtubeItem.url andID:youtubeItem.ID quality:quality];
     extractor.delegate = self;
     [extractor startExtracting];
     
@@ -710,7 +713,8 @@ typedef enum
     
     [self removeItemFromPlaylist:mediaItem];
     
-    NSDate *playTime = [[NSDate date] dateByAddingTimeInterval:DELAY_TIME];
+    double delayTime = mediaItem.playlistItemType == PlaylistItemTypeYoutube ? DELAY_TIME_YOUTUBE : DELAY_TIME;
+    NSDate *playTime = [[NSDate date] dateByAddingTimeInterval:delayTime];
     for (NSString *peerID in _players)
 	{
         if([peerID isEqualToString:_serverPeerID]) {
@@ -756,7 +760,7 @@ typedef enum
             }
             
             if(_audioPlayer) {
-                // if the audiioPlayer is playing, stop it
+                // if the audioPlayer is playing, stop it
                 [_audioPlayer stop];
                 [self audioPlayerDidFinishPlaying:_audioPlayer successfully:YES];
             }

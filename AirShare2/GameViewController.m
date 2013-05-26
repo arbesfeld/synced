@@ -310,26 +310,27 @@
 {
     [[UIApplication sharedApplication] beginIgnoringInteractionEvents];
     // dismiss the other view controllers if they are being presented
-    while([self isBeingPresented] || [self isBeingDismissed] ||
-          [_navController isBeingDismissed] || [_navController isBeingPresented] ||
-          [_mediaPicker isBeingDismissed]   || [_mediaPicker isBeingPresented]) {
-        NSLog(@"Wating for view to load");
-    }
+//    while([_navController isBeingDismissed] || [_navController isBeingPresented] ||
+//          [_mediaPicker isBeingDismissed]   || [_mediaPicker isBeingPresented]) {
+//        NSLog(@"Wating for view to load: navController: %@, %@, mediaPicker: %@, %@",
+//              [_navController isBeingPresented] ? @"YES": @"NO",
+//              [_navController isBeingDismissed] ? @"YES": @"NO",
+//              [_mediaPicker isBeingPresented] ? @"YES": @"NO",
+//              [_mediaPicker isBeingDismissed] ? @"YES": @"NO");
+//    }
     
     if(_navController && _navController.isViewLoaded && _navController.view.window) {
         [_navController dismissViewControllerAnimated:YES completion:^{
             [self presentViewController:viewController animated:NO completion:nil];
-            [[UIApplication sharedApplication] endIgnoringInteractionEvents];
         }];
     } else if(_mediaPicker && _mediaPicker.isViewLoaded && _mediaPicker.view.window) {
         [_mediaPicker dismissViewControllerAnimated:YES completion:^{
             [self presentViewController:viewController animated:NO completion:nil];
-            [[UIApplication sharedApplication] endIgnoringInteractionEvents];
         }];
     } else {
         [self presentViewController:viewController animated:YES completion:nil];
-        [[UIApplication sharedApplication] endIgnoringInteractionEvents];
     }
+    [[UIApplication sharedApplication] endIgnoringInteractionEvents];
     _displayedViewController = viewController;
     self.eyeButton.hidden = NO;
 }
@@ -481,8 +482,7 @@
 #pragma mark - playMusic____
 
 - (IBAction)playMusic:(id)sender {
-    _swipeToReveal.hidden = true;
-    _tapToAdd.hidden = true;
+    _tapToAdd.hidden = YES;
     _mediaPicker = [[MPMediaPickerController alloc] initWithMediaTypes: MPMediaTypeMusic];
     
     _mediaPicker.delegate = self;
@@ -493,8 +493,7 @@
 }
 
 - (IBAction)playMovie:(id)sender {
-    _swipeToReveal.hidden = true;
-    _tapToAdd.hidden = true;
+    _tapToAdd.hidden = YES;
 	MoviePickerViewController *moviePickerViewController = [[MoviePickerViewController alloc] initWithStyle:UITableViewStylePlain];
     _navController = [[UINavigationController alloc] initWithRootViewController:moviePickerViewController];
     
@@ -556,7 +555,12 @@
     }
 }
 
+#pragma mark - ECSlidingViewControllerDelegate
 
+- (void)hasSwipedLeft
+{
+    _swipeToReveal.hidden = YES;
+}
 
 
 @end

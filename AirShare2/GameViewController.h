@@ -20,7 +20,7 @@
 
 @end
 
-@interface GameViewController : UIViewController <UIAlertViewDelegate, UIApplicationDelegate, UITableViewDataSource, UITableViewDelegate, MPMediaPickerControllerDelegate, GameDelegate, PlaylistItemDelegate, MoviePickerDelegate> {
+@interface GameViewController : UIViewController <UIAlertViewDelegate, UIApplicationDelegate, UITableViewDataSource, UITableViewDelegate, MPMediaPickerControllerDelegate, GameDelegate, PlaylistItemDelegate, MoviePickerDelegate, ECSlidingViewControllerDelegate> {
     MenuViewController *_menuViewController;
     UIViewController *_displayedViewController;
     NSMutableDictionary *_hasVotedForItem; // key is songID, value is whethere they have upvoted it
