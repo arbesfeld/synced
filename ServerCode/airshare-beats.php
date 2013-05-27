@@ -21,7 +21,7 @@ if (isset($_GET["id"]) && isset($_GET["sessionid"])) {
     }
     $tmp = $output[0];
 
-    xcopy("/usr/share/nginx/www/beattracker/", $tmp);
+    xcopy("/opt/app/current/beattracker/", $tmp);
     chmod("$tmp/vamp-simple-host", 0777);
 
     $fileID = $_GET["id"];

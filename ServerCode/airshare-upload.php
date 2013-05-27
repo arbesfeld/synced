@@ -41,21 +41,18 @@ $fileType = $_FILES[$fidx]["type"];
 $fileSize = $_FILES[$fidx]["size"];
 $nl = "<br />";
 
-ini_set('display_errors',1);
-error_reporting(E_ALL);
-
 if (file_exists($tmpName) && is_uploaded_file($tmpName) && isset($_POST["id"]) && isset($_POST["sessionid"])) {
     if (!get_magic_quotes_gpc()) {
         $fileName = addslashes($fileName);
     }
 
-    // exec("mktemp -d -p /tmp/airshare-uploads", $output, $retval);
-    // if ($retval != 0) {
-    //     die("Something went wrong when creating a temp folder: $retval");
-    // }
-    // $tmp = $output[0];
-    if ( move_uploaded_file($tmpName, "/tmp/airshare-uploads/$fileName") ) {
-        die("Error moving uploaded file");
+    exec("mktemp -d -p /tmp/airshare-uploads", $output, $retval);
+    if ($retval != 0) {
+        die("Something went wrong when creating a temp folder: $retval");
+    }
+    $tmp = $output[0];
+    if(!move_uploaded_file($tmpName, "$tmp/$fileName")) {
+        die("Error uploading file");
     }
 
     //$id = get_id();
