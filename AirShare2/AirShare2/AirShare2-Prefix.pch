@@ -18,7 +18,7 @@
 // The name of the GameKit session.
 #define SESSION_ID @"AirShare"
 #define DATE_FORMAT @"yyyy-MM-dd-HH:mm:ss.SSS"
-#define BASE_URL @"http://www.axchen.com/"
+#define BASE_URL @"http://www.synced-app.com/"
 
 #define IS_PHONE  UI_USER_INTERFACE_IDIOM()==UIUserInterfaceIdiomPhone
 #define IS_IPHONE_5 ( fabs( ( double )[ [ UIScreen mainScreen ] bounds ].size.height - ( double )568 ) < DBL_EPSILON )

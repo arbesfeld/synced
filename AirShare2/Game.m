@@ -1265,7 +1265,7 @@ typedef enum
 - (void)updateServerStats:(int)action
 {
     NSString *urlString = [NSString stringWithFormat:@"%@airshare-morestats.php?sessionid=%@&action=%d", BASE_URL, _serverPeerID, action];
-    NSLog(@"Making url request: %@", urlString);
+    //NSLog(@"Making url request: %@", urlString);
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
     [request setHTTPMethod:@"GET"];
     [request setURL:[NSURL URLWithString:urlString]];

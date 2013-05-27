@@ -186,7 +186,6 @@
     //[self.playlistTable beginUpdates];
     NSMutableArray *newPlaylist = [NSMutableArray arrayWithArray:[_game.playlist sortedArrayUsingSelector:@selector(compare:)]];
     if([self.playlistTable numberOfRowsInSection:0] == _game.playlist.count) {
-        NSLog(@"Reloading table");
         [self.playlistTable beginUpdates];
         for(int i = 0; i < _game.playlist.count; i++) {
             for(int j = 0; j < newPlaylist.count; j++) {
@@ -200,7 +199,6 @@
         }
         [self.playlistTable endUpdates];
     }
-    NSLog(@"Done realoding table");
     //[self.playlistTable endUpdates];
     _game.playlist = newPlaylist;
     [self.playlistTable performSelector:@selector(reloadData) withObject:nil afterDelay:0.15];

@@ -4,7 +4,7 @@
 
 $start = microtime(true);
 
-$db = mysql_connect("localhost", "root", "passwordhere") or die("Failed to connect to database.");
+$db = mysql_connect("localhost", "airshare_user", "userpass") or die("Failed to connect to database.");
 
 mysql_select_db("airshare");
 
