@@ -1,6 +1,7 @@
 Setup:
 
 server contains folders /tmp/airshare-beats and /tmp/airshare-uploads
+Give them 1777 permissions (the same as /tmp)
 
 sudo crontab -e
 (and then input the "crontab" file)
@@ -11,3 +12,7 @@ The database "airshare" is used with the following tables:
 3) allstats: sessionid, num_users, num_songs, num_movies, num_youtube, num_skips, num_upvotes, num_downvotes, num_partymode, num_sync (all int 11)
 
 The last two aren't really necessary for our actual application.
+
+Create a folder "beattracker" in the same folder as the php files and move the following files into it:
+beats.py           libvamp-sdk.a                vamp-simple-host
+libvamp-hostsdk.a  vamp-rdf-template-generator
