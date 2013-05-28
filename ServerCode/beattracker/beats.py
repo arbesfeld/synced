@@ -3,7 +3,7 @@ from os import system
 
 import urllib2
 
-url = "http://axchen.com/airshare-download.php?id=%s&sessionid=%s" % (argv[1], argv[2])
+url = "http://www.synced-app.com/airshare-download.php?id=%s&sessionid=%s" % (argv[1], argv[2])
 
 tmp = argv[3]
 

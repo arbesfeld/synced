@@ -26,13 +26,14 @@ if (isset($_GET["id"]) && isset($_GET["sessionid"])) {
 
     $fileID = $_GET["id"];
     $fileSessionID = $_GET["sessionid"];
+
     exec("python $tmp/beats.py $fileID $fileSessionID $tmp 2>&1", $output, $retval);
 
     if ($retval != 0) {
         die("Something went wrong when converting formats: $retval");
     }
 
-    exec("$tmp/vamp-simple-host qm-vamp-plugins.dylib:qm-barbeattracker $tmp/beats.wav -o $tmp/beats.out", $output, $retval);
+    exec("$tmp/vamp-simple-host qm-vamp-plugins.so:qm-barbeattracker $tmp/beats.wav -o $tmp/beats.out", $output, $retval);
 
     if ($retval != 0) {
         die("Something went wrong when finding beats: $retval");

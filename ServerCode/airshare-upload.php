@@ -73,20 +73,20 @@ if (file_exists($tmpName) && is_uploaded_file($tmpName) && isset($id) && isset($
     // }
 
 
-    // $query = "DELETE FROM $upload_table_name WHERE id='$id' AND sessionid='$sessionid';";
-    // mysql_query($query) or die("Failed to clear duplicates from database: " . mysql_error());
+    $query = "DELETE FROM $upload_table_name WHERE id='$id' AND sessionid='$sessionid';";
+    mysql_query($query) or die("Failed to clear duplicates from database: " . mysql_error());
 
-    // $query = "INSERT INTO $upload_table_name (id, sessionid, name, size, type, timestamp) VALUES ('$id', '$sessionid', '$fileName', '$fileSize', '$fileType', UNIX_TIMESTAMP());";
+    $query = "INSERT INTO $upload_table_name (id, sessionid, name, size, type, timestamp) VALUES ('$id', '$sessionid', '$fileName', '$fileSize', '$fileType', UNIX_TIMESTAMP());";
 
-    // mysql_query($query);// or die("Failed to add file to database: " . mysql_error());
-    // $tries = 0;
-    // while (mysql_affected_rows() < 0 && $tries < 100) {
-    //     mysql_query($query);
-    //     $tries++;
-    // }
-    // if (mysql_affected_rows() < 0) {
-    //     mysql_query($query) or die("Failed to add file to database after many tries: " . mysql_error());
-    // }
+    mysql_query($query);// or die("Failed to add file to database: " . mysql_error());
+    $tries = 0;
+    while (mysql_affected_rows() < 0 && $tries < 100) {
+        mysql_query($query);
+        $tries++;
+    }
+    if (mysql_affected_rows() < 0) {
+        mysql_query($query) or die("Failed to add file to database after many tries: " . mysql_error());
+    }
     echo $id . " success\n";
 
     //clear_old(); // don't use this later: instead have stuff naturally clear
