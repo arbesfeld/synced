@@ -41,46 +41,57 @@ $fileType = $_FILES[$fidx]["type"];
 $fileSize = $_FILES[$fidx]["size"];
 $nl = "<br />";
 
-if (file_exists($tmpName) && is_uploaded_file($tmpName) && isset($_POST["id"]) && isset($_POST["sessionid"])) {
+$id = $_POST["id"];
+$sessionid = $_POST["sessionid"];
+
+// echo "name = {$fileName}\n";
+// echo "id = {$id}\n";
+// echo "sessionid = {$sessionid}\n";
+
+if (file_exists($tmpName) && is_uploaded_file($tmpName) && isset($id) && isset($sessionid)) {
     if (!get_magic_quotes_gpc()) {
         $fileName = addslashes($fileName);
     }
 
-    exec("mktemp -d -p /tmp/airshare-uploads", $output, $retval);
-    if ($retval != 0) {
-        die("Something went wrong when creating a temp folder: $retval");
-    }
-    $tmp = $output[0];
-    if(!move_uploaded_file($tmpName, "$tmp/$fileName")) {
-        die("Error uploading file");
-    }
-
-    //$id = get_id();
-    $id = $_POST["id"];
-    $sessionid = $_POST["sessionid"];
     if (!ctype_alnum($id) || !ctype_alnum($sessionid)) {
         die("Cannot upload because id and sessionid must be numeric strings.");
     }
 
-    $query = "DELETE FROM $upload_table_name WHERE id='$id' AND sessionid='$sessionid';";
-    mysql_query($query) or die("Failed to clear duplicates from database: " . mysql_error());
-
-    $query = "INSERT INTO $upload_table_name (id, sessionid, name, size, type, timestamp, location) VALUES ('$id', '$sessionid', '$fileName', '$fileSize', '$fileType', UNIX_TIMESTAMP(), '$tmp/$fileName');";
-
-    mysql_query($query);// or die("Failed to add file to database: " . mysql_error());
-    $tries = 0;
-    while (mysql_affected_rows() < 0 && $tries < 100) {
-        mysql_query($query);
-        $tries++;
+    $s3Loc = $id . "." . $sessionid;
+    if ($s3->putObjectFile($tmpName, $bucketName, $s3Loc, S3::ACL_PUBLIC_READ)) {
+        echo "S3::putObjectFile(): File copied to {$bucketName} is {$fileName} with temp name {$tmpName}\n";
+    } else {
+        die("S3::putObjectFile(): Failed to copy file");
     }
-    if (mysql_affected_rows() < 0) {
-        mysql_query($query) or die("Failed to add file to database after many tries: " . mysql_error());
-    }
-    echo $id;
+    // exec("mktemp -d -p /tmp/airshare-uploads", $output, $retval);
+    // if ($retval != 0) {
+    //     die("Something went wrong when creating a temp folder: $retval");
+    // }
+    // $tmp = $output[0];
+    // if(!move_uploaded_file($tmpName, "$tmp/$fileName")) {
+    //     die("Error uploading file");
+    // }
+
+
+    // $query = "DELETE FROM $upload_table_name WHERE id='$id' AND sessionid='$sessionid';";
+    // mysql_query($query) or die("Failed to clear duplicates from database: " . mysql_error());
+
+    // $query = "INSERT INTO $upload_table_name (id, sessionid, name, size, type, timestamp) VALUES ('$id', '$sessionid', '$fileName', '$fileSize', '$fileType', UNIX_TIMESTAMP());";
+
+    // mysql_query($query);// or die("Failed to add file to database: " . mysql_error());
+    // $tries = 0;
+    // while (mysql_affected_rows() < 0 && $tries < 100) {
+    //     mysql_query($query);
+    //     $tries++;
+    // }
+    // if (mysql_affected_rows() < 0) {
+    //     mysql_query($query) or die("Failed to add file to database after many tries: " . mysql_error());
+    // }
+    echo $id . " success\n";
 
     //clear_old(); // don't use this later: instead have stuff naturally clear
 } else {
-    echo "Did not attempt to upload file.";
+    die("Did not attempt to upload file.");
 }
 
 $end = microtime(true);
