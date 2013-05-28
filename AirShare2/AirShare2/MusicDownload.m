@@ -46,7 +46,7 @@
         //NSLog(@"Downloaded %lld bytes of %lld bytes", totalBytesDownloaded, totalBytesExpectedToDownload);
     }];
     [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"Download Success");
+        NSLog(@"Download Success: %@", operation.responseString);
         mediaItem.loadProgress = 1.0;
         completion();
         
@@ -86,7 +86,7 @@
     [httpClient registerHTTPOperationClass:[AFHTTPRequestOperation class]];
     operation.outputStream = [NSOutputStream outputStreamToFileAtPath:saveName append:NO];
     [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"Download Success");
+        NSLog(@"Download Success: %@", operation.responseString);
         completionBlock();
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Download Error: %@", error);
