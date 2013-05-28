@@ -22,6 +22,7 @@ if (isset($_GET["id"]) && isset($_GET["sessionid"])) {
     $tmp = $output[0];
 
     xcopy("/opt/app/current/beattracker/", $tmp);
+    chmod("$tmp/", 0777);
     chmod("$tmp/vamp-simple-host", 0777);
 
     $fileID = $_GET["id"];
@@ -36,7 +37,10 @@ if (isset($_GET["id"]) && isset($_GET["sessionid"])) {
     exec("$tmp/vamp-simple-host qm-vamp-plugins.so:qm-barbeattracker $tmp/beats.wav -o $tmp/beats.out", $output, $retval);
 
     if ($retval != 0) {
-        die("Something went wrong when finding beats: $retval");
+        foreach ($ouput as &$value) {
+            echo "{$value}";
+        }
+        die("Something went wrong when finding beats: $output, $retval");
     } else {
         echo file_get_contents("$tmp/beats.out");
 

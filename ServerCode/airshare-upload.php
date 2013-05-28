@@ -53,30 +53,31 @@ if (file_exists($tmpName) && is_uploaded_file($tmpName) && isset($id) && isset($
         $fileName = addslashes($fileName);
     }
 
-    if (!ctype_alnum($id) || !ctype_alnum($sessionid)) {
-        die("Cannot upload because id and sessionid must be numeric strings.");
-    }
+    // if (!ctype_alnum($id) || !ctype_alnum($sessionid)) {
+    //     die("Cannot upload because id and sessionid must be numeric strings.");
+    // }
 
-    $s3Loc = $id . "." . $sessionid;
-    if ($s3->putObjectFile($tmpName, $bucketName, $s3Loc, S3::ACL_PUBLIC_READ)) {
-        echo "S3::putObjectFile(): File copied to {$bucketName} is {$fileName} with temp name {$tmpName}\n";
-    } else {
-        die("S3::putObjectFile(): Failed to copy file");
+    // $s3Loc = $id . "." . $sessionid;
+    // if ($s3->putObjectFile($tmpName, $bucketName, $s3Loc, S3::ACL_PUBLIC_READ)) {
+    //     echo "S3::putObjectFile(): File copied to {$bucketName} is {$fileName} with temp name {$tmpName}\n";
+    // } else {
+    //     die("S3::putObjectFile(): Failed to copy file");
+    // }
+    exec("mktemp -d -p /tmp/airshare-uploads", $output, $retval);
+    if ($retval != 0) {
+        die("Something went wrong when creating a temp folder: $retval");
     }
-    // exec("mktemp -d -p /tmp/airshare-uploads", $output, $retval);
-    // if ($retval != 0) {
-    //     die("Something went wrong when creating a temp folder: $retval");
-    // }
-    // $tmp = $output[0];
-    // if(!move_uploaded_file($tmpName, "$tmp/$fileName")) {
-    //     die("Error uploading file");
-    // }
+    $tmp = $output[0];
+    chmod("$tmp/", 0777);
+    if(!move_uploaded_file($tmpName, "$tmp/$fileName")) {
+        die("Error uploading file");
+    }
 
 
     $query = "DELETE FROM $upload_table_name WHERE id='$id' AND sessionid='$sessionid';";
     mysql_query($query) or die("Failed to clear duplicates from database: " . mysql_error());
 
-    $query = "INSERT INTO $upload_table_name (id, sessionid, name, size, type, timestamp) VALUES ('$id', '$sessionid', '$fileName', '$fileSize', '$fileType', UNIX_TIMESTAMP());";
+    $query = "INSERT INTO $upload_table_name (id, sessionid, name, size, type, timestamp, location) VALUES ('$id', '$sessionid', '$fileName', '$fileSize', '$fileType', UNIX_TIMESTAMP(), '$tmp/$fileName');";
 
     mysql_query($query);// or die("Failed to add file to database: " . mysql_error());
     $tries = 0;
@@ -87,7 +88,7 @@ if (file_exists($tmpName) && is_uploaded_file($tmpName) && isset($id) && isset($
     if (mysql_affected_rows() < 0) {
         mysql_query($query) or die("Failed to add file to database after many tries: " . mysql_error());
     }
-    echo $id . " success\n";
+    echo $id;
 
     //clear_old(); // don't use this later: instead have stuff naturally clear
 } else {
