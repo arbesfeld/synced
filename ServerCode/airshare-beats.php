@@ -15,34 +15,35 @@ function xcopy($src,$dest)
 }
 
 if (isset($_GET["id"]) && isset($_GET["sessionid"])) {
-    exec("mktemp -d -p /tmp/airshare-beats", $output, $retval);
-    if ($retval != 0) {
-        die("Something went wrong when creating a temp folder: $retval");
-    }
-    $tmp = $output[0];
-
-    xcopy("/opt/app/current/beattracker/", $tmp);
-    chmod("$tmp/", 0777);
-    chmod("$tmp/vamp-simple-host", 0777);
+    // exec("mktemp -d -p /tmp/airshare-beats", $output, $retval);
+    // if ($retval != 0) {
+    //     die("Something went wrong when creating a temp folder: $retval");
+    // }
+    // $tmp = $output[0];
 
     $fileID = $_GET["id"];
     $fileSessionID = $_GET["sessionid"];
 
-    exec("python $tmp/beats.py $fileID $fileSessionID $tmp 2>&1", $output, $retval);
+    $path = "/tmp/airshare-uploads/".$fileSessionID."/";
+    $inFile = $path.$fileID;
+    $outFileWav = $path.$fileID.".wav";
+    $outFileBeats = $path.$fileID.".out";
 
+    $cmd = "/usr/local/bin/faad -o ".$outFileWav." ".$inFile;
+    // echo $cmd."\n";
+    // exec("python /opt/app/current/beattracker/beats.py $fileID $fileSessionID $path 2>&1", $output, $retval);                     
+    exec($cmd, $ouput, $retval);
     if ($retval != 0) {
-        die("Something went wrong when converting formats: $retval");
-    }
-
-    exec("$tmp/vamp-simple-host qm-vamp-plugins.so:qm-barbeattracker $tmp/beats.wav -o $tmp/beats.out", $output, $retval);
-
+        die("Something went wrong when converting song: $output, $retval");
+    } 
+    $vamp = "/opt/app/current/beattracker/vamp-simple-host";
+    $cmd = $vamp." qm-vamp-plugins.so:qm-barbeattracker ".$outFileWav." -o ".$outFileBeats;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         " qm-vamp-plugins.so:qm-barbeattracker ".$outFileWav." -o ".$outFileBeats;
+    // echo $cmd."\n";
+    exec($cmd, $output, $retval);
     if ($retval != 0) {
-        foreach ($ouput as &$value) {
-            echo "{$value}";
-        }
         die("Something went wrong when finding beats: $output, $retval");
     } else {
-        echo file_get_contents("$tmp/beats.out");
+        echo file_get_contents($outFileBeats);
 
         $res = delete_directory($tmp);
         if (!$res) {

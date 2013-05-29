@@ -63,21 +63,23 @@ if (file_exists($tmpName) && is_uploaded_file($tmpName) && isset($id) && isset($
     // } else {
     //     die("S3::putObjectFile(): Failed to copy file");
     // }
-    exec("mktemp -d -p /tmp/airshare-uploads", $output, $retval);
-    if ($retval != 0) {
-        die("Something went wrong when creating a temp folder: $retval");
-    }
-    $tmp = $output[0];
-    chmod("$tmp/", 0777);
-    if(!move_uploaded_file($tmpName, "$tmp/$fileName")) {
+
+    $path = "/tmp/airshare-uploads/".$sessionid."/";
+    mkdir($path, 0777, true);
+    chmod("$path/", 0777);
+    // if ($retval != 0) {
+    //     die("Something went wrong when creating a temp folder: $retval");
+    // }
+    // $tmp = $output[0];
+    // chmod("$tmp/", 0777);
+    if(!move_uploaded_file($tmpName, "$path/$fileName")) {
         die("Error uploading file");
     }
-
 
     $query = "DELETE FROM $upload_table_name WHERE id='$id' AND sessionid='$sessionid';";
     mysql_query($query) or die("Failed to clear duplicates from database: " . mysql_error());
 
-    $query = "INSERT INTO $upload_table_name (id, sessionid, name, size, type, timestamp, location) VALUES ('$id', '$sessionid', '$fileName', '$fileSize', '$fileType', UNIX_TIMESTAMP(), '$tmp/$fileName');";
+    $query = "INSERT INTO $upload_table_name (id, sessionid, name, size, type, timestamp, location) VALUES ('$id', '$sessionid', '$fileName', '$fileSize', '$fileType', UNIX_TIMESTAMP(), '$path/$fileName');";
 
     mysql_query($query);// or die("Failed to add file to database: " . mysql_error());
     $tries = 0;
