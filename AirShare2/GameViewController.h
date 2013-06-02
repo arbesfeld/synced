@@ -12,6 +12,8 @@
 #import <MediaPlayer/MediaPlayer.h>
 #import <QuartzCore/QuartzCore.h>
 
+
+
 @class GameViewController;
 
 @protocol GameViewControllerDelegate <NSObject>
@@ -28,6 +30,8 @@
 @property (strong, nonatomic) IBOutlet UIImageView *swipeToReveal;
 @property (strong, nonatomic) IBOutlet UIImageView *tapToAdd;
 @property (weak, nonatomic) IBOutlet UIButton *eyeButton;
+@property (strong, nonatomic) IBOutlet UIImageView *background;
+
 @property (strong, nonatomic) IBOutlet UISwitch *partySwitch;
 @property (strong, nonatomic) IBOutlet UILabel *partyModeLabel;
 @property (strong, nonatomic) IBOutlet UIImageView *volumeImage;

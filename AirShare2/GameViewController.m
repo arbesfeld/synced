@@ -36,6 +36,18 @@
     self.playlistTable.layer.masksToBounds = YES;
 
     //self.playlistTable.separatorStyle = UITableViewCellSeparatorStyleNone;
+    CGSize screenSize = [[UIScreen mainScreen] bounds].size;
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        if (screenSize.height > 480.0f) {
+            /*Do iPhone 5 stuff here.*/
+        } else {
+            [self.background setImage:[UIImage imageNamed:@"frostedBGip4.png"]];
+            /*Do iPhone Classic stuff here.*/
+        }
+    } else {
+        /*Do iPad stuff here.*/
+    }
     
     _itemNumber = 0;
     
@@ -44,28 +56,28 @@
     [self.skipSongButton setHitTestEdgeInsets:UIEdgeInsetsMake(-10, -10, -10, -10)];
     
     self.playingLabel.font = [UIFont fontWithName:@"Century Gothic" size:11.0f];
-    self.playingLabel.textColor = [UIColor darkGrayColor];
+    self.playingLabel.textColor = [UIColor lightGrayColor];
     
     self.partyModeLabel.hidden = true;
     self.partyModeLabel.font = [UIFont fontWithName:@"Century Gothic" size:11.0f];
-    self.partyModeLabel.textColor = [UIColor darkGrayColor];
+    self.partyModeLabel.textColor = [UIColor lightGrayColor];
     
     self.songTitle.shadowOffset = CGSizeMake(0.0, -1.0);
-    self.songTitle.textColor = [UIColor colorWithRed:0.234 green:0.234 blue:0.234 alpha:1.000];
+    self.songTitle.textColor = [UIColor whiteColor];
     self.songTitle.backgroundColor = [UIColor clearColor];
     self.songTitle.font = [UIFont fontWithName:@"Century Gothic" size:16.0f];
     
     self.artistLabel.font = [UIFont fontWithName:@"Century Gothic" size:12.0f];
-    self.artistLabel.textColor = [UIColor darkGrayColor];
+    self.artistLabel.textColor = [UIColor lightGrayColor];
     
     self.skipsLabel.font = [UIFont fontWithName:@"Century Gothic" size:12.0f];
-    self.skipsLabel.textColor = [UIColor darkGrayColor];
+    self.skipsLabel.textColor = [UIColor lightGrayColor];
     
     self.skipSongLabel.font = [UIFont fontWithName:@"Century Gothic" size:14.0f];
-    self.skipSongLabel.textColor = [UIColor colorWithRed:0.234 green:0.234 blue:0.234 alpha:1.000];
+    self.skipSongLabel.textColor = [UIColor whiteColor];
     
     self.timeLabel.font = [UIFont fontWithName:@"Century Gothic" size:14.0f];
-    self.timeLabel.textColor = [UIColor colorWithRed:0.234 green:0.234 blue:0.234 alpha:1.000];
+    self.timeLabel.textColor = [UIColor whiteColor];
     
     self.playlistTable.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     
@@ -557,7 +569,9 @@
 
 - (void)hasSwipedLeft
 {
-    _swipeToReveal.hidden = YES;
+    [UIView animateWithDuration:.6 animations:^() {
+    _swipeToReveal.alpha = 0.0;
+    }];
 }
 
 

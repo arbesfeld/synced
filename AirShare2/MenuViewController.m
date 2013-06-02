@@ -66,6 +66,7 @@
     NSString *peerID = [[_game.players allKeys] objectAtIndex:indexPath.row];
     cell.textLabel.text = [_game displayNameForPeerID:peerID];
     cell.textLabel.font = [UIFont fontWithName:@"Century Gothic" size:15.0f];
+    cell.textLabel.textColor = [UIColor whiteColor];
     UIView *backView = [[UIView alloc] initWithFrame:CGRectZero];
     backView.backgroundColor = [UIColor clearColor];
     cell.backgroundView = backView;

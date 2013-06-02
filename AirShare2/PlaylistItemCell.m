@@ -30,7 +30,7 @@
                                                      name:UIApplicationDidChangeStatusBarOrientationNotification
                                                    object:nil];
         
-        static float alpha = 0.5;
+        static float alpha = 0.9;
         const NSArray *colorTable = [[NSArray alloc] initWithObjects: [UIColor colorWithRed:254/255.0 green:219/255.0 blue:114/255.0 alpha:alpha],[UIColor colorWithRed:165/255.0 green:254/225.0 blue:113/225.0 alpha:alpha], [UIColor colorWithRed:113/255.0 green:254/225.0 blue:146/225.0 alpha:alpha], [UIColor colorWithRed:113/255.0 green:169/225.0 blue:254/225.0 alpha:alpha], [UIColor colorWithRed:113/255.0 green:254/225.0 blue:235/225.0 alpha:alpha], [UIColor colorWithRed:113/255.0 green:115/225.0 blue:254/225.0 alpha:alpha], [UIColor colorWithRed:188/255.0 green:113/225.0 blue:254/225.0 alpha:alpha], [UIColor colorWithRed:254/255.0 green:113/225.0 blue:188/225.0 alpha:alpha], [UIColor colorWithRed:254/255.0 green:165/225.0 blue:113/225.0 alpha:alpha], [UIColor colorWithRed:254/255.0 green:115/225.0 blue:113/225.0 alpha:alpha], nil];
         
         self.position = position+1;
@@ -42,12 +42,13 @@
         self.textLabel.font = [UIFont fontWithName:@"CenturyGothicStd" size:14];
         self.textLabel.backgroundColor = [UIColor clearColor];
         self.textLabel.textAlignment = NSTextAlignmentLeft;
+        self.textLabel.textColor = [UIColor whiteColor];
         
         self.detailTextLabel.text = playlistItem.subtitle;
         self.detailTextLabel.font = [UIFont fontWithName:@"CenturyGothicStd" size:11];
         self.detailTextLabel.backgroundColor = [UIColor clearColor];
         self.detailTextLabel.textAlignment = NSTextAlignmentLeft;
-        self.detailTextLabel.textColor = [UIColor darkGrayColor];
+        self.detailTextLabel.textColor = [UIColor lightGrayColor];
         
         self.positionLabel = [[UILabel alloc] init];
         self.positionLabel.frame = CGRectMake(2.0f, 10.0f, 30.0f, 30.0f);
@@ -55,6 +56,7 @@
         self.positionLabel.font = [UIFont fontWithName:@"CenturyGothicStd-Bold" size:15];
         self.positionLabel.backgroundColor = [UIColor clearColor];
         self.positionLabel.textAlignment = NSTextAlignmentCenter;
+        self.positionLabel.textColor = [UIColor whiteColor];
         
         
         if(playlistItem.playlistItemType == PlaylistItemTypeSong) {
@@ -122,13 +124,14 @@
                                                          repeats:YES];
             [[NSRunLoop mainRunLoop] addTimer:_updateLoadProgress forMode:NSRunLoopCommonModes];
         }
-        _loadProgress.layer.borderColor = [UIColor grayColor].CGColor;
-        _loadProgress.layer.borderWidth = 1.0f;
+        //_loadProgress.layer.borderColor = [UIColor grayColor].CGColor;
+        //_loadProgress.layer.borderWidth = 1.0f;
         _loadProgress.autoresizingMask = 0x3f;
         
         int colorID = _playlistItem.itemNumber % colorTable.count;
         UIColor *originalColor = (UIColor *)colorTable[colorID];
-        _loadProgress.backgroundColor = originalColor;
+        _loadProgress.layer.borderColor = originalColor.CGColor;
+        _loadProgress.layer.borderWidth = 2.3f;
         
         // this item was voted on, transition from its original color
         if(self.playlistItem.justVoted) {
@@ -140,7 +143,7 @@
                 self.loadProgress.backgroundColor = flashedColor;
             } completion:^(BOOL finished) {
                 [UIView animateWithDuration:0.4 animations:^ {
-                    _loadProgress.backgroundColor = originalColor;
+                    _loadProgress.backgroundColor = [UIColor clearColor];
                 }];
             }];
             self.playlistItem.justVoted = NO;

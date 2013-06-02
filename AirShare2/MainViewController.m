@@ -379,11 +379,12 @@
     NSString *gradientLocation = [[NSBundle mainBundle] pathForResource:@"gradient_transparent" ofType:@"png"];
     NSURL *url = [[NSBundle mainBundle] URLForResource:@"loading" withExtension:@"gif"];
 
-    self.view.backgroundColor = [[UIColor alloc] initWithPatternImage:[UIImage imageNamed:@"bgGreyImg.png"]];
+    self.view.backgroundColor = [[UIColor alloc] initWithPatternImage:[UIImage imageNamed:@"metalHolesIP5.png"]];
     self.tableView.layer.cornerRadius = 7;
     self.tableView.layer.masksToBounds = YES;
     
     self.sessionsLabel.font = [UIFont fontWithName:@"Century Gothic" size:20.0f];
+    self.sessionsLabel.textColor = [UIColor whiteColor];
 
     _waitingView.image = [UIImage animatedImageWithAnimatedGIFData:[NSData dataWithContentsOfURL:url]];
     _waitingView.hidden = YES;
@@ -402,52 +403,50 @@
     _gradientLoadProgressTwo.frame = CGRectMake(0,0,width,54);;
     
     [_joinGameButton setTitle:@"Join" forState:UIControlStateNormal];
-    _joinGameButton.titleLabel.font = [UIFont fontWithName:@"Century Gothic" size:20.0f];
+    _joinGameButton.titleLabel.font = [UIFont fontWithName:@"Century Gothic" size:22.0f];
     _joinGameButton.layer.shadowOffset = CGSizeMake(2, 2);
     _joinGameButton.layer.shadowColor = [[UIColor blackColor] CGColor];
     _joinGameButton.layer.shadowOpacity = .5f;
     _joinGameButton.layer.borderColor = [UIColor grayColor].CGColor;
     _joinGameButton.layer.borderWidth = 1.0f;
     _joinGameButton.hidden = true;
-    _joinGameButton.layer.backgroundColor = [UIColor colorWithRed:255/255.0 green:70/225.0 blue:0/225.0 alpha:.6].CGColor;
+    _joinGameButton.layer.backgroundColor = [UIColor colorWithRed:255/255.0 green:70/225.0 blue:0/225.0 alpha:1].CGColor;
     [_joinGameButton addSubview:_gradientLoadProgress];
 
 
     [_hostGameButton setTitle:@"Host" forState:UIControlStateNormal];
-    _hostGameButton.titleLabel.font = [UIFont fontWithName:@"Century Gothic" size:20.0f];
+    _hostGameButton.titleLabel.font = [UIFont fontWithName:@"Century Gothic" size:22.0f];
     _hostGameButton.layer.shadowOffset = CGSizeMake(2, 2);
     _hostGameButton.layer.shadowColor = [[UIColor blackColor] CGColor];
     _hostGameButton.layer.shadowOpacity = .5f;
     _hostGameButton.layer.borderColor = [UIColor grayColor].CGColor;
     _hostGameButton.layer.borderWidth = 1.0f;
-    _hostGameButton.layer.backgroundColor = [UIColor colorWithRed:255/255.0 green:150/225.0 blue:0/225.0 alpha:.6].CGColor;
+    _hostGameButton.layer.backgroundColor = [UIColor colorWithRed:255/255.0 green:150/225.0 blue:0/225.0 alpha:1].CGColor;
     _hostGameButton.hidden = true;
     [_hostGameButton addSubview:_gradientLoadProgressTwo];
 
     
     if(!IS_PHONE) {
-        _airshareLogo = [[UIImageView alloc] initWithFrame:CGRectMake(42, 250, 300, 130)];
-        _airshareLogo.center = _airshareLogo.center = CGPointMake(self.view.frame.size.height / 2 + 30, 300);
-        _airshareLogo.contentMode = UIViewContentModeScaleAspectFill;
+        _airshareLogo = [[UIImageView alloc] initWithFrame:CGRectMake(-25, 135, 346, 130)];
+        _airshareLogo.contentMode = UIViewContentModeScaleAspectFit;
     } else if(IS_IPHONE_5) {
-        _airshareLogo = [[UIImageView alloc] initWithFrame:CGRectMake(12, 135, 346, 242)];
+        _airshareLogo = [[UIImageView alloc] initWithFrame:CGRectMake(-25, 135, 346, 130)];
         _airshareLogo.contentMode = UIViewContentModeScaleAspectFit;
     } else {
-        _airshareLogo = [[UIImageView alloc] initWithFrame:CGRectMake(42, 147, 280, 130)];
-        _airshareLogo.contentMode = UIViewContentModeScaleAspectFill;
+        _airshareLogo = [[UIImageView alloc] initWithFrame:CGRectMake(-25, 135, 346, 130)];
+        _airshareLogo.contentMode = UIViewContentModeScaleAspectFit;
     }
-    _airshareLogo.image = [UIImage imageNamed:@"airshare.png"];
+    _airshareLogo.image = [UIImage imageNamed:@"synced-01.png"];
     [self.view addSubview:_airshareLogo];
     
     
     [UIView animateWithDuration:.6 animations:^() {
         if(!IS_PHONE) {
-            _airshareLogo.center = CGPointMake(self.view.frame.size.height / 2 + 30, 90);
+            _airshareLogo.frame = CGRectMake(-25, 40, 100, 100);
         } else if(IS_IPHONE_5) {
-            _airshareLogo.frame = CGRectMake(12, -25, 346, 242);
+            _airshareLogo.frame = CGRectMake(-25, 40, 346, 130);
         } else {
-            _airshareLogo.frame = CGRectMake(42, 25, 280, 130);
-        }
+            _airshareLogo.frame = CGRectMake(-25, 40, 346, 130);        }
     }];
     
     if(IS_PHONE) {
