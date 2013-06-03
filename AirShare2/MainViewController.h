@@ -14,8 +14,7 @@
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) IBOutlet UIImageView *waitingView;
 @property (strong, nonatomic) IBOutlet UILabel *sessionsLabel;
-@property (nonatomic, strong) UIView *gradientLoadProgress;
-@property (nonatomic, strong) UIView *gradientLoadProgressTwo;
+@property (nonatomic, strong) UIView *gradientLoadProgress, *gradientLoadProgressTwo;
 @property (nonatomic, strong) UIImageView *airshareLogo;
 
 

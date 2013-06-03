@@ -45,10 +45,10 @@ if (isset($_GET["id"]) && isset($_GET["sessionid"])) {
     } else {
         echo file_get_contents($outFileBeats);
 
-        $res = delete_directory($tmp);
-        if (!$res) {
-            die("Failed to delete temporary files.");
-        }
+        // $res = delete_directory($tmp);
+        // if (!$res) {
+        //     die("Failed to delete temporary files.");
+        // }
     }
 } else {
     echo "Did not attempt to do anything.";

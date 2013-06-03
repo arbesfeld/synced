@@ -116,6 +116,7 @@
 {
     [super viewWillAppear:animated];
     
+    self.view.backgroundColor = [UIColor blackColor];
     self.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     
     if (![self.slidingViewController.underLeftViewController isKindOfClass:[MenuViewController class]]) {

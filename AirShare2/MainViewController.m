@@ -23,11 +23,21 @@
     double _verticalOffset;
 }
 
-- (void)viewDidLoad
+- (void)viewWillAppear:(BOOL)animated
 {
-    
-	[super viewDidLoad];
+	[super viewWillAppear:animated];
     _quitReasonClient = QuitReasonConnectionDropped;
+    [_airshareLogo setAlpha:0.0];
+    
+    if(!IS_PHONE) {
+        _verticalOffset = -50.0f;
+    }
+    else if(IS_IPHONE_5) {
+        _verticalOffset = 40.0f;
+    } else {
+        _verticalOffset = 20.0f;
+    }
+    
     [self setupUI];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(reload)
@@ -38,15 +48,9 @@
     [_sessionsLabel setAlpha:0.0];
     [_backButton setAlpha:0.0];
     
-    if(!IS_PHONE) {
-        _verticalOffset = -50.0f;
-    }
-    else if(IS_IPHONE_5) {
-        _verticalOffset = 40.0f;
-    } else {
-        _verticalOffset = 0.0f;
-    }
     
+    _waitingView.hidden = YES;
+    [self reload];
     [[UIApplication sharedApplication] beginReceivingRemoteControlEvents];
 }
 
@@ -68,12 +72,12 @@
 
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
-	[super viewWillAppear:animated];
-    _waitingView.hidden = YES;
-    [self reload];
-}
+//- (void)viewWillAppear:(BOOL)animated
+//{
+//	[super viewWillAppear:animated];
+//    _waitingView.hidden = YES;
+//    [self reload];
+//}
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
@@ -379,11 +383,11 @@
     NSString *gradientLocation = [[NSBundle mainBundle] pathForResource:@"gradient_transparent" ofType:@"png"];
     NSURL *url = [[NSBundle mainBundle] URLForResource:@"loading" withExtension:@"gif"];
 
-    self.view.backgroundColor = [[UIColor alloc] initWithPatternImage:[UIImage imageNamed:@"metalHolesIP5.png"]];
+    self.view.backgroundColor = [UIColor blackColor];
     self.tableView.layer.cornerRadius = 7;
     self.tableView.layer.masksToBounds = YES;
     
-    self.sessionsLabel.font = [UIFont fontWithName:@"Century Gothic" size:20.0f];
+    self.sessionsLabel.font = [UIFont fontWithName:@"Century Gothic" size:22.0f];
     self.sessionsLabel.textColor = [UIColor whiteColor];
 
     _waitingView.image = [UIImage animatedImageWithAnimatedGIFData:[NSData dataWithContentsOfURL:url]];
@@ -396,34 +400,44 @@
     }
     
     _gradientLoadProgress = [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:gradientLocation]];
-    [_gradientLoadProgress setAlpha:.25];
-    _gradientLoadProgress.frame = CGRectMake(0,0,width,54);;
+    [_gradientLoadProgress setAlpha:1.0];
+    _gradientLoadProgress.frame = CGRectMake(0,0,width,54);
     _gradientLoadProgressTwo = [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:gradientLocation]];
-    [_gradientLoadProgressTwo setAlpha:.25];
-    _gradientLoadProgressTwo.frame = CGRectMake(0,0,width,54);;
-    
+    [_gradientLoadProgressTwo setAlpha:1.0];
+    _gradientLoadProgressTwo.frame = CGRectMake(0,0,width,54);
+    if(_gradientLoadProgress) {
+        NSLog(@"Found");
+    }
+    _joinGameButton = [[UIButton alloc] initWithFrame:CGRectMake(320,272+_verticalOffset, 320, 54)];
+    [_joinGameButton addTarget:self action:@selector(joinGameAction:) forControlEvents:UIControlEventTouchUpInside];
     [_joinGameButton setTitle:@"Join" forState:UIControlStateNormal];
     _joinGameButton.titleLabel.font = [UIFont fontWithName:@"Century Gothic" size:22.0f];
     _joinGameButton.layer.shadowOffset = CGSizeMake(2, 2);
     _joinGameButton.layer.shadowColor = [[UIColor blackColor] CGColor];
     _joinGameButton.layer.shadowOpacity = .5f;
-    _joinGameButton.layer.borderColor = [UIColor grayColor].CGColor;
+    _joinGameButton.layer.borderColor = [UIColor blackColor].CGColor;
     _joinGameButton.layer.borderWidth = 1.0f;
     _joinGameButton.hidden = true;
     _joinGameButton.layer.backgroundColor = [UIColor colorWithRed:255/255.0 green:70/225.0 blue:0/225.0 alpha:1].CGColor;
     [_joinGameButton addSubview:_gradientLoadProgress];
+    [_joinGameButton bringSubviewToFront:_gradientLoadProgress];
+    [self.view addSubview:_joinGameButton];
 
-
+    
+    _hostGameButton = [[UIButton alloc] initWithFrame:CGRectMake(-320,195+_verticalOffset, 320, 54)];
+    [_hostGameButton addTarget:self action:@selector(hostGameAction:) forControlEvents:UIControlEventTouchUpInside];
     [_hostGameButton setTitle:@"Host" forState:UIControlStateNormal];
     _hostGameButton.titleLabel.font = [UIFont fontWithName:@"Century Gothic" size:22.0f];
     _hostGameButton.layer.shadowOffset = CGSizeMake(2, 2);
     _hostGameButton.layer.shadowColor = [[UIColor blackColor] CGColor];
     _hostGameButton.layer.shadowOpacity = .5f;
-    _hostGameButton.layer.borderColor = [UIColor grayColor].CGColor;
+    _hostGameButton.layer.borderColor = [UIColor blackColor].CGColor;
     _hostGameButton.layer.borderWidth = 1.0f;
     _hostGameButton.layer.backgroundColor = [UIColor colorWithRed:255/255.0 green:150/225.0 blue:0/225.0 alpha:1].CGColor;
     _hostGameButton.hidden = true;
     [_hostGameButton addSubview:_gradientLoadProgressTwo];
+    [_hostGameButton bringSubviewToFront:_gradientLoadProgressTwo];
+    [self.view addSubview:_hostGameButton];
 
     
     if(!IS_PHONE) {
@@ -441,6 +455,7 @@
     
     
     [UIView animateWithDuration:.6 animations:^() {
+        _airshareLogo.alpha = 1.0;
         if(!IS_PHONE) {
             _airshareLogo.frame = CGRectMake(-25, 40, 100, 100);
         } else if(IS_IPHONE_5) {

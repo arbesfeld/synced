@@ -732,10 +732,6 @@ typedef enum
 
 - (void)playMediaItem:(MediaItem *)mediaItem withStartTime:(NSDate *)startTime atSongTime:(int)songTime
 {
-    if (_partyMode) {
-        [self updateServerStats:8];
-    }
-    
     float compensate = 0.0; // _playStartTime; // _playStartTime is a negative number
     if([[UIApplication sharedApplication] applicationState] == UIApplicationStateInactive) {
         compensate += BACKGROUND_TIME;
@@ -787,13 +783,19 @@ typedef enum
                                                           repeats:NO];
     } else {
         if([[UIApplication sharedApplication] applicationState] == UIApplicationStateInactive) {
-            return;
             // not accurate updating when app inactive
+            return;
         }
-        _updateMusicTimer = [NSTimer scheduledTimerWithTimeInterval:[startTime timeIntervalSinceNow]
+        float delay = [startTime timeIntervalSinceNow] + compensate;
+        float songTimeF = (double)songTime;
+        if(delay < 0.0) {
+            songTimeF = songTime - ABS(delay);
+            delay = 0.0;
+        }
+        _updateMusicTimer = [NSTimer scheduledTimerWithTimeInterval:delay
                                                              target:self
                                                            selector:@selector(handleUpdateMusicTimer:)
-                                                           userInfo:[NSNumber numberWithInt:songTime]
+                                                           userInfo:[NSNumber numberWithFloat:songTimeF]
                                                             repeats:NO];
             
     }

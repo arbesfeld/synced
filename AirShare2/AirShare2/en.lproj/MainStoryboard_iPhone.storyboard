@@ -12,49 +12,14 @@
                         <rect key="frame" x="0.0" y="20" width="320" height="460"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="metalHolesIP5.png" translatesAutoresizingMaskIntoConstraints="NO" id="AD4-Q8-1a4"/>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" verticalCompressionResistancePriority="1" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="edi-GE-42e">
+                            <imageView userInteractionEnabled="NO" alpha="0.55000000000000004" contentMode="scaleToFill" image="metalHolesIP5.png" translatesAutoresizingMaskIntoConstraints="NO" id="AD4-Q8-1a4"/>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" verticalCompressionResistancePriority="1" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="edi-GE-42e">
                                 <color key="backgroundColor" white="1" alpha="0.5" colorSpace="calibratedWhite"/>
                                 <connections>
                                     <outlet property="dataSource" destination="2" id="wTz-CD-HBV"/>
                                     <outlet property="delegate" destination="2" id="1qj-dK-VXZ"/>
                                 </connections>
                             </tableView>
-                            <button opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xQz-oA-iaC" userLabel="hostGameButton">
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="54" type="user" id="wXt-Dl-LLh"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
-                                <state key="normal">
-                                    <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <state key="selected">
-                                    <color key="titleColor" red="0.87816734522343975" green="1" blue="0.41473113238958692" alpha="1" colorSpace="calibratedRGB"/>
-                                </state>
-                                <state key="highlighted">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="hostGameAction:" destination="2" eventType="touchUpInside" id="mrf-ej-Yf1"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="99G-vY-x30" userLabel="joinGameButton">
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="54" id="BoU-wg-eVz"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                <state key="normal" title=" ">
-                                    <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <state key="highlighted">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="joinGameAction:" destination="2" eventType="touchDown" id="VLZ-SL-icU"/>
-                                </connections>
-                            </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bht-7b-rQK">
                                 <constraints>
                                     <constraint firstAttribute="width" constant="16" id="CQK-Za-eWR"/>
@@ -90,24 +55,18 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="bottom" secondItem="xQz-oA-iaC" secondAttribute="bottom" constant="211" type="user" id="26b-t2-fU0"/>
                             <constraint firstItem="AD4-Q8-1a4" firstAttribute="bottom" secondItem="3" secondAttribute="bottom" type="default" id="2k9-Cy-0Lu"/>
                             <constraint firstItem="AD4-Q8-1a4" firstAttribute="top" secondItem="3" secondAttribute="top" type="default" id="7qb-yx-6F4"/>
                             <constraint firstAttribute="centerX" secondItem="edi-GE-42e" secondAttribute="centerX" type="user" id="AKd-5H-umH"/>
-                            <constraint firstItem="99G-vY-x30" firstAttribute="leading" secondItem="3" secondAttribute="leading" type="default" id="EHR-00-vAG"/>
-                            <constraint firstAttribute="bottom" secondItem="99G-vY-x30" secondAttribute="bottom" constant="133" type="user" id="Fmq-ZC-JTi"/>
                             <constraint firstItem="AD4-Q8-1a4" firstAttribute="trailing" secondItem="3" secondAttribute="trailing" type="default" id="J0m-pi-Bu0"/>
                             <constraint firstItem="WVP-dF-E9X" firstAttribute="leading" secondItem="3" secondAttribute="leading" constant="15" id="KWT-0G-2m9"/>
                             <constraint firstItem="edi-GE-42e" firstAttribute="top" secondItem="3" secondAttribute="top" constant="230" type="user" id="L5J-4K-lfr"/>
                             <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="WVP-dF-E9X" secondAttribute="bottom" constant="16" type="user" id="SUU-B6-ZOc"/>
-                            <constraint firstItem="99G-vY-x30" firstAttribute="trailing" secondItem="3" secondAttribute="trailing" type="default" id="VM4-It-PPI"/>
                             <constraint firstItem="GU4-nS-SJA" firstAttribute="trailing" secondItem="edi-GE-42e" secondAttribute="trailing" type="default" id="Yag-ys-6et"/>
                             <constraint firstAttribute="bottom" secondItem="bht-7b-rQK" secondAttribute="bottom" constant="40" type="user" id="eEd-WS-Z5k"/>
                             <constraint firstItem="GU4-nS-SJA" firstAttribute="leading" secondItem="edi-GE-42e" secondAttribute="leading" type="default" id="l4V-EY-Dcf"/>
-                            <constraint firstItem="xQz-oA-iaC" firstAttribute="leading" secondItem="3" secondAttribute="leading" type="default" id="lwH-bc-nwo"/>
                             <constraint firstAttribute="bottom" secondItem="WVP-dF-E9X" secondAttribute="bottom" constant="16" id="nb7-98-3sb"/>
                             <constraint firstAttribute="bottom" secondItem="edi-GE-42e" secondAttribute="bottom" constant="88" type="user" id="nnG-Y4-uBs"/>
-                            <constraint firstItem="xQz-oA-iaC" firstAttribute="trailing" secondItem="3" secondAttribute="trailing" type="default" id="tqg-9I-qcG"/>
                             <constraint firstItem="AD4-Q8-1a4" firstAttribute="leading" secondItem="3" secondAttribute="leading" type="default" id="uyv-Se-Z1y"/>
                             <constraint firstAttribute="centerX" secondItem="bht-7b-rQK" secondAttribute="centerX" type="user" id="xIQ-vk-3ri"/>
                             <constraint firstItem="GU4-nS-SJA" firstAttribute="top" secondItem="3" secondAttribute="top" constant="169" id="y8g-GW-jEL"/>
@@ -115,8 +74,6 @@
                     </view>
                     <connections>
                         <outlet property="backButton" destination="WVP-dF-E9X" id="Jvt-9V-T9r"/>
-                        <outlet property="hostGameButton" destination="xQz-oA-iaC" id="Bdw-Dg-oXg"/>
-                        <outlet property="joinGameButton" destination="99G-vY-x30" id="LJB-Zy-jJP"/>
                         <outlet property="sessionsLabel" destination="GU4-nS-SJA" id="I4H-iV-wsb"/>
                         <outlet property="tableView" destination="edi-GE-42e" id="5k0-m4-D9H"/>
                         <outlet property="waitingView" destination="bht-7b-rQK" id="shA-XQ-Pv9"/>
@@ -134,7 +91,7 @@
                         <rect key="frame" x="0.0" y="20" width="320" height="460"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="frostedBG.png" translatesAutoresizingMaskIntoConstraints="NO" id="12U-g7-co7">
+                            <imageView userInteractionEnabled="NO" alpha="0.55000000000000004" contentMode="scaleToFill" image="frostedBG.png" translatesAutoresizingMaskIntoConstraints="NO" id="12U-g7-co7">
                                 <constraints>
                                     <constraint firstAttribute="width" constant="322" id="B0X-w3-5ix"/>
                                 </constraints>
@@ -437,7 +394,7 @@
                                     <constraint firstAttribute="height" constant="264" id="OLP-ro-0vp"/>
                                 </constraints>
                                 <tableView key="tableFooterView" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="LvQ-By-4ar">
-                                    <rect key="frame" x="0.0" y="0.0" width="153" height="4553"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="153" height="4817"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </tableView>
