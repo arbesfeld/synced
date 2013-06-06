@@ -16,7 +16,7 @@
 #import "PacketSyncResponse.h"
 #import "PacketCancelMusic.h"
 
-const double DELAY_TIME = 3.00000;   // wait DELAY_TIME seconds until songs play
+const double DELAY_TIME = 3.0;   // wait DELAY_TIME seconds until songs play
 const double DELAY_TIME_YOUTUBE = 6.00000;   // wait DELAY_TIME seconds until youtube songs play
 const int WAIT_TIME_UPLOAD = 60;     // server wait time for others to download music after uploading
 const int WAIT_TIME_DOWNLOAD = 60;   // server wait time for others to download music after downloading
@@ -27,7 +27,7 @@ const int UPDATE_TIME_YOUTUBE = 30;  // how often to update playback (after firs
 const int UPDATE_TIME_YOUTUBE_LOADING = 10;   // how often to update playback (after first update)
 const int UPDATE_TIME_FIRST = 1;     // how often to update playback (first update)
 const double BACKGROUND_TIME = -0.2; // the additional time it takes when app is in background
-const double MOVIE_TIME = -0.1;      // the additional time it takes for movies
+const double MOVIE_TIME = -0.15;      // the additional time it takes for movies
 const double AUDIO_SEEK_TIME = 0.12; // time for audioplayer to seek
 const double MOVIE_SEEK_TIME = 0.25; // time for movie player to seek
 
@@ -578,7 +578,7 @@ typedef enum
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@",youtubeItem.url]];
     youtubeItem.url = url;
     
-    LBYouTubeVideoQuality quality = IS_PHONE ? LBYouTubeVideoQualityMedium : LBYouTubeVideoQualityLarge;
+    LBYouTubeVideoQuality quality = IS_PHONE ? LBYouTubeVideoQualitySmall : LBYouTubeVideoQualityMedium;
     LBYouTubeExtractor* extractor = [[LBYouTubeExtractor alloc] initWithURL:youtubeItem.url andID:youtubeItem.ID quality:quality];
     extractor.delegate = self;
     [extractor startExtracting];
@@ -782,11 +782,11 @@ typedef enum
                                                          userInfo:mediaItem
                                                           repeats:NO];
     } else {
-        if([[UIApplication sharedApplication] applicationState] == UIApplicationStateInactive) {
-            // not accurate updating when app inactive
-            return;
-        }
-        float delay = [startTime timeIntervalSinceNow] + compensate;
+//        if([[UIApplication sharedApplication] applicationState] == UIApplicationStateInactive) {
+//            // not accurate updating when app inactive
+//            return;
+//        }
+        float delay = [startTime timeIntervalSinceNow];
         float songTimeF = (double)songTime;
         if(delay < 0.0) {
             songTimeF = songTime - ABS(delay);

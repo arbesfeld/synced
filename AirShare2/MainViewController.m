@@ -408,7 +408,9 @@
     if(_gradientLoadProgress) {
         NSLog(@"Found");
     }
-    _joinGameButton = [[UIButton alloc] initWithFrame:CGRectMake(320,272+_verticalOffset, 320, 54)];
+    
+    int start = IS_PHONE ? 320 : 0;
+    _joinGameButton = [[UIButton alloc] initWithFrame:CGRectMake(start,272+_verticalOffset, 320, 54)];
     [_joinGameButton addTarget:self action:@selector(joinGameAction:) forControlEvents:UIControlEventTouchUpInside];
     [_joinGameButton setTitle:@"Join" forState:UIControlStateNormal];
     _joinGameButton.titleLabel.font = [UIFont fontWithName:@"Century Gothic" size:22.0f];
@@ -416,7 +418,7 @@
     _joinGameButton.layer.shadowColor = [[UIColor blackColor] CGColor];
     _joinGameButton.layer.shadowOpacity = .5f;
     _joinGameButton.layer.borderColor = [UIColor blackColor].CGColor;
-    _joinGameButton.layer.borderWidth = 1.0f;
+    _joinGameButton.layer.borderWidth = 0.0f;
     _joinGameButton.hidden = true;
     _joinGameButton.layer.backgroundColor = [UIColor colorWithRed:255/255.0 green:70/225.0 blue:0/225.0 alpha:1].CGColor;
     [_joinGameButton addSubview:_gradientLoadProgress];
@@ -424,7 +426,7 @@
     [self.view addSubview:_joinGameButton];
 
     
-    _hostGameButton = [[UIButton alloc] initWithFrame:CGRectMake(-320,195+_verticalOffset, 320, 54)];
+    _hostGameButton = [[UIButton alloc] initWithFrame:CGRectMake(-start,195+_verticalOffset, 320, 54)];
     [_hostGameButton addTarget:self action:@selector(hostGameAction:) forControlEvents:UIControlEventTouchUpInside];
     [_hostGameButton setTitle:@"Host" forState:UIControlStateNormal];
     _hostGameButton.titleLabel.font = [UIFont fontWithName:@"Century Gothic" size:22.0f];
@@ -432,7 +434,7 @@
     _hostGameButton.layer.shadowColor = [[UIColor blackColor] CGColor];
     _hostGameButton.layer.shadowOpacity = .5f;
     _hostGameButton.layer.borderColor = [UIColor blackColor].CGColor;
-    _hostGameButton.layer.borderWidth = 1.0f;
+    _hostGameButton.layer.borderWidth = 0.0f;
     _hostGameButton.layer.backgroundColor = [UIColor colorWithRed:255/255.0 green:150/225.0 blue:0/225.0 alpha:1].CGColor;
     _hostGameButton.hidden = true;
     [_hostGameButton addSubview:_gradientLoadProgressTwo];
@@ -479,7 +481,7 @@
     _joinGameButton.hidden = false;
     _hostGameButton.hidden = false;
     [UIView animateWithDuration:0.6 animations:^() {
-        _joinGameButton.frame = CGRectMake(0,272+_verticalOffset,320,54);;
+        _joinGameButton.frame = CGRectMake(0,272+_verticalOffset,320,54);
         _hostGameButton.frame = CGRectMake(0,195+_verticalOffset,320,54);
 
     }];
