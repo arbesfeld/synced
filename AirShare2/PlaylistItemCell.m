@@ -139,8 +139,8 @@
             [originalColor getHue:&hue saturation:&saturation brightness:&brightness alpha:&alpha];
             UIColor *flashedColor = [UIColor colorWithHue:hue saturation:MIN(1.0, saturation + 0.4) brightness:MAX(0.0, brightness - 0.25) alpha:alpha];
             
-            [UIView animateWithDuration:0.2 animations:^ {
-                self.loadProgress.backgroundColor = flashedColor;
+            [UIView animateWithDuration:0.05 animations:^ {
+                self.loadProgress.backgroundColor = originalColor;
             } completion:^(BOOL finished) {
                 [UIView animateWithDuration:0.4 animations:^ {
                     _loadProgress.backgroundColor = [UIColor clearColor];

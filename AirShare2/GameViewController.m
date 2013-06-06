@@ -70,7 +70,7 @@
     self.artistLabel.font = [UIFont fontWithName:@"Century Gothic" size:12.0f];
     self.artistLabel.textColor = [UIColor lightGrayColor];
     
-    self.skipsLabel.font = [UIFont fontWithName:@"Century Gothic" size:12.0f];
+    self.skipsLabel.font = [UIFont fontWithName:@"Century Gothic" size:11.0f];
     self.skipsLabel.textColor = [UIColor lightGrayColor];
     
     self.skipSongLabel.font = [UIFont fontWithName:@"Century Gothic" size:14.0f];
@@ -295,7 +295,13 @@
 
 - (void)setSkipItemCount:(int)skipItemCount
 {
-    self.skipSongLabel.text = [NSString stringWithFormat:@"%d/%d", skipItemCount, _game.players.count];
+    int count = (int) (_game.players.count / 2.0 - skipItemCount + 1);
+    self.skipSongLabel.text = [NSString stringWithFormat:@"%d", count];
+    if(count == 1) {
+        self.skipsLabel.text = @"Skip Needed";
+    } else {
+        self.skipsLabel.text = @"Skips Needed";
+    }
 }
 
 - (void)gameSessionDidEnd:(Game *)server;
