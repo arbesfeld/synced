@@ -383,6 +383,15 @@
     NSString *gradientLocation = [[NSBundle mainBundle] pathForResource:@"gradient_transparent" ofType:@"png"];
     NSURL *url = [[NSBundle mainBundle] URLForResource:@"loading" withExtension:@"gif"];
 
+    if(!IS_PHONE) {
+        [self.background setImage:[UIImage imageNamed:@"BGIpad.png"]];
+    } else if(IS_IPHONE_5) {
+        [self.background setImage:[UIImage imageNamed:@"metalHolesIP5.png"]];
+    } else {
+        [self.background setImage:[UIImage imageNamed:@"metalHolesIP5.png"]];
+    }
+    
+    
     self.view.backgroundColor = [UIColor blackColor];
     self.tableView.layer.cornerRadius = 7;
     self.tableView.layer.masksToBounds = YES;
@@ -446,10 +455,10 @@
         _airshareLogo = [[UIImageView alloc] initWithFrame:CGRectMake(-25, 135, 346, 130)];
         _airshareLogo.contentMode = UIViewContentModeScaleAspectFit;
     } else if(IS_IPHONE_5) {
-        _airshareLogo = [[UIImageView alloc] initWithFrame:CGRectMake(-25, 135, 346, 130)];
+        _airshareLogo = [[UIImageView alloc] initWithFrame:CGRectMake(-25, 190, 346, 130)];
         _airshareLogo.contentMode = UIViewContentModeScaleAspectFit;
     } else {
-        _airshareLogo = [[UIImageView alloc] initWithFrame:CGRectMake(-25, 135, 346, 130)];
+        _airshareLogo = [[UIImageView alloc] initWithFrame:CGRectMake(-25, 145, 346, 130)];
         _airshareLogo.contentMode = UIViewContentModeScaleAspectFit;
     }
     _airshareLogo.image = [UIImage imageNamed:@"synced-01.png"];
@@ -461,9 +470,10 @@
         if(!IS_PHONE) {
             _airshareLogo.frame = CGRectMake(-25, 40, 100, 100);
         } else if(IS_IPHONE_5) {
-            _airshareLogo.frame = CGRectMake(-25, 40, 346, 130);
+           _airshareLogo.frame = CGRectMake(-25, 40, 346, 130);
         } else {
-            _airshareLogo.frame = CGRectMake(-25, 40, 346, 130);        }
+           _airshareLogo.frame = CGRectMake(-25, 40, 346, 130);
+        }
     }];
     
     if(IS_PHONE) {

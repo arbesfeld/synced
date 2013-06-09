@@ -27,6 +27,7 @@
     UIViewController *_displayedViewController;
     NSMutableDictionary *_hasVotedForItem; // key is songID, value is whethere they have upvoted it
 }
+@property (strong, nonatomic) IBOutlet MPVolumeView *volumeBar;
 @property (strong, nonatomic) IBOutlet UIImageView *swipeToReveal;
 @property (strong, nonatomic) IBOutlet UIImageView *tapToAdd;
 @property (weak, nonatomic) IBOutlet UIButton *eyeButton;

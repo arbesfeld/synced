@@ -81,6 +81,17 @@
     
     self.playlistTable.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     
+    self.playbackProgressBar.progressTintColor = [UIColor colorWithRed:255/255.0 green:150/225.0 blue:0/225.0 alpha:1];
+    self.playbackProgressBar.trackTintColor = [UIColor lightGrayColor];
+    
+    for (id current in self.volumeBar.subviews) {
+        if ([current isKindOfClass:[UISlider class]]) {
+            UISlider *volumeSlider = (UISlider *)current;
+            volumeSlider.minimumTrackTintColor = [UIColor colorWithRed:255/255.0 green:70/225.0 blue:0/225.0 alpha:1];
+            volumeSlider.maximumTrackTintColor = [UIColor lightGrayColor];
+        }
+    }
+    
     _eyeButton.showsTouchWhenHighlighted = YES;
     _skipSongButton.showsTouchWhenHighlighted = YES;
     

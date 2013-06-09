@@ -8,6 +8,7 @@
 
 @interface MainViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, UIAlertViewDelegate, GameViewControllerDelegate, MatchmakingClientDelegate, MatchmakingServerDelegate>
 
+@property (strong, nonatomic) IBOutlet UIImageView *background;
 @property (strong, nonatomic) IBOutlet UIButton *hostGameButton;
 @property (strong, nonatomic) IBOutlet UIButton *joinGameButton;
 @property (strong, nonatomic) IBOutlet UIButton *backButton;
