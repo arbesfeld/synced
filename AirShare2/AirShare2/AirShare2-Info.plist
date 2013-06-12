@@ -14,8 +14,12 @@
 		<dict>
 			<key>CFBundleIconFiles</key>
 			<array>
-				<string>icon_lowres.png</string>
-				<string>icon_highres.png</string>
+				<string>57x57 Icon.png</string>
+				<string>114x114 Icon@2x.png</string>
+				<string>App Graphics_ios 144 (iPad @2x).png</string>
+				<string>App Graphics_ios 57 (iPad @2x).png</string>
+				<string>114x114 Icon@2x.png</string>
+				<string>57x57 Icon.png</string>
 			</array>
 			<key>UIPrerenderedIcon</key>
 			<true/>

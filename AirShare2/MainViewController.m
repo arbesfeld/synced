@@ -21,6 +21,10 @@
     NSString *_serverName;
     
     double _verticalOffset;
+    
+    CGRect screenRect;
+    CGFloat screenWidth;
+    CGFloat screenHeight;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -37,6 +41,10 @@
     } else {
         _verticalOffset = 20.0f;
     }
+    
+    screenRect = [[UIScreen mainScreen] bounds];
+    screenWidth = screenRect.size.width;
+    screenHeight = screenRect.size.height;
     
     [self setupUI];
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -418,7 +426,7 @@
         NSLog(@"Found");
     }
     
-    int start = IS_PHONE ? 320 : 0;
+    int start = IS_PHONE ? 320 : screenHeight;
     _joinGameButton = [[UIButton alloc] initWithFrame:CGRectMake(start,272+_verticalOffset, 320, 54)];
     [_joinGameButton addTarget:self action:@selector(joinGameAction:) forControlEvents:UIControlEventTouchUpInside];
     [_joinGameButton setTitle:@"Join" forState:UIControlStateNormal];
@@ -452,7 +460,7 @@
 
     
     if(!IS_PHONE) {
-        _airshareLogo = [[UIImageView alloc] initWithFrame:CGRectMake(-25, 135, 346, 130)];
+        _airshareLogo = [[UIImageView alloc] initWithFrame:CGRectMake(screenHeight/2 - 150, screenWidth/2 - 150, 300, 300)];
         _airshareLogo.contentMode = UIViewContentModeScaleAspectFit;
     } else if(IS_IPHONE_5) {
         _airshareLogo = [[UIImageView alloc] initWithFrame:CGRectMake(-25, 190, 346, 130)];
@@ -468,7 +476,7 @@
     [UIView animateWithDuration:.6 animations:^() {
         _airshareLogo.alpha = 1.0;
         if(!IS_PHONE) {
-            _airshareLogo.frame = CGRectMake(-25, 40, 100, 100);
+            _airshareLogo.frame = CGRectMake(screenHeight/2 - 150, 0, 300, 300);
         } else if(IS_IPHONE_5) {
            _airshareLogo.frame = CGRectMake(-25, 40, 346, 130);
         } else {
@@ -476,31 +484,52 @@
         }
     }];
     
-    if(IS_PHONE) {
+    //if(IS_PHONE) {
     [self performSelector:@selector(uiMainScreenDelay:) withObject:nil afterDelay:.3];
-    } else {
-        _hostGameButton.hidden = NO;
-        _joinGameButton.hidden = NO;
-    }
+    //} else {
+      //  _hostGameButton.hidden = NO;
+        //_joinGameButton.hidden = NO;
+    //}
     
 }
 
 - (void)uiMainScreenDelay:(id)sender {
+    if(!IS_PHONE) {
+        _hostGameButton.frame = CGRectMake(-screenHeight,screenWidth/2, screenHeight, 54);
+        _joinGameButton.frame = CGRectMake(screenHeight,screenWidth/2 + _verticalOffset, screenHeight, 54);
+
+    }
+    else{
     _hostGameButton.frame = CGRectMake(-320,195+_verticalOffset, 320, 54);
     _joinGameButton.frame = CGRectMake(320,272+_verticalOffset, 320, 54);
+    }
     _joinGameButton.hidden = false;
     _hostGameButton.hidden = false;
     [UIView animateWithDuration:0.6 animations:^() {
+        if(!IS_PHONE) {
+            _hostGameButton.frame = CGRectMake(0,screenWidth/2, screenHeight, 54);
+            _joinGameButton.frame = CGRectMake(0,screenWidth/2 + 2 * _verticalOffset, screenHeight, 54);
+            
+        }
+        else{
         _joinGameButton.frame = CGRectMake(0,272+_verticalOffset,320,54);
         _hostGameButton.frame = CGRectMake(0,195+_verticalOffset,320,54);
+        }
 
     }];
 }
 
 - (void)reloadMainScreen:(id)sender {
     [UIView animateWithDuration:0.6 animations:^() {
+        if(!IS_PHONE) {
+            _hostGameButton.frame = CGRectMake(0,screenWidth/2, screenHeight, 54);
+            _joinGameButton.frame = CGRectMake(0,screenWidth/2 + 2 * _verticalOffset, screenHeight, 54);
+            
+        }
+        else{
         _joinGameButton.frame = CGRectMake(0,272+_verticalOffset,320,54);;
         _hostGameButton.frame = CGRectMake(0,195+_verticalOffset,320,54);
+        }
     }];
 }
 
