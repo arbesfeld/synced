@@ -46,7 +46,7 @@
             /*Do iPhone Classic stuff here.*/
         }
     } else {
-        /*Do iPad stuff here.*/
+        [self.background setImage:[UIImage imageNamed:@"BGFrostedIpad.png"]];
     }
     
     _itemNumber = 0;
@@ -111,7 +111,7 @@
     self.playbackProgressBar.hidden = isWaiting;
     self.skipsLabel.hidden = isWaiting;
     self.partyModeLabel.hidden = isWaiting;
-    self.partySwitch.hidden = isWaiting;
+    self.partyButton.hidden = isWaiting;
     
     if(isWaiting) {
         // eye button only appears when video plays
@@ -157,6 +157,8 @@
 }
 
 #pragma mark - Actions
+
+
 
 - (IBAction)exitAction:(id)sender
 {
@@ -410,6 +412,11 @@
     [self presentViewController:_displayedViewController animated:YES completion:nil];
 }
 
+- (IBAction)partyAction:(id)sender {
+    NSLog(@"Toggling party mode");
+    _game.partyMode = [sender isOn];
+}
+
 #pragma mark - UITableViewDataSource
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -552,10 +559,6 @@
     [mediaPicker dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (IBAction)togglePartyMode:(UISwitch *)sender {
-    NSLog(@"Toggling party mode");
-    _game.partyMode = [sender isOn];
-}
 
 #pragma mark - Volume Control
 
