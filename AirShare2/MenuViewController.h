@@ -13,6 +13,7 @@
 
 @interface MenuViewController : UIViewController <UITableViewDataSource>
 
+@property (strong, nonatomic) IBOutlet UIImageView *background;
 @property (weak, nonatomic) IBOutlet UITableView *usersTable;
 @property (weak, nonatomic) IBOutlet UILabel *connectedUsersLabel;
 @property (weak, nonatomic) IBOutlet UIButton *syncButton;
