@@ -345,6 +345,10 @@
 {
     _quitReasonClient = QuitReasonConnectionDropped;
     
+    screenRect = [[UIScreen mainScreen] bounds];
+    screenWidth = screenRect.size.width;
+    screenHeight = screenRect.size.height;
+    
     if(!IS_PHONE) {
         _verticalOffset = -50.0f;
     }
