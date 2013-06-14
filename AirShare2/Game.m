@@ -618,7 +618,7 @@ typedef enum
     
     UIAlertView *alertView = [[UIAlertView alloc]
                               initWithTitle:NSLocalizedString(@"Protected Content", @"Protected Content alert view")
-                              message:NSLocalizedString(@"Sorry, airShare can't play YouTube videos that contain DRM.", @"Protectect Content alert message")
+                              message:NSLocalizedString(@"Sorry, Synced can't play YouTube videos that contain DRM.", @"Protectect Content alert message")
                               delegate:nil
                               cancelButtonTitle:NSLocalizedString(@"OK", @"Button: OK")
                               otherButtonTitles:nil];
