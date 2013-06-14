@@ -131,14 +131,10 @@
         int colorID = _playlistItem.itemNumber % colorTable.count;
         UIColor *originalColor = (UIColor *)colorTable[colorID];
         _loadProgress.layer.borderColor = originalColor.CGColor;
-        _loadProgress.layer.borderWidth = 2.3f;
+        _loadProgress.layer.borderWidth = 2.0f;
         
         // this item was voted on, transition from its original color
         if(self.playlistItem.justVoted) {
-            CGFloat hue, saturation, brightness, alpha;
-            [originalColor getHue:&hue saturation:&saturation brightness:&brightness alpha:&alpha];
-            UIColor *flashedColor = [UIColor colorWithHue:hue saturation:MIN(1.0, saturation + 0.4) brightness:MAX(0.0, brightness - 0.25) alpha:alpha];
-            
             [UIView animateWithDuration:0.05 animations:^ {
                 self.loadProgress.backgroundColor = originalColor;
             } completion:^(BOOL finished) {
