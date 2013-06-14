@@ -563,16 +563,20 @@ typedef enum
         
         // PARTY MODE
         NSLog(@"Getting beats for music item with name = %@", mediaItem.name);
-        [_downloader downloadBeatsWithMediaItem:mediaItem andSessionID:_serverPeerID completion:^{
-            NSLog(@"Found beats for music item with description: %@", [mediaItem description]);
-            // update mediaItem
-            [mediaItem loadBeats];
-        }];
+        
+        [self performSelector:@selector(downloadBeats:) withObject:mediaItem afterDelay:1.5];
     } failure:^ {
         [self.delegate cancelMusicAndUpdateAll:mediaItem];
     }];
 }
 
+- (void)downloadBeats:(MediaItem *)mediaItem {
+    [_downloader downloadBeatsWithMediaItem:mediaItem andSessionID:_serverPeerID completion:^{
+        NSLog(@"Found beats for music item with description: %@", [mediaItem description]);
+        // update mediaItem
+        [mediaItem loadBeats];
+    }];
+}
 - (void)uploadYoutubeItem:(MediaItem *)youtubeItem
 {
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@",youtubeItem.url]];

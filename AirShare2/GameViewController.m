@@ -218,11 +218,11 @@
                 if (newPlaylist[j] == _game.playlist[i]) {
                     // row moved from i to j
                     if (i != j) {
-                    [self.playlistTable moveRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]
+                        [self.playlistTable moveRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]
                                                toIndexPath:[NSIndexPath indexPathForRow:j inSection:0]];
                     
                     } else {
-                    [self.playlistTable reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:i inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+                        [self.playlistTable reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:i inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
                     }
                 }
             }
@@ -418,7 +418,13 @@
 
 - (IBAction)partyAction:(id)sender {
     NSLog(@"Toggling party mode");
-    _game.partyMode = [sender isOn];
+    if ([sender isSelected]) {
+        _game.partyMode = NO;
+        [sender setSelected:NO];
+    } else {
+        _game.partyMode = YES;
+        [sender setSelected:YES];
+    }
 }
 
 #pragma mark - UITableViewDataSource
