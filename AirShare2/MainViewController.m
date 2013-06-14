@@ -245,7 +245,7 @@
             //This is the first tap. If there is no tap till tapTimer is fired, it is a single tap
             tapCount = tapCount + 1;
             tappedRow = indexPath.row;
-            tapTimer = [NSTimer timerWithTimeInterval:2.0 target:self selector:@selector(tapTimerFired:) userInfo:nil repeats:NO];
+            tapTimer = [NSTimer timerWithTimeInterval:5.0 target:self selector:@selector(tapTimerFired:) userInfo:nil repeats:NO];
         }
         else if(tappedRow != indexPath.row){
             //tap on new row
@@ -343,6 +343,11 @@
 
 -(void)setupUI
 {
+    _airshareLogo.hidden = YES;
+    _hostGameButton.hidden = YES;
+    _joinGameButton.hidden = YES;
+    
+    NSLog(@"Settuing up UI");
     _quitReasonClient = QuitReasonConnectionDropped;
     
     screenRect = [[UIScreen mainScreen] bounds];
@@ -401,9 +406,6 @@
     _gradientLoadProgressTwo = [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:gradientLocation]];
     [_gradientLoadProgressTwo setAlpha:1.0];
     _gradientLoadProgressTwo.frame = CGRectMake(0,0,width,54);
-    if(_gradientLoadProgress) {
-        NSLog(@"Found");
-    }
     
     int start = IS_PHONE ? 320 : screenHeight;
     _joinGameButton = [[UIButton alloc] initWithFrame:CGRectMake(start,272+_verticalOffset, 320, 54)];
@@ -463,6 +465,9 @@
         }
     }];
     
+    _airshareLogo.hidden = NO;
+    _hostGameButton.hidden = NO;
+    _joinGameButton.hidden = NO;
     //if(IS_PHONE) {
     [self performSelector:@selector(uiMainScreenDelay:) withObject:nil afterDelay:.3];
     //} else {
