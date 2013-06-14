@@ -61,8 +61,6 @@
 - (IBAction)eyeAction:(id)sender;
 - (IBAction)partyAction:(id)sender;
 
-- (IBAction)togglePartyMode:(UISwitch *)sender;
-
 
 
 

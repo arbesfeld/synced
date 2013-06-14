@@ -215,11 +215,15 @@
         [self.playlistTable beginUpdates];
         for(int i = 0; i < _game.playlist.count; i++) {
             for(int j = 0; j < newPlaylist.count; j++) {
-                if(i != j && newPlaylist[j] == _game.playlist[i]) {
+                if (newPlaylist[j] == _game.playlist[i]) {
                     // row moved from i to j
-                    //NSLog(@"moving i = %d to j = %d", i , j);
-                    [self.playlistTable moveRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]
+                    if (i != j) {
+                        [self.playlistTable moveRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]
                                                toIndexPath:[NSIndexPath indexPathForRow:j inSection:0]];
+                    
+                    } else {
+                        [self.playlistTable reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:i inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+                    }
                 }
             }
         }
@@ -414,7 +418,13 @@
 
 - (IBAction)partyAction:(id)sender {
     NSLog(@"Toggling party mode");
-    _game.partyMode = [sender isOn];
+    if ([sender isSelected]) {
+        _game.partyMode = NO;
+        [sender setSelected:NO];
+    } else {
+        _game.partyMode = YES;
+        [sender setSelected:YES];
+    }
 }
 
 #pragma mark - UITableViewDataSource
