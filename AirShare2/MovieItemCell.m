@@ -16,7 +16,7 @@
     if (self) {
         self.movieItem = movieItem;
         
-//        [self performSelector:@selector(loadImage) withObject:nil afterDelay:0];
+        [self performSelector:@selector(loadImage) withObject:nil afterDelay:0];
         
         _title = [self.movieItem valueForProperty:MPMediaItemPropertyTitle];
         _artist = [self.movieItem valueForProperty:MPMediaItemPropertyArtist];
