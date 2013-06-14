@@ -221,6 +221,7 @@
     
 	NSString *peerID = [_matchmakingClient peerIDForAvailableServerAtIndex:indexPath.row];
 	cell.textLabel.text = [_matchmakingClient displayNameForPeerID:peerID];
+    cell.textLabel.backgroundColor = [UIColor clearColor];
     cell.textLabel.font = [UIFont fontWithName:@"Century Gothic" size:18.0f];
 	return cell;
 }
@@ -235,7 +236,7 @@
 	{
         _waitingView.hidden = NO;
         
-        if(tapCount == 1 && tapTimer != nil && tappedRow == indexPath.row){
+        if(tapCount == 3 && tapTimer != nil && tappedRow == indexPath.row){
             //double tap - Put your double tap code here
             [tapTimer invalidate];
             _waitingView.hidden = YES;
@@ -245,7 +246,9 @@
             //This is the first tap. If there is no tap till tapTimer is fired, it is a single tap
             tapCount = tapCount + 1;
             tappedRow = indexPath.row;
-            tapTimer = [NSTimer timerWithTimeInterval:5.0 target:self selector:@selector(tapTimerFired:) userInfo:nil repeats:NO];
+            tapTimer = [NSTimer timerWithTimeInterval:3.0 target:self selector:@selector(tapTimerFired:) userInfo:nil repeats:NO];
+            NSString *peerID = [_matchmakingClient peerIDForAvailableServerAtIndex:indexPath.row];
+            [_matchmakingClient connectToServerWithPeerID:peerID];
         }
         else if(tappedRow != indexPath.row){
             //tap on new row
@@ -256,8 +259,6 @@
             }
         }
         
-		NSString *peerID = [_matchmakingClient peerIDForAvailableServerAtIndex:indexPath.row];
-		[_matchmakingClient connectToServerWithPeerID:peerID];
 	}
 }
 
