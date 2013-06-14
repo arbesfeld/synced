@@ -435,7 +435,7 @@
 
     
     if(!IS_PHONE) {
-        _airshareLogo = [[UIImageView alloc] initWithFrame:CGRectMake(screenHeight/2 - 150, screenWidth/2 - 150, 300, 300)];
+        _airshareLogo = [[UIImageView alloc] initWithFrame:CGRectMake(screenHeight/2 - 162, screenWidth/2 - 190,300, 300)];
         _airshareLogo.contentMode = UIViewContentModeScaleAspectFit;
     } else if(IS_IPHONE_5) {
         _airshareLogo = [[UIImageView alloc] initWithFrame:CGRectMake(-25, 190, 346, 130)];
@@ -451,7 +451,7 @@
     [UIView animateWithDuration:.6 animations:^() {
         _airshareLogo.alpha = 1.0;
         if(!IS_PHONE) {
-            _airshareLogo.frame = CGRectMake(screenHeight/2 - 150, 0, 300, 300);
+            _airshareLogo.frame = CGRectMake(screenHeight/2 - 162, 0, 300, 300);
         } else if(IS_IPHONE_5) {
            _airshareLogo.frame = CGRectMake(-25, 40, 346, 130);
         } else {
@@ -470,8 +470,8 @@
 
 - (void)uiMainScreenDelay:(id)sender {
     if(!IS_PHONE) {
-        _hostGameButton.frame = CGRectMake(-screenHeight,screenWidth/2, screenHeight, 54);
-        _joinGameButton.frame = CGRectMake(screenHeight,screenWidth/2 + _verticalOffset, screenHeight, 54);
+        _hostGameButton.frame = CGRectMake(-screenHeight,screenWidth/2 + 2 * _verticalOffset, screenHeight, 54);
+        _joinGameButton.frame = CGRectMake(screenHeight,screenWidth/2, screenHeight, 54);
 
     }
     else{
@@ -482,8 +482,8 @@
     _hostGameButton.hidden = false;
     [UIView animateWithDuration:0.6 animations:^() {
         if(!IS_PHONE) {
-            _hostGameButton.frame = CGRectMake(0,screenWidth/2, screenHeight, 54);
-            _joinGameButton.frame = CGRectMake(0,screenWidth/2 + 2 * _verticalOffset, screenHeight, 54);
+            _hostGameButton.frame = CGRectMake(0,screenWidth/2 + 2 * _verticalOffset, screenHeight, 54);
+            _joinGameButton.frame = CGRectMake(0,screenWidth/2, screenHeight, 54);
             
         }
         else{
@@ -518,8 +518,8 @@
 - (void)reloadMainScreen:(id)sender {
     [UIView animateWithDuration:0.6 animations:^() {
         if(!IS_PHONE) {
-            _hostGameButton.frame = CGRectMake(0,screenWidth/2, screenHeight, 54);
-            _joinGameButton.frame = CGRectMake(0,screenWidth/2 + 2 * _verticalOffset, screenHeight, 54);
+            _hostGameButton.frame = CGRectMake(0,screenWidth/2 + 2 * _verticalOffset, screenHeight, 54);
+            _joinGameButton.frame = CGRectMake(0,screenWidth/2, screenHeight, 54);
             
         }
         else{

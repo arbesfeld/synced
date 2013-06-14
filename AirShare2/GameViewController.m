@@ -48,7 +48,7 @@
             /*Do iPhone Classic stuff here.*/
         }
     } else {
-        [self.background setImage:[UIImage imageNamed:@"BGFrostedIpad.png"]];
+        [self.background setImage:[UIImage imageNamed:@"BGFrostedIpadA.png"]];
     }
     
     _itemNumber = 0;
@@ -392,7 +392,7 @@
         if ([device hasTorch] && [device hasFlash]){
             [device lockForConfiguration:nil];
             
-            [device setTorchModeOnWithLevel:0.1 error:NULL];
+            [device setTorchModeOnWithLevel:0.5 error:NULL];
             
             // turn on
             [device setTorchMode:AVCaptureTorchModeOn];

@@ -29,6 +29,13 @@
 	// Do any additional setup after loading the view.
     [self.usersTable setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     _usersTable.backgroundColor = [UIColor clearColor];
+    if(!IS_PHONE) {
+        [self.background setImage:[UIImage imageNamed:@"BGIpad.png"]];
+    } else if(IS_IPHONE_5) {
+        [self.background setImage:[UIImage imageNamed:@"metalHolesIP5.png"]];
+    } else {
+        [self.background setImage:[UIImage imageNamed:@"metalHolesIP5.png"]];
+    }
     _connectedUsersLabel.font = [UIFont fontWithName:@"CenturyGothicStd-Bold" size:17.0f];
     _sepeartorImageView.backgroundColor = [UIColor blackColor];
 }
