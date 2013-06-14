@@ -123,6 +123,9 @@
             cell = [[MovieItemCell alloc] initWithStyle:UITableViewCellStyleDefault
                                                            reuseIdentifier:CellIdentifier
                                                                  movieItem:_searchData[indexPath.section][indexPath.row]];
+            if(_shouldLoadImages) {
+                [cell loadImage];
+            }
         }
     }
     return cell;
@@ -195,41 +198,41 @@
 }
 
 #pragma mark - UIScrollViewDelegate
-//- (void)scrollViewDidScroll
-//{
-//    NSLog(@"Will begin scrolling");
-//    _shouldLoadImages = NO;
-//}
-//- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
-//{
-//    NSLog(@"Will begin dragging");
-//    _shouldLoadImages = NO;
-//}
-//- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
-//{
-//    NSLog(@"Did end dragging");
-//    NSLog(@"Velocity = %f %f", velocity.x, velocity.y);
-//    if(velocity.y < 1.0) {
-//        _shouldLoadImages = YES;
-//        [self.tableView reloadData];
-//    }
-//}
-//- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
-//{
-//    NSLog(@"Did end ecelerating");
-//    if(!_shouldLoadImages) {
-//        [self.tableView reloadData];
-//        _shouldLoadImages = YES;
-//    }
-//}
-//- (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView
-//{
-//    NSLog(@"Did end scrolling");
-//    if(!_shouldLoadImages) {
-//        [self.tableView reloadData];
-//        _shouldLoadImages = YES;
-//    }
-//}
+- (void)scrollViewDidScroll
+{
+    NSLog(@"Will begin scrolling");
+    _shouldLoadImages = NO;
+}
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{
+    NSLog(@"Will begin dragging");
+    _shouldLoadImages = NO;
+}
+- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
+{
+    NSLog(@"Did end dragging");
+    NSLog(@"Velocity = %f %f", velocity.x, velocity.y);
+    if(ABS(velocity.y) < 0.5) {
+        _shouldLoadImages = YES;
+        [self.tableView reloadData];
+    }
+}
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+    NSLog(@"Did end ecelerating");
+    if(!_shouldLoadImages) {
+        _shouldLoadImages = YES;
+        [self.tableView reloadData];
+    }
+}
+- (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView
+{
+    NSLog(@"Did end scrolling");
+    if(!_shouldLoadImages) {
+        _shouldLoadImages = YES;
+        [self.tableView reloadData];
+    }
+}
 
 #pragma mark - YoutubeDelegate
 - (void)addYoutubeVideo:(MediaItem *)youtubeItem
