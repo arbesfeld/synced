@@ -40,6 +40,8 @@ ServerState;
 - (void)clientDidConnect:(Player *)player;
 - (void)clientDidDisconnect:(Player *)player;
 
+- (void)testInternetConnection;
+
 - (void)gameSessionDidEnd:(Game *)server;
 - (void)gameNoNetwork:(Game *)server;
 

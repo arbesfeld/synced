@@ -38,6 +38,8 @@
 		5592DE82170BAA9F00C766B0 /* ECSlidingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5592DE7F170BAA9F00C766B0 /* ECSlidingViewController.m */; };
 		5592DE83170BAA9F00C766B0 /* UIImage+ImageWithUIView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5592DE81170BAA9F00C766B0 /* UIImage+ImageWithUIView.m */; };
 		5592FEFD1700D65B0038ED40 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5592FEFC1700D65B0038ED40 /* CoreAudio.framework */; };
+		5593097B176AB04300D460E6 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 5593097A176AB04300D460E6 /* Reachability.m */; };
+		5593097E176AB31200D460E6 /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5593097D176AB31200D460E6 /* CoreBluetooth.framework */; };
 		5593E3BC1727170600CF9149 /* empty.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 5593E3BB1727170600CF9149 /* empty.mp3 */; };
 		5593E3C01727AA4700CF9149 /* gradient_transparent.png in Resources */ = {isa = PBXBuildFile; fileRef = 5593E3BF1727AA4700CF9149 /* gradient_transparent.png */; };
 		5593E3C51727BDD800CF9149 /* downvote_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 5593E3C11727BDD700CF9149 /* downvote_selected.png */; };
@@ -195,6 +197,9 @@
 		5592DE80170BAA9F00C766B0 /* UIImage+ImageWithUIView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ImageWithUIView.h"; sourceTree = "<group>"; };
 		5592DE81170BAA9F00C766B0 /* UIImage+ImageWithUIView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ImageWithUIView.m"; sourceTree = "<group>"; };
 		5592FEFC1700D65B0038ED40 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
+		55930979176AB04300D460E6 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
+		5593097A176AB04300D460E6 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
+		5593097D176AB31200D460E6 /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
 		5593E3BB1727170600CF9149 /* empty.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = empty.mp3; sourceTree = "<group>"; };
 		5593E3BF1727AA4700CF9149 /* gradient_transparent.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gradient_transparent.png; sourceTree = "<group>"; };
 		5593E3C11727BDD700CF9149 /* downvote_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = downvote_selected.png; sourceTree = "<group>"; };
@@ -350,6 +355,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5593097E176AB31200D460E6 /* CoreBluetooth.framework in Frameworks */,
 				559D6B9E17120A5100C591D8 /* ImageIO.framework in Frameworks */,
 				5592FEFD1700D65B0038ED40 /* CoreAudio.framework in Frameworks */,
 				5590969016FF6553004149A0 /* SystemConfiguration.framework in Frameworks */,
@@ -430,6 +436,15 @@
 			name = ECSlidingViewController;
 			sourceTree = "<group>";
 		};
+		5593097C176AB04700D460E6 /* Reachability */ = {
+			isa = PBXGroup;
+			children = (
+				55930979176AB04300D460E6 /* Reachability.h */,
+				5593097A176AB04300D460E6 /* Reachability.m */,
+			);
+			name = Reachability;
+			sourceTree = "<group>";
+		};
 		559673C117246A51000E0D52 /* LBYouTube */ = {
 			isa = PBXGroup;
 			children = (
@@ -497,6 +512,7 @@
 		5597F0A61723DCC600C91952 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				5593097C176AB04700D460E6 /* Reachability */,
 				5592DE84170BAAA500C766B0 /* ECSlidingViewController */,
 				559E887917283F4300CAE248 /* EGORefreshTableHeaderView */,
 				559E887A17283F4D00CAE248 /* MarqueeLabel */,
@@ -553,6 +569,7 @@
 		55FCC54B16ED3D4C0000BCBD /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				5593097D176AB31200D460E6 /* CoreBluetooth.framework */,
 				559D6B9D17120A5100C591D8 /* ImageIO.framework */,
 				5592FEFC1700D65B0038ED40 /* CoreAudio.framework */,
 				5590968F16FF6553004149A0 /* SystemConfiguration.framework */,
@@ -908,6 +925,7 @@
 				559673C017246A3D000E0D52 /* LBYouTubeExtractor.m in Sources */,
 				559E887817283CD500CAE248 /* UIButton+Extensions.m in Sources */,
 				559AAB35172ED81A006757C5 /* MenuViewController.m in Sources */,
+				5593097B176AB04300D460E6 /* Reachability.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

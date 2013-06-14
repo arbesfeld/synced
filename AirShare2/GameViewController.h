@@ -8,6 +8,7 @@
 #import "ECSlidingViewController.h"
 #import "MenuViewController.h"
 #import "MediaItem.h"
+#import "Reachability.h"
 
 #import <MediaPlayer/MediaPlayer.h>
 #import <QuartzCore/QuartzCore.h>

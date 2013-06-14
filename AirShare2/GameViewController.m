@@ -6,6 +6,8 @@
 {
     UIAlertView *_alertView;
     int _itemNumber;
+    
+    Reachability *internetReachableFoo;
 }
 @synthesize delegate = _delegate;
 @synthesize game = _game;
@@ -522,6 +524,39 @@
         [self dismissViewControllerAnimated:YES completion:nil];
 		[self.game quitGameWithReason:QuitReasonUserQuit];
 	}
+}
+
+- (void)showNoNetworkAlert
+{
+	UIAlertView *alertView = [[UIAlertView alloc]
+                              initWithTitle:NSLocalizedString(@"No Network", @"No network alert title")
+                              message:NSLocalizedString(@"To use Synced, please enable WiFi in your device's Settings.", @"No network alert message")
+                              delegate:nil
+                              cancelButtonTitle:NSLocalizedString(@"OK", @"Button: OK")
+                              otherButtonTitles:nil];
+    
+	[alertView show];
+}
+
+- (void)testInternetConnection
+{
+    internetReachableFoo = [Reachability reachabilityWithHostname:@"www.google.com"];
+    __weak typeof(self) weakSelf = self;
+    // Internet is reachable
+    internetReachableFoo.reachableBlock = ^(Reachability*reach)
+    {
+    };
+    
+    // Internet is not reachable
+    internetReachableFoo.unreachableBlock = ^(Reachability*reach)
+    {
+        // Update the UI on the main thread
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weakSelf showNoNetworkAlert];
+        });
+    };
+    
+    [internetReachableFoo startNotifier];
 }
 
 #pragma mark - playMusic____

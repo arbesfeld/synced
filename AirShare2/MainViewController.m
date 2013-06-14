@@ -22,76 +22,29 @@
     
     double _verticalOffset;
     
+    bool uiLoaded;
+    
     CGRect screenRect;
     CGFloat screenWidth;
     CGFloat screenHeight;
+    
+    Reachability *internetReachableFoo;
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
 	[super viewWillAppear:animated];
-    _quitReasonClient = QuitReasonConnectionDropped;
-    [_airshareLogo setAlpha:0.0];
-    
-    if(!IS_PHONE) {
-        _verticalOffset = -50.0f;
-    }
-    else if(IS_IPHONE_5) {
-        _verticalOffset = 40.0f;
-    } else {
-        _verticalOffset = 20.0f;
-    }
-    
-    screenRect = [[UIScreen mainScreen] bounds];
-    screenWidth = screenRect.size.width;
-    screenHeight = screenRect.size.height;
     
     [self setupUI];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(reload)
-                                                 name:UIApplicationDidBecomeActiveNotification object:nil];
-    [self.tableView setAlpha:0.0];
-    [_hostGameButton setAlpha:1.0];
-    [_joinGameButton setAlpha:1.0];
-    [_sessionsLabel setAlpha:0.0];
-    [_backButton setAlpha:0.0];
-    
-    
-    _waitingView.hidden = YES;
-    [self reload];
-    [[UIApplication sharedApplication] beginReceivingRemoteControlEvents];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setupUI:) name:UIApplicationDidChangeStatusBarFrameNotification object:self];
 }
 
-- (void)reload
-{
-    _matchmakingClient = [[MatchmakingClient alloc] init];
-    _matchmakingClient.delegate = self;
-    [_matchmakingClient startSearchingForServersWithSessionID:SESSION_ID];
-    
-    tapCount = 0;
-    [self.tableView reloadData];
-    
-    [self.tableView setAlpha:0.0];
-    [_hostGameButton setAlpha:1.0];
-    [_joinGameButton setAlpha:1.0];
-    [_backButton setAlpha:0.0];
-    [_sessionsLabel setAlpha:0.0];
-
-
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    [self testInternetConnection];
+    CBCentralManager* testBluetooth = [[CBCentralManager alloc] initWithDelegate:nil queue: nil];
+    [testBluetooth state];
 }
-
-//- (void)viewWillAppear:(BOOL)animated
-//{
-//	[super viewWillAppear:animated];
-//    _waitingView.hidden = YES;
-//    [self reload];
-//}
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-	return UIInterfaceOrientationIsLandscape(interfaceOrientation);
-}
-
 
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
@@ -176,6 +129,7 @@
 
 - (void)startGameWithBlock:(void (^)(Game *))block
 {
+    
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil];
     
@@ -212,7 +166,7 @@
 {
 	UIAlertView *alertView = [[UIAlertView alloc]
                               initWithTitle:NSLocalizedString(@"No Network", @"No network alert title")
-                              message:NSLocalizedString(@"To use multiplayer, please enable Bluetooth or Wi-Fi in your device's Settings.", @"No network alert message")
+                              message:NSLocalizedString(@"To use Synced, please enable WiFi in your device's Settings.", @"No network alert message")
                               delegate:nil
                               cancelButtonTitle:NSLocalizedString(@"OK", @"Button: OK")
                               otherButtonTitles:nil];
@@ -244,6 +198,7 @@
              _waitingView.hidden = YES;
          }
      }];
+    [self setupUI];
 }
 
 #pragma mark - UITableViewDataSource
@@ -388,6 +343,27 @@
 
 -(void)setupUI
 {
+    _quitReasonClient = QuitReasonConnectionDropped;
+    
+    if(!IS_PHONE) {
+        _verticalOffset = -50.0f;
+    }
+    else if(IS_IPHONE_5) {
+        _verticalOffset = 40.0f;
+    } else {
+        _verticalOffset = 20.0f;
+    }
+    
+    [self.tableView setAlpha:0.0];
+    [_hostGameButton setAlpha:1.0];
+    [_joinGameButton setAlpha:1.0];
+    [_sessionsLabel setAlpha:0.0];
+    [_backButton setAlpha:0.0];
+    
+    _waitingView.hidden = YES;
+    
+    [[UIApplication sharedApplication] beginReceivingRemoteControlEvents];
+    
     NSString *gradientLocation = [[NSBundle mainBundle] pathForResource:@"gradient_transparent" ofType:@"png"];
     NSURL *url = [[NSBundle mainBundle] URLForResource:@"loading" withExtension:@"gif"];
 
@@ -398,7 +374,6 @@
     } else {
         [self.background setImage:[UIImage imageNamed:@"metalHolesIP5.png"]];
     }
-    
     
     self.view.backgroundColor = [UIColor blackColor];
     self.tableView.layer.cornerRadius = 7;
@@ -500,8 +475,8 @@
 
     }
     else{
-    _hostGameButton.frame = CGRectMake(-320,195+_verticalOffset, 320, 54);
-    _joinGameButton.frame = CGRectMake(320,272+_verticalOffset, 320, 54);
+        _hostGameButton.frame = CGRectMake(-320,195+_verticalOffset, 320, 54);
+        _joinGameButton.frame = CGRectMake(320,272+_verticalOffset, 320, 54);
     }
     _joinGameButton.hidden = false;
     _hostGameButton.hidden = false;
@@ -512,11 +487,32 @@
             
         }
         else{
-        _joinGameButton.frame = CGRectMake(0,272+_verticalOffset,320,54);
-        _hostGameButton.frame = CGRectMake(0,195+_verticalOffset,320,54);
+            _joinGameButton.frame = CGRectMake(0,272+_verticalOffset,320,54);
+            _hostGameButton.frame = CGRectMake(0,195+_verticalOffset,320,54);
         }
 
     }];
+}
+
+- (void)testInternetConnection
+{
+    internetReachableFoo = [Reachability reachabilityWithHostname:@"www.google.com"];
+    __weak typeof(self) weakSelf = self;
+    // Internet is reachable
+    internetReachableFoo.reachableBlock = ^(Reachability*reach)
+    {
+    };
+    
+    // Internet is not reachable
+    internetReachableFoo.unreachableBlock = ^(Reachability*reach)
+    {
+        // Update the UI on the main thread
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weakSelf showNoNetworkAlert];
+        });
+    };
+    
+    [internetReachableFoo startNotifier];
 }
 
 - (void)reloadMainScreen:(id)sender {

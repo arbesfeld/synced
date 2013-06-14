@@ -653,6 +653,9 @@ typedef enum
     } failure:^ {
         if(self.isServer) {
             [self.delegate cancelMusicAndUpdateAll:mediaItem];
+        } else {
+            [self hasDownloadedMusic:mediaItem];
+            [self.delegate testInternetConnection];
         }
     }];
     

@@ -5,6 +5,9 @@
 #import "UIImage+animatedGIF.h"
 #import "EGORefreshTableHeaderView.h"
 #import "ECSlidingViewController.h"
+#import "Reachability.h"
+
+#import <CoreBluetooth/CoreBluetooth.h>
 
 @interface MainViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, UIAlertViewDelegate, GameViewControllerDelegate, MatchmakingClientDelegate, MatchmakingServerDelegate>
 
