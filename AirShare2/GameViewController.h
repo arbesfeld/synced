@@ -28,6 +28,8 @@
     UIViewController *_displayedViewController;
     NSMutableDictionary *_hasVotedForItem; // key is songID, value is whethere they have upvoted it
 }
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *partyLabelConstraint;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *partyButtonConstraint;
 @property (weak, nonatomic) IBOutlet UIButton *partyButton;
 @property (strong, nonatomic) IBOutlet MPVolumeView *volumeBar;
 @property (strong, nonatomic) IBOutlet UIImageView *swipeToReveal;
@@ -61,6 +63,7 @@
 - (IBAction)playMovie:(id)sender;
 - (IBAction)eyeAction:(id)sender;
 - (IBAction)partyAction:(id)sender;
+
 
 
 

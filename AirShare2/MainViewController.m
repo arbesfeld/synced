@@ -34,7 +34,6 @@
 - (void)viewWillAppear:(BOOL)animated
 {
 	[super viewWillAppear:animated];
-    
     [self setupUI];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setupUI:) name:UIApplicationDidChangeStatusBarFrameNotification object:self];
 }
@@ -357,6 +356,8 @@
     
     if(!IS_PHONE) {
         _verticalOffset = -50.0f;
+        _tableViewConstraint.constant = 2 * screenWidth/5;
+        _tapToJoinConstraint.constant = screenWidth/3;
     }
     else if(IS_IPHONE_5) {
         _verticalOffset = 40.0f;
