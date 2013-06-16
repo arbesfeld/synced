@@ -958,6 +958,7 @@ typedef enum
         } else if(_gameState == GameStatePlayingMovie) {
             [self moviePlayerDidFinishPlaying:nil];
         } else {
+            _gameState = GameStateIdle;
             [self tryPlayingNextItem];
         }
     }
