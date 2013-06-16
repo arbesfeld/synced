@@ -49,6 +49,8 @@
         }
     } else {
         [self.background setImage:[UIImage imageNamed:@"BGFrostedIpadA.png"]];
+        self.partyButtonConstraint.constant = screenSize.height/2 - 10;
+        self.partyLabelConstraint.constant = screenSize.height/2 + 10;
     }
     
     _itemNumber = 0;
@@ -60,7 +62,6 @@
     self.playingLabel.font = [UIFont fontWithName:@"Century Gothic" size:11.0f];
     self.playingLabel.textColor = [UIColor lightGrayColor];
     
-    self.partyModeLabel.hidden = true;
     self.partyModeLabel.font = [UIFont fontWithName:@"Century Gothic" size:11.0f];
     self.partyModeLabel.textColor = [UIColor lightGrayColor];
     
@@ -369,6 +370,8 @@
     [[UIApplication sharedApplication] endIgnoringInteractionEvents];
     _displayedViewController = viewController;
     self.eyeButton.hidden = NO;
+    self.partyButton.hidden = YES;
+    self.partyModeLabel.hidden = YES;
 }
 
 - (void)flashScreen
@@ -434,7 +437,11 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (_game != nil) {
-        return [_game.playlist count];
+        int gameCount = [_game.playlist count];
+        if (self.swipeToReveal.hidden == NO & gameCount > 0){
+            [self hasSwipedLeft];
+        }
+        return gameCount;
     } else {
         return 0;
     }

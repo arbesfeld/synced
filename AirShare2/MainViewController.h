@@ -11,6 +11,8 @@
 
 @interface MainViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, UIAlertViewDelegate, GameViewControllerDelegate, MatchmakingClientDelegate, MatchmakingServerDelegate>
 
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *tapToJoinConstraint;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *tableViewConstraint;
 @property (strong, nonatomic) IBOutlet UIImageView *background;
 @property (strong, nonatomic) IBOutlet UIButton *hostGameButton;
 @property (strong, nonatomic) IBOutlet UIButton *joinGameButton;
