@@ -263,26 +263,26 @@
     [self.playlistTable endUpdates];
 }
 
-- (void)removePlaylistItem:(PlaylistItem *)playlistItem animation:(UITableViewRowAnimation)animation
+- (void)removePlaylistItem:(PlaylistItem *)playlistItem animation:(BOOL)animation
 {
-    [self.playlistTable beginUpdates];
-    int loc = [self.game indexForPlaylistItem:playlistItem];
     // if it will be played but not at the top, don't show an animation
-    if(loc != -1) {
-        if(animation == UITableViewRowAnimationTop && loc != 0) {
-            [self.playlistTable deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:loc inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
-        } else {
-            [self.playlistTable deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:loc inSection:0]] withRowAnimation:animation];
+    if(animation) {
+        [self.playlistTable beginUpdates];
+        int loc = [self.game indexForPlaylistItem:playlistItem];
+        if (loc != -1) {
+            [self.playlistTable deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:loc inSection:0]] withRowAnimation:UITableViewRowAnimationRight];
         }
-        
         [self.game.playlist removeObject:playlistItem];
-    }
-    [self.playlistTable endUpdates];
-    
-    //update the row labels of the songs
-    for(int i = 0; i < self.game.playlist.count; i++) {
-        PlaylistItemCell *cell = (PlaylistItemCell *)[self.playlistTable cellForRowAtIndexPath:[NSIndexPath indexPathForItem:i inSection:0]];
-        cell.positionLabel.text = [NSString stringWithFormat:@"%d.", i+1];
+        [self.playlistTable endUpdates];
+        
+        
+        //update the row labels of the songs
+        for(int i = 0; i < self.game.playlist.count; i++) {
+            PlaylistItemCell *cell = (PlaylistItemCell *)[self.playlistTable cellForRowAtIndexPath:[NSIndexPath indexPathForItem:i inSection:0]];
+            cell.positionLabel.text = [NSString stringWithFormat:@"%d.", i+1];
+        }
+    } else {
+        [self.playlistTable reloadData];
     }
 }
 

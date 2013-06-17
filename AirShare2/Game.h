@@ -28,7 +28,7 @@ ServerState;
 - (void)reloadTable;
 - (void)reloadPlaylistItem:(PlaylistItem *)playlistItem;
 - (void)addPlaylistItem:(PlaylistItem *)playlistItem;
-- (void)removePlaylistItem:(PlaylistItem *)playlistItem animation:(UITableViewRowAnimation)animation;
+- (void)removePlaylistItem:(PlaylistItem *)playlistItem animation:(BOOL)animation;
 - (void)cancelMusicAndUpdateAll:(PlaylistItem *)playlistItem;
 
 - (void)secondsRemaining:(int)secondsRemaining;

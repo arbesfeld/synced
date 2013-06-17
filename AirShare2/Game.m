@@ -693,15 +693,23 @@ typedef enum
 
 - (void)serverTryPlayingMedia:(MediaItem *)mediaItem waitTime:(int)waitTime
 {
-    NSAssert(self.isServer, @"Client in serverTryPlayingMedia:");
     // this is called on the server whenever someone new downloads the music
     
-    if( _gameState == GameStateIdle && [self allPlayersHaveMusic:mediaItem]) {
+    NSAssert(self.isServer, @"Client in serverTryPlayingMedia:");
+    
+    // if the media item is not in the playlist, it has already been played
+    // and we can skip this call
+    if ([self indexForPlaylistItem:mediaItem] == -1) {
+        return;
+    }
+    
+    if ( _gameState == GameStateIdle && [self allPlayersHaveMusic:mediaItem]) {
         _gameState = GameStatePreparingToPlayMedia;
+        
         [_loadTimeoutTimer invalidate];
         _loadTimeoutTimer = nil;
         [self serverStartPlayingMedia:mediaItem];
-    } else if(_gameState == GameStateIdle) {
+    } else if (_gameState == GameStateIdle) {
         NSLog(@"Created wait timer");
         // create a timer to start playing unless you receive another PacketMusicResponse
         if(!_loadTimeoutTimer) {
@@ -718,7 +726,7 @@ typedef enum
     NSAssert(self.isServer, @"Client in serverStartPlayingMedia:");
     NSAssert(_gameState == GameStatePreparingToPlayMedia, @"Not correct state in serverStartPlayingMedia:");
     
-    [self removeItemFromPlaylist:mediaItem];
+    [self removeItemFromPlaylistAndSetCurrent:mediaItem];
     
     double delayTime = mediaItem.playlistItemType == PlaylistItemTypeYoutube ? DELAY_TIME_YOUTUBE : DELAY_TIME;
     NSDate *playTime = [[NSDate date] dateByAddingTimeInterval:delayTime];
@@ -751,7 +759,7 @@ typedef enum
     if(songTime == 0) {
         NSAssert(_gameState == GameStatePreparingToPlayMedia, @"Not correct state in prepareToPlayMediaItem:");
     
-        [self removeItemFromPlaylist:mediaItem];
+        [self removeItemFromPlaylistAndSetCurrent:mediaItem];
         
         // if you are starting the song for the first time
         if((mediaItem.playlistItemType == PlaylistItemTypeMovie && mediaItem.uploadedByUser) ||
@@ -837,16 +845,16 @@ typedef enum
     [self.delegate addPlaylistItem:playlistItem];
 }
 
-- (void)removeItemFromPlaylist:(PlaylistItem *)playlistItem
+- (void)removeItemFromPlaylistAndSetCurrent:(PlaylistItem *)playlistItem
 {
     [self.delegate setCurrentItem:playlistItem];
-    [self.delegate removePlaylistItem:playlistItem animation:UITableViewRowAnimationTop];
+    [self.delegate removePlaylistItem:playlistItem animation:NO];
 }
 
 - (void)cancelMusic:(PlaylistItem *)selectedItem
 {
     //_gameState = GameStateIdle;
-    [self.delegate removePlaylistItem:selectedItem animation:UITableViewRowAnimationRight];
+    [self.delegate removePlaylistItem:selectedItem animation:YES];
 }
 
 #pragma mark - AVAudioPlayerDelegate
