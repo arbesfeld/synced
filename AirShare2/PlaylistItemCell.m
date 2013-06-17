@@ -262,7 +262,6 @@
     [_cancelButton removeFromSuperview];
     NSLog(@"Cancelled an upload.");
     [self.delegate cancelMusicAndUpdateAll:_playlistItem];
-    [self.delegate reloadTable];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
