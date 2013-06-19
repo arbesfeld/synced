@@ -16,12 +16,12 @@
 #import "PacketSyncResponse.h"
 #import "PacketCancelMusic.h"
 
-const double DELAY_TIME = 3.0;   // wait DELAY_TIME seconds until songs play
+const double DELAY_TIME = 3.5;   // wait DELAY_TIME seconds until songs play
 const double DELAY_TIME_YOUTUBE = 6.00000;   // wait DELAY_TIME seconds until youtube songs play
 const int WAIT_TIME_UPLOAD = 60;     // server wait time for others to download music after uploading
-const int WAIT_TIME_DOWNLOAD = 60;   // server wait time for others to download music after downloading
+const int WAIT_TIME_DOWNLOAD = 45;   // server wait time for others to download music after downloading
 const int SYNC_PACKET_COUNT = 100;   // how many sync packets to send
-const int UPDATE_TIME_AUDIO = 60;    // how often to update playback (after first update)
+const int UPDATE_TIME_AUDIO = 45;    // how often to update playback (after first update)
 const int UPDATE_TIME_MOVIE = 45;    // how often to update playback (after first update)
 const int UPDATE_TIME_YOUTUBE = 30;  // how often to update playback (after first update)
 const int UPDATE_TIME_YOUTUBE_LOADING = 10;   // how often to update playback (after first update)
@@ -1087,7 +1087,7 @@ typedef enum
             UPDATE_TIME = UPDATE_TIME_MOVIE;
             break;
         case PlaylistItemTypeYoutube:
-            if(_moviePlayerController && CMTimeGetSeconds([_moviePlayerController.moviePlayer.player currentTime]) < 30) {
+            if(_moviePlayerController && CMTimeGetSeconds([_moviePlayerController.moviePlayer.player currentTime]) < 40) {
                 UPDATE_TIME = UPDATE_TIME_YOUTUBE_LOADING;
             } else {
                 UPDATE_TIME = UPDATE_TIME_YOUTUBE;

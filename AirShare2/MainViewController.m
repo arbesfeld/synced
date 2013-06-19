@@ -18,6 +18,7 @@
     QuitReason _quitReasonServer;
     
     NSString *_serverName;
+    NSTimer *_tapTimer;
     
     double _verticalOffset;
     
@@ -42,19 +43,6 @@
     [self testInternetConnection];
     CBCentralManager* testBluetooth = [[CBCentralManager alloc] initWithDelegate:nil queue: nil];
     [testBluetooth state];
-}
-
--(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    // cancel was clicked
-    if(buttonIndex == alertView.cancelButtonIndex)
-        return;
-    
-    _serverName = [alertView textFieldAtIndex:0].text;
-    if([_serverName isEqualToString:@""]) {
-        _serverName = nil;
-    }
-    [self hostGameAction:self];
 }
 
 - (IBAction)backAction:(id)sender {
@@ -127,6 +115,8 @@
 
 - (void)startGameWithBlock:(void (^)(Game *))block
 {
+    tapped = NO;
+    _waitingView.hidden = YES;
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil];
@@ -166,7 +156,7 @@
                               initWithTitle:NSLocalizedString(@"No Network", @"No network alert title")
                               message:NSLocalizedString(@"To use Synced, please enable WiFi in your device's Settings.", @"No network alert message")
                               delegate:nil
-                              cancelButtonTitle:NSLocalizedString(@"OK", @"Button: OK")
+                              cancelButtonTitle:NSLocalizedString(@"OK", @"Button: Cancel")
                               otherButtonTitles:nil];
     
 	[alertView show];
@@ -180,7 +170,7 @@
                               delegate:nil
                               cancelButtonTitle:NSLocalizedString(@"OK", @"Button: OK")
                               otherButtonTitles:nil];
-    
+    _waitingView.hidden = YES;
 	[alertView show];
 }
      
@@ -237,7 +227,7 @@
     
     _waitingView.hidden = NO;
 
-    [NSTimer timerWithTimeInterval:5.0 target:self selector:@selector(tapTimerFired:) userInfo:nil repeats:NO];
+    _tapTimer = [NSTimer timerWithTimeInterval:5.0 target:self selector:@selector(tapTimerFired:) userInfo:nil repeats:NO];
     NSString *peerID = [_matchmakingClient peerIDForAvailableServerAtIndex:indexPath.row];
     [_matchmakingClient connectToServerWithPeerID:peerID];
 }
@@ -319,7 +309,6 @@
     _hostGameButton.hidden = YES;
     _joinGameButton.hidden = YES;
     
-    NSLog(@"Settuing up UI");
     _quitReasonClient = QuitReasonConnectionDropped;
     
     screenRect = [[UIScreen mainScreen] bounds];

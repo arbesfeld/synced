@@ -60,8 +60,8 @@
         
         
         if(playlistItem.playlistItemType == PlaylistItemTypeSong) {
-            _iconView = [[UIImageView alloc] initWithFrame:CGRectMake(28.0f, 6.0f, 30.0f, 30.0f)];
-            _iconView.image = [UIImage imageNamed:@"music symbol-01"];
+            _iconView = [[UIImageView alloc] initWithFrame:CGRectMake(31.0f, 9.0f, 25.0f, 25.0f)];
+            _iconView.image = [UIImage imageNamed:@"musicIcon-01"];
         } else {
             _iconView = [[UIImageView alloc] initWithFrame:CGRectMake(31.0f, 9.0f, 25.0f, 25.0f)];
             _iconView.image = [UIImage imageNamed:@"movies-01"];
