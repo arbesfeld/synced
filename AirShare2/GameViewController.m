@@ -217,16 +217,16 @@
     NSMutableArray *newPlaylist = [NSMutableArray arrayWithArray:[_game.playlist sortedArrayUsingSelector:@selector(compare:)]];
     if([self.playlistTable numberOfRowsInSection:0] == _game.playlist.count) {
         [self.playlistTable beginUpdates];
-        for(int i = 0; i < _game.playlist.count; i++) {
-            for(int j = 0; j < newPlaylist.count; j++) {
-                if (newPlaylist[j] == _game.playlist[i]) {
+        for(int i = 0; i < newPlaylist.count; i++) {
+            bool reloaded = NO;
+            for(int j = 0; j < _game.playlist.count; j++) {
+                if (newPlaylist[i] == _game.playlist[j]) {
                     // row moved from i to j
                     if (i != j) {
-                        [self.playlistTable moveRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]
-                                               toIndexPath:[NSIndexPath indexPathForRow:j inSection:0]];
-                    
-                    } else {
-                        [self.playlistTable reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:i inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+                        [self.playlistTable moveRowAtIndexPath:[NSIndexPath indexPathForRow:j inSection:0]
+                                               toIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];
+                        reloaded = YES;
+                        break;
                     }
                 }
             }
@@ -235,7 +235,7 @@
     }
     //[self.playlistTable endUpdates];
     _game.playlist = newPlaylist;
-    [self.playlistTable performSelector:@selector(reloadData) withObject:nil afterDelay:0.15];
+    [self.playlistTable performSelector:@selector(reloadData) withObject:nil afterDelay:0.25];
     //[self.playlistTable reloadData];
 }
 
