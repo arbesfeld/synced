@@ -58,14 +58,14 @@
         self.positionLabel.textAlignment = NSTextAlignmentCenter;
         self.positionLabel.textColor = [UIColor whiteColor];
         
-        
         if(playlistItem.playlistItemType == PlaylistItemTypeSong) {
-            _iconView = [[UIImageView alloc] initWithFrame:CGRectMake(31.0f, 9.0f, 25.0f, 25.0f)];
+            _iconView = [[UIImageView alloc] initWithFrame:CGRectMake(31.0f, 9.0f, 23.0f, 23.0f)];
             _iconView.image = [UIImage imageNamed:@"musicIcon-01"];
         } else {
-            _iconView = [[UIImageView alloc] initWithFrame:CGRectMake(31.0f, 9.0f, 25.0f, 25.0f)];
+            _iconView = [[UIImageView alloc] initWithFrame:CGRectMake(32.0f, 9.0f, 23.0f, 23.0f)];
             _iconView.image = [UIImage imageNamed:@"movies-01"];
         }
+        
         [_iconView setAlpha:0.8];
         _iconView.layer.shadowColor = [UIColor blackColor].CGColor;
         _iconView.layer.shadowOffset = CGSizeMake(0, 0.5);
