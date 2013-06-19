@@ -109,12 +109,7 @@
         //[_cancelButton setTitle:@"Cancel" forState:UIControlStateNormal];
         
         _loadProgress = [[UIView alloc] init];
-        NSString *gradientLocation = [[NSBundle mainBundle] pathForResource:@"gradient_transparent" ofType:@"png"];
-        _gradientLoadProgress = [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:gradientLocation]];
-        [_gradientLoadProgress setAlpha:0.25];
-        [_loadProgress addSubview:_gradientLoadProgress];
-        _loadProgress.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, self.frame.size.width * playlistItem.previousLoadProgress, self.frame.size.height+1);
-        _gradientLoadProgress.frame = _loadProgress.frame;
+        _loadProgress.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, self.frame.size.width * playlistItem.previousLoadProgress, self.frame.size.height);
         
         if(self.playlistItem.loadProgress != 0.0 && (self.playlistItem.loadProgress != 1.0 || self.playlistItem.previousLoadProgress != 1.0)) {
             _updateLoadProgress = [NSTimer timerWithTimeInterval:0.01
@@ -209,7 +204,6 @@
     CGRect frame = self.loadProgress.frame;
     frame.size.width =  self.frame.size.width * newLoadProgress;
     _loadProgress.frame = frame;
-    _gradientLoadProgress.frame = _loadProgress.frame;
     self.playlistItem.previousLoadProgress = newLoadProgress;
     if(newLoadProgress == 1.0) {
         [timer invalidate];

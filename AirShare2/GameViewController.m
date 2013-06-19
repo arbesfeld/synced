@@ -226,7 +226,7 @@
                                                toIndexPath:[NSIndexPath indexPathForRow:j inSection:0]];
                     
                     } else {
-                        [self.playlistTable reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:i inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+//                        [self.playlistTable reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:i inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
                     }
                 }
             }
@@ -235,7 +235,7 @@
     }
     //[self.playlistTable endUpdates];
     _game.playlist = newPlaylist;
-    [self.playlistTable performSelector:@selector(reloadData) withObject:nil afterDelay:0.15];
+    [self.playlistTable performSelector:@selector(reloadData) withObject:nil afterDelay:0.25];
     //[self.playlistTable reloadData];
 }
 
