@@ -19,8 +19,19 @@
 //        [self performSelector:@selector(loadImage) withObject:nil afterDelay:0];
         
         _title = [self.movieItem valueForProperty:MPMediaItemPropertyTitle];
+        if(!_title) {
+            _title = @"";
+        }
+        
         _artist = [self.movieItem valueForProperty:MPMediaItemPropertyArtist];
+        if (!_artist) {
+            _artist = @"";
+        }
+        
         NSNumber *duration = [self.movieItem valueForProperty:MPMediaItemPropertyPlaybackDuration];
+        if (!duration) {
+            duration = 0;
+        }
         
         _imageURL = [self.movieItem valueForProperty:MPMediaItemPropertyAssetURL];
         int minutes = [duration intValue] / 60;
