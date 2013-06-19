@@ -564,7 +564,7 @@ typedef enum
         // PARTY MODE
         NSLog(@"Getting beats for music item with name = %@", mediaItem.name);
         
-        [self performSelector:@selector(downloadBeats:) withObject:mediaItem afterDelay:1.5];
+        [self performSelector:@selector(downloadBeats:) withObject:mediaItem afterDelay:4.0];
     } failure:^ {
         [self.delegate cancelMusicAndUpdateAll:mediaItem];
     }];

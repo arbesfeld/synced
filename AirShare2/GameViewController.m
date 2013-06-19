@@ -58,11 +58,12 @@
     [self isWaiting:YES];
     
     [self.skipSongButton setHitTestEdgeInsets:UIEdgeInsetsMake(-10, -10, -10, -10)];
+    [self.partyButton setHitTestEdgeInsets:UIEdgeInsetsMake(-10, -10, -10, -10)];
     
     self.playingLabel.font = [UIFont fontWithName:@"Century Gothic" size:11.0f];
     self.playingLabel.textColor = [UIColor lightGrayColor];
     
-    self.partyModeLabel.font = [UIFont fontWithName:@"Century Gothic" size:11.0f];
+    self.partyModeLabel.font = [UIFont fontWithName:@"Century Gothic" size:13.0f];
     self.partyModeLabel.textColor = [UIColor lightGrayColor];
     
     self.songTitle.shadowOffset = CGSizeMake(0.0, -1.0);
@@ -438,11 +439,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (_game != nil) {
-        int gameCount = [_game.playlist count];
-        if (self.swipeToReveal.hidden == NO & gameCount > 0){
-            [self hasSwipedLeft];
-        }
-        return gameCount;
+        return [_game.playlist count];
     } else {
         return 0;
     }
