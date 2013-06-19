@@ -577,6 +577,7 @@ typedef enum
         [mediaItem loadBeats];
     }];
 }
+
 - (void)uploadYoutubeItem:(MediaItem *)youtubeItem
 {
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@",youtubeItem.url]];
@@ -833,6 +834,9 @@ typedef enum
     if (_audioPlayer == nil) {
         _gameState = GameStateIdle;
         NSLog(@"AudioPlayer did not load properly: %@", [error description]);
+    } else {
+        [_audioPlayer play];
+        [_audioPlayer pause];
     }
 }
 
