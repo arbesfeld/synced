@@ -60,7 +60,7 @@
         self.searchBar = tempSearchBar;
         self.searchBar.delegate = self;
         [self.searchBar sizeToFit];
-        self.tableView.tableHeaderView = self.searchBar;
+//        self.tableView.tableHeaderView = self.searchBar;
         
         NSArray *empty = [[NSArray alloc] init];
         _allData = [[NSMutableArray alloc] initWithObjects:empty, movies, musicVideos, tvShows, podcasts, iTunesU, nil];
@@ -118,7 +118,7 @@
     // Configure the cell...
     if(cell == nil) {
         if(indexPath.section == 0) {
-            cell = [[MovieItemCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier title:@"" artist:@"Search for YouTube Videos" duration:@"" image:[UIImage imageNamed:@"youtubeLogo.png"]];
+            cell = [[MovieItemCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier title:@"" artist:@"Click to Search YouTube" duration:@"" image:[UIImage imageNamed:@"youtubeLogo.png"]];
         } else {
             cell = [[MovieItemCell alloc] initWithStyle:UITableViewCellStyleDefault
                                                            reuseIdentifier:CellIdentifier
