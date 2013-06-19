@@ -226,8 +226,8 @@
                         [self.playlistTable moveRowAtIndexPath:[NSIndexPath indexPathForRow:j inSection:0]
                                                toIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];
                         reloaded = YES;
-                        break;
                     }
+                    break;
                 }
             }
         }
