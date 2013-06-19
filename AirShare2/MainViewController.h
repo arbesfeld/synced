@@ -9,7 +9,7 @@
 
 #import <CoreBluetooth/CoreBluetooth.h>
 
-@interface MainViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, UIAlertViewDelegate, GameViewControllerDelegate, MatchmakingClientDelegate, MatchmakingServerDelegate>
+@interface MainViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate, GameViewControllerDelegate, MatchmakingClientDelegate, MatchmakingServerDelegate>
 
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *tapToJoinConstraint;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *tableViewConstraint;

@@ -7,7 +7,7 @@
     UIAlertView *_alertView;
     int _itemNumber;
     
-    Reachability *internetReachableFoo;
+    Reachability *internetReachable;
 }
 @synthesize delegate = _delegate;
 @synthesize game = _game;
@@ -548,15 +548,15 @@
 
 - (void)testInternetConnection
 {
-    internetReachableFoo = [Reachability reachabilityWithHostname:@"www.google.com"];
+    internetReachable = [Reachability reachabilityWithHostname:@"www.google.com"];
     __weak typeof(self) weakSelf = self;
     // Internet is reachable
-    internetReachableFoo.reachableBlock = ^(Reachability*reach)
+    internetReachable.reachableBlock = ^(Reachability*reach)
     {
     };
     
     // Internet is not reachable
-    internetReachableFoo.unreachableBlock = ^(Reachability*reach)
+    internetReachable.unreachableBlock = ^(Reachability*reach)
     {
         // Update the UI on the main thread
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -564,7 +564,7 @@
         });
     };
     
-    [internetReachableFoo startNotifier];
+    [internetReachable startNotifier];
 }
 
 #pragma mark - playMusic____

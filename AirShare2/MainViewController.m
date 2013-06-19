@@ -9,8 +9,7 @@
 @end
 
 @implementation MainViewController {
-    int tapCount, tappedRow;
-    NSTimer *tapTimer;
+    BOOL tapped;
     
 	MatchmakingClient *_matchmakingClient;
     QuitReason _quitReasonClient;
@@ -22,18 +21,18 @@
     
     double _verticalOffset;
     
-    bool uiLoaded;
-    
     CGRect screenRect;
-    CGFloat screenWidth;
-    CGFloat screenHeight;
+    CGFloat screenWidth, screenHeight;
     
-    Reachability *internetReachableFoo;
+    Reachability *internetReachable;
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
 	[super viewWillAppear:animated];
+    
+    tapped = NO;
+    
     [self setupUI];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setupUI:) name:UIApplicationDidChangeStatusBarFrameNotification object:self];
 }
@@ -231,50 +230,23 @@
 {
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-	if (_matchmakingClient != nil)
-	{
-        _waitingView.hidden = NO;
-        
-        if(tapCount == 3 && tapTimer != nil && tappedRow == indexPath.row){
-            //double tap - Put your double tap code here
-            [tapTimer invalidate];
-            _waitingView.hidden = YES;
-            tapTimer = nil;
-        }
-        else if(tapCount == 0){
-            //This is the first tap. If there is no tap till tapTimer is fired, it is a single tap
-            tapCount = tapCount + 1;
-            tappedRow = indexPath.row;
-            tapTimer = [NSTimer timerWithTimeInterval:3.0 target:self selector:@selector(tapTimerFired:) userInfo:nil repeats:NO];
-            NSString *peerID = [_matchmakingClient peerIDForAvailableServerAtIndex:indexPath.row];
-            [_matchmakingClient connectToServerWithPeerID:peerID];
-        }
-        else if(tappedRow != indexPath.row){
-            //tap on new row
-            tapCount = 0;
-            if(tapTimer != nil){
-                [tapTimer invalidate];
-                tapTimer = nil;
-            }
-        }
-        
-	}
-}
-
-- (void)tapTimerFired:(NSTimer *)aTimer{
-    //timer fired, there was a single tap on indexPath.row = tappedRow
-    if(tapTimer != nil){
-    	tapCount = 0;
-    	tappedRow = -1;
+    if (tapped) {
+        return;
     }
-}
-#pragma mark - UITextFieldDelegate
+    tapped = YES;
+    
+    _waitingView.hidden = NO;
 
-- (BOOL)textFieldShouldReturn:(UITextField *)textField
-{
-	[textField resignFirstResponder];
-	return YES;
+    [NSTimer timerWithTimeInterval:5.0 target:self selector:@selector(tapTimerFired:) userInfo:nil repeats:NO];
+    NSString *peerID = [_matchmakingClient peerIDForAvailableServerAtIndex:indexPath.row];
+    [_matchmakingClient connectToServerWithPeerID:peerID];
 }
+
+- (void)tapTimerFired:(NSTimer *)timer{
+    tapped = NO;
+    _waitingView.hidden = YES;
+}
+
 #pragma mark - MatchmakingServerDelegate
 
 - (void)matchmakingServer:(MatchmakingServer *)server clientDidConnect:(NSString *)peerID
@@ -507,15 +479,15 @@
 
 - (void)testInternetConnection
 {
-    internetReachableFoo = [Reachability reachabilityWithHostname:@"www.google.com"];
+    internetReachable = [Reachability reachabilityWithHostname:@"www.google.com"];
     __weak typeof(self) weakSelf = self;
     // Internet is reachable
-    internetReachableFoo.reachableBlock = ^(Reachability*reach)
+    internetReachable.reachableBlock = ^(Reachability*reach)
     {
     };
     
     // Internet is not reachable
-    internetReachableFoo.unreachableBlock = ^(Reachability*reach)
+    internetReachable.unreachableBlock = ^(Reachability*reach)
     {
         // Update the UI on the main thread
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -523,7 +495,7 @@
         });
     };
     
-    [internetReachableFoo startNotifier];
+    [internetReachable startNotifier];
 }
 
 - (void)reloadMainScreen:(id)sender {
@@ -556,8 +528,7 @@
     _matchmakingServer.maxClients = 3;
     _matchmakingServer.delegate = self;
     [_matchmakingServer startAcceptingConnectionsForSessionID:SESSION_ID name:UIDevice.currentDevice.name];
-    //[_matchmakingServer stopAcceptingConnections];
-    _matchmakingClient = nil;
+    
     [self serverStartGameWithSession:_matchmakingServer.session playerName:UIDevice.currentDevice.name clients:_matchmakingServer.connectedClients];
     _matchmakingServer = nil;
     _hostGameButton.alpha = 0.0;
