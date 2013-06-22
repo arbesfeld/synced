@@ -504,12 +504,17 @@
 }
 
 - (void)addValue:(NSNumber *)value forID:(NSString *)ID {
+    
     if([_hasVotedForItem objectForKey:ID]) {
+#ifdef DEBUG
         [self.game updateServerStats:7];
+#endif
         [_hasVotedForItem removeObjectForKey:ID];
     }
     else {
+#ifdef DEBUG
         [self.game updateServerStats:6];
+#endif
         [_hasVotedForItem setObject:@YES forKey:ID];
     }
 }

@@ -70,11 +70,11 @@
                                     [NSNumber numberWithInt: kAudioFormatMPEG4AAC], AVFormatIDKey,
                                     [NSNumber numberWithFloat:44100.0], AVSampleRateKey,
                                     [NSNumber numberWithInt:2], AVNumberOfChannelsKey,
-                                    [NSNumber numberWithInt:128000], AVEncoderBitRateKey,
+                                    [NSNumber numberWithInt:64000], AVEncoderBitRateKey,
                                     [NSData dataWithBytes:&channelLayout    length:sizeof(AudioChannelLayout)], AVChannelLayoutKey,
                                     nil];
 	AVAssetWriterInput *assetWriterInput = [[AVAssetWriterInput assetWriterInputWithMediaType:AVMediaTypeAudio
-																			  outputSettings:outputSettings] retain];
+                                                                               outputSettings:outputSettings] retain];
 	if ([assetWriter canAddInput:assetWriterInput]) {
 		[assetWriter addInput:assetWriterInput];
 	} else {

@@ -123,8 +123,9 @@ typedef enum
 	[self sendPacketToServer:packet];
     
     [self.delegate setSkipItemCount:0];
-    
+#ifdef DEBUG
     [self updateServerStats:1];
+#endif
 }
 
 - (void)startServerGameWithSession:(GKSession *)session playerName:(NSString *)name clients:(NSArray *)clients
@@ -152,7 +153,10 @@ typedef enum
 	[_players setObject:player forKey:player.peerID];
     [self.delegate setSkipItemCount:0];
     
+#ifdef DEBUG
     [self updateServerStats:1];
+#endif
+    
 }
 
 #pragma mark - GKSession Data Receive Handler
@@ -765,11 +769,13 @@ typedef enum
         // if you are starting the song for the first time
         if((mediaItem.playlistItemType == PlaylistItemTypeMovie && mediaItem.uploadedByUser) ||
             mediaItem.playlistItemType == PlaylistItemTypeYoutube) {
+#ifdef DEBUG
             if (mediaItem.playlistItemType == PlaylistItemTypeMovie && mediaItem.uploadedByUser) {
                 [self updateServerStats:3];
             } else if (mediaItem.uploadedByUser) {
                 [self updateServerStats:4]; // Youtube
             }
+#endif
             
             if(_audioPlayer) {
                 // if the audioPlayer is playing, stop it
@@ -788,9 +794,11 @@ typedef enum
         
         } else {
             [self loadAudioPlayer:mediaItem];
+#ifdef DEBUG
             if (mediaItem.uploadedByUser) {
                 [self updateServerStats:2];
             }
+#endif
         }
         _playMusicTimer = [NSTimer scheduledTimerWithTimeInterval:[startTime timeIntervalSinceNow] + compensate
                                                            target:self
@@ -956,10 +964,11 @@ typedef enum
 {
     // if we exceed half the player count, stop the audio and let the next song play
     if( _players.count / 2 < _skipItemCount) {
-        
+#ifdef DEBUG
         if (((MediaItem *)_currentItem).uploadedByUser) {
             [self updateServerStats:5];
         }
+#endif
         
         NSLog(@"Skipping song!");
         [self.delegate setSkipItemCount:0];
