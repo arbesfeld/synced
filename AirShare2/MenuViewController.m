@@ -37,6 +37,7 @@
         [self.background setImage:[UIImage imageNamed:@"metalHolesIP5.png"]];
     }
     _connectedUsersLabel.font = [UIFont fontWithName:@"CenturyGothicStd-Bold" size:17.0f];
+    _resyncLabel.font = [UIFont fontWithName:@"Century Gothic" size:16.0f];
     _sepeartorImageView.backgroundColor = [UIColor blackColor];
 }
 

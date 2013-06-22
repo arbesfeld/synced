@@ -19,6 +19,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *syncButton;
 @property (nonatomic, strong) Game *game;
 @property (weak, nonatomic) IBOutlet UIImageView *sepeartorImageView;
+@property (strong, nonatomic) IBOutlet UILabel *resyncLabel;
 
 - (IBAction)syncButtonPressed:(id)sender;
 

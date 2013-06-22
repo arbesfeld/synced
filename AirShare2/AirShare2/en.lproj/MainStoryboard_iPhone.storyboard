@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="3084" systemVersion="12D78" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="2">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="3084" systemVersion="12E55" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="2">
     <dependencies>
         <deployment defaultVersion="1552" identifier="iOS"/>
         <development version="4600" identifier="xcode"/>
@@ -416,7 +416,7 @@
                                     <constraint firstAttribute="height" constant="264" id="OLP-ro-0vp"/>
                                 </constraints>
                                 <tableView key="tableFooterView" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="LvQ-By-4ar">
-                                    <rect key="frame" x="0.0" y="0.0" width="153" height="8513"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="153" height="8777"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </tableView>
@@ -444,7 +444,7 @@
                             </button>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Connected Users" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zWr-yZ-tX5">
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="153" id="gCX-rF-zJn"/>
+                                    <constraint firstAttribute="width" constant="153" id="6qI-I2-JIO"/>
                                     <constraint firstAttribute="height" constant="34" id="hGZ-Al-JH5"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
@@ -456,6 +456,15 @@
                                     <constraint firstAttribute="width" constant="4" type="user" id="B6E-CM-ZGd"/>
                                 </constraints>
                             </imageView>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="resync media" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cBB-5T-FFQ">
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="21" id="OBe-Yh-a4y"/>
+                                    <constraint firstAttribute="width" constant="112" id="uVd-z4-hjf"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                <color key="textColor" red="0.7953404017857143" green="0.7953404017857143" blue="0.7953404017857143" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
@@ -467,17 +476,21 @@
                             <constraint firstItem="zWr-yZ-tX5" firstAttribute="leading" secondItem="MdD-Xb-XCK" secondAttribute="leading" type="default" id="M0x-Cf-3Kd"/>
                             <constraint firstItem="Piw-dK-flb" firstAttribute="leading" secondItem="vdq-9R-NdV" secondAttribute="leading" constant="178" type="user" id="QMr-Ef-DYD"/>
                             <constraint firstItem="8zE-Ii-Ed6" firstAttribute="leading" secondItem="MdD-Xb-XCK" secondAttribute="leading" type="default" id="QmC-Oa-ctV"/>
+                            <constraint firstAttribute="bottom" secondItem="cBB-5T-FFQ" secondAttribute="bottom" constant="23" id="Z48-ob-a16"/>
                             <constraint firstItem="brq-qp-ZiH" firstAttribute="bottom" secondItem="vdq-9R-NdV" secondAttribute="bottom" type="user" id="Zjf-Uv-3ET"/>
                             <constraint firstItem="zWr-yZ-tX5" firstAttribute="top" secondItem="vdq-9R-NdV" secondAttribute="top" constant="13" id="fVy-oJ-ryT"/>
                             <constraint firstItem="brq-qp-ZiH" firstAttribute="top" secondItem="vdq-9R-NdV" secondAttribute="top" type="default" id="i25-rY-NVd"/>
+                            <constraint firstItem="zWr-yZ-tX5" firstAttribute="leading" secondItem="vdq-9R-NdV" secondAttribute="leading" constant="13" id="jgb-Mw-AIV"/>
                             <constraint firstItem="MdD-Xb-XCK" firstAttribute="top" secondItem="vdq-9R-NdV" secondAttribute="top" constant="41" id="oDq-PJ-etc"/>
-                            <constraint firstItem="zWr-yZ-tX5" firstAttribute="leading" secondItem="vdq-9R-NdV" secondAttribute="leading" constant="13" id="oOW-IF-j34"/>
+                            <constraint firstItem="cBB-5T-FFQ" firstAttribute="leading" secondItem="vdq-9R-NdV" secondAttribute="leading" constant="59" id="seM-jF-hBk"/>
                             <constraint firstItem="Piw-dK-flb" firstAttribute="top" secondItem="vdq-9R-NdV" secondAttribute="top" type="default" id="sfK-2c-NBo"/>
+                            <constraint firstItem="cBB-5T-FFQ" firstAttribute="baseline" secondItem="8zE-Ii-Ed6" secondAttribute="baseline" type="default" id="z8x-ch-IPf"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="background" destination="brq-qp-ZiH" id="1gd-52-ni1"/>
                         <outlet property="connectedUsersLabel" destination="zWr-yZ-tX5" id="cce-K2-dFA"/>
+                        <outlet property="resyncLabel" destination="cBB-5T-FFQ" id="Gg0-b2-jXw"/>
                         <outlet property="sepeartorImageView" destination="Piw-dK-flb" id="hyP-y8-aSw"/>
                         <outlet property="syncButton" destination="8zE-Ii-Ed6" id="5pb-Wo-PN7"/>
                         <outlet property="usersTable" destination="MdD-Xb-XCK" id="r6w-R9-JqN"/>
