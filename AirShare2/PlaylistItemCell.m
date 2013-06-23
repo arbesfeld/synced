@@ -66,11 +66,11 @@
             _iconView.image = [UIImage imageNamed:@"movies-01"];
         }
         
-        [_iconView setAlpha:0.8];
-        _iconView.layer.shadowColor = [UIColor blackColor].CGColor;
-        _iconView.layer.shadowOffset = CGSizeMake(0, 0.5);
-        _iconView.layer.shadowOpacity = 1;
-        _iconView.layer.shadowRadius = 0.5;
+        //[_iconView setAlpha:0.8];
+        //_iconView.layer.shadowColor = [UIColor blackColor].CGColor;
+        //_iconView.layer.shadowOffset = CGSizeMake(0, 0.5);
+        //_iconView.layer.shadowOpacity = 1;
+        //_iconView.layer.shadowRadius = 0.5;
         
         // set status of buttons
         _upvotePressed = YES;
