@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="3084" systemVersion="12E55" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="2">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="3084" systemVersion="12D78" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="2">
     <dependencies>
         <deployment defaultVersion="1552" identifier="iOS"/>
         <development version="4600" identifier="xcode"/>
@@ -235,7 +235,7 @@
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IVa-kZ-LtJ" userLabel="songButton">
                                         <constraints>
                                             <constraint firstAttribute="width" constant="46" id="1Ig-wB-8Cm"/>
-                                            <constraint firstAttribute="height" constant="44" id="HT3-5x-HlR"/>
+                                            <constraint firstAttribute="height" constant="44" id="7UJ-ef-DXh"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                         <state key="normal" title=" " backgroundImage="musicIcon-01.png">
@@ -299,16 +299,16 @@
                                     <constraint firstItem="oyp-Su-xKn" firstAttribute="leading" secondItem="YC5-9B-f4q" secondAttribute="leading" constant="166" type="user" id="4Jh-uy-5RZ"/>
                                     <constraint firstItem="YuW-3R-SF1" firstAttribute="top" secondItem="YC5-9B-f4q" secondAttribute="top" constant="19" id="9VD-iY-guG"/>
                                     <constraint firstAttribute="trailing" secondItem="YuW-3R-SF1" secondAttribute="trailing" constant="12" id="GVi-Lt-8Xi"/>
-                                    <constraint firstItem="gAi-42-x5e" firstAttribute="leading" secondItem="YC5-9B-f4q" secondAttribute="leading" constant="77" type="user" id="QV4-oW-gj2"/>
                                     <constraint firstItem="IVa-kZ-LtJ" firstAttribute="leading" secondItem="YC5-9B-f4q" secondAttribute="leading" constant="10" id="UyZ-vL-PGW"/>
                                     <constraint firstItem="gAi-42-x5e" firstAttribute="baseline" secondItem="IVa-kZ-LtJ" secondAttribute="baseline" type="default" id="X3V-d6-K7S"/>
                                     <constraint firstAttribute="height" constant="60" type="user" id="aBl-5f-M0q"/>
                                     <constraint firstItem="EIA-jH-c4J" firstAttribute="leading" secondItem="YC5-9B-f4q" secondAttribute="leading" constant="202" id="bWP-AD-D8k"/>
-                                    <constraint firstItem="gAi-42-x5e" firstAttribute="top" secondItem="YC5-9B-f4q" secondAttribute="top" type="default" id="cjE-Tu-ccU"/>
                                     <constraint firstItem="oyp-Su-xKn" firstAttribute="baseline" secondItem="gAi-42-x5e" secondAttribute="baseline" type="default" id="h1o-kM-bpB"/>
+                                    <constraint firstItem="gAi-42-x5e" firstAttribute="top" secondItem="YC5-9B-f4q" secondAttribute="top" constant="15" type="user" id="hyj-p6-pME"/>
                                     <constraint firstItem="YuW-3R-SF1" firstAttribute="baseline" secondItem="gAi-42-x5e" secondAttribute="baseline" type="default" id="mYr-iv-nEE"/>
                                     <constraint firstItem="oyp-Su-xKn" firstAttribute="top" secondItem="YC5-9B-f4q" secondAttribute="top" constant="13" id="mda-nn-PRL"/>
                                     <constraint firstItem="EIA-jH-c4J" firstAttribute="top" secondItem="YC5-9B-f4q" secondAttribute="top" constant="6" id="ysD-ui-PqF"/>
+                                    <constraint firstItem="gAi-42-x5e" firstAttribute="leading" secondItem="YC5-9B-f4q" secondAttribute="leading" constant="78" type="user" id="zmW-Cr-RLc"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="qGG-Mn-1P9" customClass="MPVolumeView">
@@ -416,7 +416,7 @@
                                     <constraint firstAttribute="height" constant="264" id="OLP-ro-0vp"/>
                                 </constraints>
                                 <tableView key="tableFooterView" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="LvQ-By-4ar">
-                                    <rect key="frame" x="0.0" y="0.0" width="153" height="9305"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="153" height="9569"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </tableView>

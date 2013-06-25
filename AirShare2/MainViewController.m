@@ -16,7 +16,7 @@
     
     MatchmakingServer *_matchmakingServer;
     QuitReason _quitReasonServer;
-    
+    CBCentralManager* _testBluetooth;
     NSString *_serverName;
     NSTimer *_tapTimer;
     
@@ -28,6 +28,15 @@
     Reachability *internetReachable;
 }
 
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    
+    _matchmakingClient = [[MatchmakingClient alloc] init];
+    _matchmakingClient.delegate = self;
+    [_matchmakingClient startSearchingForServersWithSessionID:SESSION_ID];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:self];
+}
+
 - (void)viewWillAppear:(BOOL)animated
 {
 	[super viewWillAppear:animated];
@@ -35,15 +44,21 @@
     tapped = NO;
     
     [self setupUI];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setupUI:) name:UIApplicationDidChangeStatusBarFrameNotification object:self];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
+    [self testBluetooth];
     [self testInternetConnection];
-    CBCentralManager* testBluetooth = [[CBCentralManager alloc] initWithDelegate:nil queue: nil];
-    [testBluetooth state];
 }
+
+- (void)didBecomeActive {
+    NSLog(@"Did become active");
+    [self testBluetooth];
+    [self testInternetConnection];
+    [_matchmakingClient startSearchingForServersWithSessionID:SESSION_ID];
+}
+
 
 - (IBAction)backAction:(id)sender {
     [UIView animateWithDuration:0.6 animations:^() {
@@ -60,15 +75,11 @@
 }
 
 - (IBAction)joinGameAction:(id)sender {
-    _matchmakingClient = [[MatchmakingClient alloc] init];
-    _matchmakingClient.delegate = self;
-    [_matchmakingClient startSearchingForServersWithSessionID:SESSION_ID];
-    
     [self.tableView reloadData];
     
     if(IS_PHONE) {
         [UIView animateWithDuration:0.6 animations:^() {
-            _joinGameButton.frame = CGRectMake(-320,272+_verticalOffset,320,54);;
+            _joinGameButton.frame = CGRectMake(-320,272+_verticalOffset,320,54);
             _hostGameButton.frame = CGRectMake(320,195+_verticalOffset,320,54);
         }];
     }
@@ -77,6 +88,9 @@
 
 - (IBAction)hostGameAction:(id)sender
 {
+    [self testBluetooth];
+    [self testInternetConnection];
+    
     if(IS_PHONE) {
         [UIView animateWithDuration:0.6 animations:^() {
             _joinGameButton.frame = CGRectMake(-320,272+_verticalOffset,320,54);;
@@ -154,7 +168,7 @@
 {
 	UIAlertView *alertView = [[UIAlertView alloc]
                               initWithTitle:NSLocalizedString(@"No Network", @"No network alert title")
-                              message:NSLocalizedString(@"To use Synced, please enable WiFi in your device's Settings.", @"No network alert message")
+                              message:NSLocalizedString(@"To use Synced, please enable WiFi or data in your device's Settings.", @"No network alert message")
                               delegate:nil
                               cancelButtonTitle:NSLocalizedString(@"OK", @"Button: Cancel")
                               otherButtonTitles:nil];
@@ -305,6 +319,8 @@
 
 -(void)setupUI
 {
+    NSLog(@"Setting up UI");
+          
     _airshareLogo.hidden = YES;
     _hostGameButton.hidden = YES;
     _joinGameButton.hidden = YES;
@@ -321,7 +337,7 @@
         _tapToJoinConstraint.constant = screenWidth/3;
     }
     else if(IS_IPHONE_5) {
-        _verticalOffset = 40.0f;
+        _verticalOffset = 50.0f;
     } else {
         _verticalOffset = 20.0f;
     }
@@ -469,6 +485,8 @@
 - (void)testInternetConnection
 {
     internetReachable = [Reachability reachabilityWithHostname:@"www.google.com"];
+    internetReachable.reachableOnWWAN = YES;
+
     __weak typeof(self) weakSelf = self;
     // Internet is reachable
     internetReachable.reachableBlock = ^(Reachability*reach)
@@ -487,6 +505,11 @@
     [internetReachable startNotifier];
 }
 
+- (void)testBluetooth {
+    _testBluetooth = [[CBCentralManager alloc] initWithDelegate:nil queue: nil];
+    [_testBluetooth state];
+}
+
 - (void)reloadMainScreen:(id)sender {
     [UIView animateWithDuration:0.6 animations:^() {
         if(!IS_PHONE) {
@@ -502,6 +525,9 @@
 }
 
 - (void)releaseMainScreen:(id)sender {
+    [self testBluetooth];
+    [self testInternetConnection];
+    
     [UIView animateWithDuration:0.4 animations:^() {
         [self.tableView setAlpha:1.0];
         [_backButton setAlpha:1.0];
