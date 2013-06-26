@@ -75,6 +75,9 @@
 }
 
 - (IBAction)joinGameAction:(id)sender {
+    [_tapTimer invalidate];
+    _tapTimer = nil;
+    
     [self.tableView reloadData];
     
     if(IS_PHONE) {
@@ -241,7 +244,7 @@
     
     _waitingView.hidden = NO;
 
-    _tapTimer = [NSTimer timerWithTimeInterval:5.0 target:self selector:@selector(tapTimerFired:) userInfo:nil repeats:NO];
+    _tapTimer = [NSTimer scheduledTimerWithTimeInterval:2.0 target:self selector:@selector(tapTimerFired:) userInfo:nil repeats:NO];
     NSString *peerID = [_matchmakingClient peerIDForAvailableServerAtIndex:indexPath.row];
     [_matchmakingClient connectToServerWithPeerID:peerID];
 }
