@@ -238,18 +238,21 @@
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     if (tapped) {
+        NSLog(@"Tapped");
         return;
     }
+    NSLog(@"Not tapped");
     tapped = YES;
     
     _waitingView.hidden = NO;
 
-    _tapTimer = [NSTimer scheduledTimerWithTimeInterval:2.0 target:self selector:@selector(tapTimerFired:) userInfo:nil repeats:NO];
+    _tapTimer = [NSTimer scheduledTimerWithTimeInterval:6.0 target:self selector:@selector(tapTimerFired:) userInfo:nil repeats:NO];
     NSString *peerID = [_matchmakingClient peerIDForAvailableServerAtIndex:indexPath.row];
     [_matchmakingClient connectToServerWithPeerID:peerID];
 }
 
 - (void)tapTimerFired:(NSTimer *)timer{
+    NSLog(@"Tap timer");
     tapped = NO;
     _waitingView.hidden = YES;
 }
