@@ -34,7 +34,7 @@
     } else if(IS_IPHONE_5) {
         [self.background setImage:[UIImage imageNamed:@"metalHolesIP5.png"]];
     } else {
-        [self.background setImage:[UIImage imageNamed:@"metalHolesIP5.png"]];
+        [self.background setImage:[UIImage imageNamed:@"metalHolesIP4.png"]];
     }
     _connectedUsersLabel.font = [UIFont fontWithName:@"CenturyGothicStd-Bold" size:17.0f];
     _resyncLabel.font = [UIFont fontWithName:@"Century Gothic" size:16.0f];

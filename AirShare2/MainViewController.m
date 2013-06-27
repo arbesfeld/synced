@@ -360,7 +360,7 @@
     } else if(IS_IPHONE_5) {
         [self.background setImage:[UIImage imageNamed:@"metalHolesIP5.png"]];
     } else {
-        [self.background setImage:[UIImage imageNamed:@"metalHolesIP5.png"]];
+        [self.background setImage:[UIImage imageNamed:@"metalHolesIP4.png"]];
     }
     
     self.view.backgroundColor = [UIColor blackColor];
