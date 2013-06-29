@@ -28,6 +28,7 @@
     UIViewController *_displayedViewController;
     NSMutableDictionary *_hasVotedForItem; // key is songID, value is whethere they have upvoted it
 }
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *songTitleWidthContraint;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *partyLabelConstraint;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *partyButtonConstraint;
 @property (weak, nonatomic) IBOutlet UIButton *partyButton;
