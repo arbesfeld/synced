@@ -70,6 +70,7 @@
     self.songTitle.textColor = [UIColor whiteColor];
     self.songTitle.backgroundColor = [UIColor clearColor];
     self.songTitle.font = [UIFont fontWithName:@"Century Gothic" size:16.0f];
+
     
     self.artistLabel.font = [UIFont fontWithName:@"Century Gothic" size:12.0f];
     self.artistLabel.textColor = [UIColor lightGrayColor];
@@ -124,6 +125,13 @@
     if(!isWaiting) {
         // a song is playing, definitely hide this message
         self.tapToAdd.hidden = YES;
+    }
+    
+    if (!IS_PHONE){
+        self.songTitleWidthContraint.constant = [[UIScreen mainScreen] bounds].size.height - 70;
+    }
+    else {
+        self.songTitleWidthContraint.constant = 230;
     }
 }
 
@@ -262,6 +270,13 @@
     }
     
     [self.playlistTable endUpdates];
+    
+    if (self.swipeToReveal.alpha != 0.0)
+    {
+        if (_game.playlist.count > 2){
+            [self hasSwipedLeft];
+        }
+    }
 }
 
 - (void)removePlaylistItem:(PlaylistItem *)playlistItem animation:(BOOL)animation
@@ -374,6 +389,12 @@
     self.eyeButton.hidden = NO;
     self.partyButton.hidden = YES;
     self.partyModeLabel.hidden = YES;
+    if (!IS_PHONE){
+        self.songTitleWidthContraint.constant = [[UIScreen mainScreen] bounds].size.height - 140;
+    }
+    else{
+        self.songTitleWidthContraint.constant = 200;
+    }
 }
 
 - (void)flashScreen
