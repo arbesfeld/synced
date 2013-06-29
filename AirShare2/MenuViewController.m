@@ -18,7 +18,7 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        [self.syncButton setHitTestEdgeInsets:UIEdgeInsetsMake(-20, -20, -20, -200)];
+        [self.syncButton setHitTestEdgeInsets:UIEdgeInsetsMake(-50, -50, -50, -200)];
         self.syncButton.showsTouchWhenHighlighted = YES;
     }
     return self;
