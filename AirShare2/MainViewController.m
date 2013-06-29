@@ -31,9 +31,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    _matchmakingClient = [[MatchmakingClient alloc] init];
-    _matchmakingClient.delegate = self;
-    [_matchmakingClient startSearchingForServersWithSessionID:SESSION_ID];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:self];
 }
 
@@ -42,6 +39,10 @@
 	[super viewWillAppear:animated];
     
     tapped = NO;
+    
+    _matchmakingClient = [[MatchmakingClient alloc] init];
+    _matchmakingClient.delegate = self;
+    [_matchmakingClient startSearchingForServersWithSessionID:SESSION_ID];
     
     [self setupUI];
 }
@@ -75,6 +76,9 @@
 }
 
 - (IBAction)joinGameAction:(id)sender {
+    [_tapTimer invalidate];
+    _tapTimer = nil;
+    
     [self.tableView reloadData];
     
     if(IS_PHONE) {
@@ -241,14 +245,15 @@
     
     _waitingView.hidden = NO;
 
-    _tapTimer = [NSTimer timerWithTimeInterval:5.0 target:self selector:@selector(tapTimerFired:) userInfo:nil repeats:NO];
+    _tapTimer = [NSTimer scheduledTimerWithTimeInterval:15.0 target:self selector:@selector(tapTimerFired:) userInfo:nil repeats:NO];
+    
     NSString *peerID = [_matchmakingClient peerIDForAvailableServerAtIndex:indexPath.row];
     [_matchmakingClient connectToServerWithPeerID:peerID];
 }
 
-- (void)tapTimerFired:(NSTimer *)timer{
+- (void)tapTimerFired:(NSTimer *)timer {
     tapped = NO;
-    _waitingView.hidden = YES;
+//    _waitingView.hidden = YES;
 }
 
 #pragma mark - MatchmakingServerDelegate
@@ -300,15 +305,14 @@
 
 - (void)matchmakingClient:(MatchmakingClient *)client didDisconnectFromServer:(NSString *)peerID
 {
-	_matchmakingClient.delegate = nil;
+    _matchmakingClient.delegate = nil;
 	_matchmakingClient = nil;
 	[self.tableView reloadData];
-	[self serverDidDisconnectWithReason:_quitReasonClient];
-    
+	
+    [self serverDidDisconnectWithReason:_quitReasonClient];
     _matchmakingClient = [[MatchmakingClient alloc] init];
     _matchmakingClient.delegate = self;
     [_matchmakingClient startSearchingForServersWithSessionID:SESSION_ID];
-    
     [self.tableView reloadData];
 }
 

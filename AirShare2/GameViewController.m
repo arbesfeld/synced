@@ -353,7 +353,7 @@
 - (void)setPlaybackProgress:(double)f {
     self.playbackProgressBar.progress = f;
     
-    if(f == 0.0) {
+    if(f == 0.0 || f >= 0.99) {
         self.playbackProgressBar.hidden = YES;
     } else {
         self.playbackProgressBar.hidden = NO;
@@ -397,14 +397,13 @@
     }
 }
 
-- (void)flashScreen
+- (void)flashScreen:(int)flashColor
 {
     const NSArray *colorTable = [[NSArray alloc] initWithObjects: [UIColor whiteColor] ,[UIColor greenColor] ,[UIColor yellowColor], [UIColor redColor], [UIColor blueColor], nil];
     //NSLog(@"BEAT!!");
-    int rndIndex = arc4random()%[colorTable count];
     
     UIView *screenFlash = [[UIView alloc] initWithFrame:self.view.bounds];
-    [screenFlash setBackgroundColor:[colorTable objectAtIndex:rndIndex]];
+    [screenFlash setBackgroundColor:[colorTable objectAtIndex:flashColor % [colorTable count]]];
 
     [UIView animateWithDuration:0.6 animations:^() {
         screenFlash.alpha = 0.0;

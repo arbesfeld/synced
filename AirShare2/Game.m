@@ -567,8 +567,7 @@ typedef enum
         
         // PARTY MODE
         NSLog(@"Getting beats for music item with name = %@", mediaItem.name);
-        
-        [self performSelector:@selector(downloadBeats:) withObject:mediaItem afterDelay:4.0];
+        [self downloadBeats:mediaItem];
     } failure:^ {
         [self.delegate cancelMusicAndUpdateAll:mediaItem];
     }];
@@ -1138,8 +1137,8 @@ typedef enum
             if ([(NSNumber *)[mediaItem.beats objectAtIndex:mediaItem.beatPos] doubleValue] < _audioPlayer.currentTime + 0.03) {
                 [mediaItem skipBeat];
             } else {
+                [self.delegate flashScreen:mediaItem.beatPos];
                 mediaItem.beatPos++;
-                [self.delegate flashScreen];
             }
         }
     } else if(mediaItem.playlistItemType == PlaylistItemTypeMovie ||
