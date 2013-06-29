@@ -448,9 +448,11 @@
     NSLog(@"Toggling party mode");
     if ([sender isSelected]) {
         _game.partyMode = NO;
+        [self.partyButton setBackgroundImage:[UIImage imageNamed:@"PartyMode-01.png"] forState:UIControlStateNormal];
         [sender setSelected:NO];
     } else {
         _game.partyMode = YES;
+        [self.partyButton setBackgroundImage:[UIImage imageNamed:@"party rainbow-01.png"] forState:UIControlStateNormal];
         [sender setSelected:YES];
     }
 }

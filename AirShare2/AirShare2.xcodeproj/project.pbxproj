@@ -96,6 +96,7 @@
 		55FCC5C216ED78E80000BCBD /* Player.m in Sources */ = {isa = PBXBuildFile; fileRef = 55FCC5C116ED78E80000BCBD /* Player.m */; };
 		55FCC5C516ED79C70000BCBD /* Packet.m in Sources */ = {isa = PBXBuildFile; fileRef = 55FCC5C416ED79C70000BCBD /* Packet.m */; };
 		55FCC5C816ED7A5E0000BCBD /* NSData+AirShareAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 55FCC5C716ED7A5E0000BCBD /* NSData+AirShareAdditions.m */; };
+		8902472C177F9687000A2B91 /* party rainbow-01.png in Resources */ = {isa = PBXBuildFile; fileRef = 8902472B177F9687000A2B91 /* party rainbow-01.png */; };
 		892C64C71738C5260038A0E2 /* movieIcon-01.png in Resources */ = {isa = PBXBuildFile; fileRef = 892C64C61738C5260038A0E2 /* movieIcon-01.png */; };
 		892C64C91738C52E0038A0E2 /* musicIcon-01.png in Resources */ = {isa = PBXBuildFile; fileRef = 892C64C81738C52E0038A0E2 /* musicIcon-01.png */; };
 		892C64CB1738C8100038A0E2 /* upvote-01.png in Resources */ = {isa = PBXBuildFile; fileRef = 892C64CA1738C8100038A0E2 /* upvote-01.png */; };
@@ -293,6 +294,7 @@
 		55FCC5C416ED79C70000BCBD /* Packet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Packet.m; sourceTree = "<group>"; };
 		55FCC5C616ED7A5E0000BCBD /* NSData+AirShareAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+AirShareAdditions.h"; sourceTree = "<group>"; };
 		55FCC5C716ED7A5E0000BCBD /* NSData+AirShareAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+AirShareAdditions.m"; sourceTree = "<group>"; };
+		8902472B177F9687000A2B91 /* party rainbow-01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "party rainbow-01.png"; sourceTree = "<group>"; };
 		892C64C61738C5260038A0E2 /* movieIcon-01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "movieIcon-01.png"; sourceTree = "<group>"; };
 		892C64C81738C52E0038A0E2 /* musicIcon-01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "musicIcon-01.png"; sourceTree = "<group>"; };
 		892C64CA1738C8100038A0E2 /* upvote-01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "upvote-01.png"; sourceTree = "<group>"; };
@@ -708,6 +710,7 @@
 				8956CBC8176AAD9B00D23452 /* BGFrostedIpadA.png */,
 				89FA0224175AD8FD00F7B070 /* sync-01.png */,
 				8956CBC2176952D800D23452 /* PartyMode-01.png */,
+				8902472B177F9687000A2B91 /* party rainbow-01.png */,
 				89D67DAE1763E871005F9A07 /* frostedBG.png */,
 				5593E3BF1727AA4700CF9149 /* gradient_transparent.png */,
 				559673C41724CD9F000E0D52 /* youtubeLogo.png */,
@@ -816,6 +819,7 @@
 				89ED2D8A177775CE000C43A8 /* loading.gif in Resources */,
 				89B10C31177BD5C60019ADFD /* metalHolesIP4.png in Resources */,
 				89B10C33177BD68A0019ADFD /* Default@2x.png in Resources */,
+				8902472C177F9687000A2B91 /* party rainbow-01.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
