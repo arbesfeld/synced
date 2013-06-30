@@ -9,7 +9,7 @@
 #import "YouTubeTableViewController.h"
 #import "UIImageView+WebCache.h"
 
-const int ITEM_COUNT = 20;
+const int ITEM_COUNT = 10;
 
 @interface YouTubeTableViewController ()
 
@@ -70,10 +70,32 @@ const int ITEM_COUNT = 20;
     NSString *removeLastChar = [prams substringWithRange:NSMakeRange(0, [prams length]-1)];
     NSString *requestString = [NSString stringWithFormat:@"http://gdata.youtube.com/feeds/api/videos?%@", removeLastChar];
     //NSLog(@"request = %@", requestString);
+    // asynchronous download
     
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL: [NSURL URLWithString:requestString]];
-    NSData *returnData = [NSURLConnection sendSynchronousRequest: request returningResponse: nil error: nil ];
-    NSString *returnString = [[NSString alloc] initWithData:returnData encoding: NSUTF8StringEncoding];
+    AFHTTPClient *httpClient = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:BASE_URL]];
+    NSMutableURLRequest *request = [httpClient requestWithMethod:@"GET"
+                                                            path:requestString
+                                                      parameters:nil];
+    AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+    [httpClient registerHTTPOperationClass:[AFHTTPRequestOperation class]];
+    [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"Download Success: %@", operation.responseString);
+        [self processData:responseObject];
+        self.searchBar.text = searchString;
+        self.searchBar.userInteractionEnabled = YES;
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"Download Error: %@", error);
+        self.searchBar.text = searchString;
+        self.searchBar.userInteractionEnabled = YES;
+    }];
+    [operation start];
+    self.searchBar.text = [NSString stringWithFormat:@"Searching YouTube for %@...", searchString];
+    self.searchBar.userInteractionEnabled = NO;
+    [self.searchBar resignFirstResponder];
+}
+
+- (void)processData:(NSData *)data {
+    NSString *returnString = [[NSString alloc] initWithData:data encoding: NSUTF8StringEncoding];
     //NSLog(@"returnstring = %@", returnString);
     
     SBJsonParser *parser = [[SBJsonParser alloc] init];

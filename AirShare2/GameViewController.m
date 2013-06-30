@@ -7,6 +7,7 @@
     UIAlertView *_alertView;
     int _itemNumber;
     
+    CBCentralManager* _testBluetooth;
     Reachability *internetReachable;
 }
 @synthesize delegate = _delegate;
@@ -117,7 +118,7 @@
     self.skipsLabel.hidden = isWaiting;
     self.partyModeLabel.hidden = isWaiting;
     self.partyButton.hidden = isWaiting;
-    
+
     if(isWaiting) {
         // eye button only appears when video plays
         self.eyeButton.hidden = YES;
@@ -568,6 +569,11 @@
                               otherButtonTitles:nil];
     
 	[alertView show];
+}
+
+- (void)testBluetooth {
+    _testBluetooth = [[CBCentralManager alloc] initWithDelegate:nil queue: nil];
+    [_testBluetooth state];
 }
 
 - (void)testInternetConnection

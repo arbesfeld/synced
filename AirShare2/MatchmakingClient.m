@@ -148,8 +148,8 @@ ClientState;
 	{
 		if ([error code] == GKSessionCannotEnableError)
 		{
-			[self.delegate matchmakingClientNoNetwork:self];
-			[self disconnectFromServer];
+//			[self.delegate matchmakingClientNoNetwork:self];
+//			[self disconnectFromServer];
 		}
 	}
 }

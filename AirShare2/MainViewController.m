@@ -55,8 +55,6 @@
 
 - (void)didBecomeActive {
     NSLog(@"Did become active");
-    [self testBluetooth];
-    [self testInternetConnection];
     [_matchmakingClient startSearchingForServersWithSessionID:SESSION_ID];
 }
 
@@ -76,6 +74,9 @@
 }
 
 - (IBAction)joinGameAction:(id)sender {
+    [self testBluetooth];
+    [self testInternetConnection];
+    
     [_tapTimer invalidate];
     _tapTimer = nil;
     
@@ -92,9 +93,6 @@
 
 - (IBAction)hostGameAction:(id)sender
 {
-    [self testBluetooth];
-    [self testInternetConnection];
-    
     if(IS_PHONE) {
         [UIView animateWithDuration:0.6 animations:^() {
             _joinGameButton.frame = CGRectMake(-320,272+_verticalOffset,320,54);;
@@ -245,7 +243,7 @@
     
     _waitingView.hidden = NO;
 
-    _tapTimer = [NSTimer scheduledTimerWithTimeInterval:15.0 target:self selector:@selector(tapTimerFired:) userInfo:nil repeats:NO];
+    _tapTimer = [NSTimer scheduledTimerWithTimeInterval:20.0 target:self selector:@selector(tapTimerFired:) userInfo:nil repeats:NO];
     
     NSString *peerID = [_matchmakingClient peerIDForAvailableServerAtIndex:indexPath.row];
     [_matchmakingClient connectToServerWithPeerID:peerID];
@@ -529,9 +527,6 @@
 }
 
 - (void)releaseMainScreen:(id)sender {
-    [self testBluetooth];
-    [self testInternetConnection];
-    
     [UIView animateWithDuration:0.4 animations:^() {
         [self.tableView setAlpha:1.0];
         [_backButton setAlpha:1.0];

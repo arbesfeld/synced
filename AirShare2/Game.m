@@ -102,6 +102,9 @@ typedef enum
     [_audioPlayer play];
     [_audioPlayer stop];
     _audioPlayer = nil;
+    
+    [self.delegate testBluetooth];
+    [self.delegate testInternetConnection];
 }
 
 - (void)startClientGameWithSession:(GKSession *)session playerName:(NSString *)name server:(NSString *)peerID
@@ -126,6 +129,7 @@ typedef enum
 #ifdef DEBUG
     [self updateServerStats:1];
 #endif
+    
 }
 
 - (void)startServerGameWithSession:(GKSession *)session playerName:(NSString *)name clients:(NSArray *)clients
@@ -570,6 +574,7 @@ typedef enum
         [self downloadBeats:mediaItem];
     } failure:^ {
         [self.delegate cancelMusicAndUpdateAll:mediaItem];
+        [self.delegate testInternetConnection];
     }];
 }
 
@@ -880,8 +885,6 @@ typedef enum
         
         [self.delegate setPlaybackProgress:0.0];
         
-        [self.delegate mediaFinishedPlaying];
-        
         if(_updatePlaybackProgressTimer) {
             [_updatePlaybackProgressTimer invalidate];
             _updatePlaybackProgressTimer = nil;
@@ -891,6 +894,8 @@ typedef enum
             _playbackSyncingTimer = nil;
         }
         
+        [self.delegate setPlaybackProgress:0.0];
+        [self.delegate mediaFinishedPlaying];
         _audioPlayer = nil;
         [self tryPlayingNextItem];
     }

@@ -12,7 +12,7 @@
 
 #import <MediaPlayer/MediaPlayer.h>
 #import <QuartzCore/QuartzCore.h>
-
+#import <CoreBluetooth/CoreBluetooth.h>
 
 
 @class GameViewController;

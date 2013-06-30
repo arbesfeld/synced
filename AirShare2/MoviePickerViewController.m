@@ -208,15 +208,15 @@
     NSLog(@"Will begin dragging");
     _shouldLoadImages = NO;
 }
-- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
-{
-    NSLog(@"Did end dragging");
-    NSLog(@"Velocity = %f %f", velocity.x, velocity.y);
-    if(ABS(velocity.y) < 0.5) {
-        _shouldLoadImages = YES;
-        [self.tableView reloadData];
-    }
-}
+//- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
+//{
+//    NSLog(@"Did end dragging");
+//    NSLog(@"Velocity = %f %f", velocity.x, velocity.y);
+//    if(ABS(velocity.y) < 0.5) {
+//        _shouldLoadImages = YES;
+//        [self.tableView reloadData];
+//    }
+//}
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
     NSLog(@"Did end ecelerating");
