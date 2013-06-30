@@ -17,6 +17,9 @@
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="metalHolesIP5.png" translatesAutoresizingMaskIntoConstraints="NO" id="AD4-Q8-1a4"/>
                             <tableView autoresizesSubviews="NO" opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="edi-GE-42e">
                                 <color key="backgroundColor" white="1" alpha="0.5" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="248" type="user" id="omd-S5-7No"/>
+                                </constraints>
                                 <connections>
                                     <outlet property="dataSource" destination="2" id="wTz-CD-HBV"/>
                                     <outlet property="delegate" destination="2" id="1qj-dK-VXZ"/>
@@ -54,7 +57,7 @@
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.0" contentMode="left" text="Synced requires a strong persistent internet connection" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="248" translatesAutoresizingMaskIntoConstraints="NO" id="New-h4-v5H">
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.0" contentMode="left" text="Synced requires a strong, persistent internet connection" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="248" translatesAutoresizingMaskIntoConstraints="NO" id="New-h4-v5H">
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
@@ -63,14 +66,15 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="AD4-Q8-1a4" firstAttribute="bottom" secondItem="3" secondAttribute="bottom" type="default" id="2k9-Cy-0Lu"/>
+                            <constraint firstAttribute="centerX" secondItem="GU4-nS-SJA" secondAttribute="centerX" type="user" id="6E1-4h-u9V"/>
                             <constraint firstItem="New-h4-v5H" firstAttribute="leading" secondItem="3" secondAttribute="leading" constant="36" type="user" id="7Yd-RY-jMt"/>
                             <constraint firstItem="AD4-Q8-1a4" firstAttribute="top" secondItem="3" secondAttribute="top" type="default" id="7qb-yx-6F4"/>
                             <constraint firstAttribute="centerX" secondItem="edi-GE-42e" secondAttribute="centerX" type="user" id="AKd-5H-umH"/>
                             <constraint firstItem="AD4-Q8-1a4" firstAttribute="trailing" secondItem="3" secondAttribute="trailing" type="default" id="J0m-pi-Bu0"/>
                             <constraint firstItem="WVP-dF-E9X" firstAttribute="leading" secondItem="3" secondAttribute="leading" constant="15" id="KWT-0G-2m9"/>
-                            <constraint firstItem="edi-GE-42e" firstAttribute="leading" secondItem="New-h4-v5H" secondAttribute="leading" type="default" id="KZJ-4w-yBw"/>
                             <constraint firstItem="New-h4-v5H" firstAttribute="top" secondItem="edi-GE-42e" secondAttribute="bottom" constant="8" symbolic="YES" type="default" id="KzJ-6Z-Det"/>
                             <constraint firstItem="edi-GE-42e" firstAttribute="top" secondItem="3" secondAttribute="top" constant="230" type="user" id="L5J-4K-lfr"/>
+                            <constraint firstAttribute="centerX" secondItem="New-h4-v5H" secondAttribute="centerX" type="user" id="Rz6-9m-cRv"/>
                             <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="WVP-dF-E9X" secondAttribute="bottom" constant="16" type="user" id="SUU-B6-ZOc"/>
                             <constraint firstAttribute="trailing" secondItem="New-h4-v5H" secondAttribute="trailing" constant="36" type="user" id="bBS-Yo-DUI"/>
                             <constraint firstAttribute="bottom" secondItem="bht-7b-rQK" secondAttribute="bottom" constant="40" type="user" id="eEd-WS-Z5k"/>
@@ -78,7 +82,6 @@
                             <constraint firstAttribute="bottom" secondItem="edi-GE-42e" secondAttribute="bottom" constant="88" type="user" id="nnG-Y4-uBs"/>
                             <constraint firstAttribute="bottom" secondItem="New-h4-v5H" secondAttribute="bottom" constant="15" type="user" id="rVs-m1-Mq7"/>
                             <constraint firstItem="AD4-Q8-1a4" firstAttribute="leading" secondItem="3" secondAttribute="leading" type="default" id="uyv-Se-Z1y"/>
-                            <constraint firstItem="edi-GE-42e" firstAttribute="leading" secondItem="GU4-nS-SJA" secondAttribute="leading" type="default" id="wxe-UZ-Vgj"/>
                             <constraint firstAttribute="centerX" secondItem="bht-7b-rQK" secondAttribute="centerX" type="user" id="xIQ-vk-3ri"/>
                             <constraint firstItem="GU4-nS-SJA" firstAttribute="top" secondItem="3" secondAttribute="top" constant="169" type="user" id="y8g-GW-jEL"/>
                         </constraints>
@@ -428,7 +431,7 @@
                                     <constraint firstAttribute="height" constant="264" id="OLP-ro-0vp"/>
                                 </constraints>
                                 <tableView key="tableFooterView" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="LvQ-By-4ar">
-                                    <rect key="frame" x="0.0" y="0.0" width="153" height="10097"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="153" height="10361"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </tableView>
