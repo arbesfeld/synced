@@ -89,6 +89,7 @@
     
     self.playbackProgressBar.progressTintColor = [UIColor colorWithRed:255/255.0 green:150/225.0 blue:0/225.0 alpha:1];
     self.playbackProgressBar.trackTintColor = [UIColor lightGrayColor];
+    self.playbackProgressBar.hidden = YES;
     
     for (id current in self.volumeBar.subviews) {
         if ([current isKindOfClass:[UISlider class]]) {
@@ -114,7 +115,6 @@
     self.skipSongButton.hidden = isWaiting;
     self.skipSongLabel.hidden = isWaiting;
     self.timeLabel.hidden = isWaiting;
-    self.playbackProgressBar.hidden = isWaiting;
     self.skipsLabel.hidden = isWaiting;
     self.partyModeLabel.hidden = isWaiting;
     self.partyButton.hidden = isWaiting;
@@ -354,7 +354,7 @@
 - (void)setPlaybackProgress:(double)f {
     self.playbackProgressBar.progress = f;
     
-    if(f == 0.0 || f >= 0.99) {
+    if(f == 0.0) {
         self.playbackProgressBar.hidden = YES;
     } else {
         self.playbackProgressBar.hidden = NO;

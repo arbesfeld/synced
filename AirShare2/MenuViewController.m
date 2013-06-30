@@ -84,7 +84,9 @@
 }
 
 - (IBAction)syncButtonPressed:(id)sender {
+#ifdef DEBUG
     [_game updateServerStats:9];
+#endif
     [_game sendSyncPacketsForItem:(MediaItem *)_game.currentItem];
 }
 @end

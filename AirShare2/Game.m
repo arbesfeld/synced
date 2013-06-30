@@ -527,6 +527,10 @@ typedef enum
 {
     NSString *songName = [song valueForProperty:MPMediaItemPropertyTitle];
     NSString *artistName = [song valueForProperty:MPMediaItemPropertyArtist];
+    NSInteger mediaType = [[song valueForProperty:MPMediaItemPropertyMediaType] intValue];
+    if (mediaType > MPMediaTypeAnyAudio && !isVideo) {
+        return;
+    }
     NSURL *url = [song valueForProperty:MPMediaItemPropertyAssetURL];
     if(!songName) {
         songName = @"";
@@ -793,6 +797,10 @@ typedef enum
             if(_moviePlayerController.moviePlayer == nil) {
                 _gameState = GameStateIdle;
                 NSLog(@"ERROR loading moviePlayer!");
+                if(mediaItem.playlistItemType == PlaylistItemTypeMovie) {
+                    [self skipSong];
+                    return;
+                }
             }
             
         
@@ -880,10 +888,7 @@ typedef enum
     NSLog(@"AudioPlayer %@ finished playing, success? %@", player == _audioPlayer ? @"audioPlayer" : @"silentPlayer", flag ? @"YES" : @"NO");
     
     if(player == _audioPlayer) {
-        //NSAssert(!flag || _gameState == GameStatePlayingMusic || !self.isServer, @"In audioPlayerDidFinishPlaying:");
         _gameState = GameStateIdle;
-        
-        [self.delegate setPlaybackProgress:0.0];
         
         if(_updatePlaybackProgressTimer) {
             [_updatePlaybackProgressTimer invalidate];
@@ -903,8 +908,6 @@ typedef enum
 
 - (void)moviePlayerDidFinishPlaying:(AVPlayerItem *)playerItem
 {
-    //NSAssert(_gameState == GameStatePlayingMovie, @"In moviePlayerDidFinishPlaying:");
-    
     NSLog(@"MoviePlayerDidFinishPlaying");
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -925,7 +928,6 @@ typedef enum
         [_playbackSyncingTimer invalidate];
         _playbackSyncingTimer = nil;
     }
-    
     
     if(_gameState != GameStatePlayingMovie) {
         // we already started new content
@@ -968,24 +970,29 @@ typedef enum
 {
     // if we exceed half the player count, stop the audio and let the next song play
     if( _players.count / 2 < _skipItemCount) {
+        [self skipSong];
+    }
+}
+
+- (void)skipSong
+{
 #ifdef DEBUG
-        if (((MediaItem *)_currentItem).uploadedByUser) {
-            [self updateServerStats:5];
-        }
+    if (((MediaItem *)_currentItem).uploadedByUser) {
+        [self updateServerStats:5];
+    }
 #endif
-        
-        NSLog(@"Skipping song!");
-        [self.delegate setSkipItemCount:0];
-        [self.delegate mediaFinishedPlaying];
-        
-        if(_gameState == GameStatePlayingMusic) {
-            [self audioPlayerDidFinishPlaying:_audioPlayer successfully:YES];
-        } else if(_gameState == GameStatePlayingMovie) {
-            [self moviePlayerDidFinishPlaying:nil];
-        } else {
-            _gameState = GameStateIdle;
-            [self tryPlayingNextItem];
-        }
+    
+    NSLog(@"Skipping song!");
+    [self.delegate setSkipItemCount:0];
+    [self.delegate mediaFinishedPlaying];
+    
+    if(_gameState == GameStatePlayingMusic) {
+        [self audioPlayerDidFinishPlaying:_audioPlayer successfully:YES];
+    } else if(_gameState == GameStatePlayingMovie) {
+        [self moviePlayerDidFinishPlaying:nil];
+    } else {
+        _gameState = GameStateIdle;
+        [self tryPlayingNextItem];
     }
 }
 

@@ -78,7 +78,9 @@
     [self testBluetooth];
     [self testInternetConnection];
     
-    [_tapTimer invalidate];
+    if(_tapTimer) {
+        [_tapTimer invalidate];
+    }
     _tapTimer = nil;
     
     [self.tableView reloadData];
