@@ -190,6 +190,10 @@
                               cancelButtonTitle:NSLocalizedString(@"OK", @"Button: OK")
                               otherButtonTitles:nil];
     _waitingView.hidden = YES;
+    if(_tapTimer) {
+        [_tapTimer invalidate];
+    }
+    _tapTimer = nil;
 	[alertView show];
 }
      
