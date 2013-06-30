@@ -58,8 +58,8 @@
     
     [self isWaiting:YES];
     
-    [self.skipSongButton setHitTestEdgeInsets:UIEdgeInsetsMake(-10, -10, -10, -10)];
-    [self.partyButton setHitTestEdgeInsets:UIEdgeInsetsMake(-10, -10, -10, -10)];
+    [self.skipSongButton setHitTestEdgeInsets:UIEdgeInsetsMake(-20, -20, -20, -20)];
+    [self.partyButton setHitTestEdgeInsets:UIEdgeInsetsMake(-20, -20, -20, -20)];
     
     self.playingLabel.font = [UIFont fontWithName:@"Century Gothic" size:11.0f];
     self.playingLabel.textColor = [UIColor lightGrayColor];
