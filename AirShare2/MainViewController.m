@@ -62,6 +62,7 @@
 - (IBAction)backAction:(id)sender {
     [UIView animateWithDuration:0.6 animations:^() {
         [self.tableView setAlpha:0.0];
+        [_internetLabel setAlpha:1.0];
         [_backButton setAlpha:0.0];
         [_hostGameButton setAlpha:1.0];
         [_joinGameButton setAlpha:1.0];
@@ -86,6 +87,7 @@
         [UIView animateWithDuration:0.6 animations:^() {
             _joinGameButton.frame = CGRectMake(-320,272+_verticalOffset,320,54);
             _hostGameButton.frame = CGRectMake(320,195+_verticalOffset,320,54);
+            _internetLabel.alpha = 1.0;
         }];
     }
     [self performSelector:@selector(releaseMainScreen:) withObject:nil afterDelay:.4];
@@ -97,6 +99,7 @@
         [UIView animateWithDuration:0.6 animations:^() {
             _joinGameButton.frame = CGRectMake(-320,272+_verticalOffset,320,54);;
             _hostGameButton.frame = CGRectMake(320,195+_verticalOffset,320,54);
+            _internetLabel.alpha = 1.0;
         }];
         [self performSelector:@selector(startGame:) withObject:nil afterDelay:.4];
     } else {
@@ -365,12 +368,15 @@
         [self.background setImage:[UIImage imageNamed:@"metalHolesIP4.png"]];
     }
     
-    self.view.backgroundColor = [UIColor blackColor];
+    self.view.BackgroundColor = [UIColor blackColor];
     self.tableView.layer.cornerRadius = 7;
     self.tableView.layer.masksToBounds = YES;
     
     self.sessionsLabel.font = [UIFont fontWithName:@"Century Gothic" size:22.0f];
     self.sessionsLabel.textColor = [UIColor whiteColor];
+    
+    self.internetLabel.font = [UIFont fontWithName:@"Century Gothic" size:16.0f];
+    self.internetLabel.textColor = [UIColor lightGrayColor];
 
     _waitingView.image = [UIImage animatedImageWithAnimatedGIFData:[NSData dataWithContentsOfURL:url]];
     _waitingView.hidden = YES;
@@ -437,6 +443,7 @@
     
     [UIView animateWithDuration:.6 animations:^() {
         _airshareLogo.alpha = 1.0;
+        _internetLabel.alpha = 1.0;
         if(!IS_PHONE) {
             _airshareLogo.frame = CGRectMake(screenHeight/2 - 162, 0, 300, 300);
         } else if(IS_IPHONE_5) {
@@ -471,6 +478,7 @@
     _joinGameButton.hidden = false;
     _hostGameButton.hidden = false;
     [UIView animateWithDuration:0.6 animations:^() {
+        _internetLabel.alpha = 1.0;
         if(!IS_PHONE) {
             _hostGameButton.frame = CGRectMake(0,screenWidth/2 + 2 * _verticalOffset, screenHeight, 54);
             _joinGameButton.frame = CGRectMake(0,screenWidth/2, screenHeight, 54);
@@ -514,6 +522,7 @@
 
 - (void)reloadMainScreen:(id)sender {
     [UIView animateWithDuration:0.6 animations:^() {
+        _internetLabel.alpha = 1.0;
         if(!IS_PHONE) {
             _hostGameButton.frame = CGRectMake(0,screenWidth/2 + 2 * _verticalOffset, screenHeight, 54);
             _joinGameButton.frame = CGRectMake(0,screenWidth/2, screenHeight, 54);
@@ -529,6 +538,7 @@
 - (void)releaseMainScreen:(id)sender {
     [UIView animateWithDuration:0.4 animations:^() {
         [self.tableView setAlpha:1.0];
+        [_internetLabel setAlpha:0.0];
         [_backButton setAlpha:1.0];
         [_hostGameButton setAlpha:0.0];
         [_joinGameButton setAlpha:0.0];
@@ -547,6 +557,7 @@
     _matchmakingServer = nil;
     _hostGameButton.alpha = 0.0;
     _joinGameButton.alpha = 0.0;
+    _internetLabel.alpha = 0.0;
 }
 
 
