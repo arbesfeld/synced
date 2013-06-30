@@ -72,7 +72,6 @@
     self.songTitle.backgroundColor = [UIColor clearColor];
     self.songTitle.font = [UIFont fontWithName:@"Century Gothic" size:16.0f];
 
-    
     self.artistLabel.font = [UIFont fontWithName:@"Century Gothic" size:12.0f];
     self.artistLabel.textColor = [UIColor lightGrayColor];
     
@@ -84,6 +83,7 @@
     
     self.timeLabel.font = [UIFont fontWithName:@"Century Gothic" size:14.0f];
     self.timeLabel.textColor = [UIColor whiteColor];
+    self.timeLabel.hidden = YES;
     
     self.playlistTable.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     
@@ -114,7 +114,6 @@
     self.artistLabel.hidden = isWaiting;
     self.skipSongButton.hidden = isWaiting;
     self.skipSongLabel.hidden = isWaiting;
-    self.timeLabel.hidden = isWaiting;
     self.skipsLabel.hidden = isWaiting;
     self.partyModeLabel.hidden = isWaiting;
     self.partyButton.hidden = isWaiting;
