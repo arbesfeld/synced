@@ -3,6 +3,7 @@
 #import "Game.h"
 #import "AFNetworking.h"
 #import "MusicUpload.h"
+#import "Appirater.h"
 
 #import "Packet.h"
 #import "PacketSignIn.h"
@@ -525,6 +526,7 @@ typedef enum
 
 - (void)uploadMusicWithMediaItem:(MPMediaItem *)song video:(BOOL)isVideo
 {
+    [Appirater userDidSignificantEvent:YES];
     NSString *songName = [song valueForProperty:MPMediaItemPropertyTitle];
     NSString *artistName = [song valueForProperty:MPMediaItemPropertyArtist];
     NSInteger mediaType = [[song valueForProperty:MPMediaItemPropertyMediaType] intValue];
@@ -1306,17 +1308,17 @@ typedef enum
  */
 - (void)updateServerStats:(int)action
 {
-    NSString *urlString = [NSString stringWithFormat:@"%@airshare-morestats.php?sessionid=%@&action=%d", BASE_URL, _serverPeerID, action];
-    //NSLog(@"Making url request: %@", urlString);
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
-    [request setHTTPMethod:@"GET"];
-    [request setURL:[NSURL URLWithString:urlString]];
-    
-    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *responseCode, NSData *data, NSError *error) {
-        if(error) {
-            NSLog(@"Error getting %@, HTTP status code %@", urlString, responseCode);
-        }
-    }];
+//    NSString *urlString = [NSString stringWithFormat:@"%@airshare-morestats.php?sessionid=%@&action=%d", BASE_URL, _serverPeerID, action];
+//    //NSLog(@"Making url request: %@", urlString);
+//    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+//    [request setHTTPMethod:@"GET"];
+//    [request setURL:[NSURL URLWithString:urlString]];
+//    
+//    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *responseCode, NSData *data, NSError *error) {
+//        if(error) {
+//            NSLog(@"Error getting %@, HTTP status code %@", urlString, responseCode);
+//        }
+//    }];
     
 }
 
