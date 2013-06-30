@@ -901,7 +901,6 @@ typedef enum
             _playbackSyncingTimer = nil;
         }
         
-        [self.delegate setPlaybackProgress:0.0];
         [self.delegate mediaFinishedPlaying];
         _audioPlayer = nil;
         [self tryPlayingNextItem];
@@ -936,9 +935,7 @@ typedef enum
         return;
     }
     
-    [self.delegate setPlaybackProgress:0.0];
     [self.delegate mediaFinishedPlaying];
-    
     _gameState = GameStateIdle;
     
     [self tryPlayingNextItem];
@@ -1129,6 +1126,10 @@ typedef enum
 
 - (void)handleUpdatePlaybackProgressTimer:(NSTimer *)timer
 {
+    if(_gameState == GameStateIdle) {
+        return;
+    }
+    
     // decide whether to mark a beat
     MediaItem *mediaItem = (MediaItem *)timer.userInfo;
     
@@ -1145,7 +1146,7 @@ typedef enum
         }
         if (_partyMode && mediaItem.beatsLoaded && mediaItem.beatPos >= 0 && mediaItem.beatPos < [mediaItem.beats count] && [(NSNumber *)[mediaItem.beats objectAtIndex:mediaItem.beatPos] doubleValue] < _audioPlayer.currentTime + 0.05) {
             // play a beat
-            //NSLog(@"%f is the time; %@ is the beat", _audioPlayer.currentTime, (NSNumber*)[mediaItem.beats objectAtIndex:mediaItem.beatPos]);
+            //NSLog(@"%f ifs the time; %@ is the beat", _audioPlayer.currentTime, (NSNumber*)[mediaItem.beats objectAtIndex:mediaItem.beatPos]);
             
             // don't play the beat if it's too far elapsed
             if ([(NSNumber *)[mediaItem.beats objectAtIndex:mediaItem.beatPos] doubleValue] < _audioPlayer.currentTime + 0.03) {

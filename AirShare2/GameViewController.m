@@ -307,6 +307,7 @@
 - (void)mediaFinishedPlaying
 {
     [self isWaiting:YES];
+    [self setPlaybackProgress:0.0];
     self.timeLabel.text = @"0:00";
 }
 
@@ -355,8 +356,10 @@
     self.playbackProgressBar.progress = f;
     
     if(f == 0.0) {
+        self.timeLabel.hidden = YES;
         self.playbackProgressBar.hidden = YES;
     } else {
+        self.timeLabel.hidden = NO;
         self.playbackProgressBar.hidden = NO;
     }
 }
@@ -493,11 +496,9 @@
 - (void)setHeaderWithSongName:(NSString *)songName andArtistName:(NSString *)artistName
 {
     _artistLabel.hidden = NO;
-    _playbackProgressBar.hidden = NO;
     
     self.songTitle.text = songName;
     self.artistLabel.text = artistName;
-    
 }
 
 #pragma mark - MoviePickerDelegate
