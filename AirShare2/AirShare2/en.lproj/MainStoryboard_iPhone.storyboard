@@ -47,29 +47,38 @@
                             </button>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Tap to Join Session" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GU4-nS-SJA">
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="248" id="aw2-rN-gf9"/>
+                                    <constraint firstAttribute="width" constant="248" type="user" id="aw2-rN-gf9"/>
                                     <constraint firstAttribute="height" constant="48" type="user" id="sy1-eL-ZRH"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.0" contentMode="left" text="Synced requires a strong persistent internet connection" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="248" translatesAutoresizingMaskIntoConstraints="NO" id="New-h4-v5H">
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="AD4-Q8-1a4" firstAttribute="bottom" secondItem="3" secondAttribute="bottom" type="default" id="2k9-Cy-0Lu"/>
+                            <constraint firstItem="New-h4-v5H" firstAttribute="leading" secondItem="3" secondAttribute="leading" constant="36" type="user" id="7Yd-RY-jMt"/>
                             <constraint firstItem="AD4-Q8-1a4" firstAttribute="top" secondItem="3" secondAttribute="top" type="default" id="7qb-yx-6F4"/>
                             <constraint firstAttribute="centerX" secondItem="edi-GE-42e" secondAttribute="centerX" type="user" id="AKd-5H-umH"/>
                             <constraint firstItem="AD4-Q8-1a4" firstAttribute="trailing" secondItem="3" secondAttribute="trailing" type="default" id="J0m-pi-Bu0"/>
                             <constraint firstItem="WVP-dF-E9X" firstAttribute="leading" secondItem="3" secondAttribute="leading" constant="15" id="KWT-0G-2m9"/>
+                            <constraint firstItem="edi-GE-42e" firstAttribute="leading" secondItem="New-h4-v5H" secondAttribute="leading" type="default" id="KZJ-4w-yBw"/>
+                            <constraint firstItem="New-h4-v5H" firstAttribute="top" secondItem="edi-GE-42e" secondAttribute="bottom" constant="8" symbolic="YES" type="default" id="KzJ-6Z-Det"/>
                             <constraint firstItem="edi-GE-42e" firstAttribute="top" secondItem="3" secondAttribute="top" constant="230" type="user" id="L5J-4K-lfr"/>
                             <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="WVP-dF-E9X" secondAttribute="bottom" constant="16" type="user" id="SUU-B6-ZOc"/>
-                            <constraint firstItem="GU4-nS-SJA" firstAttribute="trailing" secondItem="edi-GE-42e" secondAttribute="trailing" type="default" id="Yag-ys-6et"/>
+                            <constraint firstAttribute="trailing" secondItem="New-h4-v5H" secondAttribute="trailing" constant="36" type="user" id="bBS-Yo-DUI"/>
                             <constraint firstAttribute="bottom" secondItem="bht-7b-rQK" secondAttribute="bottom" constant="40" type="user" id="eEd-WS-Z5k"/>
-                            <constraint firstItem="GU4-nS-SJA" firstAttribute="leading" secondItem="edi-GE-42e" secondAttribute="leading" type="default" id="l4V-EY-Dcf"/>
                             <constraint firstAttribute="bottom" secondItem="WVP-dF-E9X" secondAttribute="bottom" constant="16" id="nb7-98-3sb"/>
                             <constraint firstAttribute="bottom" secondItem="edi-GE-42e" secondAttribute="bottom" constant="88" type="user" id="nnG-Y4-uBs"/>
+                            <constraint firstAttribute="bottom" secondItem="New-h4-v5H" secondAttribute="bottom" constant="15" type="user" id="rVs-m1-Mq7"/>
                             <constraint firstItem="AD4-Q8-1a4" firstAttribute="leading" secondItem="3" secondAttribute="leading" type="default" id="uyv-Se-Z1y"/>
+                            <constraint firstItem="edi-GE-42e" firstAttribute="leading" secondItem="GU4-nS-SJA" secondAttribute="leading" type="default" id="wxe-UZ-Vgj"/>
                             <constraint firstAttribute="centerX" secondItem="bht-7b-rQK" secondAttribute="centerX" type="user" id="xIQ-vk-3ri"/>
                             <constraint firstItem="GU4-nS-SJA" firstAttribute="top" secondItem="3" secondAttribute="top" constant="169" type="user" id="y8g-GW-jEL"/>
                         </constraints>
@@ -77,6 +86,7 @@
                     <connections>
                         <outlet property="backButton" destination="WVP-dF-E9X" id="Jvt-9V-T9r"/>
                         <outlet property="background" destination="AD4-Q8-1a4" id="pyA-EN-kH2"/>
+                        <outlet property="internetLabel" destination="New-h4-v5H" id="N4c-og-ycE"/>
                         <outlet property="sessionsLabel" destination="GU4-nS-SJA" id="I4H-iV-wsb"/>
                         <outlet property="tableView" destination="edi-GE-42e" id="5k0-m4-D9H"/>
                         <outlet property="tableViewConstraint" destination="L5J-4K-lfr" id="YNm-R9-Gmm"/>
@@ -296,14 +306,13 @@
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstItem="EIA-jH-c4J" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="YC5-9B-f4q" secondAttribute="leading" constant="202" type="user" id="0BX-7r-iS0"/>
                                     <constraint firstItem="IVa-kZ-LtJ" firstAttribute="bottom" secondItem="YC5-9B-f4q" secondAttribute="bottom" type="default" id="3re-sH-45w"/>
                                     <constraint firstItem="YuW-3R-SF1" firstAttribute="top" secondItem="YC5-9B-f4q" secondAttribute="top" constant="19" id="9VD-iY-guG"/>
                                     <constraint firstAttribute="trailing" secondItem="YuW-3R-SF1" secondAttribute="trailing" constant="12" id="GVi-Lt-8Xi"/>
+                                    <constraint firstItem="EIA-jH-c4J" firstAttribute="leading" secondItem="oyp-Su-xKn" secondAttribute="trailing" constant="4" type="user" id="J8D-dR-zZw"/>
                                     <constraint firstItem="IVa-kZ-LtJ" firstAttribute="leading" secondItem="YC5-9B-f4q" secondAttribute="leading" constant="10" id="UyZ-vL-PGW"/>
                                     <constraint firstItem="gAi-42-x5e" firstAttribute="baseline" secondItem="IVa-kZ-LtJ" secondAttribute="baseline" type="default" id="X3V-d6-K7S"/>
                                     <constraint firstAttribute="height" constant="60" type="user" id="aBl-5f-M0q"/>
-                                    <constraint firstItem="EIA-jH-c4J" firstAttribute="leading" secondItem="YC5-9B-f4q" secondAttribute="leading" constant="202" id="bWP-AD-D8k"/>
                                     <constraint firstItem="oyp-Su-xKn" firstAttribute="baseline" secondItem="gAi-42-x5e" secondAttribute="baseline" type="default" id="h1o-kM-bpB"/>
                                     <constraint firstItem="gAi-42-x5e" firstAttribute="top" secondItem="YC5-9B-f4q" secondAttribute="top" constant="15" type="user" id="hyj-p6-pME"/>
                                     <constraint firstItem="oyp-Su-xKn" firstAttribute="leading" secondItem="YC5-9B-f4q" secondAttribute="leading" constant="166" type="user" id="lNF-rv-t1C"/>
@@ -384,7 +393,6 @@
                         <outlet property="eyeButton" destination="APP-eU-heP" id="lfe-2S-RWc"/>
                         <outlet property="partyButton" destination="oyp-Su-xKn" id="QoE-os-aiQ"/>
                         <outlet property="partyButtonConstraint" destination="lNF-rv-t1C" id="5WN-oD-cxB"/>
-                        <outlet property="partyLabelConstraint" destination="0BX-7r-iS0" id="Jei-af-Mwf"/>
                         <outlet property="partyModeLabel" destination="EIA-jH-c4J" id="da5-or-749"/>
                         <outlet property="playbackProgressBar" destination="WD3-Wu-ZGd" id="Jcq-8g-IJ2"/>
                         <outlet property="playingLabel" destination="LWF-a9-TuI" id="78C-CC-ogQ"/>
@@ -420,7 +428,7 @@
                                     <constraint firstAttribute="height" constant="264" id="OLP-ro-0vp"/>
                                 </constraints>
                                 <tableView key="tableFooterView" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="LvQ-By-4ar">
-                                    <rect key="frame" x="0.0" y="0.0" width="153" height="9833"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="153" height="10097"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </tableView>
@@ -519,6 +527,78 @@
         <image name="sync-01.png" width="275" height="276"/>
         <image name="tapformedia-01-01.png" width="1117" height="442"/>
     </resources>
+    <classes>
+        <class className="GameViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/GameViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="exitAction:"/>
+                <relationship kind="action" name="eyeAction:"/>
+                <relationship kind="action" name="partyAction:"/>
+                <relationship kind="action" name="playMovie:"/>
+                <relationship kind="action" name="playMusic:"/>
+                <relationship kind="action" name="skipMusic:"/>
+                <relationship kind="outlet" name="artistLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="background" candidateClass="UIImageView"/>
+                <relationship kind="outlet" name="exitButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="eyeButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="gradientView" candidateClass="UIView"/>
+                <relationship kind="outlet" name="partyButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="partyButtonConstraint" candidateClass="NSLayoutConstraint"/>
+                <relationship kind="outlet" name="partyLabelConstraint" candidateClass="NSLayoutConstraint"/>
+                <relationship kind="outlet" name="partyModeLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="partySwitch" candidateClass="UISwitch"/>
+                <relationship kind="outlet" name="playbackProgressBar" candidateClass="UIProgressView"/>
+                <relationship kind="outlet" name="playingLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="playlistTable" candidateClass="UITableView"/>
+                <relationship kind="outlet" name="skipSongButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="skipSongLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="skipsLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="songTitle" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="songTitleWidthContraint" candidateClass="NSLayoutConstraint"/>
+                <relationship kind="outlet" name="swipeToReveal" candidateClass="UIImageView"/>
+                <relationship kind="outlet" name="tapToAdd" candidateClass="UIImageView"/>
+                <relationship kind="outlet" name="timeLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="volumeBar" candidateClass="MPVolumeView"/>
+                <relationship kind="outlet" name="volumeImage" candidateClass="UIImageView"/>
+            </relationships>
+        </class>
+        <class className="MPVolumeView" superclassName="UIView">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/MPVolumeView.h"/>
+        </class>
+        <class className="MainViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/MainViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="backAction:"/>
+                <relationship kind="action" name="hostGameAction:"/>
+                <relationship kind="action" name="joinGameAction:"/>
+                <relationship kind="outlet" name="backButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="background" candidateClass="UIImageView"/>
+                <relationship kind="outlet" name="hostGameButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="internetLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="joinGameButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="sessionsLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="tableView" candidateClass="UITableView"/>
+                <relationship kind="outlet" name="tableViewConstraint" candidateClass="NSLayoutConstraint"/>
+                <relationship kind="outlet" name="tapToJoinConstraint" candidateClass="NSLayoutConstraint"/>
+                <relationship kind="outlet" name="waitingView" candidateClass="UIImageView"/>
+            </relationships>
+        </class>
+        <class className="MenuViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/MenuViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="syncButtonPressed:"/>
+                <relationship kind="outlet" name="background" candidateClass="UIImageView"/>
+                <relationship kind="outlet" name="connectedUsersLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="resyncLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="sepeartorImageView" candidateClass="UIImageView"/>
+                <relationship kind="outlet" name="syncButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="usersTable" candidateClass="UITableView"/>
+            </relationships>
+        </class>
+        <class className="NSLayoutConstraint" superclassName="NSObject">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/NSLayoutConstraint.h"/>
+        </class>
+    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>
