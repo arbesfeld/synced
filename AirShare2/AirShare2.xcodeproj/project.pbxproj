@@ -42,6 +42,9 @@
 		5593097E176AB31200D460E6 /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5593097D176AB31200D460E6 /* CoreBluetooth.framework */; };
 		5593E3BC1727170600CF9149 /* empty.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 5593E3BB1727170600CF9149 /* empty.mp3 */; };
 		5593E3C01727AA4700CF9149 /* gradient_transparent.png in Resources */ = {isa = PBXBuildFile; fileRef = 5593E3BF1727AA4700CF9149 /* gradient_transparent.png */; };
+		5594C1971780DB71009DAEC1 /* Appirater.m in Sources */ = {isa = PBXBuildFile; fileRef = 5594C1941780DB71009DAEC1 /* Appirater.m */; };
+		5594C1981780DB71009DAEC1 /* en.lproj in Resources */ = {isa = PBXBuildFile; fileRef = 5594C1961780DB71009DAEC1 /* en.lproj */; };
+		5594C19B1780DB98009DAEC1 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5594C19A1780DB97009DAEC1 /* StoreKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		5595E4EB171D2C46006782DE /* MoviePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5595E4EA171D2C45006782DE /* MoviePickerViewController.m */; };
 		5595E4EE171D3995006782DE /* MovieItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5595E4ED171D3995006782DE /* MovieItemCell.m */; };
 		559673C017246A3D000E0D52 /* LBYouTubeExtractor.m in Sources */ = {isa = PBXBuildFile; fileRef = 559673BF17246A3D000E0D52 /* LBYouTubeExtractor.m */; };
@@ -194,6 +197,11 @@
 		5593097D176AB31200D460E6 /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
 		5593E3BB1727170600CF9149 /* empty.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = empty.mp3; sourceTree = "<group>"; };
 		5593E3BF1727AA4700CF9149 /* gradient_transparent.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gradient_transparent.png; sourceTree = "<group>"; };
+		5594C1931780DB71009DAEC1 /* Appirater.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Appirater.h; sourceTree = "<group>"; };
+		5594C1941780DB71009DAEC1 /* Appirater.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Appirater.m; sourceTree = "<group>"; };
+		5594C1951780DB71009DAEC1 /* AppiraterDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppiraterDelegate.h; sourceTree = "<group>"; };
+		5594C1961780DB71009DAEC1 /* en.lproj */ = {isa = PBXFileReference; lastKnownFileType = folder; path = en.lproj; sourceTree = "<group>"; };
+		5594C19A1780DB97009DAEC1 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		5595E4E9171D2C45006782DE /* MoviePickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoviePickerViewController.h; sourceTree = "<group>"; };
 		5595E4EA171D2C45006782DE /* MoviePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MoviePickerViewController.m; sourceTree = "<group>"; };
 		5595E4EC171D3995006782DE /* MovieItemCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MovieItemCell.h; sourceTree = "<group>"; };
@@ -340,6 +348,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5594C19B1780DB98009DAEC1 /* StoreKit.framework in Frameworks */,
 				5593097E176AB31200D460E6 /* CoreBluetooth.framework in Frameworks */,
 				559D6B9E17120A5100C591D8 /* ImageIO.framework in Frameworks */,
 				5592FEFD1700D65B0038ED40 /* CoreAudio.framework in Frameworks */,
@@ -430,6 +439,17 @@
 			name = Reachability;
 			sourceTree = "<group>";
 		};
+		5594C1991780DB79009DAEC1 /* Appirater */ = {
+			isa = PBXGroup;
+			children = (
+				5594C1931780DB71009DAEC1 /* Appirater.h */,
+				5594C1941780DB71009DAEC1 /* Appirater.m */,
+				5594C1951780DB71009DAEC1 /* AppiraterDelegate.h */,
+				5594C1961780DB71009DAEC1 /* en.lproj */,
+			);
+			name = Appirater;
+			sourceTree = "<group>";
+		};
 		559673C117246A51000E0D52 /* LBYouTube */ = {
 			isa = PBXGroup;
 			children = (
@@ -497,6 +517,7 @@
 		5597F0A61723DCC600C91952 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				5594C1991780DB79009DAEC1 /* Appirater */,
 				5593097C176AB04700D460E6 /* Reachability */,
 				5592DE84170BAAA500C766B0 /* ECSlidingViewController */,
 				559E887917283F4300CAE248 /* EGORefreshTableHeaderView */,
@@ -554,6 +575,7 @@
 		55FCC54B16ED3D4C0000BCBD /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				5594C19A1780DB97009DAEC1 /* StoreKit.framework */,
 				5593097D176AB31200D460E6 /* CoreBluetooth.framework */,
 				559D6B9D17120A5100C591D8 /* ImageIO.framework */,
 				5592FEFC1700D65B0038ED40 /* CoreAudio.framework */,
@@ -820,6 +842,7 @@
 				89B10C31177BD5C60019ADFD /* metalHolesIP4.png in Resources */,
 				89B10C33177BD68A0019ADFD /* Default@2x.png in Resources */,
 				8902472C177F9687000A2B91 /* party rainbow-01.png in Resources */,
+				5594C1981780DB71009DAEC1 /* en.lproj in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -896,6 +919,7 @@
 				559E887817283CD500CAE248 /* UIButton+Extensions.m in Sources */,
 				559AAB35172ED81A006757C5 /* MenuViewController.m in Sources */,
 				5593097B176AB04300D460E6 /* Reachability.m in Sources */,
+				5594C1971780DB71009DAEC1 /* Appirater.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

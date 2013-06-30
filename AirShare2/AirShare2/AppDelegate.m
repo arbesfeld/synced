@@ -7,12 +7,18 @@
 //
 
 #import "AppDelegate.h"
+#import "Appirater.h"
 
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    [UIApplication sharedApplication].idleTimerDisabled = YES;
+    [Appirater setAppId:@"645674347"];
+    [Appirater setDaysUntilPrompt:1];
+    [Appirater setUsesUntilPrompt:5];
+    [Appirater setSignificantEventsUntilPrompt:-10];
+    [Appirater setTimeBeforeReminding:2];
+    [Appirater setDebug:NO];
     
     // Set AudioSession
     NSError *sessionError = nil;
@@ -22,7 +28,7 @@
     //UInt32 audioRouteOverride = kAudioSessionOverrideAudioRoute_Speaker; //AudioSessionSetProperty(kAudioSessionProperty_OverrideAudioRoute, sizeof(audioRouteOverride), &audioRouteOverride);
     // Override point for customization after application launch.
     
-
+    [Appirater appLaunched:YES];
     
     return YES;
 }
@@ -53,6 +59,7 @@
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+    [Appirater appEnteredForeground:YES];
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
