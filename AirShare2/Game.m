@@ -1086,10 +1086,8 @@ typedef enum
     int songTime = [[timer userInfo] intValue];
     NSLog(@"Updating with song time = %d", songTime);
     if(_gameState == GameStatePlayingMusic) {
-        //NSDate *date = [NSDate date];
         [_audioPlayer setCurrentTime:songTime + AUDIO_SEEK_TIME];
         [_audioPlayer setVolume:1.0]; // turn on the volume when we know we are synced
-        //NSLog(@"setting current time %f", [date timeIntervalSinceNow]);
     } else if(_gameState == GameStatePlayingMovie) {
         CMTime npt = CMTimeMakeWithSeconds(songTime + MOVIE_SEEK_TIME, 600);
         [_moviePlayerController.moviePlayer.player seekToTime:npt toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero];

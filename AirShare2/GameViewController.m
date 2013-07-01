@@ -489,6 +489,11 @@
 #pragma mark - MoviePickerDelegate
 
 - (void)addMovie:(MPMediaItem *)movieItem {
+    NSInteger duration = [[movieItem valueForProperty:MPMediaItemPropertyPlaybackDuration] intValue];
+    if (duration > 1800) {
+        [self showMediaDurationAlert];
+        return;
+    }
     [_game uploadMusicWithMediaItem:movieItem video:YES];
 }
 
@@ -550,6 +555,18 @@
 	UIAlertView *alertView = [[UIAlertView alloc]
                               initWithTitle:NSLocalizedString(@"No Network", @"No network alert title")
                               message:NSLocalizedString(@"To use Synced, please enable WiFi in your device's Settings.", @"No network alert message")
+                              delegate:nil
+                              cancelButtonTitle:NSLocalizedString(@"OK", @"Button: OK")
+                              otherButtonTitles:nil];
+    
+	[alertView show];
+}
+
+- (void)showMediaDurationAlert
+{
+	UIAlertView *alertView = [[UIAlertView alloc]
+                              initWithTitle:NSLocalizedString(@"Video too long", @"No network alert title")
+                              message:NSLocalizedString(@"Synced only supports videos that are shorter than 30 minutes in length.", "Video too long")
                               delegate:nil
                               cancelButtonTitle:NSLocalizedString(@"OK", @"Button: OK")
                               otherButtonTitles:nil];
