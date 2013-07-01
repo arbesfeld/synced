@@ -1122,9 +1122,6 @@ typedef enum
             UPDATE_TIME = 30;
             break;
     }
-    if([[UIApplication sharedApplication] applicationState] == UIApplicationStateInactive) {
-        UPDATE_TIME /= 2;
-    }
     _playbackSyncingTimer = [NSTimer scheduledTimerWithTimeInterval:UPDATE_TIME
                                                              target:self
                                                            selector:@selector(handlePlaybackSyncingTimer:)
