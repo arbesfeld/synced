@@ -262,7 +262,6 @@ typedef enum
             
             if(mediaItem == _currentItem) {
                 // it is likely the current item
-                NSLog(@"Play music command for current item.");
                 if(songTime != 0 && _gameState == GameStateIdle) {
                     NSLog(@"Joined in the middle of a song!");
                     // we joined during the middle of a song
@@ -285,7 +284,7 @@ typedef enum
                         
                         // this is a bit hacky: act like you're playing the song from the beginning
                         // but set the volume to 0 because it wont be synced
-                        _playMusicTimer = [NSTimer scheduledTimerWithTimeInterval:0.1
+                        _playMusicTimer = [NSTimer scheduledTimerWithTimeInterval:1.0
                                                                            target:self
                                                                          selector:@selector(handlePlayMusicTimer:)
                                                                          userInfo:mediaItem
@@ -774,7 +773,7 @@ typedef enum
 
 - (void)playMediaItem:(MediaItem *)mediaItem withStartTime:(NSDate *)startTime atSongTime:(int)songTime
 {
-    float compensate = 0.0; // _playStartTime; // _playStartTime is a negative number
+    float compensate = 0.0;
     if([[UIApplication sharedApplication] applicationState] == UIApplicationStateInactive) {
         compensate += BACKGROUND_TIME;
         NSLog(@"Application inactive.. compensating");
@@ -832,11 +831,14 @@ typedef enum
                                                          userInfo:mediaItem
                                                           repeats:NO];
     } else {
+        if([[UIApplication sharedApplication] applicationState] == UIApplicationStateInactive) {
+            return;
+        }
         float delay = [startTime timeIntervalSinceNow];
         float songTimeF = (double)songTime;
         if(delay < 0.0) {
-            songTimeF = songTime - ABS(delay);
-            delay = 0.0;
+            songTimeF = songTime - ABS(delay) + 1.0;
+            delay = 1.0;
         }
         _updateMusicTimer = [NSTimer scheduledTimerWithTimeInterval:delay
                                                              target:self
@@ -1120,6 +1122,9 @@ typedef enum
             UPDATE_TIME = 30;
             break;
     }
+    if([[UIApplication sharedApplication] applicationState] == UIApplicationStateInactive) {
+        UPDATE_TIME /= 2;
+    }
     _playbackSyncingTimer = [NSTimer scheduledTimerWithTimeInterval:UPDATE_TIME
                                                              target:self
                                                            selector:@selector(handlePlaybackSyncingTimer:)
@@ -1231,7 +1236,7 @@ typedef enum
     
     Packet *packet = [PacketGameState packetWithPlayers:_players
                                             andPlaylist:_playlist
-                                         andCurrentItem:_currentItem
+                                         andCurrentItem:_gameState == GameStateIdle ? nil : _currentItem
                                            andSkipCount:_skipItemCount];
     [self sendPacketToAllClients:packet];
 }

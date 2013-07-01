@@ -13,6 +13,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    [UIApplication sharedApplication].idleTimerDisabled = YES;
     [Appirater setAppId:@"645674347"];
     [Appirater setDaysUntilPrompt:1];
     [Appirater setUsesUntilPrompt:5];
@@ -69,7 +70,7 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application
 {
-    NSLog(@"applicationWIlLTerminate");
+    NSLog(@"applicationWillTerminate");
     
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSError *error;
@@ -79,7 +80,7 @@
     for (NSString *file in cacheFiles) {
         error = nil;
         [fileManager removeItemAtPath:[saveDirectory stringByAppendingPathComponent:file] error:&error];
-        /* handle error */
+        NSLog(@"deleting file");
     }
     
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.

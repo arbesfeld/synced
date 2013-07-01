@@ -81,6 +81,7 @@
 		559D6B9E17120A5100C591D8 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 559D6B9D17120A5100C591D8 /* ImageIO.framework */; };
 		559E887817283CD500CAE248 /* UIButton+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 559E887717283CD500CAE248 /* UIButton+Extensions.m */; };
 		55A28DB6171E5C60001E757E /* CustomMovieController.m in Sources */ = {isa = PBXBuildFile; fileRef = 55A28DB5171E5C60001E757E /* CustomMovieController.m */; };
+		55AF7CB917820048004A013A /* EGORefreshTableHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 55AF7CB817820048004A013A /* EGORefreshTableHeaderView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		55FCC54D16ED3D4C0000BCBD /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55FCC54C16ED3D4C0000BCBD /* UIKit.framework */; };
 		55FCC54F16ED3D4C0000BCBD /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55FCC54E16ED3D4C0000BCBD /* Foundation.framework */; };
 		55FCC55116ED3D4C0000BCBD /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55FCC55016ED3D4C0000BCBD /* CoreGraphics.framework */; };
@@ -270,6 +271,8 @@
 		559E887717283CD500CAE248 /* UIButton+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIButton+Extensions.m"; path = "AirShare2/UIButton+Extensions.m"; sourceTree = "<group>"; };
 		55A28DB4171E5C60001E757E /* CustomMovieController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomMovieController.h; sourceTree = "<group>"; };
 		55A28DB5171E5C60001E757E /* CustomMovieController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomMovieController.m; sourceTree = "<group>"; };
+		55AF7CB717820048004A013A /* EGORefreshTableHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EGORefreshTableHeaderView.h; sourceTree = "<group>"; };
+		55AF7CB817820048004A013A /* EGORefreshTableHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EGORefreshTableHeaderView.m; sourceTree = "<group>"; };
 		55FCC54916ED3D4C0000BCBD /* Synced.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Synced.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		55FCC54C16ED3D4C0000BCBD /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		55FCC54E16ED3D4C0000BCBD /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -321,8 +324,6 @@
 		89B257DE16F140D30018695A /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		89C016AE1714B545003F0B26 /* MarqueeLabel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MarqueeLabel.h; sourceTree = "<group>"; };
 		89C016AF1714B545003F0B26 /* MarqueeLabel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MarqueeLabel.m; sourceTree = "<group>"; };
-		89CD82AE1727278900A4BDCD /* EGORefreshTableHeaderView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EGORefreshTableHeaderView.h; sourceTree = "<group>"; };
-		89CD82AF1727278900A4BDCD /* EGORefreshTableHeaderView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EGORefreshTableHeaderView.m; sourceTree = "<group>"; };
 		89D67DAE1763E871005F9A07 /* frostedBG.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = frostedBG.png; sourceTree = "<group>"; };
 		89D67DB81763F34D005F9A07 /* synced-01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "synced-01.png"; sourceTree = "<group>"; };
 		89E6E0CB17764E90003F67F5 /* Icon57.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon57.png; sourceTree = "<group>"; };
@@ -531,8 +532,8 @@
 		559E887917283F4300CAE248 /* EGORefreshTableHeaderView */ = {
 			isa = PBXGroup;
 			children = (
-				89CD82AE1727278900A4BDCD /* EGORefreshTableHeaderView.h */,
-				89CD82AF1727278900A4BDCD /* EGORefreshTableHeaderView.m */,
+				55AF7CB717820048004A013A /* EGORefreshTableHeaderView.h */,
+				55AF7CB817820048004A013A /* EGORefreshTableHeaderView.m */,
 			);
 			name = EGORefreshTableHeaderView;
 			sourceTree = "<group>";
@@ -916,6 +917,7 @@
 				559AAB35172ED81A006757C5 /* MenuViewController.m in Sources */,
 				5593097B176AB04300D460E6 /* Reachability.m in Sources */,
 				5594C1971780DB71009DAEC1 /* Appirater.m in Sources */,
+				55AF7CB917820048004A013A /* EGORefreshTableHeaderView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

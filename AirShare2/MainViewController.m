@@ -2,11 +2,14 @@
 #import "GameViewController.h"
 #import "Game.h"
 #import "MatchmakingClient.h"
+#import "EGORefreshTableHeaderView.h"
 #import <QuartzCore/QuartzCore.h>
 
 @implementation MainViewController {
     BOOL tapped;
-    
+    BOOL _reloading;
+    NSDate *_refreshDate;
+    EGORefreshTableHeaderView *_refreshHeaderView;
 	MatchmakingClient *_matchmakingClient;
     QuitReason _quitReasonClient;
     
@@ -24,9 +27,9 @@
     Reachability *internetReachable;
 }
 
-- (void)viewWillAppear:(BOOL)animated
+- (void)viewDidLoad
 {
-	[super viewWillAppear:animated];
+	[super viewDidLoad];
     
     tapped = NO;
     
@@ -62,7 +65,7 @@
     [self testBluetooth];
     [self testInternetConnection];
     
-    [self.tableView reloadData];
+    self.tableView.hidden = NO;
     
     if(IS_PHONE) {
         [UIView animateWithDuration:0.6 animations:^() {
@@ -114,8 +117,8 @@
 
 - (void)startGameWithBlock:(void (^)(Game *))block
 {
-    tapped = NO;
-    _waitingView.hidden = YES;
+    self.tableView.hidden = YES;
+    [self resetTapTimer];
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil];
@@ -224,25 +227,39 @@
         return;
     }
     tapped = YES;
-    
-    _waitingView.hidden = NO;
 
-    _tapTimer = [NSTimer scheduledTimerWithTimeInterval:20.0 target:self selector:@selector(tapTimerFired:) userInfo:nil repeats:NO];
+    _tapTimer = [NSTimer scheduledTimerWithTimeInterval:15.0 target:self selector:@selector(tapTimerFired:) userInfo:nil repeats:NO];
     
+    [UIView animateWithDuration:1.0 animations:^{
+        self.tableView.alpha = 0.0;
+        self.waitingView.alpha = 1.0;
+    }];
     NSString *peerID = [_matchmakingClient peerIDForAvailableServerAtIndex:indexPath.row];
     [_matchmakingClient connectToServerWithPeerID:peerID];
 }
 
 - (void)tapTimerFired:(NSTimer *)timer {
     tapped = NO;
+    [UIView animateWithDuration:1.0 animations:^{
+        self.tableView.alpha = 1.0;
+        self.waitingView.alpha = 0.0;
+    }];
+    _matchmakingClient.delegate = nil;
+	_matchmakingClient = nil;
+	
+    [self serverDidDisconnectWithReason:_quitReasonClient];
+    _matchmakingClient = [[MatchmakingClient alloc] init];
+    _matchmakingClient.delegate = self;
+    [_matchmakingClient startSearchingForServersWithSessionID:SESSION_ID];
 }
 
 - (void)resetTapTimer {
     if(_tapTimer) {
         [_tapTimer invalidate];
     }
+    self.tableView.alpha = 1.0;
+    self.waitingView.alpha = 0.0;
     _tapTimer = nil;
-    _waitingView.hidden = YES;
     tapped = NO;
 }
 
@@ -295,18 +312,16 @@
 
 - (void)matchmakingClient:(MatchmakingClient *)client didDisconnectFromServer:(NSString *)peerID
 {
-    _waitingView.hidden = YES;
+    _waitingView.alpha = 0.0;
     [self resetTapTimer];
     
     _matchmakingClient.delegate = nil;
 	_matchmakingClient = nil;
-	[self.tableView reloadData];
 	
     [self serverDidDisconnectWithReason:_quitReasonClient];
     _matchmakingClient = [[MatchmakingClient alloc] init];
     _matchmakingClient.delegate = self;
     [_matchmakingClient startSearchingForServersWithSessionID:SESSION_ID];
-    [self.tableView reloadData];
 }
 
 - (void)matchmakingClientNoNetwork:(MatchmakingClient *)client
@@ -317,7 +332,17 @@
 -(void)setupUI
 {
     NSLog(@"Setting up UI");
-          
+    
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSError *error;
+    NSString *saveDirectory = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    
+    NSArray *cacheFiles = [fileManager contentsOfDirectoryAtPath:saveDirectory error:&error];
+    for (NSString *file in cacheFiles) {
+        error = nil;
+        [fileManager removeItemAtPath:[saveDirectory stringByAppendingPathComponent:file] error:&error];
+    }
+    
     _airshareLogo.hidden = YES;
     _hostGameButton.hidden = YES;
     _joinGameButton.hidden = YES;
@@ -345,7 +370,7 @@
     [_sessionsLabel setAlpha:0.0];
     [_backButton setAlpha:0.0];
     
-    _waitingView.hidden = YES;
+    _waitingView.alpha = 0.0;
     
     [[UIApplication sharedApplication] beginReceivingRemoteControlEvents];
     
@@ -364,6 +389,15 @@
     self.tableView.layer.cornerRadius = 7;
     self.tableView.layer.masksToBounds = YES;
     
+    if (_refreshHeaderView == nil) {
+		EGORefreshTableHeaderView *view = [[EGORefreshTableHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f - self.tableView.bounds.size.height, self.view.frame.size.width, self.tableView.bounds.size.height)];
+		view.delegate = self;
+		[self.tableView addSubview:view];
+		_refreshHeaderView = view;
+	}
+	//  update the last update date
+	[_refreshHeaderView refreshLastUpdatedDate];
+    
     self.sessionsLabel.font = [UIFont fontWithName:@"Century Gothic" size:22.0f];
     self.sessionsLabel.textColor = [UIColor whiteColor];
     
@@ -371,7 +405,7 @@
     self.internetLabel.textColor = [UIColor lightGrayColor];
 
     _waitingView.image = [UIImage animatedImageWithAnimatedGIFData:[NSData dataWithContentsOfURL:url]];
-    _waitingView.hidden = YES;
+    _waitingView.alpha = 0.0;
     
     float width = 320;
     if(!IS_PHONE) {
@@ -527,7 +561,6 @@
         [_hostGameButton setAlpha:0.0];
         [_joinGameButton setAlpha:0.0];
         [_sessionsLabel setAlpha:1.0];
-        [_waitingView setAlpha:1.0];
     }];
 }
 
@@ -544,6 +577,52 @@
     _internetLabel.alpha = 0.0;
 }
 
+#pragma mark -
+#pragma mark Data Source Loading / Reloading Methods
+
+- (void)reloadTableViewDataSource {
+    [self.tableView reloadData];
+}
+
+- (void)doneLoadingTableViewData {
+    _reloading = NO;
+	[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.tableView];
+}
+
+
+#pragma mark -
+#pragma mark UIScrollViewDelegate Methods
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
+    
+	[_refreshHeaderView egoRefreshScrollViewDidScroll:scrollView];
+    
+}
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
+    
+	[_refreshHeaderView egoRefreshScrollViewDidEndDragging:scrollView];
+    
+}
+
+
+#pragma mark -
+#pragma mark EGORefreshTableHeaderDelegate Methods
+
+- (void)egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView *)view{
+	[self reloadTableViewDataSource];
+    _reloading = YES;
+    _refreshDate = [NSDate date];
+	[self performSelector:@selector(doneLoadingTableViewData) withObject:nil afterDelay:1.0];
+}
+
+- (BOOL)egoRefreshTableHeaderDataSourceIsLoading:(EGORefreshTableHeaderView *)view{
+	return _reloading; // should return if data source model is reloading
+}
+
+- (NSDate *)egoRefreshTableHeaderDataSourceLastUpdated:(EGORefreshTableHeaderView *)view{
+	return _refreshDate ? _refreshDate : [NSDate date]; 
+}
 
 #pragma mark - Delloc
 
