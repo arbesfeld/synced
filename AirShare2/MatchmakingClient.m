@@ -161,6 +161,8 @@ ClientState;
 
 - (NSString *)peerIDForAvailableServerAtIndex:(NSUInteger)index
 {
+    if(index >= [_availableServers count])
+       return @"Host";
 	return [_availableServers objectAtIndex:index];
 }
 
