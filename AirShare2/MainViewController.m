@@ -4,10 +4,6 @@
 #import "MatchmakingClient.h"
 #import <QuartzCore/QuartzCore.h>
 
-@interface MainViewController ()
-
-@end
-
 @implementation MainViewController {
     BOOL tapped;
     
@@ -26,12 +22,6 @@
     CGFloat screenWidth, screenHeight;
     
     Reachability *internetReachable;
-}
-
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:self];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -53,12 +43,6 @@
     [self testInternetConnection];
 }
 
-- (void)didBecomeActive {
-    NSLog(@"Did become active");
-    [_matchmakingClient startSearchingForServersWithSessionID:SESSION_ID];
-}
-
-
 - (IBAction)backAction:(id)sender {
     [UIView animateWithDuration:0.6 animations:^() {
         [self.tableView setAlpha:0.0];
@@ -77,11 +61,6 @@
 - (IBAction)joinGameAction:(id)sender {
     [self testBluetooth];
     [self testInternetConnection];
-    
-    if(_tapTimer) {
-        [_tapTimer invalidate];
-    }
-    _tapTimer = nil;
     
     [self.tableView reloadData];
     
@@ -120,18 +99,17 @@
 
 - (void)serverStartGameWithSession:(GKSession *)session playerName:(NSString *)name clients:(NSArray *)clients
 {
-    [self startGameWithBlock:^(Game *game)
-      {
-          [game startServerGameWithSession:session playerName:name clients:clients];
-      }];
-    
+    [self startGameWithBlock:^(Game* game) {
+        [game startServerGameWithSession:session playerName:name clients:clients];
+    }];
 }
 
 - (void)startGameWithSession:(GKSession *)session playerName:(NSString *)name server:(NSString *)peerID
 {
     NSLog(@"Start game with server: %@ and name: %@", peerID, name);
     [self startGameWithBlock:^(Game *game) {
-        [game startClientGameWithSession:session playerName:name server:peerID]; }];
+        [game startClientGameWithSession:session playerName:name server:peerID];
+    }];
 }
 
 - (void)startGameWithBlock:(void (^)(Game *))block
@@ -168,6 +146,7 @@
 	else if (reason == QuitReasonConnectionDropped)
 	{
         [self showDisconnectedAlert];
+        [self resetTapTimer];
 	}
 }
 
@@ -191,11 +170,7 @@
                               delegate:nil
                               cancelButtonTitle:NSLocalizedString(@"OK", @"Button: OK")
                               otherButtonTitles:nil];
-    _waitingView.hidden = YES;
-    if(_tapTimer) {
-        [_tapTimer invalidate];
-    }
-    _tapTimer = nil;
+
 	[alertView show];
 }
      
@@ -208,7 +183,7 @@
          if (reason == QuitReasonConnectionDropped)
          {
              [self showDisconnectedAlert];
-             _waitingView.hidden = YES;
+             [self resetTapTimer];
          }
      }];
     [self setupUI];
@@ -260,7 +235,15 @@
 
 - (void)tapTimerFired:(NSTimer *)timer {
     tapped = NO;
-//    _waitingView.hidden = YES;
+}
+
+- (void)resetTapTimer {
+    if(_tapTimer) {
+        [_tapTimer invalidate];
+    }
+    _tapTimer = nil;
+    _waitingView.hidden = YES;
+    tapped = NO;
 }
 
 #pragma mark - MatchmakingServerDelegate
@@ -312,6 +295,9 @@
 
 - (void)matchmakingClient:(MatchmakingClient *)client didDisconnectFromServer:(NSString *)peerID
 {
+    _waitingView.hidden = YES;
+    [self resetTapTimer];
+    
     _matchmakingClient.delegate = nil;
 	_matchmakingClient = nil;
 	[self.tableView reloadData];
@@ -415,7 +401,6 @@
     [_joinGameButton addSubview:_gradientLoadProgress];
     [_joinGameButton bringSubviewToFront:_gradientLoadProgress];
     [self.view addSubview:_joinGameButton];
-
     
     _hostGameButton = [[UIButton alloc] initWithFrame:CGRectMake(-start,195+_verticalOffset, 320, 54)];
     [_hostGameButton addTarget:self action:@selector(hostGameAction:) forControlEvents:UIControlEventTouchUpInside];
@@ -431,7 +416,6 @@
     [_hostGameButton addSubview:_gradientLoadProgressTwo];
     [_hostGameButton bringSubviewToFront:_gradientLoadProgressTwo];
     [self.view addSubview:_hostGameButton];
-
     
     if(!IS_PHONE) {
         _airshareLogo = [[UIImageView alloc] initWithFrame:CGRectMake(screenHeight/2 - 162, screenWidth/2 - 190,300, 300)];
@@ -462,13 +446,8 @@
     _airshareLogo.hidden = NO;
     _hostGameButton.hidden = NO;
     _joinGameButton.hidden = NO;
-    //if(IS_PHONE) {
-    [self performSelector:@selector(uiMainScreenDelay:) withObject:nil afterDelay:.3];
-    //} else {
-      //  _hostGameButton.hidden = NO;
-        //_joinGameButton.hidden = NO;
-    //}
     
+    [self performSelector:@selector(uiMainScreenDelay:) withObject:nil afterDelay:.3];
 }
 
 - (void)uiMainScreenDelay:(id)sender {
@@ -505,12 +484,12 @@
 
     __weak typeof(self) weakSelf = self;
     // Internet is reachable
-    internetReachable.reachableBlock = ^(Reachability*reach)
+    internetReachable.reachableBlock = ^(Reachability* reach)
     {
     };
     
     // Internet is not reachable
-    internetReachable.unreachableBlock = ^(Reachability*reach)
+    internetReachable.unreachableBlock = ^(Reachability* reach)
     {
         // Update the UI on the main thread
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -533,10 +512,9 @@
             _hostGameButton.frame = CGRectMake(0,screenWidth/2 + 2 * _verticalOffset, screenHeight, 54);
             _joinGameButton.frame = CGRectMake(0,screenWidth/2, screenHeight, 54);
             
-        }
-        else{
-        _joinGameButton.frame = CGRectMake(0,272+_verticalOffset,320,54);;
-        _hostGameButton.frame = CGRectMake(0,195+_verticalOffset,320,54);
+        } else {
+            _joinGameButton.frame = CGRectMake(0,272+_verticalOffset,320,54);;
+            _hostGameButton.frame = CGRectMake(0,195+_verticalOffset,320,54);
         }
     }];
 }

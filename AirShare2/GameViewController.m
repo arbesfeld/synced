@@ -117,7 +117,9 @@
     self.skipsLabel.hidden = isWaiting;
     self.partyModeLabel.hidden = isWaiting;
     self.partyButton.hidden = isWaiting;
-
+    self.playbackProgressBar.hidden = isWaiting;
+    self.timeLabel.hidden = isWaiting;
+    
     if(isWaiting) {
         // eye button only appears when video plays
         self.eyeButton.hidden = YES;
@@ -327,7 +329,6 @@
     }
     
     [self isWaiting:NO];
-    
     [self setHeaderWithSongName:playlistItem.name andArtistName:playlistItem.subtitle];
 }
 
@@ -353,28 +354,11 @@
 
 - (void)setPlaybackProgress:(double)f {
     self.playbackProgressBar.progress = f;
-    
-    if(f == 0.0) {
-        self.timeLabel.hidden = YES;
-        self.playbackProgressBar.hidden = YES;
-    } else {
-        self.timeLabel.hidden = NO;
-        self.playbackProgressBar.hidden = NO;
-    }
 }
 
 - (void)showViewController:(UIViewController *)viewController
 {
     [[UIApplication sharedApplication] beginIgnoringInteractionEvents];
-    // dismiss the other view controllers if they are being presented
-//    while([_navController isBeingDismissed] || [_navController isBeingPresented] ||
-//          [_mediaPicker isBeingDismissed]   || [_mediaPicker isBeingPresented]) {
-//        NSLog(@"Wating for view to load: navController: %@, %@, mediaPicker: %@, %@",
-//              [_navController isBeingPresented] ? @"YES": @"NO",
-//              [_navController isBeingDismissed] ? @"YES": @"NO",
-//              [_mediaPicker isBeingPresented] ? @"YES": @"NO",
-//              [_mediaPicker isBeingDismissed] ? @"YES": @"NO");
-//    }
     
     if(_navController && _navController.isViewLoaded && _navController.view.window) {
         [_navController dismissViewControllerAnimated:YES completion:^{
@@ -387,8 +371,10 @@
     } else {
         [self presentViewController:viewController animated:YES completion:nil];
     }
+    
     [[UIApplication sharedApplication] endIgnoringInteractionEvents];
     _displayedViewController = viewController;
+    
     self.eyeButton.hidden = NO;
     self.partyButton.hidden = YES;
     self.partyModeLabel.hidden = YES;

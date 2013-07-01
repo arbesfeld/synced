@@ -44,6 +44,7 @@ const size_t PACKET_HEADER_SIZE = 10;
     
 	switch (packetType)
 	{
+        case PacketTypeSignInResponse:
         case PacketTypeServerQuit:
         case PacketTypeClientQuit:
         case PacketTypeSkipMusic:

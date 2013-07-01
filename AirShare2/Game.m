@@ -34,6 +34,7 @@ const double MOVIE_SEEK_TIME = 0.25; // time for movie player to seek
 
 typedef enum
 {
+    GameStateSigningIn,
     GameStateIdle,
     GameStatePreparingToPlayMedia,
     GameStatePlayingMusic,
@@ -87,8 +88,6 @@ typedef enum
     _haveSkippedThisItem = NO;
     [_dateFormatter setDateFormat:DATE_FORMAT];
     
-    _gameState = GameStateIdle;
-    
     _partyMode = NO;
     _currentItem = [[PlaylistItem alloc] initPlaylistItemWithName:@"" andSubtitle:@"" andID:@"" andDate:nil andPlaylistItemType:PlaylistItemTypeNone];
     _currentItem.loadProgress = 0.0;
@@ -112,6 +111,7 @@ typedef enum
 {
     [self startGame];
     
+    _gameState = GameStateSigningIn;
 	self.isServer = NO;
     
 	_session = session;
@@ -137,6 +137,7 @@ typedef enum
 {
     [self startGame];
     
+    _gameState = GameStateIdle;
 	self.isServer = YES;
     
 	_session = session;
@@ -194,6 +195,9 @@ typedef enum
         case PacketTypeGameState:
         {
             NSLog(@"Client received GameStatePacket");
+            
+            _gameState = GameStateIdle;
+            
             [self.players removeAllObjects];
             self.players = ((PacketGameState *)packet).players;
             
@@ -210,12 +214,16 @@ typedef enum
             }
             
             PlaylistItem *currentItem = ((PacketGameState *)packet).currentPlaylistItem;
-            [self.delegate setCurrentItem:currentItem];
+            if(currentItem) {
+                [self.delegate setCurrentItem:currentItem];
+            }
             
             _skipItemCount = ((PacketGameState *)packet).skipCount;
             [self setSkipCount];
             
-            //[self.delegate reloadTable];
+            // respond that you are ready
+            Packet *packet = [Packet packetWithType:PacketTypeSignInResponse];
+            [self sendPacketToServer:packet];
             
             break;
         }
@@ -254,6 +262,7 @@ typedef enum
             
             if(mediaItem == _currentItem) {
                 // it is likely the current item
+                NSLog(@"Play music command for current item.");
                 if(songTime != 0 && _gameState == GameStateIdle) {
                     NSLog(@"Joined in the middle of a song!");
                     // we joined during the middle of a song
@@ -268,7 +277,6 @@ typedef enum
                                 _gameState = GameStateIdle;
                                 NSLog(@"ERROR loading moviePlayer!");
                             }
-                            
                         } else {
                             // it must be audio
                             [self loadAudioPlayer:mediaItem];
@@ -356,12 +364,15 @@ typedef enum
 		case PacketTypeSignIn:
         {
             player.name = ((PacketSignIn *)packet).playerName;
-            
-            [self startupRoutineForPlayer:player];
             NSLog(@"Server received sign in from client '%@'", player.name);
-            //NSLog(@"Players = %@", [_players description]);
+            [self sendGameStatePacket];
             
 			break;
+        }
+        case PacketTypeSignInResponse:
+        {
+            [self startupRoutineForPlayer:player];
+            break;
         }
         case PacketTypeSyncResponse:
         {
@@ -414,13 +425,14 @@ typedef enum
         {
             // means a client has downloaded music
             NSString *ID  = ((PacketMusicResponse *)packet).ID;
-            NSLog(@"Server recieved MusicResponesPacket from player = %@ and ID = %@", player.name, ID);
+            NSLog(@"Server recieved MusicResponsePacket from player = %@ and ID = %@", player.name, ID);
             
             [player.hasMusicList setObject:@YES forKey:ID];
             MediaItem *mediaItem = (MediaItem *)[self playlistItemWithID:ID];
             [self serverTryPlayingMedia:mediaItem waitTime:WAIT_TIME_DOWNLOAD];
             
             if(mediaItem == _currentItem) {
+                NSLog(@"Someone just downloaded the current item.");
                 // someone just downloaded the currentItem, update them
                 [self sendSyncPacketsForItem:mediaItem];
             }
@@ -491,28 +503,28 @@ typedef enum
 {
     NSAssert(self.isServer, @"Client in startupRoutineForPlayer");
     
-    [self sendGameStatePacket];
-    
-    for(PlaylistItem *playlistItem in self.playlist) {
-        NSLog(@"Updating player = %@ with item = %@", player.name, [playlistItem description]);
-        
-        // only update if you have fully loaded the song
-        if((playlistItem.playlistItemType == PlaylistItemTypeSong ||
-            playlistItem.playlistItemType == PlaylistItemTypeMovie ||
-            playlistItem.playlistItemType == PlaylistItemTypeYoutube) &&
-            playlistItem.loadProgress == 1.0) {
-            PacketMusicDownload *packet = [PacketMusicDownload packetWithID:playlistItem.ID];
-            [self sendPacket:packet toClientWithPeerID:player.peerID];
-        }
-    }
     // maybe send the currentItem
     if((_currentItem.playlistItemType == PlaylistItemTypeSong ||
         _currentItem.playlistItemType == PlaylistItemTypeMovie ||
         _currentItem.playlistItemType == PlaylistItemTypeYoutube) &&
-        _currentItem.loadProgress == 1.0) {
+       _currentItem.loadProgress == 1.0 &&
+       _gameState != GameStateIdle) {
         NSLog(@"Sending current item that has ID = %@", _currentItem.ID);
         PacketMusicDownload *packet = [PacketMusicDownload packetWithID:_currentItem.ID];
         [self sendPacket:packet toClientWithPeerID:player.peerID];
+    }
+    
+    for(PlaylistItem *playlistItem in self.playlist) {
+        NSLog(@"Updating player = %@ with item = %@", player.name, [playlistItem description]);
+        
+        // only update if you have fully loaded the song and it is not finished
+        if((playlistItem.playlistItemType == PlaylistItemTypeSong ||
+            playlistItem.playlistItemType == PlaylistItemTypeMovie ||
+            playlistItem.playlistItemType == PlaylistItemTypeYoutube) &&
+            (playlistItem.loadProgress == 1.0 || !playlistItem.uploadedByUser)) {
+            PacketMusicDownload *packet = [PacketMusicDownload packetWithID:playlistItem.ID];
+            [self sendPacket:packet toClientWithPeerID:player.peerID];
+        }
     }
     
     // send packets to sync with the player
@@ -820,10 +832,6 @@ typedef enum
                                                          userInfo:mediaItem
                                                           repeats:NO];
     } else {
-//        if([[UIApplication sharedApplication] applicationState] == UIApplicationStateInactive) {
-//            // not accurate updating when app inactive
-//            return;
-//        }
         float delay = [startTime timeIntervalSinceNow];
         float songTimeF = (double)songTime;
         if(delay < 0.0) {
@@ -835,7 +843,6 @@ typedef enum
                                                            selector:@selector(handleUpdateMusicTimer:)
                                                            userInfo:[NSNumber numberWithFloat:songTimeF]
                                                             repeats:NO];
-            
     }
     
     NSLog(@"Will play item, name = %@ with delay = %f at song time = %d", mediaItem.name, [startTime timeIntervalSinceNow] + compensate, songTime);
@@ -1067,7 +1074,6 @@ typedef enum
         }
     }
     
-    
     _haveSkippedThisItem = NO;
     _skipItemCount = 0;
     [self setSkipCount];
@@ -1213,7 +1219,6 @@ typedef enum
 }
 - (void)sendPacketToServer:(Packet *)packet
 {
-    //NSLog(@"Sending packet to server");
 	GKSendDataMode dataMode = packet.sendReliably ? GKSendDataReliable : GKSendDataUnreliable;
 	NSData *data = [packet data];
 	NSError *error;
@@ -1251,14 +1256,14 @@ typedef enum
         int songTime = 0;
         if(_gameState == GameStatePlayingMovie) {
             songTime = (int)CMTimeGetSeconds([_moviePlayerController.moviePlayer.player currentTime]) + DELAY_TIME;
-            if(songTime > CMTimeGetSeconds(_moviePlayerController.moviePlayer.player.currentItem.asset.duration) - 10 * DELAY_TIME) {
+            if(songTime > CMTimeGetSeconds(_moviePlayerController.moviePlayer.player.currentItem.asset.duration) - 4 * DELAY_TIME) {
                 // the song is almost over
                 return;
             }
             delay = (float)songTime - CMTimeGetSeconds([_moviePlayerController.moviePlayer.player currentTime]);
         } else if(_gameState == GameStatePlayingMusic) {
             songTime = (int)[_audioPlayer currentTime] + DELAY_TIME;
-            if(songTime > [_audioPlayer duration] - 10 * DELAY_TIME) {
+            if(songTime > [_audioPlayer duration] - 4 * DELAY_TIME) {
                 // the movie is almost over
                 return;
             }
