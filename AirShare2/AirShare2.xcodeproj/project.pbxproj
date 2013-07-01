@@ -120,7 +120,6 @@
 		89C016B01714B5B9003F0B26 /* MarqueeLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 89C016AF1714B545003F0B26 /* MarqueeLabel.m */; };
 		89D67DAF1763E871005F9A07 /* frostedBG.png in Resources */ = {isa = PBXBuildFile; fileRef = 89D67DAE1763E871005F9A07 /* frostedBG.png */; };
 		89D67DB91763F34D005F9A07 /* synced-01.png in Resources */ = {isa = PBXBuildFile; fileRef = 89D67DB81763F34D005F9A07 /* synced-01.png */; };
-		89E4772E17128F9700DE9ECE /* movies-01.png in Resources */ = {isa = PBXBuildFile; fileRef = 89E4772D17128F9700DE9ECE /* movies-01.png */; };
 		89E6E0CD17764E90003F67F5 /* Icon57.png in Resources */ = {isa = PBXBuildFile; fileRef = 89E6E0CB17764E90003F67F5 /* Icon57.png */; };
 		89E6E0CE17764E90003F67F5 /* icon114.png in Resources */ = {isa = PBXBuildFile; fileRef = 89E6E0CC17764E90003F67F5 /* icon114.png */; };
 		89ED2D8A177775CE000C43A8 /* loading.gif in Resources */ = {isa = PBXBuildFile; fileRef = 89ED2D89177775CE000C43A8 /* loading.gif */; };
@@ -326,7 +325,6 @@
 		89CD82AF1727278900A4BDCD /* EGORefreshTableHeaderView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EGORefreshTableHeaderView.m; sourceTree = "<group>"; };
 		89D67DAE1763E871005F9A07 /* frostedBG.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = frostedBG.png; sourceTree = "<group>"; };
 		89D67DB81763F34D005F9A07 /* synced-01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "synced-01.png"; sourceTree = "<group>"; };
-		89E4772D17128F9700DE9ECE /* movies-01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "movies-01.png"; path = "Graphics/movies-01.png"; sourceTree = "<group>"; };
 		89E6E0CB17764E90003F67F5 /* Icon57.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon57.png; sourceTree = "<group>"; };
 		89E6E0CC17764E90003F67F5 /* icon114.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon114.png; sourceTree = "<group>"; };
 		89ED2D89177775CE000C43A8 /* loading.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = loading.gif; sourceTree = "<group>"; };
@@ -739,7 +737,6 @@
 				89D67DB81763F34D005F9A07 /* synced-01.png */,
 				89FA0228175AD93700F7B070 /* eye-01.png */,
 				558F735F1720CFC00048F78F /* skip-01-rotated.png */,
-				89E4772D17128F9700DE9ECE /* movies-01.png */,
 				8956CBBE17694D3100D23452 /* BGIpad.png */,
 				89FA0230175AE6DA00F7B070 /* exit-01.png */,
 				89FA0226175AD91800F7B070 /* skip-01.png */,
@@ -805,7 +802,6 @@
 				558E14B616F185600076F6FC /* CenturyGothicStd-Bold.otf in Resources */,
 				558E14B716F185600076F6FC /* CenturyGothicStd.otf in Resources */,
 				559D6B901711EC2000C591D8 /* cancel.png in Resources */,
-				89E4772E17128F9700DE9ECE /* movies-01.png in Resources */,
 				5596EDE91717355D00F069FE /* gothic.ttf in Resources */,
 				558F73601720CFC00048F78F /* skip-01-rotated.png in Resources */,
 				559673C51724CD9F000E0D52 /* youtubeLogo.png in Resources */,
