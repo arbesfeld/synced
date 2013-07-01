@@ -18,7 +18,6 @@
                                 <color key="backgroundColor" white="1" alpha="0.5" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="248" type="user" id="omd-S5-7No"/>
-                                    <constraint firstAttribute="height" constant="230" type="user" id="wZh-mI-go9"/>
                                 </constraints>
                                 <label key="tableFooterView" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.0" contentMode="left" text="Synced requires a strong, persistent internet connection." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="248" id="New-h4-v5H">
                                     <rect key="frame" x="0.0" y="0.0" width="248" height="65"/>
@@ -70,12 +69,12 @@
                             <constraint firstItem="AD4-Q8-1a4" firstAttribute="bottom" secondItem="3" secondAttribute="bottom" type="default" id="2k9-Cy-0Lu"/>
                             <constraint firstAttribute="centerX" secondItem="GU4-nS-SJA" secondAttribute="centerX" type="user" id="6E1-4h-u9V"/>
                             <constraint firstItem="AD4-Q8-1a4" firstAttribute="top" secondItem="3" secondAttribute="top" type="default" id="7qb-yx-6F4"/>
+                            <constraint firstAttribute="bottom" secondItem="edi-GE-42e" secondAttribute="bottom" constant="88" type="user" id="88o-id-oDR"/>
                             <constraint firstItem="bht-7b-rQK" firstAttribute="top" secondItem="3" secondAttribute="top" constant="236" type="user" id="AFu-I2-45g"/>
                             <constraint firstAttribute="centerX" secondItem="edi-GE-42e" secondAttribute="centerX" type="user" id="AKd-5H-umH"/>
                             <constraint firstItem="AD4-Q8-1a4" firstAttribute="trailing" secondItem="3" secondAttribute="trailing" type="default" id="J0m-pi-Bu0"/>
                             <constraint firstItem="WVP-dF-E9X" firstAttribute="leading" secondItem="3" secondAttribute="leading" constant="15" id="KWT-0G-2m9"/>
                             <constraint firstItem="edi-GE-42e" firstAttribute="top" secondItem="3" secondAttribute="top" constant="230" type="user" id="L5J-4K-lfr"/>
-                            <constraint firstAttribute="bottom" secondItem="edi-GE-42e" secondAttribute="bottom" constant="88" type="user" id="RMy-gx-En7"/>
                             <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="WVP-dF-E9X" secondAttribute="bottom" constant="16" type="user" id="SUU-B6-ZOc"/>
                             <constraint firstAttribute="bottom" secondItem="WVP-dF-E9X" secondAttribute="bottom" constant="16" id="nb7-98-3sb"/>
                             <constraint firstItem="AD4-Q8-1a4" firstAttribute="leading" secondItem="3" secondAttribute="leading" type="default" id="uyv-Se-Z1y"/>
@@ -428,7 +427,7 @@
                                     <constraint firstAttribute="height" constant="264" id="OLP-ro-0vp"/>
                                 </constraints>
                                 <tableView key="tableFooterView" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="LvQ-By-4ar">
-                                    <rect key="frame" x="0.0" y="0.0" width="153" height="11417"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="153" height="11681"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </tableView>
