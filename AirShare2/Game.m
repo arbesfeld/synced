@@ -266,20 +266,25 @@ typedef enum
                     NSLog(@"Joined in the middle of a song!");
                     // we joined during the middle of a song
                     if(mediaItem.loadProgress == 1.0 || mediaItem.playlistItemType == PlaylistItemTypeYoutube) {
-                        _gameState = GameStatePreparingToPlayMedia;
                         
                         if(mediaItem.playlistItemType == PlaylistItemTypeYoutube) {
                             _moviePlayerController = [[CustomMovieController alloc] initWithMediaItem:mediaItem];
                             _moviePlayerController.delegate = self;
                             NSLog(@"loaded with url = %@", mediaItem.url);
-                            if(_moviePlayerController.moviePlayer == nil) {
-                                _gameState = GameStateIdle;
-                                NSLog(@"ERROR loading moviePlayer!");
+                            if(_moviePlayerController.moviePlayer) {
+                                _gameState = GameStatePreparingToPlayMedia;
+                            } else {
+                                return;
                             }
                         } else {
+                            NSLog(@"Playing media item = %@", mediaItem.name);
                             // it must be audio
-                            [self loadAudioPlayer:mediaItem];
-                            [_audioPlayer setVolume:0.0];
+                            if([self loadAudioPlayer:mediaItem]) {
+                                [_audioPlayer setVolume:0.0];
+                                _gameState = GameStatePreparingToPlayMedia;
+                            } else {
+                                return;
+                            }
                         }
                         
                         // this is a bit hacky: act like you're playing the song from the beginning
@@ -848,7 +853,7 @@ typedef enum
     NSLog(@"Will play item, name = %@ with delay = %f at song time = %d", mediaItem.name, [startTime timeIntervalSinceNow] + compensate, songTime);
 }
 
-- (void)loadAudioPlayer:(MediaItem *)mediaItem {
+- (BOOL)loadAudioPlayer:(MediaItem *)mediaItem {
     if(_moviePlayerController) {
         [self moviePlayerDidFinishPlaying:nil];
     }
@@ -863,9 +868,11 @@ typedef enum
     if (_audioPlayer == nil) {
         _gameState = GameStateIdle;
         NSLog(@"AudioPlayer did not load properly: %@", [error description]);
+        return NO;
     } else {
         [_audioPlayer play];
         [_audioPlayer pause];
+        return YES;
     }
 }
 
