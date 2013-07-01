@@ -591,7 +591,6 @@ typedef enum
         [self downloadBeats:mediaItem];
     } failure:^ {
         [self.delegate cancelMusicAndUpdateAll:mediaItem];
-        [self.delegate testInternetConnection];
     }];
 }
 
@@ -681,7 +680,6 @@ typedef enum
             [self.delegate cancelMusicAndUpdateAll:mediaItem];
         } else {
             [self hasDownloadedMusic:mediaItem];
-            [self.delegate testInternetConnection];
         }
     }];
     
