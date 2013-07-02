@@ -871,7 +871,7 @@ typedef enum
         return NO;
     } else {
         [_audioPlayer play];
-        [_audioPlayer pause];
+        [_audioPlayer stop];
         return YES;
     }
 }
@@ -1060,7 +1060,6 @@ typedef enum
                                                        object:_moviePlayerController.moviePlayer.playerItem];
             _gameState = GameStatePlayingMovie;
         } else {
-    
             [_audioPlayer play]; 
             _updatePlaybackProgressTimer = [NSTimer scheduledTimerWithTimeInterval:0.01
                                                                             target:self

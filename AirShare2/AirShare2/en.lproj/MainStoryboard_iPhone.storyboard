@@ -75,9 +75,9 @@
                             <constraint firstItem="WVP-dF-E9X" firstAttribute="leading" secondItem="3" secondAttribute="leading" constant="15" id="KWT-0G-2m9"/>
                             <constraint firstItem="edi-GE-42e" firstAttribute="top" secondItem="3" secondAttribute="top" constant="230" type="user" id="L5J-4K-lfr"/>
                             <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="WVP-dF-E9X" secondAttribute="bottom" constant="16" type="user" id="SUU-B6-ZOc"/>
-                            <constraint firstItem="bht-7b-rQK" firstAttribute="top" secondItem="3" secondAttribute="top" constant="315" type="user" id="Xb8-BA-D0N"/>
                             <constraint firstAttribute="bottom" secondItem="WVP-dF-E9X" secondAttribute="bottom" constant="16" id="nb7-98-3sb"/>
                             <constraint firstItem="AD4-Q8-1a4" firstAttribute="leading" secondItem="3" secondAttribute="leading" type="default" id="uyv-Se-Z1y"/>
+                            <constraint firstItem="bht-7b-rQK" firstAttribute="top" secondItem="3" secondAttribute="top" constant="241" type="user" id="vWM-3P-nqH"/>
                             <constraint firstAttribute="centerX" secondItem="bht-7b-rQK" secondAttribute="centerX" type="user" id="xIQ-vk-3ri"/>
                             <constraint firstItem="GU4-nS-SJA" firstAttribute="top" secondItem="3" secondAttribute="top" constant="169" type="user" id="y8g-GW-jEL"/>
                         </constraints>
@@ -91,6 +91,7 @@
                         <outlet property="tableViewConstraint" destination="L5J-4K-lfr" id="YNm-R9-Gmm"/>
                         <outlet property="tapToJoinConstraint" destination="y8g-GW-jEL" id="10Z-IU-f5Q"/>
                         <outlet property="waitingView" destination="bht-7b-rQK" id="shA-XQ-Pv9"/>
+                        <outlet property="waitingViewConstraint" destination="vWM-3P-nqH" id="RdE-pJ-BSp"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4" sceneMemberID="firstResponder"/>
@@ -427,7 +428,7 @@
                                     <constraint firstAttribute="height" constant="264" id="OLP-ro-0vp"/>
                                 </constraints>
                                 <tableView key="tableFooterView" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="LvQ-By-4ar">
-                                    <rect key="frame" x="0.0" y="0.0" width="153" height="11681"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="153" height="11945"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </tableView>
@@ -580,6 +581,7 @@
                 <relationship kind="outlet" name="tableViewConstraint" candidateClass="NSLayoutConstraint"/>
                 <relationship kind="outlet" name="tapToJoinConstraint" candidateClass="NSLayoutConstraint"/>
                 <relationship kind="outlet" name="waitingView" candidateClass="UIImageView"/>
+                <relationship kind="outlet" name="waitingViewConstraint" candidateClass="NSLayoutConstraint"/>
             </relationships>
         </class>
         <class className="MenuViewController" superclassName="UIViewController">

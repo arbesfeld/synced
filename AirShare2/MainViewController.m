@@ -366,8 +366,9 @@
     
     if(!IS_PHONE) {
         _verticalOffset = -50.0f;
-        _tableViewConstraint.constant = 2 * screenWidth/5;
+        _tableViewConstraint.constant = 0.4 * screenWidth;
         _tapToJoinConstraint.constant = screenWidth/3;
+        _waitingViewConstraint.constant = 0.42 * screenWidth;
     }
     else if(IS_IPHONE_5) {
         _verticalOffset = 50.0f;
