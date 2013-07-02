@@ -41,11 +41,12 @@ ServerState;
 - (void)clientDidDisconnect:(Player *)player;
 
 - (void)testInternetConnection;
+- (void)testBluetooth;
 
 - (void)gameSessionDidEnd:(Game *)server;
 - (void)gameNoNetwork:(Game *)server;
 
-- (void)flashScreen;
+- (void)flashScreen:(int)flashColor;
 
 - (void)setPlaybackProgress:(double)f;
 

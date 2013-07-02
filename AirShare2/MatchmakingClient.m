@@ -148,8 +148,8 @@ ClientState;
 	{
 		if ([error code] == GKSessionCannotEnableError)
 		{
-			[self.delegate matchmakingClientNoNetwork:self];
-			[self disconnectFromServer];
+//			[self.delegate matchmakingClientNoNetwork:self];
+//			[self disconnectFromServer];
 		}
 	}
 }
@@ -161,6 +161,8 @@ ClientState;
 
 - (NSString *)peerIDForAvailableServerAtIndex:(NSUInteger)index
 {
+    if(index >= [_availableServers count])
+       return @"Host";
 	return [_availableServers objectAtIndex:index];
 }
 
@@ -171,7 +173,9 @@ ClientState;
 
 - (void)disconnectFromServer
 {
-	NSAssert(_clientState != ClientStateIdle, @"Wrong state");
+    if(_clientState != ClientStateIdle) {
+        return;
+    }
     
 	_clientState = ClientStateIdle;
     

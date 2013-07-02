@@ -62,8 +62,8 @@
             _iconView = [[UIImageView alloc] initWithFrame:CGRectMake(31.0f, 9.0f, 23.0f, 23.0f)];
             _iconView.image = [UIImage imageNamed:@"musicIcon-01"];
         } else {
-            _iconView = [[UIImageView alloc] initWithFrame:CGRectMake(32.0f, 9.0f, 23.0f, 23.0f)];
-            _iconView.image = [UIImage imageNamed:@"movies-01"];
+            _iconView = [[UIImageView alloc] initWithFrame:CGRectMake(32.0f, 10.0f, 23.0f, 23.0f)];
+            _iconView.image = [UIImage imageNamed:@"movieIcon-01"];
         }
         
         //[_iconView setAlpha:0.8];
@@ -101,7 +101,7 @@
         _waitingView.image = [UIImage animatedImageWithAnimatedGIFData:[NSData dataWithContentsOfURL:url]];
         
         _cancelButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        _cancelButton.frame = CGRectMake(self.frame.size.width - 54.0f, 0.0f, 50.0f, 50.0f);
+        _cancelButton.frame = CGRectMake(self.frame.size.width - 50.0f, 0.0f, 50.0f, 50.0f);
         [_cancelButton setBackgroundImage:[UIImage imageNamed:@"cancel.png"] forState: UIControlStateNormal];
         [_cancelButton setBackgroundImage:[UIImage imageNamed:@"cancel.png"] forState: UIControlStateHighlighted];
         [_cancelButton setBackgroundImage:[UIImage imageNamed:@"cancel.png"] forState: UIControlStateSelected];
@@ -143,11 +143,13 @@
         // place behind other views
         
         [self.contentView addSubview:_iconView];
+        [self.contentView bringSubviewToFront:_iconView];
         //NSLog(@"Load progress = %f", playlistItem.loadProgress);
         if(playlistItem.loadProgress != 1.0) {
             if(playlistItem.loadProgress == 0.0) {
                 [self.contentView addSubview:_waitingView];
             } else {
+                [self.contentView addSubview:_positionLabel];
                 // add load progress to back of cell
                 [self.contentView insertSubview:_loadProgress atIndex:0];
             }

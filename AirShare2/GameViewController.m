@@ -7,6 +7,7 @@
     UIAlertView *_alertView;
     int _itemNumber;
     
+    CBCentralManager* _testBluetooth;
     Reachability *internetReachable;
 }
 @synthesize delegate = _delegate;
@@ -57,8 +58,8 @@
     
     [self isWaiting:YES];
     
-    [self.skipSongButton setHitTestEdgeInsets:UIEdgeInsetsMake(-10, -10, -10, -10)];
-    [self.partyButton setHitTestEdgeInsets:UIEdgeInsetsMake(-10, -10, -10, -10)];
+    [self.skipSongButton setHitTestEdgeInsets:UIEdgeInsetsMake(-20, -20, -20, -20)];
+    [self.partyButton setHitTestEdgeInsets:UIEdgeInsetsMake(-20, -20, -20, -20)];
     
     self.playingLabel.font = [UIFont fontWithName:@"Century Gothic" size:11.0f];
     self.playingLabel.textColor = [UIColor lightGrayColor];
@@ -70,7 +71,7 @@
     self.songTitle.textColor = [UIColor whiteColor];
     self.songTitle.backgroundColor = [UIColor clearColor];
     self.songTitle.font = [UIFont fontWithName:@"Century Gothic" size:16.0f];
-    
+
     self.artistLabel.font = [UIFont fontWithName:@"Century Gothic" size:12.0f];
     self.artistLabel.textColor = [UIColor lightGrayColor];
     
@@ -82,11 +83,13 @@
     
     self.timeLabel.font = [UIFont fontWithName:@"Century Gothic" size:14.0f];
     self.timeLabel.textColor = [UIColor whiteColor];
+    self.timeLabel.hidden = YES;
     
     self.playlistTable.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     
     self.playbackProgressBar.progressTintColor = [UIColor colorWithRed:255/255.0 green:150/225.0 blue:0/225.0 alpha:1];
     self.playbackProgressBar.trackTintColor = [UIColor lightGrayColor];
+    self.playbackProgressBar.hidden = YES;
     
     for (id current in self.volumeBar.subviews) {
         if ([current isKindOfClass:[UISlider class]]) {
@@ -111,11 +114,11 @@
     self.artistLabel.hidden = isWaiting;
     self.skipSongButton.hidden = isWaiting;
     self.skipSongLabel.hidden = isWaiting;
-    self.timeLabel.hidden = isWaiting;
-    self.playbackProgressBar.hidden = isWaiting;
     self.skipsLabel.hidden = isWaiting;
     self.partyModeLabel.hidden = isWaiting;
     self.partyButton.hidden = isWaiting;
+    self.playbackProgressBar.hidden = isWaiting;
+    self.timeLabel.hidden = isWaiting;
     
     if(isWaiting) {
         // eye button only appears when video plays
@@ -124,6 +127,13 @@
     if(!isWaiting) {
         // a song is playing, definitely hide this message
         self.tapToAdd.hidden = YES;
+    }
+    
+    if (!IS_PHONE){
+        self.songTitleWidthContraint.constant = [[UIScreen mainScreen] bounds].size.height - 70;
+    }
+    else {
+        self.songTitleWidthContraint.constant = 230;
     }
 }
 
@@ -262,6 +272,13 @@
     }
     
     [self.playlistTable endUpdates];
+    
+    if (self.swipeToReveal.alpha != 0.0)
+    {
+        if (_game.playlist.count > 2){
+            [self hasSwipedLeft];
+        }
+    }
 }
 
 - (void)removePlaylistItem:(PlaylistItem *)playlistItem animation:(BOOL)animation
@@ -291,6 +308,7 @@
 - (void)mediaFinishedPlaying
 {
     [self isWaiting:YES];
+    [self setPlaybackProgress:0.0];
     self.timeLabel.text = @"0:00";
 }
 
@@ -311,7 +329,6 @@
     }
     
     [self isWaiting:NO];
-    
     [self setHeaderWithSongName:playlistItem.name andArtistName:playlistItem.subtitle];
 }
 
@@ -337,26 +354,11 @@
 
 - (void)setPlaybackProgress:(double)f {
     self.playbackProgressBar.progress = f;
-    
-    if(f == 0.0) {
-        self.playbackProgressBar.hidden = YES;
-    } else {
-        self.playbackProgressBar.hidden = NO;
-    }
 }
 
 - (void)showViewController:(UIViewController *)viewController
 {
     [[UIApplication sharedApplication] beginIgnoringInteractionEvents];
-    // dismiss the other view controllers if they are being presented
-//    while([_navController isBeingDismissed] || [_navController isBeingPresented] ||
-//          [_mediaPicker isBeingDismissed]   || [_mediaPicker isBeingPresented]) {
-//        NSLog(@"Wating for view to load: navController: %@, %@, mediaPicker: %@, %@",
-//              [_navController isBeingPresented] ? @"YES": @"NO",
-//              [_navController isBeingDismissed] ? @"YES": @"NO",
-//              [_mediaPicker isBeingPresented] ? @"YES": @"NO",
-//              [_mediaPicker isBeingDismissed] ? @"YES": @"NO");
-//    }
     
     if(_navController && _navController.isViewLoaded && _navController.view.window) {
         [_navController dismissViewControllerAnimated:YES completion:^{
@@ -369,21 +371,28 @@
     } else {
         [self presentViewController:viewController animated:YES completion:nil];
     }
+    
     [[UIApplication sharedApplication] endIgnoringInteractionEvents];
     _displayedViewController = viewController;
+    
     self.eyeButton.hidden = NO;
     self.partyButton.hidden = YES;
     self.partyModeLabel.hidden = YES;
+    if (!IS_PHONE){
+        self.songTitleWidthContraint.constant = [[UIScreen mainScreen] bounds].size.height - 140;
+    }
+    else{
+        self.songTitleWidthContraint.constant = 200;
+    }
 }
 
-- (void)flashScreen
+- (void)flashScreen:(int)flashColor
 {
     const NSArray *colorTable = [[NSArray alloc] initWithObjects: [UIColor whiteColor] ,[UIColor greenColor] ,[UIColor yellowColor], [UIColor redColor], [UIColor blueColor], nil];
     //NSLog(@"BEAT!!");
-    int rndIndex = arc4random()%[colorTable count];
     
     UIView *screenFlash = [[UIView alloc] initWithFrame:self.view.bounds];
-    [screenFlash setBackgroundColor:[colorTable objectAtIndex:rndIndex]];
+    [screenFlash setBackgroundColor:[colorTable objectAtIndex:flashColor % [colorTable count]]];
 
     [UIView animateWithDuration:0.6 animations:^() {
         screenFlash.alpha = 0.0;
@@ -427,9 +436,11 @@
     NSLog(@"Toggling party mode");
     if ([sender isSelected]) {
         _game.partyMode = NO;
+        [self.partyButton setBackgroundImage:[UIImage imageNamed:@"PartyMode-01.png"] forState:UIControlStateNormal];
         [sender setSelected:NO];
     } else {
         _game.partyMode = YES;
+        [self.partyButton setBackgroundImage:[UIImage imageNamed:@"party rainbow-01.png"] forState:UIControlStateNormal];
         [sender setSelected:YES];
     }
 }
@@ -470,16 +481,19 @@
 - (void)setHeaderWithSongName:(NSString *)songName andArtistName:(NSString *)artistName
 {
     _artistLabel.hidden = NO;
-    _playbackProgressBar.hidden = NO;
     
     self.songTitle.text = songName;
     self.artistLabel.text = artistName;
-    
 }
 
 #pragma mark - MoviePickerDelegate
 
 - (void)addMovie:(MPMediaItem *)movieItem {
+    NSInteger duration = [[movieItem valueForProperty:MPMediaItemPropertyPlaybackDuration] intValue];
+    if (duration > 1800) {
+        [self showMediaDurationAlert];
+        return;
+    }
     [_game uploadMusicWithMediaItem:movieItem video:YES];
 }
 
@@ -546,6 +560,23 @@
                               otherButtonTitles:nil];
     
 	[alertView show];
+}
+
+- (void)showMediaDurationAlert
+{
+	UIAlertView *alertView = [[UIAlertView alloc]
+                              initWithTitle:NSLocalizedString(@"Video too long", @"No network alert title")
+                              message:NSLocalizedString(@"Synced only supports videos that are shorter than 30 minutes in length.", "Video too long")
+                              delegate:nil
+                              cancelButtonTitle:NSLocalizedString(@"OK", @"Button: OK")
+                              otherButtonTitles:nil];
+    
+	[alertView show];
+}
+
+- (void)testBluetooth {
+    _testBluetooth = [[CBCentralManager alloc] initWithDelegate:nil queue: nil];
+    [_testBluetooth state];
 }
 
 - (void)testInternetConnection

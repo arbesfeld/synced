@@ -101,6 +101,7 @@
                 break;
         }
 	}
+    
     NSString *currentName = [data rw_stringAtOffset:offset bytesRead:&count];
     offset += count;
     
@@ -197,13 +198,20 @@
         }
      }
     
-    [data rw_appendString:self.currentPlaylistItem.name];
-    [data rw_appendString:self.currentPlaylistItem.subtitle];
-    [data rw_appendString:self.currentPlaylistItem.ID];
-    [data rw_appendInt8:  self.currentPlaylistItem.playlistItemType];
-    if(self.currentPlaylistItem.playlistItemType == PlaylistItemTypeYoutube) {
-        NSString *urlString = [NSString stringWithFormat:@"%@", ((MediaItem *)self.currentPlaylistItem).originalURL];
-        [data rw_appendString:urlString];
+    if(self.currentPlaylistItem) {
+        [data rw_appendString:self.currentPlaylistItem.name];
+        [data rw_appendString:self.currentPlaylistItem.subtitle];
+        [data rw_appendString:self.currentPlaylistItem.ID];
+        [data rw_appendInt8:  self.currentPlaylistItem.playlistItemType];
+        if(self.currentPlaylistItem.playlistItemType == PlaylistItemTypeYoutube) {
+            NSString *urlString = [NSString stringWithFormat:@"%@", ((MediaItem *)self.currentPlaylistItem).originalURL];
+            [data rw_appendString:urlString];
+        }
+    } else {
+        [data rw_appendString:@""];
+        [data rw_appendString:@""];
+        [data rw_appendString:@""];
+        [data rw_appendInt8:  PlaylistItemTypeNone];
     }
     
     [data rw_appendInt8:  self.skipCount];

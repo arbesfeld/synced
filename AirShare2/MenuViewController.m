@@ -18,7 +18,8 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        [self.syncButton setHitTestEdgeInsets:UIEdgeInsetsMake(-20, -20, -20, -20)];
+        [self.syncButton setHitTestEdgeInsets:UIEdgeInsetsMake(-50, -50, -50, -200)];
+        self.syncButton.showsTouchWhenHighlighted = YES;
     }
     return self;
 }
@@ -83,7 +84,9 @@
 }
 
 - (IBAction)syncButtonPressed:(id)sender {
+#ifdef DEBUG
     [_game updateServerStats:9];
+#endif
     [_game sendSyncPacketsForItem:(MediaItem *)_game.currentItem];
 }
 @end
