@@ -47,6 +47,16 @@
 }
 
 - (IBAction)backAction:(id)sender {
+    [_matchmakingClient disconnectFromServer];
+    _matchmakingClient.delegate = nil;
+	_matchmakingClient = nil;
+	
+    [self serverDidDisconnectWithReason:_quitReasonClient];
+    _matchmakingClient = [[MatchmakingClient alloc] init];
+    _matchmakingClient.delegate = self;
+    [_matchmakingClient startSearchingForServersWithSessionID:SESSION_ID];
+    [self resetTapTimer];
+    
     [UIView animateWithDuration:0.6 animations:^() {
         [self.tableView setAlpha:0.0];
         [_internetLabel setAlpha:1.0];
@@ -230,7 +240,7 @@
 
     _tapTimer = [NSTimer scheduledTimerWithTimeInterval:15.0 target:self selector:@selector(tapTimerFired:) userInfo:nil repeats:NO];
     
-    [UIView animateWithDuration:1.0 animations:^{
+    [UIView animateWithDuration:0.5 animations:^{
         self.tableView.alpha = 0.0;
         self.waitingView.alpha = 1.0;
     }];
@@ -240,10 +250,11 @@
 
 - (void)tapTimerFired:(NSTimer *)timer {
     tapped = NO;
-    [UIView animateWithDuration:1.0 animations:^{
+    [UIView animateWithDuration:0.5 animations:^{
         self.tableView.alpha = 1.0;
         self.waitingView.alpha = 0.0;
     }];
+    [_matchmakingClient disconnectFromServer];
     _matchmakingClient.delegate = nil;
 	_matchmakingClient = nil;
 	
@@ -594,15 +605,11 @@
 #pragma mark UIScrollViewDelegate Methods
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView{
-    
 	[_refreshHeaderView egoRefreshScrollViewDidScroll:scrollView];
-    
 }
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
-    
 	[_refreshHeaderView egoRefreshScrollViewDidEndDragging:scrollView];
-    
 }
 
 

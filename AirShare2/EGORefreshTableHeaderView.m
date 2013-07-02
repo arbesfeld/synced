@@ -49,7 +49,7 @@
         if(IS_PHONE) {
             offset = 20;
         } else {
-            offset = 300;
+            offset = 445;
         }
 		UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(-30.0f, frame.size.height - 30.0f, self.frame.size.width - offset, 20.0f)];
 		label.autoresizingMask = UIViewAutoresizingFlexibleWidth;

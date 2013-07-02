@@ -173,7 +173,9 @@ ClientState;
 
 - (void)disconnectFromServer
 {
-	NSAssert(_clientState != ClientStateIdle, @"Wrong state");
+    if(_clientState != ClientStateIdle) {
+        return;
+    }
     
 	_clientState = ClientStateIdle;
     
