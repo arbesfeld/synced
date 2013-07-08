@@ -1,0 +1,49 @@
+html {
+    height: 100%;
+}
+
+body {
+    height: 80%;
+}
+
+.main {
+    min-height: 100%;
+    /*background-image: url('../img/background_start.png');
+    background-repeat: no-repeat;
+    background-size: 100% auto;*/
+    background-color: #30190E;
+    color: gray;
+}
+
+.music {
+    min-height: 100%;
+    background-color: white;
+    color: gray;
+}
+
+.videos {
+    min-height: 100%;
+    /*background-image: url('../img/background_movies.png');
+    background-repeat: no-repeat;
+    background-size: 100% auto;*/
+    background-color: #30190E;
+    color: gray;
+}
+
+.parties {
+    min-height: 100%;
+    background-image: url('../img/ads4.png');
+    background-position: left top;
+    background-repeat: no-repeat;
+    background-size: 80% auto;
+    background-color: white;
+    color: gray;
+}
+
+.synced-footer {
+    /*background-image: url('../img/background_bottom.png');
+    background-repeat: no-repeat;
+    background-size: 100% auto;*/
+    background-color: #30190E;
+    color: gray;
+}
