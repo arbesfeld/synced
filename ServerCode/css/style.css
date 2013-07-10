@@ -1,49 +1,62 @@
-html {
-    height: 100%;
+body {
+    background-color: black;
 }
 
-body {
-    height: 80%;
+.navbar .nav,
+.navbar .nav > li {
+    float: none;
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+    vertical-align: top;
+}
+
+.navbar-inner {
+    text-align:center;
+}
+
+.nav-synced {
+    height: 30px;
+}
+
+.nav-img {
+    height: 20px;
+}
+
+.section {
+    padding-top: 30px;
+    padding-bottom: 30px;
+}
+
+.brown-gradient {
+    background-image: -ms-radial-gradient(right center, circle farthest-corner, #855B56 0%, #30190E 100%);
+    background-image: -moz-radial-gradient(right center, circle farthest-corner, #855B56 0%, #30190E 100%);
+    background-image: -o-radial-gradient(right center, circle farthest-corner, #855B56 0%, #30190E 100%);
+    background-image: -webkit-gradient(radial, right center, 0, right center, 956, color-stop(0, #855B56), color-stop(1, #30190E));
+    background-image: -webkit-radial-gradient(right center, circle farthest-corner, #855B56 0%, #30190E 100%);
+    background-image: radial-gradient(circle farthest-corner at right center, #855B56 0%, #30190E 100%);
 }
 
 .main {
-    min-height: 100%;
-    /*background-image: url('../img/background_start.png');
-    background-repeat: no-repeat;
-    background-size: 100% auto;*/
-    background-color: #30190E;
     color: gray;
 }
 
 .music {
-    min-height: 100%;
     background-color: white;
     color: gray;
 }
 
 .videos {
-    min-height: 100%;
-    /*background-image: url('../img/background_movies.png');
-    background-repeat: no-repeat;
-    background-size: 100% auto;*/
-    background-color: #30190E;
     color: gray;
 }
 
 .parties {
-    min-height: 100%;
-    background-image: url('../img/ads4.png');
-    background-position: left top;
-    background-repeat: no-repeat;
-    background-size: 80% auto;
     background-color: white;
     color: gray;
 }
 
 .synced-footer {
-    /*background-image: url('../img/background_bottom.png');
-    background-repeat: no-repeat;
-    background-size: 100% auto;*/
-    background-color: #30190E;
+    padding-top: 20px;
     color: gray;
+    padding-bottom: 5px;
 }
